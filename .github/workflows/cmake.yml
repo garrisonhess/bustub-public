@@ -30,7 +30,7 @@ jobs:
             name: "Ubuntu Latest Clang",
             os: ubuntu-latest,
             cc: "/usr/bin/clang-12",
-            cxx: "/usr/bin/clang++8",
+            cxx: "/usr/bin/clang++-12",
             format: "/usr/bin/clang-format-12",
             tidy: "/usr/bin/clang-tidy-12"
           }

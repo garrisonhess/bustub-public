@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 CMD bash
 
 # Install Ubuntu packages.
@@ -13,7 +13,7 @@ RUN apt-get -y update && \
       cmake \
       doxygen \
       git \
-      g++-7 \
+      g++-12 \
       pkg-config \
       valgrind \
       zlib1g-dev
