@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)              # Compile as C++17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)     # Require C++17 support
 
 project(BusTub
-        VERSION 2019.1
+        VERSION 2022.1
         DESCRIPTION "The BusTub Relational Database Management System (Educational) @ https://github.com/cmu-db/bustub"
         LANGUAGES C CXX
         )
@@ -57,16 +57,6 @@ else()
     # Output compile_commands.json
     set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
     message(STATUS "BusTub/main found clang-tidy at ${CLANG_TIDY_BIN}")
-endif()
-
-# cpplint
-find_program(CPPLINT_BIN
-        NAMES cpplint cpplint.py
-        HINTS "${BUSTUB_BUILD_SUPPORT_DIR}")
-if ("${CPPLINT_BIN}" STREQUAL "CPPLINT_BIN-NOTFOUND")
-    message(WARNING "BusTub/main couldn't find cpplint.")
-else()
-    message(STATUS "BusTub/main found cpplint at ${CPPLINT_BIN}")
 endif()
 
 # gmock gtest https://crascit.com/2015/07/25/cmake-gtest/
@@ -124,7 +114,7 @@ string(CONCAT BUSTUB_FORMAT_DIRS
         "${CMAKE_CURRENT_SOURCE_DIR}/test,"
         )
 
-# runs clang format and updates files in place.
+# Runs clang format and updates files in place.
 add_custom_target(format ${BUSTUB_BUILD_SUPPORT_DIR}/run_clang_format.py
         ${CLANG_FORMAT_BIN}
         ${BUSTUB_BUILD_SUPPORT_DIR}/clang_format_exclusions.txt
@@ -134,7 +124,7 @@ add_custom_target(format ${BUSTUB_BUILD_SUPPORT_DIR}/run_clang_format.py
         --quiet
         )
 
-# runs clang format and exits with a non-zero exit code if any files need to be reformatted
+# Runs clang format and exits with a non-zero exit code if any files need to be reformatted
 add_custom_target(check-format ${BUSTUB_BUILD_SUPPORT_DIR}/run_clang_format.py
         ${CLANG_FORMAT_BIN}
         ${BUSTUB_BUILD_SUPPORT_DIR}/clang_format_exclusions.txt
@@ -153,15 +143,6 @@ file(GLOB_RECURSE BUSTUB_LINT_FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/test/*.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp"
-        )
-
-# Balancing act: cpplint.py takes a non-trivial time to launch,
-# so process 12 files per invocation, while still ensuring parallelism
-add_custom_target(check-lint echo '${BUSTUB_LINT_FILES}' | xargs -n12 -P8
-        ${CPPLINT_BIN}
-        --verbose=2 --quiet
-        --linelength=120
-        --filter=-legal/copyright,-build/header_guard
         )
 
 ###########################################################
