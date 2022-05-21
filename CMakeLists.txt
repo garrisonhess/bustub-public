@@ -143,15 +143,6 @@ add_custom_target(check-format ${BUSTUB_BUILD_SUPPORT_DIR}/run_clang_format.py
         --quiet
         )
 
-# Balancing act: cpplint.py takes a non-trivial time to launch,
-# so process 12 files per invocation, while still ensuring parallelism
-add_custom_target(check-lint echo '${BUSTUB_LINT_FILES}' | xargs -n12 -P8
-        ${CPPLINT_BIN}
-        --verbose=2 --quiet
-        --linelength=120
-        --filter=-legal/copyright,-build/header_guard
-        )
-
 ##########################################
 # "make check-lint"
 ##########################################
@@ -161,6 +152,15 @@ file(GLOB_RECURSE BUSTUB_LINT_FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/test/*.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp"
+        )
+
+# Balancing act: cpplint.py takes a non-trivial time to launch,
+# so process 12 files per invocation, while still ensuring parallelism
+add_custom_target(check-lint echo '${BUSTUB_LINT_FILES}' | xargs -n12 -P8
+        ${CPPLINT_BIN}
+        --verbose=2 --quiet
+        --linelength=120
+        --filter=-legal/copyright,-build/header_guard
         )
 
 ###########################################################
