@@ -10,12 +10,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "catalog/catalog.h"
+
 #include <string>
 #include <unordered_set>
 #include <vector>
 
 #include "buffer/buffer_pool_manager_instance.h"
-#include "catalog/catalog.h"
 #include "catalog/table_generator.h"
 #include "execution/executor_context.h"
 #include "gtest/gtest.h"

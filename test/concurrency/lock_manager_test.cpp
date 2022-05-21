@@ -2,11 +2,12 @@
  * lock_manager_test.cpp
  */
 
+#include "concurrency/lock_manager.h"
+
 #include <random>
 #include <thread>  // NOLINT
 
 #include "common/config.h"
-#include "concurrency/lock_manager.h"
 #include "concurrency/transaction_manager.h"
 #include "gtest/gtest.h"
 

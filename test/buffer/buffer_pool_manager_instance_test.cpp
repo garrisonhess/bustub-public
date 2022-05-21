@@ -11,9 +11,11 @@
 //===----------------------------------------------------------------------===//
 
 #include "buffer/buffer_pool_manager_instance.h"
+
 #include <cstdio>
 #include <random>
 #include <string>
+
 #include "buffer/buffer_pool_manager.h"
 #include "gtest/gtest.h"
 
