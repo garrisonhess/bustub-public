@@ -77,4 +77,4 @@ AnalyzeTemporaryDtors: true
 # -clang-diagnostic-implicit-int-float-conversion, -modernize-use-auto, -modernize-use-trailing-return-type,
 # -readability-convert-member-functions-to-static, -readability-make-member-function-const, -readability-qualified-auto,
 # -readability-redundant-access-specifiers
-#    Not available on clang-8. Disable for forward compatibility with students running modern clang versions.
+#    Not available on clang-12. Disable for forward compatibility with students running modern clang versions.

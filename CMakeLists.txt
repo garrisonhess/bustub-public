@@ -21,8 +21,8 @@ endif ()
 
 # Expected directory structure.
 set(BUSTUB_BUILD_SUPPORT_DIR "${CMAKE_SOURCE_DIR}/build_support")
-set(BUSTUB_CLANG_SEARCH_PATH "/usr/local/bin" "/usr/bin" "/usr/local/opt/llvm/bin" "/usr/local/opt/llvm@8/bin"
-        "/usr/local/Cellar/llvm/8.0.1/bin")
+set(BUSTUB_CLANG_SEARCH_PATH "/usr/local/bin" "/usr/bin" "/usr/local/opt/llvm/bin" "/usr/local/opt/llvm@12/bin"
+        "/usr/local/Cellar/llvm/12.0.1/bin")
 
 ######################################################################################################################
 # DEPENDENCIES
@@ -35,7 +35,7 @@ enable_testing()
 if (NOT DEFINED CLANG_FORMAT_BIN)
     # attempt to find the binary if user did not specify
     find_program(CLANG_FORMAT_BIN
-            NAMES clang-format clang-format-8
+            NAMES clang-format clang-format-12
             HINTS ${BUSTUB_CLANG_SEARCH_PATH})
 endif()
 if ("${CLANG_FORMAT_BIN}" STREQUAL "CLANG_FORMAT_BIN-NOTFOUND")
@@ -48,7 +48,7 @@ endif()
 if (NOT DEFINED CLANG_TIDY_BIN)
     # attempt to find the binary if user did not specify
     find_program(CLANG_TIDY_BIN
-            NAMES clang-tidy clang-tidy-8
+            NAMES clang-tidy clang-tidy-12
             HINTS ${BUSTUB_CLANG_SEARCH_PATH})
 endif()
 if ("${CLANG_TIDY_BIN}" STREQUAL "CLANG_TIDY_BIN-NOTFOUND")

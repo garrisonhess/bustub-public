@@ -7,9 +7,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update && \
     apt-get -y install \
       build-essential \
-      clang-8 \
-      clang-format-8 \
-      clang-tidy-8 \
+      clang-12 \
+      clang-format-12 \
+      clang-tidy-12 \
       cmake \
       doxygen \
       git \
