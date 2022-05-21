@@ -59,6 +59,16 @@ else()
     message(STATUS "BusTub/main found clang-tidy at ${CLANG_TIDY_BIN}")
 endif()
 
+# cpplint
+find_program(CPPLINT_BIN
+        NAMES cpplint cpplint.py
+        HINTS "${BUSTUB_BUILD_SUPPORT_DIR}")
+if ("${CPPLINT_BIN}" STREQUAL "CPPLINT_BIN-NOTFOUND")
+    message(WARNING "BusTub/main couldn't find cpplint.")
+else()
+    message(STATUS "BusTub/main found cpplint at ${CPPLINT_BIN}")
+endif()
+
 # gmock gtest https://crascit.com/2015/07/25/cmake-gtest/
 configure_file("${PROJECT_SOURCE_DIR}/build_support/gtest_CMakeLists.txt.in" googletest-download/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
@@ -133,6 +143,14 @@ add_custom_target(check-format ${BUSTUB_BUILD_SUPPORT_DIR}/run_clang_format.py
         --quiet
         )
 
+# Balancing act: cpplint.py takes a non-trivial time to launch,
+# so process 12 files per invocation, while still ensuring parallelism
+add_custom_target(check-lint echo '${BUSTUB_LINT_FILES}' | xargs -n12 -P8
+        ${CPPLINT_BIN}
+        --verbose=2 --quiet
+        --linelength=120
+        --filter=-legal/copyright,-build/header_guard
+        )
 
 ##########################################
 # "make check-lint"
