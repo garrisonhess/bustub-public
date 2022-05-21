@@ -289,7 +289,7 @@ Value DecimalType::CastAs(const Value &val, const TypeId type_id) const {
       if (val.IsNull()) {
         return Value(type_id, BUSTUB_INT32_NULL);
       }
-      if (val.GetAs<long>() > BUSTUB_INT32_MAX || val.GetAs<double>() < BUSTUB_INT32_MIN) {
+      if (val.GetAs<double>() > BUSTUB_INT32_MAX || val.GetAs<double>() < BUSTUB_INT32_MIN) {
         throw Exception(ExceptionType::OUT_OF_RANGE, "Numeric value out of range.");
       }
       return Value(type_id, static_cast<int32_t>(val.GetAs<double>()));
@@ -298,6 +298,7 @@ Value DecimalType::CastAs(const Value &val, const TypeId type_id) const {
       if (val.IsNull()) {
         return Value(type_id, BUSTUB_INT64_NULL);
       }
+      // No bounds check here since decimal can't overflow bigint.
       return Value(type_id, static_cast<int64_t>(val.GetAs<double>()));
     }
     case TypeId::DECIMAL:
