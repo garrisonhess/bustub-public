@@ -88,7 +88,7 @@ class HashUtil {
         return Hash<double>(&raw);
       }
       case TypeId::VARCHAR: {
-        auto raw = val->GetData();
+        const auto *raw = val->GetData();
         auto len = val->GetLength();
         return HashBytes(raw, len);
       }

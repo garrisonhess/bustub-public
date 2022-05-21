@@ -78,6 +78,8 @@ void BasicTest1() {
     delete txns[i];
   }
 }
+
+// NOLINTNEXTLINE
 TEST(LockManagerTest, DISABLED_BasicTest) { BasicTest1(); }
 
 void TwoPLTest() {
@@ -86,7 +88,7 @@ void TwoPLTest() {
   RID rid0{0, 0};
   RID rid1{0, 1};
 
-  auto txn = txn_mgr.Begin();
+  auto *txn = txn_mgr.Begin();
   EXPECT_EQ(0, txn->GetTransactionId());
 
   bool res;
@@ -124,6 +126,8 @@ void TwoPLTest() {
 
   delete txn;
 }
+
+// NOLINTNEXTLINE
 TEST(LockManagerTest, DISABLED_TwoPLTest) { TwoPLTest(); }
 
 void UpgradeTest() {
@@ -151,6 +155,8 @@ void UpgradeTest() {
   txn_mgr.Commit(&txn);
   CheckCommitted(&txn);
 }
+
+// NOLINTNEXTLINE
 TEST(LockManagerTest, DISABLED_UpgradeLockTest) { UpgradeTest(); }
 
 void WoundWaitBasicTest() {
@@ -203,6 +209,8 @@ void WoundWaitBasicTest() {
   txn_mgr.Commit(&txn_hold);
   CheckCommitted(&txn_hold);
 }
-TEST(LockManagerTest, DISABLED_WoundWaitBasicTest) { WoundWaitBasicTest(); }
+
+// NOLINTNEXTLINE
+TEST(LockManagerTest, DISABLED_WoundWaitBasicTest) { WoundWaitBasicTest(); } 
 
 }  // namespace bustub

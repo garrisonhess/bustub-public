@@ -40,7 +40,7 @@ class ExecutorContext {
 
   ~ExecutorContext() = default;
 
-  DISALLOW_COPY_AND_MOVE(ExecutorContext);
+  DISALLOW_COPY_AND_MOVE(ExecutorContext);  // NOLINT
 
   /** @return the running transaction */
   auto GetTransaction() const -> Transaction * { return transaction_; }
@@ -52,7 +52,7 @@ class ExecutorContext {
   auto GetBufferPoolManager() -> BufferPoolManager * { return bpm_; }
 
   /** @return the log manager - don't worry about it for now */
-  auto GetLogManager() -> LogManager * { return nullptr; }
+  auto GetLogManager() -> LogManager * { return nullptr; }  // NOLINT
 
   /** @return the lock manager */
   auto GetLockManager() -> LockManager * { return lock_mgr_; }

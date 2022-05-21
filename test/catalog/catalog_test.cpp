@@ -414,7 +414,7 @@ TEST(CatalogTest, DISABLED_FailedQuery1) { // NOLINT
 }
 
 // Query for index on nonexistent table should fail
-TEST(CatalogTest, DISABLED_FailedQuery2) {
+TEST(CatalogTest, DISABLED_FailedQuery2) { // NOLINT
   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
