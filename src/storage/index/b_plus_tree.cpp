@@ -282,7 +282,7 @@ void BPLUSTREE_TYPE::RemoveFromFile(const std::string &file_name, Transaction *t
  * @param out
  */
 INDEX_TEMPLATE_ARGUMENTS
-void BPLUSTREE_TYPE::ToGraph(BPlusTreePage *page, BufferPoolManager *bpm, std::ofstream &out) const {
+void BPLUSTREE_TYPE::ToGraph(BPlusTreePage *page, BufferPoolManager *bpm, std::ofstream &out) const { // NOLINT
   std::string leaf_prefix("LEAF_");
   std::string internal_prefix("INT_");
   if (page->IsLeafPage()) {
@@ -349,10 +349,10 @@ void BPLUSTREE_TYPE::ToGraph(BPlusTreePage *page, BufferPoolManager *bpm, std::o
     }
     // Print leaves
     for (int i = 0; i < inner->GetSize(); i++) {
-      auto child_page = reinterpret_cast<BPlusTreePage *>(bpm->FetchPage(inner->ValueAt(i))->GetData());
+      auto *child_page = reinterpret_cast<BPlusTreePage *>(bpm->FetchPage(inner->ValueAt(i))->GetData());
       ToGraph(child_page, bpm, out);
       if (i > 0) {
-        auto sibling_page = reinterpret_cast<BPlusTreePage *>(bpm->FetchPage(inner->ValueAt(i - 1))->GetData());
+        auto *sibling_page = reinterpret_cast<BPlusTreePage *>(bpm->FetchPage(inner->ValueAt(i - 1))->GetData());
         if (!sibling_page->IsLeafPage() && !child_page->IsLeafPage()) {
           out << "{rank=same " << internal_prefix << sibling_page->GetPageId() << " " << internal_prefix
               << child_page->GetPageId() << "};\n";

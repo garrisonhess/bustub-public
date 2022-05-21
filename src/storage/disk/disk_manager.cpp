@@ -91,7 +91,7 @@ void DiskManager::WritePage(page_id_t page_id, const char *page_data) {
   size_t offset = static_cast<size_t>(page_id) * PAGE_SIZE;
   // set write cursor to offset
   num_writes_ += 1;
-  db_io_.seekp(offset);
+  db_io_.seekp(static_cast<int64_t>(offset));
   db_io_.write(page_data, PAGE_SIZE);
   // check for I/O error
   if (db_io_.bad()) {
@@ -121,7 +121,7 @@ void DiskManager::ReadPage(page_id_t page_id, char *page_data) {
       return;
     }
     // if file ends before reading PAGE_SIZE
-    int read_count = db_io_.gcount();
+    int read_count = static_cast<int>(db_io_.gcount());
     if (read_count < PAGE_SIZE) {
       LOG_DEBUG("Read less than a page");
       db_io_.clear();
@@ -184,7 +184,7 @@ auto DiskManager::ReadLog(char *log_data, int size, int offset) -> bool {
     return false;
   }
   // if log file ends before reading "size"
-  int read_count = log_io_.gcount();
+  int read_count = static_cast<int>(log_io_.gcount());
   if (read_count < size) {
     log_io_.clear();
     memset(log_data + read_count, 0, size - read_count);

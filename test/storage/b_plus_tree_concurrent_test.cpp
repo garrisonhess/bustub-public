@@ -100,7 +100,7 @@ void DeleteHelperSplit(BPlusTree<GenericKey<8>, RID, GenericComparator<8>> *tree
   delete transaction;
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest1) {
+TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest1) { // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -111,7 +111,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest1) {
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator);
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
   // keys to Insert
   std::vector<int64_t> keys;
@@ -152,7 +152,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest1) {
   remove("test.log");
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest2) {
+TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest2) { // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -162,7 +162,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest2) {
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator);
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
   // keys to Insert
   std::vector<int64_t> keys;
@@ -203,7 +203,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest2) {
   remove("test.log");
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest1) {
+TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest1) { // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -215,7 +215,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest1) {
   GenericKey<8> index_key;
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
   // sequential insert
   std::vector<int64_t> keys = {1, 2, 3, 4, 5};
@@ -245,7 +245,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest1) {
   remove("test.log");
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest2) {
+TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest2) { // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -257,7 +257,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest2) {
   GenericKey<8> index_key;
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
 
   // sequential insert
@@ -288,7 +288,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest2) {
   remove("test.log");
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_MixTest) {
+TEST(BPlusTreeConcurrentTest, DISABLED_MixTest) { // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -301,7 +301,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_MixTest) {
 
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
   // first, populate index
   std::vector<int64_t> keys = {1, 2, 3, 4, 5};

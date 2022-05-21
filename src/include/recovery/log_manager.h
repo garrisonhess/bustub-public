@@ -44,7 +44,7 @@ class LogManager {
   void RunFlushThread();
   void StopFlushThread();
 
-  auto AppendLogRecord(LogRecord *log_record) -> lsn_t;
+  static auto AppendLogRecord(LogRecord *log_record) -> lsn_t;
 
   inline auto GetNextLSN() -> lsn_t { return next_lsn_; }
   inline auto GetPersistentLSN() -> lsn_t { return persistent_lsn_; }

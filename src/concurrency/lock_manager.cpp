@@ -17,22 +17,26 @@
 
 namespace bustub {
 
+// NOLINTNEXTLINE
 auto LockManager::LockShared(Transaction *txn, const RID &rid) -> bool {
   txn->GetSharedLockSet()->emplace(rid);
   return true;
 }
 
+// NOLINTNEXTLINE
 auto LockManager::LockExclusive(Transaction *txn, const RID &rid) -> bool {
   txn->GetExclusiveLockSet()->emplace(rid);
   return true;
 }
 
+// NOLINTNEXTLINE
 auto LockManager::LockUpgrade(Transaction *txn, const RID &rid) -> bool {
   txn->GetSharedLockSet()->erase(rid);
   txn->GetExclusiveLockSet()->emplace(rid);
   return true;
 }
 
+// NOLINTNEXTLINE
 auto LockManager::Unlock(Transaction *txn, const RID &rid) -> bool {
   txn->GetSharedLockSet()->erase(rid);
   txn->GetExclusiveLockSet()->erase(rid);

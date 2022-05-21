@@ -26,7 +26,7 @@ auto HashTableDirectoryPage::GetLSN() const -> lsn_t { return lsn_; }
 
 void HashTableDirectoryPage::SetLSN(lsn_t lsn) { lsn_ = lsn; }
 
-auto HashTableDirectoryPage::GetGlobalDepth() -> uint32_t { return global_depth_; }
+auto HashTableDirectoryPage::GetGlobalDepth() const -> uint32_t { return global_depth_; }
 
 auto HashTableDirectoryPage::GetGlobalDepthMask() -> uint32_t { return 0; }
 

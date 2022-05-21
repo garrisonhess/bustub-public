@@ -38,7 +38,7 @@ auto UsageMessage() -> std::string {
 }
 
 // Remove 'DISABLED_' when you are ready
-TEST(BptTreeTest, DISABLED_UnitTest) {
+TEST(BptTreeTest, DISABLED_UnitTest) { // NOLINT
   int64_t key = 0;
   GenericKey<8> index_key;
   RID rid;
@@ -61,7 +61,7 @@ TEST(BptTreeTest, DISABLED_UnitTest) {
   BufferPoolManager *bpm = new BufferPoolManagerInstance(100, disk_manager);
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   // create b+ tree
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator, leaf_max_size, internal_max_size);
   // create transaction

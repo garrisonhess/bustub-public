@@ -26,7 +26,7 @@ Tuple::Tuple(std::vector<Value> values, const Schema *schema) : allocated_(true)
 
   // 1. Calculate the size of the tuple.
   uint32_t tuple_size = schema->GetLength();
-  for (auto &i : schema->GetUnlinedColumns()) {
+  for (const auto &i : schema->GetUnlinedColumns()) {
     tuple_size += (values[i].GetLength() + sizeof(uint32_t));
   }
 
@@ -96,7 +96,7 @@ auto Tuple::GetValue(const Schema *schema, const uint32_t column_idx) const -> V
   return Value::DeserializeFrom(data_ptr, column_type);
 }
 
-auto Tuple::KeyFromTuple(const Schema &schema, const Schema &key_schema, const std::vector<uint32_t> &key_attrs)
+auto Tuple::KeyFromTuple(const Schema &schema, const Schema &key_schema, const std::vector<uint32_t> &key_attrs) const 
     -> Tuple {
   std::vector<Value> values;
   values.reserve(key_attrs.size());
@@ -124,7 +124,7 @@ auto Tuple::GetDataPtr(const Schema *schema, const uint32_t column_idx) const ->
 auto Tuple::ToString(const Schema *schema) const -> std::string {
   std::stringstream os;
 
-  int column_count = schema->GetColumnCount();
+  int column_count = static_cast<int>(schema->GetColumnCount());
   bool first = true;
   os << "(";
   for (int column_itr = 0; column_itr < column_count; column_itr++) {

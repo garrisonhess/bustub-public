@@ -120,7 +120,7 @@ class TransactionAbortException : public std::exception {
  public:
   explicit TransactionAbortException(txn_id_t txn_id, AbortReason abort_reason)
       : txn_id_(txn_id), abort_reason_(abort_reason) {}
-  auto GetTransactionId() -> txn_id_t { return txn_id_; }
+  auto GetTransactionId() const -> txn_id_t { return txn_id_; }
   auto GetAbortReason() -> AbortReason { return abort_reason_; }
   auto GetInfo() -> std::string {
     switch (abort_reason_) {
@@ -149,8 +149,7 @@ class TransactionAbortException : public std::exception {
 class Transaction {
  public:
   explicit Transaction(txn_id_t txn_id, IsolationLevel isolation_level = IsolationLevel::REPEATABLE_READ)
-      : state_(TransactionState::GROWING),
-        isolation_level_(isolation_level),
+      : isolation_level_(isolation_level),
         thread_id_(std::this_thread::get_id()),
         txn_id_(txn_id),
         prev_lsn_(INVALID_LSN),
@@ -165,7 +164,7 @@ class Transaction {
 
   ~Transaction() = default;
 
-  DISALLOW_COPY(Transaction);
+  DISALLOW_COPY(Transaction);  // NOLINT
 
   /** @return the id of the thread running the transaction */
   inline auto GetThreadId() const -> std::thread::id { return thread_id_; }
@@ -240,7 +239,7 @@ class Transaction {
   inline void SetState(TransactionState state) { state_ = state; }
 
   /** @return the previous LSN */
-  inline auto GetPrevLSN() -> lsn_t { return prev_lsn_; }
+  inline auto GetPrevLSN() const -> lsn_t { return prev_lsn_; }
 
   /**
    * Set the previous LSN.
@@ -250,7 +249,7 @@ class Transaction {
 
  private:
   /** The current transaction state. */
-  TransactionState state_;
+  TransactionState state_{};
   /** The isolation level of the transaction. */
   IsolationLevel isolation_level_;
   /** The thread ID, used in single-threaded transactions. */

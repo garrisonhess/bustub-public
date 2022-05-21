@@ -22,6 +22,7 @@
 #include <vector>
 
 namespace bustub {
+using std::string;
 
 auto StringUtil::Contains(const std::string &haystack, const std::string &needle) -> bool {
   return (haystack.find(needle) != std::string::npos);
@@ -109,7 +110,7 @@ auto StringUtil::FormatSize(uint64_t bytes) -> std::string {
 
   std::ostringstream os;
 
-  double tmp = static_cast<double>(bytes);
+  auto tmp = static_cast<double>(bytes);
   if (tmp >= gb) {
     os << std::fixed << std::setprecision(2) << (tmp / gb) << " GB";
   } else if (tmp >= mb) {
@@ -166,7 +167,7 @@ std::string StringUtil::Format(std::string fmt_str, ...) {
       break;
     }
   }
-  return std::string(formatted.get());
+  return string(formatted.get());
 }
 
 auto StringUtil::Split(const std::string &input, const std::string &split) -> std::vector<std::string> {
