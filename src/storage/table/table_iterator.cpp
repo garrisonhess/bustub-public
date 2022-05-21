@@ -70,4 +70,5 @@ auto TableIterator::operator++(int) -> TableIterator {
   return clone;
 }
 
+
 }  // namespace bustub

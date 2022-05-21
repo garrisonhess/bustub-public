@@ -63,7 +63,8 @@ class HashUtil {
   static inline auto HashValue(const Value *val) -> hash_t {
     switch (val->GetTypeId()) {
       case TypeId::TINYINT: {
-        auto raw = static_cast<int64_t>(val->GetAs<int8_t>());
+        // TODO(Garrison): Clang says this should be unsigned(?)
+        auto raw = static_cast<int64_t>(val->GetAs<uint8_t>());
         return Hash<int64_t>(&raw);
       }
       case TypeId::SMALLINT: {

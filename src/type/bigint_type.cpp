@@ -139,7 +139,7 @@ auto BigintType::Modulo(const Value &left, const Value &right) const -> Value {
     case TypeId::BIGINT:
       return ModuloValue<int64_t, int64_t>(left, right);
     case TypeId::DECIMAL:
-      return {TypeId::DECIMAL, ValMod(left.value_.bigint_, right.GetAs<double>())};
+      return {TypeId::DECIMAL, ValMod(static_cast<double>(left.value_.bigint_), right.GetAs<double>())};
     case TypeId::VARCHAR: {
       auto r_value = right.CastAs(TypeId::BIGINT);
       return ModuloValue<int64_t, int64_t>(left, r_value);
