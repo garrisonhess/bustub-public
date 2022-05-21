@@ -7,14 +7,16 @@
 ## build and run the DBMS.
 ##
 ## Supported environments:
-##  * Ubuntu 18.04
-##  * macOS
+##  * Ubuntu 20.04
+##  * Ubuntu 22.04
+##  * macOS 11 Big Sur
+##  * macOS 12 Monterey
 ## =================================================================
 
 main() {
   set -o errexit
 
-    if [ $1 == "-y" ] 
+    if [ "$1" == "-y" ] 
     then 
         install
     else
@@ -41,8 +43,8 @@ install() {
     LINUX)
       version=$(cat /etc/os-release | grep VERSION_ID | cut -d '"' -f 2)
       case $version in
-        18.04) install_linux ;;
         20.04) install_linux ;;
+        22.04) install_linux ;;
         *) give_up ;;
       esac
       ;;
@@ -91,7 +93,7 @@ install_linux() {
       cmake \
       doxygen \
       git \
-      g++-7 \
+      g++-12 \
       pkg-config \
       valgrind \
       zlib1g-dev
