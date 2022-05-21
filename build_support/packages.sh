@@ -7,6 +7,7 @@
 ## build and run the DBMS.
 ##
 ## Supported environments:
+##  * Ubuntu 18.04
 ##  * Ubuntu 20.04
 ##  * Ubuntu 22.04
 ##  * macOS 11 Big Sur
@@ -43,6 +44,7 @@ install() {
     LINUX)
       version=$(cat /etc/os-release | grep VERSION_ID | cut -d '"' -f 2)
       case $version in
+        18.04) install_linux ;;
         20.04) install_linux ;;
         22.04) install_linux ;;
         *) give_up ;;

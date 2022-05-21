@@ -20,7 +20,7 @@
 ---
 Checks:     '
             -bugprone-*,
-            -clang-analyzer-*,
+            clang-analyzer-*,
             -google-*,
             -modernize-*,
             -performance-*,
