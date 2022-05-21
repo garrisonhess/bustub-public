@@ -27,7 +27,7 @@ class Counter {
     count_ += num;
     mutex_.WUnlock();
   }
-  int Read() {
+  auto Read() -> int {
     int res;
     mutex_.RLock();
     res = count_;
