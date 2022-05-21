@@ -148,8 +148,6 @@ def get_tidy_invocation(
         start.append("-quiet")
     if config:
         start.append("-config=" + config)
-    # start.append("--fix")
-    # start.append("--fix-errors")
     start.append(f)
     return start
 
@@ -366,7 +364,6 @@ def main():
     files = [make_absolute(entry["file"], entry["directory"]) for entry in database]
 
     max_task = args.j
-    max_task = 1
     if max_task == 0:
         max_task = multiprocessing.cpu_count()
 
