@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 
 from pathlib import Path
-from plumbum import local
+from plumbum import local, FG
 
-# Runs clang-format on everything in the specified subdirs.
+# Runs clang-format on everything in the specified directories.
 fmt = local["clang-format-12"]
-subdirs = ["src", "test"]
+proj_root = Path.cwd().parent
+dirs = ["src", "test"]
 
-for subdir in subdirs: 
-    code_dir = Path.cwd() / subdir
-    code_files = list(code_dir.glob("**/*.h")) + list(code_dir.glob("**/*.cpp"))
-
-    for code_file in code_files: 
-        print(f"Formatting file: {code_file}")
-        fmt["-i", str(code_file)]()
+for _dir in dirs: 
+    _dir = proj_root / _dir
+    files = list(_dir.glob("**/*.h")) + list(_dir.glob("**/*.cpp"))
+    for file in files: 
+        fmt["-i", str(file), "--verbose", "--Werror"] & FG
