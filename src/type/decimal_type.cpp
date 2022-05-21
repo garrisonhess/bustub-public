@@ -60,10 +60,6 @@ namespace bustub {
       break;                                                                          \
   }  // SWITCH
 
-// static inline double ValMod(double x, double y) {
-//  return x - std::trunc((double)x / (double)y) * y;
-//}
-
 DecimalType::DecimalType() : NumericType(TypeId::DECIMAL) {}
 
 auto DecimalType::IsZero(const Value &val) const -> bool {
@@ -139,7 +135,7 @@ auto DecimalType::Modulo(const Value &left, const Value &right) const -> Value {
     case TypeId::INTEGER:
       return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int32_t>())};
     case TypeId::BIGINT:
-      return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int64_t>())};
+      return {TypeId::DECIMAL, ValMod(left.value_.decimal_, static_cast<double>(right.GetAs<int64_t>()))};
     case TypeId::DECIMAL:
       return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<double>())};
     case TypeId::VARCHAR: {

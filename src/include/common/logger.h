@@ -47,6 +47,7 @@ static constexpr auto PastLastSlash(cstr a, cstr b) -> cstr {
 
 static constexpr auto PastLastSlash(cstr a) -> cstr { return PastLastSlash(a, a); }
 
+// NOLINTNEXTLINE
 #define __SHORT_FILE__                            \
   ({                                              \
     constexpr cstr sf__{PastLastSlash(__FILE__)}; \

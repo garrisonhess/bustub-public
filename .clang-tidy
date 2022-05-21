@@ -19,19 +19,20 @@
 #
 ---
 Checks:     '
-            -bugprone-*,
+            bugprone-*,
             -clang-analyzer-*,
             -google-*,
-            modernize-*,
+            -modernize-*,
             -performance-*,
             -portability-*,
             -readability-*,
-            -bugprone-too-small-loop-variable,
-            -clang-analyzer-cplusplus.NewDelete,
-            -clang-analyzer-cplusplus.NewDeleteLeaks,
-            -modernize-use-nodiscard,
-            -modernize-avoid-c-arrays,
-            -readability-magic-numbers,
+            -bugprone-easily-swappable-parameters,
+            # -bugprone-too-small-loop-variable,
+            # -clang-analyzer-cplusplus.NewDelete,
+            # -clang-analyzer-cplusplus.NewDeleteLeaks,
+            # -modernize-use-nodiscard,
+            # -modernize-avoid-c-arrays,
+            # -readability-magic-numbers,
             '
 CheckOptions:
   - { key: readability-identifier-naming.ClassCase,           value: CamelCase  }

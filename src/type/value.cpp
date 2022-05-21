@@ -59,15 +59,15 @@ Value::Value(TypeId type, int8_t i) : Value(type) {
       size_.len_ = (value_.tinyint_ == BUSTUB_INT8_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::SMALLINT:
-      value_.smallint_ = i;
+      value_.smallint_ = static_cast<unsigned char>(i);
       size_.len_ = (value_.smallint_ == BUSTUB_INT16_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::INTEGER:
-      value_.integer_ = i;
+      value_.integer_ = static_cast<unsigned char>(i);
       size_.len_ = (value_.integer_ == BUSTUB_INT32_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::BIGINT:
-      value_.bigint_ = i;
+      value_.bigint_ = static_cast<unsigned char>(i);
       size_.len_ = (value_.bigint_ == BUSTUB_INT64_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     default:
@@ -79,11 +79,11 @@ Value::Value(TypeId type, int8_t i) : Value(type) {
 Value::Value(TypeId type, int16_t i) : Value(type) {
   switch (type) {
     case TypeId::BOOLEAN:
-      value_.boolean_ = i;
+      value_.boolean_ = static_cast<int8_t>(i);
       size_.len_ = (value_.boolean_ == BUSTUB_BOOLEAN_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::TINYINT:
-      value_.tinyint_ = i;
+      value_.tinyint_ = static_cast<int8_t>(i);
       size_.len_ = (value_.tinyint_ == BUSTUB_INT8_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::SMALLINT:
@@ -111,19 +111,19 @@ Value::Value(TypeId type, int16_t i) : Value(type) {
 Value::Value(TypeId type, int32_t i) : Value(type) {
   switch (type) {
     case TypeId::BOOLEAN:
-      value_.boolean_ = i;
+      value_.boolean_ = static_cast<int8_t>(i);
       size_.len_ = (value_.boolean_ == BUSTUB_BOOLEAN_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::TINYINT:
-      value_.tinyint_ = i;
+      value_.tinyint_ = static_cast<int8_t>(i);
       size_.len_ = (value_.tinyint_ == BUSTUB_INT8_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::SMALLINT:
-      value_.smallint_ = i;
+      value_.smallint_ = static_cast<int16_t>(i);
       size_.len_ = (value_.smallint_ == BUSTUB_INT16_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::INTEGER:
-      value_.integer_ = i;
+      value_.integer_ = static_cast<int32_t>(i);
       size_.len_ = (value_.integer_ == BUSTUB_INT32_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::BIGINT:
@@ -143,19 +143,19 @@ Value::Value(TypeId type, int32_t i) : Value(type) {
 Value::Value(TypeId type, int64_t i) : Value(type) {
   switch (type) {
     case TypeId::BOOLEAN:
-      value_.boolean_ = i;
+      value_.boolean_ = static_cast<int8_t>(i);
       size_.len_ = (value_.boolean_ == BUSTUB_BOOLEAN_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::TINYINT:
-      value_.tinyint_ = i;
+      value_.tinyint_ = static_cast<int8_t>(i);
       size_.len_ = (value_.tinyint_ == BUSTUB_INT8_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::SMALLINT:
-      value_.smallint_ = i;
+      value_.smallint_ = static_cast<int16_t>(i);
       size_.len_ = (value_.smallint_ == BUSTUB_INT16_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::INTEGER:
-      value_.integer_ = i;
+      value_.integer_ = static_cast<int32_t>(i);
       size_.len_ = (value_.integer_ == BUSTUB_INT32_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::BIGINT:
@@ -175,7 +175,7 @@ Value::Value(TypeId type, int64_t i) : Value(type) {
 Value::Value(TypeId type, uint64_t i) : Value(type) {
   switch (type) {
     case TypeId::BIGINT:
-      value_.bigint_ = i;
+      value_.bigint_ = static_cast<int64_t>(i);
       size_.len_ = (value_.bigint_ == BUSTUB_INT64_NULL ? BUSTUB_VALUE_NULL : 0);
       break;
     case TypeId::TIMESTAMP:

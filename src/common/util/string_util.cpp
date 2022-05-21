@@ -109,12 +109,13 @@ auto StringUtil::FormatSize(uint64_t bytes) -> std::string {
 
   std::ostringstream os;
 
-  if (bytes >= gb) {
-    os << std::fixed << std::setprecision(2) << (bytes / gb) << " GB";
-  } else if (bytes >= mb) {
-    os << std::fixed << std::setprecision(2) << (bytes / mb) << " MB";
-  } else if (bytes >= kb) {
-    os << std::fixed << std::setprecision(2) << (bytes / kb) << " KB";
+  double tmp = static_cast<double>(bytes);
+  if (tmp >= gb) {
+    os << std::fixed << std::setprecision(2) << (tmp / gb) << " GB";
+  } else if (tmp >= mb) {
+    os << std::fixed << std::setprecision(2) << (tmp / mb) << " MB";
+  } else if (tmp >= kb) {
+    os << std::fixed << std::setprecision(2) << (tmp / kb) << " KB";
   } else {
     os << std::to_string(bytes) + " bytes";
   }

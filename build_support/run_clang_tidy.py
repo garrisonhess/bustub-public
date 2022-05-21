@@ -148,8 +148,8 @@ def get_tidy_invocation(
         start.append("-quiet")
     if config:
         start.append("-config=" + config)
-    start.append("--fix")
-    start.append("--fix-errors")
+    # start.append("--fix")
+    # start.append("--fix-errors")
     start.append(f)
     return start
 

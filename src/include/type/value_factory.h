@@ -394,11 +394,12 @@ class ValueFactory {
   static inline auto CastAsTimestamp(const Value &value) -> Value {
     if (Type::GetInstance(TypeId::TIMESTAMP)->IsCoercableFrom(value.GetTypeId())) {
       if (value.IsNull()) {
-        return ValueFactory::GetTimestampValue(BUSTUB_TIMESTAMP_NULL);
+        return ValueFactory::GetTimestampValue(static_cast<int64_t>(BUSTUB_TIMESTAMP_NULL));
       }
       switch (value.GetTypeId()) {
         case TypeId::TIMESTAMP:
-          return ValueFactory::GetTimestampValue(value.GetAs<uint64_t>());
+          // TODO(Garrison): Should this be GetAs<int64> or GetAs<uint64>?
+          return ValueFactory::GetTimestampValue(value.GetAs<int64_t>());
         case TypeId::VARCHAR: {
           std::string str = value.ToString();
           if (str.length() == 22) {
@@ -462,7 +463,7 @@ class ValueFactory {
           res += hour * 3600 + min * 60 + sec;
           res *= 1000000;
           res += micro;
-          return ValueFactory::GetTimestampValue(res);
+          return ValueFactory::GetTimestampValue(static_cast<int64_t>(res));
         }
         default:
           break;

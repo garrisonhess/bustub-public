@@ -82,7 +82,7 @@ class LogRecord {
       delete_tuple_ = tuple;
     }
     // calculate log record size
-    size_ = HEADER_SIZE + sizeof(RID) + sizeof(int32_t) + tuple.GetLength();
+    size_ = HEADER_SIZE + static_cast<int32_t>(sizeof(RID) + sizeof(int32_t) + tuple.GetLength());
   }
 
   // constructor for UPDATE type
@@ -95,7 +95,8 @@ class LogRecord {
         old_tuple_(old_tuple),
         new_tuple_(new_tuple) {
     // calculate log record size
-    size_ = HEADER_SIZE + sizeof(RID) + old_tuple.GetLength() + new_tuple.GetLength() + 2 * sizeof(int32_t);
+    size_ = HEADER_SIZE +
+            static_cast<int32_t>(sizeof(RID) + old_tuple.GetLength() + new_tuple.GetLength() + 2 * sizeof(int32_t));
   }
 
   // constructor for NEWPAGE type
@@ -176,7 +177,7 @@ class LogRecord {
   // case4: for new page operation
   page_id_t prev_page_id_{INVALID_PAGE_ID};
   page_id_t page_id_{INVALID_PAGE_ID};
-  static const int HEADER_SIZE = 20;
+  static const int32_t HEADER_SIZE = 20;
 };  // namespace bustub
 
 }  // namespace bustub
