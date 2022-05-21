@@ -4,7 +4,7 @@ from pathlib import Path
 from plumbum import local
 
 # Runs clang-format on everything in the specified subdirs.
-fmt = local["clang-format"]
+fmt = local["clang-format-12"]
 subdirs = ["src", "test"]
 
 for subdir in subdirs: 
