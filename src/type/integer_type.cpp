@@ -327,4 +327,3 @@ auto IntegerType::CastAs(const Value &val, const TypeId type_id) const -> Value 
   throw Exception("Integer is not coercable to " + Type::TypeIdToString(type_id));
 }
 }  // namespace bustub
-
