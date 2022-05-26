@@ -24,6 +24,17 @@ set(BUSTUB_BUILD_SUPPORT_DIR "${CMAKE_SOURCE_DIR}/build_support")
 set(BUSTUB_CLANG_SEARCH_PATH "/usr/local/bin" "/usr/bin" "/usr/local/opt/llvm/bin" "/usr/local/opt/llvm@12/bin"
         "/usr/local/Cellar/llvm/12.0.1/bin")
 
+# Determine install paths
+set(INSTALL_LIB_DIR
+lib
+CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR
+bin
+CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR
+include
+CACHE PATH "Installation directory for header files")
+
 ######################################################################################################################
 # DEPENDENCIES
 ######################################################################################################################
@@ -110,6 +121,8 @@ include_directories(BEFORE src) # This is needed for gtest.
 
 add_subdirectory(src)
 add_subdirectory(test)
+add_subdirectory(third_party)
+
 ######################################################################################################################
 # MAKE TARGETS
 ######################################################################################################################
@@ -173,4 +186,4 @@ add_custom_target(check-clang-tidy
         -clang-tidy-binary ${CLANG_TIDY_BIN}                              # using our clang-tidy binary
         -p ${CMAKE_BINARY_DIR}                                            # using cmake's generated compile commands
         )
-add_dependencies(check-clang-tidy gtest bustub_shared)                    # needs gtest headers, compile_commands.json
+add_dependencies(check-clang-tidy gtest bustub)                    # needs gtest headers, compile_commands.json
