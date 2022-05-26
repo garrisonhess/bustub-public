@@ -7,13 +7,13 @@
 
 using namespace std;
 
-namespace duckdb {
+namespace bustub {
 
 PostgresParser::PostgresParser() : success(false), parse_tree(nullptr), error_message(""), error_location(0) {}
 
 void PostgresParser::Parse(const string &query) {
-	duckdb_libpgquery::pg_parser_init();
-	duckdb_libpgquery::parse_result res;
+	bustub_libpgquery::pg_parser_init();
+	bustub_libpgquery::parse_result res;
 	pg_parser_parse(query.c_str(), &res);
 	success = res.success;
 
@@ -25,27 +25,27 @@ void PostgresParser::Parse(const string &query) {
 	}
 }
 
-vector<duckdb_libpgquery::PGSimplifiedToken> PostgresParser::Tokenize(const std::string &query) {
-	duckdb_libpgquery::pg_parser_init();
-	auto tokens = duckdb_libpgquery::tokenize(query.c_str());
-	duckdb_libpgquery::pg_parser_cleanup();
+vector<bustub_libpgquery::PGSimplifiedToken> PostgresParser::Tokenize(const std::string &query) {
+	bustub_libpgquery::pg_parser_init();
+	auto tokens = bustub_libpgquery::tokenize(query.c_str());
+	bustub_libpgquery::pg_parser_cleanup();
 	return tokens;
 }
 
 PostgresParser::~PostgresParser()  {
-    duckdb_libpgquery::pg_parser_cleanup();
+    bustub_libpgquery::pg_parser_cleanup();
 }
 
 bool PostgresParser::IsKeyword(const std::string &text) {
-	return duckdb_libpgquery::is_keyword(text.c_str());
+	return bustub_libpgquery::is_keyword(text.c_str());
 }
 
-vector<duckdb_libpgquery::PGKeyword> PostgresParser::KeywordList() {
-	return duckdb_libpgquery::keyword_list();
+vector<bustub_libpgquery::PGKeyword> PostgresParser::KeywordList() {
+	return bustub_libpgquery::keyword_list();
 }
 
 void PostgresParser::SetPreserveIdentifierCase(bool preserve) {
-	duckdb_libpgquery::set_preserve_identifier_case(preserve);
+	bustub_libpgquery::set_preserve_identifier_case(preserve);
 }
 
 }
