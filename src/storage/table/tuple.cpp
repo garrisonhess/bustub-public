@@ -10,13 +10,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "storage/table/tuple.h"
+
 #include <cassert>
 #include <cstdlib>
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include "storage/table/tuple.h"
 
 namespace bustub {
 
@@ -26,7 +26,7 @@ Tuple::Tuple(std::vector<Value> values, const Schema *schema) : allocated_(true)
 
   // 1. Calculate the size of the tuple.
   uint32_t tuple_size = schema->GetLength();
-  for (auto &i : schema->GetUnlinedColumns()) {
+  for (const auto &i : schema->GetUnlinedColumns()) {
     tuple_size += (values[i].GetLength() + sizeof(uint32_t));
   }
 
@@ -67,7 +67,7 @@ Tuple::Tuple(const Tuple &other) : allocated_(other.allocated_), rid_(other.rid_
   }
 }
 
-Tuple &Tuple::operator=(const Tuple &other) {
+auto Tuple::operator=(const Tuple &other) -> Tuple & {
   if (allocated_) {
     delete[] data_;
   }
@@ -87,7 +87,7 @@ Tuple &Tuple::operator=(const Tuple &other) {
   return *this;
 }
 
-Value Tuple::GetValue(const Schema *schema, const uint32_t column_idx) const {
+auto Tuple::GetValue(const Schema *schema, const uint32_t column_idx) const -> Value {
   assert(schema);
   assert(data_);
   const TypeId column_type = schema->GetColumn(column_idx).GetType();
@@ -96,16 +96,17 @@ Value Tuple::GetValue(const Schema *schema, const uint32_t column_idx) const {
   return Value::DeserializeFrom(data_ptr, column_type);
 }
 
-Tuple Tuple::KeyFromTuple(const Schema &schema, const Schema &key_schema, const std::vector<uint32_t> &key_attrs) {
+auto Tuple::KeyFromTuple(const Schema &schema, const Schema &key_schema, const std::vector<uint32_t> &key_attrs) const 
+    -> Tuple {
   std::vector<Value> values;
   values.reserve(key_attrs.size());
   for (auto idx : key_attrs) {
     values.emplace_back(this->GetValue(&schema, idx));
   }
-  return Tuple(values, &key_schema);
+  return {values, &key_schema};
 }
 
-const char *Tuple::GetDataPtr(const Schema *schema, const uint32_t column_idx) const {
+auto Tuple::GetDataPtr(const Schema *schema, const uint32_t column_idx) const -> const char * {
   assert(schema);
   assert(data_);
   const auto &col = schema->GetColumn(column_idx);
@@ -120,10 +121,10 @@ const char *Tuple::GetDataPtr(const Schema *schema, const uint32_t column_idx) c
   return (data_ + offset);
 }
 
-std::string Tuple::ToString(const Schema *schema) const {
+auto Tuple::ToString(const Schema *schema) const -> std::string {
   std::stringstream os;
 
-  int column_count = schema->GetColumnCount();
+  int column_count = static_cast<int>(schema->GetColumnCount());
   bool first = true;
   os << "(";
   for (int column_itr = 0; column_itr < column_count; column_itr++) {

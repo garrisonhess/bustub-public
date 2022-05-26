@@ -10,11 +10,12 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "buffer/lru_replacer.h"
+
 #include <cstdio>
 #include <thread>  // NOLINT
 #include <vector>
 
-#include "buffer/lru_replacer.h"
 #include "gtest/gtest.h"
 
 namespace bustub {

@@ -28,7 +28,7 @@ namespace bustub {
 class LogRecovery {
  public:
   LogRecovery(DiskManager *disk_manager, BufferPoolManager *buffer_pool_manager)
-      : disk_manager_(disk_manager), buffer_pool_manager_(buffer_pool_manager), offset_(0) {
+      : disk_manager_(disk_manager), buffer_pool_manager_(buffer_pool_manager) {
     log_buffer_ = new char[LOG_BUFFER_SIZE];
   }
 
@@ -39,7 +39,7 @@ class LogRecovery {
 
   void Redo();
   void Undo();
-  bool DeserializeLogRecord(const char *data, LogRecord *log_record);
+  static auto DeserializeLogRecord(const char *data, LogRecord *log_record) -> bool;
 
  private:
   DiskManager *disk_manager_ __attribute__((__unused__));
@@ -50,7 +50,7 @@ class LogRecovery {
   /** Mapping the log sequence number to log file offset for undos. */
   std::unordered_map<lsn_t, int> lsn_mapping_;
 
-  int offset_ __attribute__((__unused__));
+  int __attribute__((__unused__)) offset_{};
   char *log_buffer_;
 };
 

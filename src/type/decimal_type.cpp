@@ -10,13 +10,14 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "type/decimal_type.h"
+
 #include <cassert>
 #include <cmath>
 #include <iostream>
 #include <string>
 
 #include "common/exception.h"
-#include "type/decimal_type.h"
 
 namespace bustub {
 #define DECIMAL_COMPARE_FUNC(OP)                                          \
@@ -59,18 +60,14 @@ namespace bustub {
       break;                                                                          \
   }  // SWITCH
 
-// static inline double ValMod(double x, double y) {
-//  return x - std::trunc((double)x / (double)y) * y;
-//}
-
 DecimalType::DecimalType() : NumericType(TypeId::DECIMAL) {}
 
-bool DecimalType::IsZero(const Value &val) const {
+auto DecimalType::IsZero(const Value &val) const -> bool {
   assert(GetTypeId() == TypeId::DECIMAL);
   return (val.value_.decimal_ == 0);
 }
 
-Value DecimalType::Add(const Value &left, const Value &right) const {
+auto DecimalType::Add(const Value &left, const Value &right) const -> Value {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -81,7 +78,7 @@ Value DecimalType::Add(const Value &left, const Value &right) const {
   throw Exception("type error");
 }
 
-Value DecimalType::Subtract(const Value &left, const Value &right) const {
+auto DecimalType::Subtract(const Value &left, const Value &right) const -> Value {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -93,7 +90,7 @@ Value DecimalType::Subtract(const Value &left, const Value &right) const {
   throw Exception("type error");
 }
 
-Value DecimalType::Multiply(const Value &left, const Value &right) const {
+auto DecimalType::Multiply(const Value &left, const Value &right) const -> Value {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -104,7 +101,7 @@ Value DecimalType::Multiply(const Value &left, const Value &right) const {
   throw Exception("type error");
 }
 
-Value DecimalType::Divide(const Value &left, const Value &right) const {
+auto DecimalType::Divide(const Value &left, const Value &right) const -> Value {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -120,7 +117,7 @@ Value DecimalType::Divide(const Value &left, const Value &right) const {
   throw Exception("type error");
 }
 
-Value DecimalType::Modulo(const Value &left, const Value &right) const {
+auto DecimalType::Modulo(const Value &left, const Value &right) const -> Value {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -132,18 +129,18 @@ Value DecimalType::Modulo(const Value &left, const Value &right) const {
   }
   switch (right.GetTypeId()) {
     case TypeId::TINYINT:
-      return Value(TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int8_t>()));
+      return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int8_t>())};
     case TypeId::SMALLINT:
-      return Value(TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int16_t>()));
+      return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int16_t>())};
     case TypeId::INTEGER:
-      return Value(TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int32_t>()));
+      return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int32_t>())};
     case TypeId::BIGINT:
-      return Value(TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int64_t>()));
+      return {TypeId::DECIMAL, ValMod(left.value_.decimal_, static_cast<double>(right.GetAs<int64_t>()))};
     case TypeId::DECIMAL:
-      return Value(TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<double>()));
+      return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<double>())};
     case TypeId::VARCHAR: {
       auto r_value = right.CastAs(TypeId::DECIMAL);
-      return Value(TypeId::DECIMAL, ValMod(left.value_.decimal_, r_value.GetAs<double>()));
+      return {TypeId::DECIMAL, ValMod(left.value_.decimal_, r_value.GetAs<double>())};
     }
     default:
       break;
@@ -151,7 +148,7 @@ Value DecimalType::Modulo(const Value &left, const Value &right) const {
   throw Exception("type error");
 }
 
-Value DecimalType::Min(const Value &left, const Value &right) const {
+auto DecimalType::Min(const Value &left, const Value &right) const -> Value {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -164,7 +161,7 @@ Value DecimalType::Min(const Value &left, const Value &right) const {
   return right.Copy();
 }
 
-Value DecimalType::Max(const Value &left, const Value &right) const {
+auto DecimalType::Max(const Value &left, const Value &right) const -> Value {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -177,23 +174,23 @@ Value DecimalType::Max(const Value &left, const Value &right) const {
   return right.Copy();
 }
 
-Value DecimalType::Sqrt(const Value &val) const {
+auto DecimalType::Sqrt(const Value &val) const -> Value {
   assert(GetTypeId() == TypeId::DECIMAL);
   if (val.IsNull()) {
-    return Value(TypeId::DECIMAL, BUSTUB_DECIMAL_NULL);
+    return {TypeId::DECIMAL, BUSTUB_DECIMAL_NULL};
   }
   if (val.value_.decimal_ < 0) {
     throw Exception(ExceptionType::DECIMAL, "Cannot take square root of a negative number.");
   }
-  return Value(TypeId::DECIMAL, std::sqrt(val.value_.decimal_));
+  return {TypeId::DECIMAL, std::sqrt(val.value_.decimal_)};
 }
 
-Value DecimalType::OperateNull(const Value &left __attribute__((unused)),
-                               const Value &right __attribute__((unused))) const {
-  return Value(TypeId::DECIMAL, BUSTUB_DECIMAL_NULL);
+auto DecimalType::OperateNull(const Value &left __attribute__((unused)),
+                              const Value &right __attribute__((unused))) const -> Value {
+  return {TypeId::DECIMAL, BUSTUB_DECIMAL_NULL};
 }
 
-CmpBool DecimalType::CompareEquals(const Value &left, const Value &right) const {
+auto DecimalType::CompareEquals(const Value &left, const Value &right) const -> CmpBool {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -205,7 +202,7 @@ CmpBool DecimalType::CompareEquals(const Value &left, const Value &right) const 
   throw Exception("type error");
 }
 
-CmpBool DecimalType::CompareNotEquals(const Value &left, const Value &right) const {
+auto DecimalType::CompareNotEquals(const Value &left, const Value &right) const -> CmpBool {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -217,7 +214,7 @@ CmpBool DecimalType::CompareNotEquals(const Value &left, const Value &right) con
   throw Exception("type error");
 }
 
-CmpBool DecimalType::CompareLessThan(const Value &left, const Value &right) const {
+auto DecimalType::CompareLessThan(const Value &left, const Value &right) const -> CmpBool {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -229,7 +226,7 @@ CmpBool DecimalType::CompareLessThan(const Value &left, const Value &right) cons
   throw Exception("type error");
 }
 
-CmpBool DecimalType::CompareLessThanEquals(const Value &left, const Value &right) const {
+auto DecimalType::CompareLessThanEquals(const Value &left, const Value &right) const -> CmpBool {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -241,7 +238,7 @@ CmpBool DecimalType::CompareLessThanEquals(const Value &left, const Value &right
   throw Exception("type error");
 }
 
-CmpBool DecimalType::CompareGreaterThan(const Value &left, const Value &right) const {
+auto DecimalType::CompareGreaterThan(const Value &left, const Value &right) const -> CmpBool {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -253,7 +250,7 @@ CmpBool DecimalType::CompareGreaterThan(const Value &left, const Value &right) c
   throw Exception("type error");
 }
 
-CmpBool DecimalType::CompareGreaterThanEquals(const Value &left, const Value &right) const {
+auto DecimalType::CompareGreaterThanEquals(const Value &left, const Value &right) const -> CmpBool {
   assert(GetTypeId() == TypeId::DECIMAL);
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -265,38 +262,38 @@ CmpBool DecimalType::CompareGreaterThanEquals(const Value &left, const Value &ri
   throw Exception("type error");
 }
 
-Value DecimalType::CastAs(const Value &val, const TypeId type_id) const {
+auto DecimalType::CastAs(const Value &val, const TypeId type_id) const -> Value {
   switch (type_id) {
     case TypeId::TINYINT: {
       if (val.IsNull()) {
-        return Value(type_id, BUSTUB_INT8_NULL);
+        return {type_id, BUSTUB_INT8_NULL};
       }
       if (val.GetAs<double>() > BUSTUB_INT8_MAX || val.GetAs<double>() < BUSTUB_INT8_MIN) {
         throw Exception(ExceptionType::OUT_OF_RANGE, "Numeric value out of range.");
       }
-      return Value(type_id, static_cast<int8_t>(val.GetAs<double>()));
+      return {type_id, static_cast<int8_t>(val.GetAs<double>())};
     }
     case TypeId::SMALLINT: {
       if (val.IsNull()) {
-        return Value(type_id, BUSTUB_INT16_NULL);
+        return {type_id, BUSTUB_INT16_NULL};
       }
       if (val.GetAs<double>() > BUSTUB_INT16_MAX || val.GetAs<double>() < BUSTUB_INT16_MIN) {
         throw Exception(ExceptionType::OUT_OF_RANGE, "Numeric value out of range.");
       }
-      return Value(type_id, static_cast<int16_t>(val.GetAs<double>()));
+      return {type_id, static_cast<int16_t>(val.GetAs<double>())};
     }
     case TypeId::INTEGER: {
       if (val.IsNull()) {
-        return Value(type_id, BUSTUB_INT32_NULL);
+        return {type_id, BUSTUB_INT32_NULL};
       }
       if (val.GetAs<double>() > BUSTUB_INT32_MAX || val.GetAs<double>() < BUSTUB_INT32_MIN) {
         throw Exception(ExceptionType::OUT_OF_RANGE, "Numeric value out of range.");
       }
-      return Value(type_id, static_cast<int32_t>(val.GetAs<double>()));
+      return {type_id, static_cast<int32_t>(val.GetAs<double>())};
     }
     case TypeId::BIGINT: {
       if (val.IsNull()) {
-        return Value(type_id, BUSTUB_INT64_NULL);
+        return {type_id, BUSTUB_INT64_NULL};
       }
       if (val.GetAs<double>() >= static_cast<double>(BUSTUB_INT64_MAX) ||
           val.GetAs<double>() < static_cast<double>(BUSTUB_INT64_MIN)) {
@@ -308,7 +305,7 @@ Value DecimalType::CastAs(const Value &val, const TypeId type_id) const {
       return val.Copy();
     case TypeId::VARCHAR: {
       if (val.IsNull()) {
-        return Value(TypeId::VARCHAR, nullptr, 0, false);
+        return {TypeId::VARCHAR, nullptr, 0, false};
       }
       return Value(TypeId::VARCHAR, val.ToString());
     }
@@ -318,7 +315,7 @@ Value DecimalType::CastAs(const Value &val, const TypeId type_id) const {
   throw Exception("DECIMAL is not coercable to " + Type::TypeIdToString(type_id));
 }
 
-std::string DecimalType::ToString(const Value &val) const {
+auto DecimalType::ToString(const Value &val) const -> std::string {
   if (val.IsNull()) {
     return "decimal_null";
   }
@@ -330,10 +327,10 @@ void DecimalType::SerializeTo(const Value &val, char *storage) const {
 }
 
 // Deserialize a value of the given type from the given storage space.
-Value DecimalType::DeserializeFrom(const char *storage) const {
+auto DecimalType::DeserializeFrom(const char *storage) const -> Value {
   double val = *reinterpret_cast<const double *>(storage);
-  return Value(type_id_, val);
+  return {type_id_, val};
 }
 
-Value DecimalType::Copy(const Value &val) const { return Value(TypeId::DECIMAL, val.value_.decimal_); }
+auto DecimalType::Copy(const Value &val) const -> Value { return {TypeId::DECIMAL, val.value_.decimal_}; }
 }  // namespace bustub

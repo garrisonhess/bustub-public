@@ -10,15 +10,15 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "type/integer_parent_type.h"
+
 #include <cassert>
 #include <cmath>
-
-#include "type/integer_parent_type.h"
 
 namespace bustub {
 IntegerParentType::IntegerParentType(TypeId type) : NumericType(type) {}
 
-Value IntegerParentType::Min(const Value &left, const Value &right) const {
+auto IntegerParentType::Min(const Value &left, const Value &right) const -> Value {
   assert(left.CheckInteger());
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {
@@ -31,7 +31,7 @@ Value IntegerParentType::Min(const Value &left, const Value &right) const {
   return right.Copy();
 }
 
-Value IntegerParentType::Max(const Value &left, const Value &right) const {
+auto IntegerParentType::Max(const Value &left, const Value &right) const -> Value {
   assert(left.CheckInteger());
   assert(left.CheckComparable(right));
   if (left.IsNull() || right.IsNull()) {

@@ -21,7 +21,7 @@
 
 namespace bustub {
 
-std::string UsageMessage() {
+auto UsageMessage() -> std::string {
   std::string message =
       "Enter any of the following commands after the prompt > :\n"
       "\ti <k>  -- Insert <k> (int64_t) as both key and value).\n"
@@ -38,7 +38,7 @@ std::string UsageMessage() {
 }
 
 // Remove 'DISABLED_' when you are ready
-TEST(BptTreeTest, DISABLED_UnitTest) {
+TEST(BptTreeTest, DISABLED_UnitTest) { // NOLINT
   int64_t key = 0;
   GenericKey<8> index_key;
   RID rid;
@@ -57,15 +57,15 @@ TEST(BptTreeTest, DISABLED_UnitTest) {
   auto key_schema = ParseCreateStatement(create_stmt);
   GenericComparator<8> comparator(key_schema.get());
 
-  DiskManager *disk_manager = new DiskManager("test.db");
+  auto *disk_manager = new DiskManager("test.db");
   BufferPoolManager *bpm = new BufferPoolManagerInstance(100, disk_manager);
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   // create b+ tree
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator, leaf_max_size, internal_max_size);
   // create transaction
-  Transaction *transaction = new Transaction(0);
+  auto *transaction = new Transaction(0);
   while (!quit) {
     std::cout << "> ";
     std::cin >> instruction;
