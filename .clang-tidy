@@ -41,6 +41,7 @@ Checks:     '
             -modernize-use-auto,
             -modernize-use-trailing-return-type,
             -readability-convert-member-functions-to-static,
+            -readability-identifier-length,
             -readability-function-cognitive-complexity,
             -readability-magic-numbers,
             -readability-make-member-function-const,

@@ -23,8 +23,8 @@ TEST(ParserTest, SimpleParserTest) {
   // Construct query plan
   LOG_INFO("Hi from seqscan test");
   Parser parser;
-  (void)parser;
-  // parser.ParseQuery("SELECT * FROM temp;");
+  parser.ParseQuery("SELECT * FROM temp;");
+  parser.ParseQuery("SELfasddfasECT fasdfasd* FdfasfasdsdfasdfasdfaROM temp;");
   // LOG_INFO("parser success: %d", parser.success);
 }
 
