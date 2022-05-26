@@ -21,7 +21,7 @@
 #include <climits>
 #include <thread>
 
-using namespace bustub;
+using namespace duckdb;
 using namespace std;
 
 static char *sqlite3_strdup(const char *str);

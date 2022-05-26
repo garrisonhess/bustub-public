@@ -8,7 +8,7 @@
 #include "nodes/pg_list.hpp"
 #include "nodes/parsenodes.hpp"
 
-namespace duckdb_libpgquery {
+namespace bustub_libpgquery {
 
 typedef struct parse_result_str parse_result;
 struct parse_result_str {

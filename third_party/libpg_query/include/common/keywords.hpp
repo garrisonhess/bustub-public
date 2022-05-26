@@ -21,7 +21,7 @@
 #define TYPE_FUNC_NAME_KEYWORD	2
 #define RESERVED_KEYWORD		3
 
-namespace duckdb_libpgquery {
+namespace bustub_libpgquery {
 
 typedef struct PGScanKeyword {
 	const char *name; /* in lower case */

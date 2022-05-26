@@ -551,31 +551,31 @@ size_t linenoiseComputeRenderWidth(const char *buf, size_t len) {
 	size_t render_width = 0;
 	int sz;
 	while (cpos < len) {
-		if (duckdb::Utf8Proc::UTF8ToCodepoint(buf + cpos, sz) < 0) {
+		if (bustub::Utf8Proc::UTF8ToCodepoint(buf + cpos, sz) < 0) {
 			cpos++;
 			render_width++;
 			continue;
 		}
 
-		size_t char_render_width = duckdb::Utf8Proc::RenderWidth(buf, len, cpos);
-		cpos = duckdb::Utf8Proc::NextGraphemeCluster(buf, len, cpos);
+		size_t char_render_width = bustub::Utf8Proc::RenderWidth(buf, len, cpos);
+		cpos = bustub::Utf8Proc::NextGraphemeCluster(buf, len, cpos);
 		render_width += char_render_width;
 	}
 	return render_width;
 }
 
 int linenoiseGetRenderPosition(const char *buf, size_t len, int max_width, int *n) {
-	if (duckdb::Utf8Proc::IsValid(buf, len)) {
+	if (bustub::Utf8Proc::IsValid(buf, len)) {
 		// utf8 in prompt, get render width
 		size_t cpos = 0;
 		size_t render_width = 0;
 		while (cpos < len) {
-			size_t char_render_width = duckdb::Utf8Proc::RenderWidth(buf, len, cpos);
+			size_t char_render_width = bustub::Utf8Proc::RenderWidth(buf, len, cpos);
 			if (int(render_width + char_render_width) > max_width) {
 				*n = render_width;
 				return cpos;
 			}
-			cpos = duckdb::Utf8Proc::NextGraphemeCluster(buf, len, cpos);
+			cpos = bustub::Utf8Proc::NextGraphemeCluster(buf, len, cpos);
 			render_width += char_render_width;
 		}
 		*n = render_width;
@@ -664,11 +664,11 @@ int linenoiseParseOption(const char **azArg, int nArg, const char **out_error) {
 
 #ifndef DISABLE_HIGHLIGHT
 #include <sstream>
-#include "duckdb/parser/parser.hpp"
+#include "bustub/parser/parser.hpp"
 
 std::string highlightText(char *buf, size_t len, size_t start_pos, size_t end_pos) {
 	std::string sql(buf, len);
-	auto tokens = duckdb::Parser::Tokenize(sql);
+	auto tokens = bustub::Parser::Tokenize(sql);
 	std::stringstream ss;
 	for (size_t i = 0; i < tokens.size(); i++) {
 		size_t next = i + 1 < tokens.size() ? tokens[i + 1].start : len;
@@ -685,11 +685,11 @@ std::string highlightText(char *buf, size_t len, size_t start_pos, size_t end_po
 		}
 		std::string text = std::string(buf + start, end - start);
 		switch (token.type) {
-		case duckdb::SimplifiedTokenType::SIMPLIFIED_TOKEN_KEYWORD:
+		case bustub::SimplifiedTokenType::SIMPLIFIED_TOKEN_KEYWORD:
 			ss << keyword << text << reset;
 			break;
-		case duckdb::SimplifiedTokenType::SIMPLIFIED_TOKEN_NUMERIC_CONSTANT:
-		case duckdb::SimplifiedTokenType::SIMPLIFIED_TOKEN_STRING_CONSTANT:
+		case bustub::SimplifiedTokenType::SIMPLIFIED_TOKEN_NUMERIC_CONSTANT:
+		case bustub::SimplifiedTokenType::SIMPLIFIED_TOKEN_STRING_CONSTANT:
 			ss << constant << text << reset;
 			break;
 		default:
@@ -717,7 +717,7 @@ static void refreshSingleLine(struct linenoiseState *l) {
 	std::string highlight_buffer;
 #endif
 
-	if (duckdb::Utf8Proc::IsValid(l->buf, l->len)) {
+	if (bustub::Utf8Proc::IsValid(l->buf, l->len)) {
 		// utf8 in prompt, handle rendering
 		size_t remaining_render_width = l->cols - plen - 1;
 		size_t start_pos = 0;
@@ -725,9 +725,9 @@ static void refreshSingleLine(struct linenoiseState *l) {
 		size_t prev_pos = 0;
 		size_t total_render_width = 0;
 		while (cpos < len) {
-			size_t char_render_width = duckdb::Utf8Proc::RenderWidth(buf, len, cpos);
+			size_t char_render_width = bustub::Utf8Proc::RenderWidth(buf, len, cpos);
 			prev_pos = cpos;
-			cpos = duckdb::Utf8Proc::NextGraphemeCluster(buf, len, cpos);
+			cpos = bustub::Utf8Proc::NextGraphemeCluster(buf, len, cpos);
 			total_render_width += cpos - prev_pos;
 			if (total_render_width >= remaining_render_width) {
 				// character does not fit anymore! we need to figure something out
@@ -738,8 +738,8 @@ static void refreshSingleLine(struct linenoiseState *l) {
 				} else {
 					// we did not pass the cursor yet! remove characters from the start until it fits again
 					while (total_render_width >= remaining_render_width) {
-						size_t start_char_width = duckdb::Utf8Proc::RenderWidth(buf, len, start_pos);
-						size_t new_start = duckdb::Utf8Proc::NextGraphemeCluster(buf, len, start_pos);
+						size_t start_char_width = bustub::Utf8Proc::RenderWidth(buf, len, start_pos);
+						size_t new_start = bustub::Utf8Proc::NextGraphemeCluster(buf, len, start_pos);
 						total_render_width -= new_start - start_pos;
 						start_pos = new_start;
 						render_pos -= start_char_width;
@@ -820,7 +820,7 @@ static void refreshMultiLine(struct linenoiseState *l) {
 		l->maxrows = rows;
 	}
 
-	if (duckdb::Utf8Proc::IsValid(l->buf, l->len)) {
+	if (bustub::Utf8Proc::IsValid(l->buf, l->len)) {
 #ifndef DISABLE_HIGHLIGHT
 		if (enableHighlighting) {
 			highlight_buffer = highlightText(buf, len, 0, len);
@@ -939,11 +939,11 @@ int linenoiseEditInsert(struct linenoiseState *l, char c) {
 }
 
 static size_t prev_char(struct linenoiseState *l) {
-	return duckdb::Utf8Proc::PreviousGraphemeCluster(l->buf, l->len, l->pos);
+	return bustub::Utf8Proc::PreviousGraphemeCluster(l->buf, l->len, l->pos);
 }
 
 static size_t next_char(struct linenoiseState *l) {
-	return duckdb::Utf8Proc::NextGraphemeCluster(l->buf, l->len, l->pos);
+	return bustub::Utf8Proc::NextGraphemeCluster(l->buf, l->len, l->pos);
 }
 
 /* Move cursor on the left. */

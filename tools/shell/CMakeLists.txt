@@ -1,9 +1,11 @@
 add_definitions(-DSQLITE_OMIT_LOAD_EXTENSION=1)
 
 set(SHELL_SOURCES shell.c)
-add_definitions(-DHAVE_LINENOISE=1)
-set(SHELL_SOURCES ${SHELL_SOURCES} linenoise.cpp)
-include_directories(../../third_party/utf8proc/include)
+if(NOT WIN32)
+  add_definitions(-DHAVE_LINENOISE=1)
+  set(SHELL_SOURCES ${SHELL_SOURCES} linenoise.cpp)
+  include_directories(../../third_party/utf8proc/include)
+endif()
 
 option(STATIC_LIBCPP "Statically link CLI to libc++" FALSE)
 
@@ -18,7 +20,9 @@ if(STATIC_LIBCPP)
   target_link_libraries(shell -static-libstdc++ -static-libgcc)
 endif()
 
-target_link_libraries(shell duckdb_utf8proc)
+if(NOT AMALGAMATION_BUILD AND NOT WIN32)
+  target_link_libraries(shell duckdb_utf8proc)
+endif()
 
 set_target_properties(shell PROPERTIES OUTPUT_NAME duckdb)
 set_target_properties(shell PROPERTIES RUNTIME_OUTPUT_DIRECTORY

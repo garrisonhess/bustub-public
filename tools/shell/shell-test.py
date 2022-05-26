@@ -399,11 +399,11 @@ SELECT * FROM t1;
 ''' % (db1, db2, db1), out='42')
 
 # open file that is not a database
-duckdb_nonsense_db = 'duckdbtest_nonsensedb.db'
-with open(duckdb_nonsense_db, 'w+') as f:
+bustub_nonsense_db = 'bustubtest_nonsensedb.db'
+with open(bustub_nonsense_db, 'w+') as f:
      f.write('blablabla')
-test('', err='The file is not a valid DuckDB database file', extra_commands=[duckdb_nonsense_db])
-os.remove(duckdb_nonsense_db)
+test('', err='The file is not a valid BusTub database file', extra_commands=[bustub_nonsense_db])
+os.remove(bustub_nonsense_db)
 
 # enable_profiling doesn't result in any output
 test('''
@@ -486,7 +486,7 @@ INSERT INTO b SELECT * FROM range(0,10);
 ''', 'CREATE TABLE a(d DATE, k FLOAT, t TIMESTAMP);')
 
 # import/export database
-target_dir = 'duckdb_shell_test_export_dir'
+target_dir = 'bustub_shell_test_export_dir'
 try:
      shutil.rmtree(target_dir)
 except:
@@ -509,16 +509,16 @@ shutil.rmtree(target_dir)
 
 # test using .import with a CSV file containing invalid UTF8
 
-duckdb_nonsensecsv = 'duckdbtest_nonsensecsv.csv'
-with open(duckdb_nonsensecsv, 'wb+') as f:
+bustub_nonsensecsv = 'bustubtest_nonsensecsv.csv'
+with open(bustub_nonsensecsv, 'wb+') as f:
      f.write(b'\xFF\n')
 test('''
 .nullvalue NULL
 CREATE TABLE test(i INTEGER);
-.import duckdbtest_nonsensecsv.csv test
+.import bustubtest_nonsensecsv.csv test
 SELECT * FROM test;
 ''', out="NULL")
-os.remove(duckdb_nonsensecsv)
+os.remove(bustub_nonsensecsv)
 
 # .mode latex
 test('''
@@ -582,9 +582,9 @@ SELECT writefile('hello');
 ''', err='wrong number of arguments to function writefile')
 
 test('''
-SELECT writefile('duckdbtest_writefile', 'hello');
+SELECT writefile('bustubtest_writefile', 'hello');
 ''')
-test_writefile = 'duckdbtest_writefile'
+test_writefile = 'bustubtest_writefile'
 if not os.path.exists(test_writefile):
      raise Exception(f"Failed to write file {test_writefile}");
 with open(test_writefile, 'r') as f:

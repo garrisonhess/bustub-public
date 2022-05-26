@@ -1,10 +1,10 @@
 # Modified Postgres Parser
 
-This directory holds the core parser that is used by DuckDB. It is based on the [Postgres parser](https://github.com/pganalyze/libpg_query), but has been stripped down and generally cleaned up to make it easier to modify and extend.
+This directory holds the core parser that is used by BusTub. It is based on the [Postgres parser](https://github.com/pganalyze/libpg_query), but has been stripped down and generally cleaned up to make it easier to modify and extend.
 
 The most important changes made are listed here:
 * The output format has been changed to C++
-* The parser and all its auxiliary structures are wrapped in the `duckdb_libpgquery` namespace.
+* The parser and all its auxiliary structures are wrapped in the `bustub_libpgquery` namespace.
 * The parser has been split up into multiple different files instead of living in one big file.
 * Duplication is reduced and code is simplified by e.g. not requiring the same keyword or statement to be declared in multiple different places. 
 
@@ -38,7 +38,7 @@ Bison is defined in terms of rules. Each rule defines a *return type*. The retur
 
 Rules generally reference other rules using the grammar. Each rule contains inline C code. The C code describes how to compose the result objects from the grammar.
 
-The result objects are primarily defined in `third_party/libpg_query/include/nodes/parsenodes.hpp`, and are mostly taken over from Postgres. The parse nodes are converted into DuckDB's internal representation in the Transformer phase. 
+The result objects are primarily defined in `third_party/libpg_query/include/nodes/parsenodes.hpp`, and are mostly taken over from Postgres. The parse nodes are converted into BusTub's internal representation in the Transformer phase. 
 
 As an example, let's look at a rule:
 

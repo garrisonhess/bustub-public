@@ -24,7 +24,7 @@ target_include_directories(
 set_target_properties(bustub_pg_query PROPERTIES EXPORT_NAME bustub_bustub_pg_query)
 
 install(TARGETS bustub_pg_query
-        EXPORT "${DUCKDB_EXPORT_SET}"
+        EXPORT "${BUSTUB_EXPORT_SET}"
         LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
         ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
 

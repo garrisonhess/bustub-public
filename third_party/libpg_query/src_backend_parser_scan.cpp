@@ -302,7 +302,7 @@
 
 #ifndef FLEXINT_H
 #define FLEXINT_H
-namespace duckdb_libpgquery {
+namespace bustub_libpgquery {
 
 /* C99 systems have <inttypes.h>. Non-C99 systems may or may not. */
 
@@ -4332,4 +4332,4 @@ core_yyfree(void *ptr, core_yyscan_t yyscanner)
 #undef ECHO
 
 
-} /* duckdb_libpgquery */
+} /* bustub_libpgquery */

@@ -21,7 +21,7 @@
 #include "nodes/parsenodes.hpp"
 #include "parser/scanner.hpp"
 
-namespace duckdb_libpgquery {
+namespace bustub_libpgquery {
 #include "parser/gram.hpp"
 
 /*

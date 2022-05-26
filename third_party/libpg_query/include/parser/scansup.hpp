@@ -14,7 +14,7 @@
 
 #pragma once
 
-namespace duckdb_libpgquery {
+namespace bustub_libpgquery {
 
 char *scanstr(const char *s);
 

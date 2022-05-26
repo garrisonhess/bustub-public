@@ -743,4 +743,4 @@ parser_init(base_yy_extra_type *yyext)
 #undef yynerrs
 #undef yylloc
 
-} // namespace duckdb_libpgquery
+} // namespace bustub_libpgquery
