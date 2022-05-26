@@ -7,7 +7,7 @@
 // #include "duckdb/parser/statement/update_statement.hpp"
 // #include "duckdb/parser/query_node/select_node.hpp"
 // #include "duckdb/parser/tableref/expressionlistref.hpp"
-#include "postgres_parser.hpp"
+// #include "postgres_parser.hpp"
 // #include "duckdb/parser/query_error_context.hpp"
 #include "common/logger.h"
 
@@ -21,10 +21,9 @@ namespace bustub {
 void Parser::ParseQuery(const std::string &query) {
   std::cout << "HI FROM PARSER\n";
   std::cout << "received query string: " << query << "\n";
-  PostgresParser parser;
-  parser.Parse(query);
-
-  LOG_INFO("parser success: %d", parser.success);
+  // PostgresParser parser;
+  // parser.Parse(query);
+  // LOG_INFO("parser success: %d", parser.success);
 
   // 	bool success;
   // 	bustub_libpgquery::PGList *parse_tree;

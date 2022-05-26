@@ -5,5 +5,5 @@ endif()
 include_directories(include)
 
 add_library(bustub_sqlite3 sqlite3.c)
-TARGET_LINK_LIBRARIES(bustub_sqlite3 pthread)
+target_link_libraries(bustub_sqlite3 pthread)
 

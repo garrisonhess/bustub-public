@@ -13,12 +13,14 @@
 // #include "duckdb/parser/query_node.hpp"
 // #include "duckdb/parser/column_definition.hpp"
 // #include "duckdb/parser/simplified_token.hpp"
-#include "postgres_parser.hpp"
+// #include "postgres_parser.hpp"
 
-namespace bustub_libpgquery {
-struct PGNode;
-struct PGList;
-}  // namespace bustub_libpgquery
+// namespace bustub_libpgquery {
+// struct PGNode;
+// struct PGList;
+// }  // namespace bustub_libpgquery
+
+#include <string>
 
 namespace bustub {
 
