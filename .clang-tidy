@@ -19,16 +19,16 @@
 #
 ---
 Checks:     '
-            bugprone-*,
+            -bugprone-*,
             # cert-*,
             # concurrency-*,
             clang-analyzer-*,
             # cppcoreguidelines-*,
             google-*,
-            modernize-*,
+            -modernize-*,
             performance-*,
             portability-*,
-            readability-*,
+            -readability-*,
             -bugprone-easily-swappable-parameters,
             # -bugprone-too-small-loop-variable,
             # -clang-analyzer-cplusplus.NewDelete,
