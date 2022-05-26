@@ -2,6 +2,7 @@ add_subdirectory(util)
 
 add_library(
   bustub_common
+  OBJECT
   config.cpp)
 
 set(ALL_OBJECT_FILES

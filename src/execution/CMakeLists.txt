@@ -1,5 +1,6 @@
 add_library(
   bustub_execution
+  OBJECT
   aggregation_executor.cpp
   delete_executor.cpp
   distinct_executor.cpp

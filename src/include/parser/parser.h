@@ -1,7 +1,7 @@
 //===----------------------------------------------------------------------===//
 //                         DuckDB
 //
-// duckdb/parser/parser.hpp
+// duckdb/parser/parser.h
 //
 //
 //===----------------------------------------------------------------------===//
@@ -40,7 +40,6 @@ class Parser {
   //   //! The parsed SQL statements from an invocation to ParseQuery.
   //   vector<unique_ptr<SQLStatement>> statements;
 
- public:
   //! Attempts to parse a query into a series of SQL statements. Returns
   //! whether or not the parsing was successful. If the parsing was
   //! successful, the parsed statements will be stored in the statements
@@ -75,4 +74,5 @@ class Parser {
   //  private:
   //   ParserOptions options;
 };
+
 }  // namespace bustub

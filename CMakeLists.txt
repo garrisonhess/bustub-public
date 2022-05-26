@@ -24,19 +24,6 @@ set(BUSTUB_BUILD_SUPPORT_DIR "${CMAKE_SOURCE_DIR}/build_support")
 set(BUSTUB_CLANG_SEARCH_PATH "/usr/local/bin" "/usr/bin" "/usr/local/opt/llvm/bin" "/usr/local/opt/llvm@12/bin"
         "/usr/local/Cellar/llvm/12.0.1/bin")
 
-include_directories(src/include)
-
-# Determine install paths
-set(INSTALL_LIB_DIR
-lib
-CACHE PATH "Installation directory for libraries")
-set(INSTALL_BIN_DIR
-bin
-CACHE PATH "Installation directory for executables")
-set(INSTALL_INCLUDE_DIR
-include
-CACHE PATH "Installation directory for header files")
-
 ######################################################################################################################
 # DEPENDENCIES
 ######################################################################################################################
@@ -123,15 +110,19 @@ function(disable_target_warnings NAME)
   endif()
 endfunction()
 
+
 # Includes.
 set(BUSTUB_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src/include)
 set(BUSTUB_TEST_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/test/include)
 set(BUSTUB_THIRD_PARTY_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/third_party)
 include_directories(${BUSTUB_SRC_INCLUDE_DIR} ${BUSTUB_TEST_INCLUDE_DIR} ${BUSTUB_THIRD_PARTY_INCLUDE_DIR})
 include_directories(BEFORE src) # This is needed for gtest.
+
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(third_party)
+
+
 # add_subdirectory(tools)
 
 ######################################################################################################################

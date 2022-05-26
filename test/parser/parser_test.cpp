@@ -22,7 +22,8 @@ namespace bustub {
 TEST(ParserTest, SimpleParserTest) {
   // Construct query plan
   LOG_INFO("Hi from seqscan test");
-  // auto parser = Parser();
+  Parser parser;
+  (void)parser;
   // parser.ParseQuery("SELECT * FROM temp;");
   // LOG_INFO("parser success: %d", parser.success);
 }

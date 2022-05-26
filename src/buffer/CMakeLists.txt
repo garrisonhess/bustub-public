@@ -1,5 +1,6 @@
 add_library(
-  bustub_buffer
+  bustub_buffer 
+  OBJECT
   buffer_pool_manager_instance.cpp
   clock_replacer.cpp
   lru_replacer.cpp
