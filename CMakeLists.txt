@@ -121,7 +121,7 @@ include_directories(BEFORE src) # This is needed for gtest.
 
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(third_party)
+# add_subdirectory(third_party)
 
 ######################################################################################################################
 # MAKE TARGETS
