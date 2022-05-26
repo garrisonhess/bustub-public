@@ -87,7 +87,7 @@ using ComparatorType = GenericComparator<8>;
 using HashFunctionType = HashFunction<KeyType>;
 
 // SELECT col_a, col_b FROM test_1 WHERE col_a < 500
-TEST_F(ExecutorTest, DISABLED_SimpleSeqScanTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleSeqScanTest) {  // NOLINT
   // Construct query plan
   TableInfo *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
   const Schema &schema = table_info->schema_;
@@ -111,7 +111,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleSeqScanTest) { // NOLINT
 }
 
 // INSERT INTO empty_table2 VALUES (100, 10), (101, 11), (102, 12)
-TEST_F(ExecutorTest, DISABLED_SimpleRawInsertTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleRawInsertTest) {  // NOLINT
   // Create Values to insert
   std::vector<Value> val1{ValueFactory::GetIntegerValue(100), ValueFactory::GetIntegerValue(10)};
   std::vector<Value> val2{ValueFactory::GetIntegerValue(101), ValueFactory::GetIntegerValue(11)};
@@ -153,7 +153,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleRawInsertTest) { // NOLINT
 }
 
 // INSERT INTO empty_table2 SELECT col_a, col_b FROM test_1 WHERE col_a < 500
-TEST_F(ExecutorTest, DISABLED_SimpleSelectInsertTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleSelectInsertTest) {  // NOLINT
   const Schema *out_schema1;
   std::unique_ptr<AbstractPlanNode> scan_plan1;
   {
@@ -205,7 +205,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleSelectInsertTest) { // NOLINT
 }
 
 // INSERT INTO empty_table2 VALUES (100, 10), (101, 11), (102, 12)
-TEST_F(ExecutorTest, DISABLED_SimpleRawInsertWithIndexTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleRawInsertWithIndexTest) {  // NOLINT
   // Create Values to insert
   std::vector<Value> val1{ValueFactory::GetIntegerValue(100), ValueFactory::GetIntegerValue(10)};
   std::vector<Value> val2{ValueFactory::GetIntegerValue(101), ValueFactory::GetIntegerValue(11)};
@@ -270,7 +270,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleRawInsertWithIndexTest) { // NOLINT
 }
 
 // UPDATE test_3 SET colB = colB + 1;
-TEST_F(ExecutorTest, DISABLED_SimpleUpdateTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleUpdateTest) {  // NOLINT
   // Construct a sequential scan of the table
   const Schema *out_schema{};
   std::unique_ptr<AbstractPlanNode> scan_plan{};
@@ -329,7 +329,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleUpdateTest) { // NOLINT
 }
 
 // DELETE FROM test_1 WHERE col_a == 50;
-TEST_F(ExecutorTest, DISABLED_SimpleDeleteTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleDeleteTest) {  // NOLINT
   // Construct query plan
   auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
   auto &schema = table_info->schema_;
@@ -374,7 +374,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleDeleteTest) { // NOLINT
 }
 
 // SELECT test_1.col_a, test_1.col_b, test_2.col1, test_2.col3 FROM test_1 JOIN test_2 ON test_1.col_a = test_2.col1;
-TEST_F(ExecutorTest, DISABLED_SimpleNestedLoopJoinTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleNestedLoopJoinTest) {  // NOLINT
   const Schema *out_schema1;
   std::unique_ptr<AbstractPlanNode> scan_plan1;
   {
@@ -418,7 +418,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleNestedLoopJoinTest) { // NOLINT
 }
 
 // SELECT test_4.colA, test_4.colB, test_6.colA, test_6.colB FROM test_4 JOIN test_6 ON test_4.colA = test_6.colA;
-TEST_F(ExecutorTest, DISABLED_SimpleHashJoinTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleHashJoinTest) {  // NOLINT
   // Construct sequential scan of table test_4
   const Schema *out_schema1{};
   std::unique_ptr<AbstractPlanNode> scan_plan1{};
@@ -487,7 +487,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleHashJoinTest) { // NOLINT
 }
 
 // SELECT COUNT(col_a), SUM(col_a), min(col_a), max(col_a) from test_1;
-TEST_F(ExecutorTest, DISABLED_SimpleAggregationTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleAggregationTest) {  // NOLINT
   const Schema *scan_schema;
   std::unique_ptr<AbstractPlanNode> scan_plan;
   {
@@ -537,7 +537,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleAggregationTest) { // NOLINT
 }
 
 // SELECT count(col_a), col_b, sum(col_c) FROM test_1 Group By col_b HAVING count(col_a) > 100
-TEST_F(ExecutorTest, DISABLED_SimpleGroupByAggregation) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleGroupByAggregation) {  // NOLINT
   const Schema *scan_schema;
   std::unique_ptr<AbstractPlanNode> scan_plan;
   {
@@ -590,7 +590,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleGroupByAggregation) { // NOLINT
 }
 
 // SELECT colA, colB FROM test_3 LIMIT 10
-TEST_F(ExecutorTest, DISABLED_SimpleLimitTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleLimitTest) {  // NOLINT
   auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_3");
   auto &schema = table_info->schema_;
 
@@ -618,7 +618,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleLimitTest) { // NOLINT
 }
 
 // SELECT DISTINCT colC FROM test_7
-TEST_F(ExecutorTest, DISABLED_SimpleDistinctTest) { // NOLINT
+TEST_F(ExecutorTest, DISABLED_SimpleDistinctTest) {  // NOLINT
   auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_7");
   auto &schema = table_info->schema_;
 

@@ -211,6 +211,6 @@ void WoundWaitBasicTest() {
 }
 
 // NOLINTNEXTLINE
-TEST(LockManagerTest, DISABLED_WoundWaitBasicTest) { WoundWaitBasicTest(); } 
+TEST(LockManagerTest, DISABLED_WoundWaitBasicTest) { WoundWaitBasicTest(); }
 
 }  // namespace bustub

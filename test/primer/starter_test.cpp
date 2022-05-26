@@ -36,13 +36,13 @@ static auto ThrowsBustubException(const std::function<void()> &function, Excepti
   return expected_type_thrown;
 }
 
-TEST(StarterTest, SampleTest) { // NOLINT
+TEST(StarterTest, SampleTest) {  // NOLINT
   int a = 1;
   EXPECT_EQ(1, a);
 }
 
 /** Test that matrix initialization works as expected */
-TEST(StarterTest, DISABLED_InitializationTest) { // NOLINT
+TEST(StarterTest, DISABLED_InitializationTest) {  // NOLINT
   auto matrix = std::make_unique<RowMatrix<int>>(2, 2);
 
   // Source contains too few elements
@@ -68,7 +68,7 @@ TEST(StarterTest, DISABLED_InitializationTest) { // NOLINT
   }
 }
 
-TEST(StarterTest, DISABLED_ElementAccessTest) { // NOLINT
+TEST(StarterTest, DISABLED_ElementAccessTest) {  // NOLINT
   auto matrix = std::make_unique<RowMatrix<int>>(2, 2);
 
   std::vector<int> source(4);
@@ -115,7 +115,7 @@ TEST(StarterTest, DISABLED_ElementAccessTest) { // NOLINT
 }
 
 /** Test that matrix addition works as expected */
-TEST(StarterTest, DISABLED_AdditionTest) { // NOLINT
+TEST(StarterTest, DISABLED_AdditionTest) {  // NOLINT
   auto matrix0 = std::make_unique<RowMatrix<int>>(3, 3);
 
   const std::vector<int> source0{1, 4, 2, 5, 2, -1, 0, 3, 1};
@@ -155,7 +155,7 @@ TEST(StarterTest, DISABLED_AdditionTest) { // NOLINT
 }
 
 /** Test that matrix multiplication works as expected */
-TEST(StarterTest, DISABLED_MultiplicationTest) { // NOLINT
+TEST(StarterTest, DISABLED_MultiplicationTest) {  // NOLINT
   const std::vector<int> source0{1, 2, 3, 4, 5, 6};
   auto matrix0 = std::make_unique<RowMatrix<int>>(2, 3);
   matrix0->FillFrom(source0);

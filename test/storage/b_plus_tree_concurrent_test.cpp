@@ -100,7 +100,7 @@ void DeleteHelperSplit(BPlusTree<GenericKey<8>, RID, GenericComparator<8>> *tree
   delete transaction;
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest1) { // NOLINT
+TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest1) {  // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -152,7 +152,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest1) { // NOLINT
   remove("test.log");
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest2) { // NOLINT
+TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest2) {  // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -203,7 +203,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest2) { // NOLINT
   remove("test.log");
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest1) { // NOLINT
+TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest1) {  // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -245,7 +245,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest1) { // NOLINT
   remove("test.log");
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest2) { // NOLINT
+TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest2) {  // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
@@ -288,7 +288,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest2) { // NOLINT
   remove("test.log");
 }
 
-TEST(BPlusTreeConcurrentTest, DISABLED_MixTest) { // NOLINT
+TEST(BPlusTreeConcurrentTest, DISABLED_MixTest) {  // NOLINT
   // create KeyComparator and index schema
   auto key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema.get());
