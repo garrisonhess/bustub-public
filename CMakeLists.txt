@@ -24,6 +24,10 @@ set(BUSTUB_BUILD_SUPPORT_DIR "${CMAKE_SOURCE_DIR}/build_support")
 set(BUSTUB_CLANG_SEARCH_PATH "/usr/local/bin" "/usr/bin" "/usr/local/opt/llvm/bin" "/usr/local/opt/llvm@12/bin"
         "/usr/local/Cellar/llvm/12.0.1/bin")
 
+
+include_directories(src/include)
+
+
 ######################################################################################################################
 # DEPENDENCIES
 ######################################################################################################################
@@ -109,12 +113,21 @@ include_directories(${BUSTUB_SRC_INCLUDE_DIR} ${BUSTUB_TEST_INCLUDE_DIR} ${BUSTU
 include_directories(BEFORE src) # This is needed for gtest.
 
 
+function(disable_target_warnings NAME)
+  if(MSVC)
+    target_compile_options(${NAME} PRIVATE "/W0")
+  elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
+         OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    target_compile_options(${NAME} PRIVATE "-w")
+  endif()
+endfunction()
+
+
 set(BusTub_LIBRARIES bustub)
-
-
-
 add_subdirectory(src)
 add_subdirectory(test)
+add_subdirectory(third_party)
+add_subdirectory(tools)
 ######################################################################################################################
 # MAKE TARGETS
 ######################################################################################################################
