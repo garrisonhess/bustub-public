@@ -2,3 +2,4 @@
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 add_subdirectory(libpg_query)
 add_subdirectory(sqlite)
+add_subdirectory(murmur3)

@@ -4,9 +4,9 @@ project(bustub_pg_query CXX C)
 if(POLICY CMP0063)
     cmake_policy(SET CMP0063 NEW)
 endif()
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+# set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-add_library(bustub_pg_query
+add_library(bustub_pg_query SHARED
             postgres_parser.cpp
             pg_functions.cpp
             src_backend_parser_parser.cpp
