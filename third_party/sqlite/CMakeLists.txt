@@ -4,6 +4,6 @@ endif()
 
 include_directories(include)
 
-add_library(bustub_sqlite3 STATIC sqlite3.c)
+add_library(bustub_sqlite3 sqlite3.c)
 TARGET_LINK_LIBRARIES(bustub_sqlite3 pthread)
 

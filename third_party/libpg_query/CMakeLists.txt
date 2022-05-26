@@ -6,7 +6,7 @@ if(POLICY CMP0063)
 endif()
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-add_library(bustub_pg_query STATIC
+add_library(bustub_pg_query
             postgres_parser.cpp
             pg_functions.cpp
             src_backend_parser_parser.cpp

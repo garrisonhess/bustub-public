@@ -1,14 +1,14 @@
 #include "sqlite3.h"
-#include "udf_struct_sqlite3.h"
-#include "sqlite3_udf_wrapper.hpp"
-#include "cast_sqlite.hpp"
+// #include "udf_struct_sqlite3.h"
+// #include "sqlite3_udf_wrapper.hpp"
+// #include "cast_sqlite.hpp"
 
-#include "duckdb.hpp"
-#include "duckdb/parser/parser.hpp"
-#include "duckdb/main/client_context.hpp"
-#include "duckdb/common/types.hpp"
-#include "duckdb/common/operator/cast_operators.hpp"
-#include "utf8proc_wrapper.hpp"
+// #include "duckdb.hpp"
+// #include "duckdb/parser/parser.hpp"
+// #include "duckdb/main/client_context.hpp"
+// #include "duckdb/common/types.hpp"
+// #include "duckdb/common/operator/cast_operators.hpp"
+// #include "utf8proc_wrapper.hpp"
 
 #include <ctype.h>
 #include <stdio.h>
@@ -21,7 +21,7 @@
 #include <climits>
 #include <thread>
 
-using namespace duckdb;
+using namespace bustub;
 using namespace std;
 
 static char *sqlite3_strdup(const char *str);
@@ -38,18 +38,18 @@ struct sqlite3_stmt {
 	sqlite3 *db;
 	//! The query string
 	string query_string;
-	//! The prepared statement object, if successfully prepared
-	unique_ptr<PreparedStatement> prepared;
-	//! The result object, if successfully executed
-	unique_ptr<QueryResult> result;
-	//! The current chunk that we are iterating over
-	unique_ptr<DataChunk> current_chunk;
+	// //! The prepared statement object, if successfully prepared
+	// unique_ptr<PreparedStatement> prepared;
+	// //! The result object, if successfully executed
+	// unique_ptr<QueryResult> result;
+	// //! The current chunk that we are iterating over
+	// unique_ptr<DataChunk> current_chunk;
 	//! The current row into the current chunk that we are iterating over
 	int64_t current_row;
-	//! Bound values, used for binding to the prepared statement
-	vector<Value> bound_values;
-	//! Names of the prepared parameters
-	vector<string> bound_names;
+	// //! Bound values, used for binding to the prepared statement
+	// vector<Value> bound_values;
+	// //! Names of the prepared parameters
+	// vector<string> bound_names;
 	//! The current column values converted to string, used and filled by sqlite3_column_text
 	unique_ptr<sqlite3_string_buffer[]> current_text;
 };

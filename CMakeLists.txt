@@ -127,7 +127,7 @@ set(BusTub_LIBRARIES bustub)
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(third_party)
-add_subdirectory(tools)
+# add_subdirectory(tools)
 ######################################################################################################################
 # MAKE TARGETS
 ######################################################################################################################
