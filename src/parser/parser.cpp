@@ -7,13 +7,11 @@
 // #include "duckdb/parser/statement/update_statement.hpp"
 // #include "duckdb/parser/query_node/select_node.hpp"
 // #include "duckdb/parser/tableref/expressionlistref.hpp"
-// #include "postgres_parser.hpp"
+#include "postgres_parser.hpp"
 // #include "duckdb/parser/query_error_context.hpp"
 #include "common/logger.h"
 
 #include <iostream>
-
-
 
 namespace bustub {
 
@@ -21,43 +19,52 @@ namespace bustub {
 // }
 
 void Parser::ParseQuery(const std::string &query) {
-	std::cout << "HI FROM PARSER\n";
-	std::cout << "received query string: " << query << "\n";
-    PostgresParser parser;
-    parser.Parse(query);
+  std::cout << "HI FROM PARSER\n";
+  std::cout << "received query string: " << query << "\n";
+  PostgresParser parser;
+  parser.Parse(query);
 
-    LOG_INFO("parser success: %d", parser.success);
+  LOG_INFO("parser success: %d", parser.success);
 
-	// Transformer transformer(options.max_expression_depth);
-	// {
-	// 	PostgresParser::SetPreserveIdentifierCase(options.preserve_identifier_case);
-	// 	PostgresParser parser;
-	// 	parser.Parse(query);
+  // 	bool success;
+  // 	bustub_libpgquery::PGList *parse_tree;
+  // 	std::string error_message;
+  // 	int error_location;
+  // 	void Parse(const std::string &query);
+  // 	static std::vector<bustub_libpgquery::PGSimplifiedToken> Tokenize(const std::string &query);
+  // 	static std::vector<bustub_libpgquery::PGKeyword> KeywordList();
 
-	// 	if (!parser.success) {
-	// 		throw ParserException(QueryErrorContext::Format(query, parser.error_message, parser.error_location - 1));
-	// 	}
+  // Transformer transformer(options.max_expression_depth);
+  // {
+  // 	PostgresParser::SetPreserveIdentifierCase(options.preserve_identifier_case);
+  // 	PostgresParser parser;
+  // 	parser.Parse(query);
 
-	// 	if (!parser.parse_tree) {
-	// 		// empty statement
-	// 		return;
-	// 	}
+  // 	if (!parser.success) {
+  // 		throw ParserException(QueryErrorContext::Format(query, parser.error_message, parser.error_location -
+  // 1));
+  // 	}
 
-	// 	// if it succeeded, we transform the Postgres parse tree into a list of
-	// 	// SQLStatements
-	// 	transformer.TransformParseTree(parser.parse_tree, statements);
-	// }
-	// if (!statements.empty()) {
-	// 	auto &last_statement = statements.back();
-	// 	last_statement->stmt_length = query.size() - last_statement->stmt_location;
-	// 	for (auto &statement : statements) {
-	// 		statement->query = query;
-	// 		if (statement->type == StatementType::CREATE_STATEMENT) {
-	// 			auto &create = (CreateStatement &)*statement;
-	// 			create.info->sql = query.substr(statement->stmt_location, statement->stmt_length);
-	// 		}
-	// 	}
-	// }
+  // 	if (!parser.parse_tree) {
+  // 		// empty statement
+  // 		return;
+  // 	}
+
+  // 	// if it succeeded, we transform the Postgres parse tree into a list of
+  // 	// SQLStatements
+  // 	transformer.TransformParseTree(parser.parse_tree, statements);
+  // }
+  // if (!statements.empty()) {
+  // 	auto &last_statement = statements.back();
+  // 	last_statement->stmt_length = query.size() - last_statement->stmt_location;
+  // 	for (auto &statement : statements) {
+  // 		statement->query = query;
+  // 		if (statement->type == StatementType::CREATE_STATEMENT) {
+  // 			auto &create = (CreateStatement &)*statement;
+  // 			create.info->sql = query.substr(statement->stmt_location, statement->stmt_length);
+  // 		}
+  // 	}
+  // }
 }
 
 // vector<SimplifiedToken> Parser::Tokenize(const string &query) {
@@ -183,7 +190,8 @@ void Parser::ParseQuery(const std::string &query) {
 // 	expressions = move(update.expressions);
 // }
 
-// vector<vector<unique_ptr<ParsedExpression>>> Parser::ParseValuesList(const string &value_list, ParserOptions options) {
+// vector<vector<unique_ptr<ParsedExpression>>> Parser::ParseValuesList(const string &value_list, ParserOptions options)
+// {
 // 	// construct a mock query
 // 	string mock_query = "VALUES " + value_list;
 // 	// parse the query
@@ -220,4 +228,4 @@ void Parser::ParseQuery(const std::string &query) {
 // 	return move(info.columns);
 // }
 
-} // namespace duckdb
+}  // namespace bustub
