@@ -35,7 +35,7 @@ namespace bustub {
 class Parser {
  public:
   //   Parser(ParserOptions options = ParserOptions());
-  Parser();
+  Parser() = default;
 
   //   //! The parsed SQL statements from an invocation to ParseQuery.
   //   vector<unique_ptr<SQLStatement>> statements;
