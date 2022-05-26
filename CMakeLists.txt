@@ -108,6 +108,11 @@ set(BUSTUB_THIRD_PARTY_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/third_party)
 include_directories(${BUSTUB_SRC_INCLUDE_DIR} ${BUSTUB_TEST_INCLUDE_DIR} ${BUSTUB_THIRD_PARTY_INCLUDE_DIR})
 include_directories(BEFORE src) # This is needed for gtest.
 
+
+set(BusTub_LIBRARIES bustub)
+
+
+
 add_subdirectory(src)
 add_subdirectory(test)
 ######################################################################################################################
