@@ -26,6 +26,17 @@ set(BUSTUB_CLANG_SEARCH_PATH "/usr/local/bin" "/usr/bin" "/usr/local/opt/llvm/bi
 
 include_directories(src/include)
 
+# Determine install paths
+set(INSTALL_LIB_DIR
+lib
+CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR
+bin
+CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR
+include
+CACHE PATH "Installation directory for header files")
+
 ######################################################################################################################
 # DEPENDENCIES
 ######################################################################################################################
@@ -122,8 +133,6 @@ add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(third_party)
 # add_subdirectory(tools)
-
-# target_link_libraries()
 
 ######################################################################################################################
 # MAKE TARGETS
