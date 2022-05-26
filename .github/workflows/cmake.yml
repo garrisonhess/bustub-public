@@ -23,32 +23,32 @@ jobs:
             os: "ubuntu-22.04",
             cc: "/usr/bin/gcc",
             cxx: "/usr/bin/g++",
-            format: "/usr/bin/clang-format-8",
-            tidy: "/usr/bin/clang-tidy-8"
+            format: "/usr/bin/clang-format-12",
+            tidy: "/usr/bin/clang-tidy-12"
           }
           - {
             name: "Ubuntu 20.04 GCC",
             os: "ubuntu-20.04",
             cc: "/usr/bin/gcc",
             cxx: "/usr/bin/g++",
-            format: "/usr/bin/clang-format-8",
-            tidy: "/usr/bin/clang-tidy-8"
+            format: "/usr/bin/clang-format-12",
+            tidy: "/usr/bin/clang-tidy-12"
           }
           - {
             name: "Ubuntu 22.04 Clang",
             os: "ubuntu-22.04",
-            cc: "/usr/bin/clang-8",
+            cc: "/usr/bin/clang-12",
             cxx: "/usr/bin/clang++8",
-            format: "/usr/bin/clang-format-8",
-            tidy: "/usr/bin/clang-tidy-8"
+            format: "/usr/bin/clang-format-12",
+            tidy: "/usr/bin/clang-tidy-12"
           }
           - {
             name: "Ubuntu 20.04 Clang",
             os: "ubuntu-20.04",
-            cc: "/usr/bin/clang-8",
+            cc: "/usr/bin/clang-12",
             cxx: "/usr/bin/clang++8",
-            format: "/usr/bin/clang-format-8",
-            tidy: "/usr/bin/clang-tidy-8"
+            format: "/usr/bin/clang-format-12",
+            tidy: "/usr/bin/clang-tidy-12"
           }
           - {
             name: "macOS 11 (Big Sur) Clang",
