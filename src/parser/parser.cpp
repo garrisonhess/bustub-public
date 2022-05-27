@@ -25,29 +25,32 @@ namespace bustub {
 void Parser::ParseQuery(const std::string &query) {
   std::cout << "HI FROM PARSER\n";
   std::cout << "received query string: " << query << "\n";
-  PostgresParser parser;
-  parser.Parse(query);
-  LOG_INFO("parser success: %d", parser.success);
 
   // Transformer transformer(options.max_expression_depth);
+  LOG_INFO("1");
   Transformer transformer(nullptr);
+  LOG_INFO("2");
   {
     // PostgresParser::SetPreserveIdentifierCase(options.preserve_identifier_case);
     PostgresParser parser;
     parser.Parse(query);
-
     if (!parser.success) {
-      throw Exception("Query failed to parse!");
+      LOG_INFO("Query failed to parse!");
+      // throw Exception("Query failed to parse!");
+      return;
     }
 
     if (parser.parse_tree == nullptr) {
       // empty statement
+      LOG_INFO("parser received empty statement");
       return;
     }
 
     // if it succeeded, we transform the Postgres parse tree into a list of
     // SQLStatements
+    LOG_INFO("about to transform parse tree");
     transformer.TransformParseTree(parser.parse_tree, statements_);
+    LOG_INFO("done transforming parse tree");
   }
   if (!statements_.empty()) {
     auto &last_statement = statements_.back();

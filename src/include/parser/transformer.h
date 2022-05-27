@@ -49,7 +49,6 @@ class Transformer {
 
  private:
   Transformer *parent_;
-  int64_t max_expression_depth_;
   //! The current prepared statement parameter index
   int64_t prepared_statement_parameter_index_ = 0;
   //! Holds window expressions defined by name. We need those when transforming the expressions referring to them.

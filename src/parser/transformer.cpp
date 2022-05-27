@@ -21,7 +21,7 @@ namespace bustub {
 // }
 
 Transformer::Transformer(Transformer *parent)
-    : parent_(parent), max_expression_depth_(parent->max_expression_depth_)  {}
+    : parent_(parent)  {}
 
 bool Transformer::TransformParseTree(bustub_libpgquery::PGList *tree, vector<unique_ptr<SQLStatement>> &statements) {
 //   InitializeStackCheck();
