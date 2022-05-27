@@ -1,11 +1,11 @@
-#include "bustub/parser/parsed_expression_iterator.hpp"
+#include "parser/parsed_expression_iterator.h"
 
-#include "bustub/parser/expression/list.hpp"
-#include "bustub/parser/query_node.hpp"
-#include "bustub/parser/query_node/recursive_cte_node.hpp"
-#include "bustub/parser/query_node/select_node.hpp"
-#include "bustub/parser/query_node/set_operation_node.hpp"
-#include "bustub/parser/tableref/list.hpp"
+#include "parser/expression/list.h"
+#include "parser/query_node.h"
+#include "parser/query_node/recursive_cte_node.h"
+#include "parser/query_node/select_node.h"
+#include "parser/query_node/set_operation_node.h"
+#include "parser/tableref/list.h"
 
 namespace bustub {
 

@@ -1,6 +1,8 @@
-#include "bustub/parser/base_expression.hpp"
+#include "parser/base_expression.h"
 
-#include "bustub/common/printer.hpp"
+#include "common/printer.h"
+#include <string>
+
 
 namespace bustub {
 
@@ -8,15 +10,15 @@ void BaseExpression::Print() const {
 	Printer::Print(ToString());
 }
 
-string BaseExpression::GetName() const {
+std::string BaseExpression::GetName() const {
 	return !alias.empty() ? alias : ToString();
 }
 
 bool BaseExpression::Equals(const BaseExpression *other) const {
-	if (!other) {
+	if (other == nullptr) {
 		return false;
 	}
-	if (this->expression_class != other->expression_class || this->type != other->type) {
+	if (this->expression_class_ != other->expression_class_ || this->type_ != other->type_) {
 		return false;
 	}
 	return true;

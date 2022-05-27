@@ -1,6 +1,6 @@
-#include "bustub/parser/tableref/table_function_ref.hpp"
-#include "bustub/common/vector.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "parser/tableref/table_function_ref.h"
+#include "common/vector.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

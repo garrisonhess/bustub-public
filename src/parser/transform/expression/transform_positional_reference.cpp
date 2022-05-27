@@ -1,6 +1,6 @@
-#include "bustub/common/exception.hpp"
-#include "bustub/parser/transformer.hpp"
-#include "bustub/parser/expression/positional_reference_expression.hpp"
+#include "common/exception.h"
+#include "parser/transformer.h"
+#include "parser/expression/positional_reference_expression.h"
 
 namespace bustub {
 

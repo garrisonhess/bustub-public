@@ -1,9 +1,9 @@
-#include "bustub/common/exception.hpp"
-#include "bustub/common/pair.hpp"
-#include "bustub/common/unordered_set.hpp"
+#include "common/exception.h"
+#include "common/pair.h"
+#include "common/unordered_set.h"
 
-#include "bustub/parser/transformer.hpp"
-#include "bustub/common/types/decimal.hpp"
+#include "parser/transformer.h"
+#include "common/types/decimal.h"
 
 namespace bustub {
 

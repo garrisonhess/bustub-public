@@ -1,4 +1,4 @@
-add_library_unity(
+add_library(
   bustub_transformer_statement
   OBJECT
   transform_alter_table.cpp

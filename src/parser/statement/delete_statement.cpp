@@ -1,4 +1,4 @@
-#include "bustub/parser/statement/delete_statement.hpp"
+#include "parser/statement/delete_statement.h"
 
 namespace bustub {
 
@@ -20,7 +20,7 @@ string DeleteStatement::ToString() const {
 	result += table->ToString();
 	if (!using_clauses.empty()) {
 		result += " USING ";
-		for (idx_t i = 0; i < using_clauses.size(); i++) {
+		for (uint64_t i = 0; i < using_clauses.size(); i++) {
 			if (i > 0) {
 				result += ", ";
 			}
@@ -33,7 +33,7 @@ string DeleteStatement::ToString() const {
 
 	if (!returning_list.empty()) {
 		result += " RETURNING ";
-		for (idx_t i = 0; i < returning_list.size(); i++) {
+		for (uint64_t i = 0; i < returning_list.size(); i++) {
 			if (i > 0) {
 				result += ", ";
 			}

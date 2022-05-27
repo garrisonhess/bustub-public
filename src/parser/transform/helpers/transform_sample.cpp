@@ -1,7 +1,7 @@
-#include "bustub/parser/transformer.hpp"
-#include "bustub/parser/parsed_data/sample_options.hpp"
-#include "bustub/parser/expression/constant_expression.hpp"
-#include "bustub/common/string_util.hpp"
+#include "parser/transformer.h"
+#include "parser/parsed_data/sample_options.h"
+#include "parser/expression/constant_expression.h"
+#include "common/string_util.h"
 
 namespace bustub {
 

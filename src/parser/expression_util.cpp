@@ -1,7 +1,7 @@
-#include "bustub/parser/expression_util.hpp"
-#include "bustub/planner/expression.hpp"
-#include "bustub/parser/parsed_expression.hpp"
-#include "bustub/parser/expression_map.hpp"
+#include "parser/expression_util.h"
+#include "planner/expression.h"
+#include "parser/parsed_expression.h"
+#include "parser/expression_map.h"
 
 namespace bustub {
 

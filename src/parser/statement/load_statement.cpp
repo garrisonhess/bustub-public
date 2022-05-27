@@ -1,4 +1,4 @@
-#include "bustub/parser/statement/load_statement.hpp"
+#include "parser/statement/load_statement.h"
 
 namespace bustub {
 

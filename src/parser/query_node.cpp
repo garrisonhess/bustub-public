@@ -1,10 +1,10 @@
-#include "bustub/parser/query_node.hpp"
+#include "parser/query_node.h"
 
-#include "bustub/parser/query_node/select_node.hpp"
-#include "bustub/parser/query_node/set_operation_node.hpp"
-#include "bustub/parser/query_node/recursive_cte_node.hpp"
-#include "bustub/common/limits.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "parser/query_node/select_node.h"
+#include "parser/query_node/set_operation_node.h"
+#include "parser/query_node/recursive_cte_node.h"
+#include "common/limits.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

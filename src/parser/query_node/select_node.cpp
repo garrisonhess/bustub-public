@@ -1,7 +1,7 @@
-#include "bustub/parser/query_node/select_node.hpp"
-#include "bustub/parser/expression_util.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/parser/keyword_helper.hpp"
+#include "parser/query_node/select_node.h"
+#include "parser/expression_util.h"
+#include "common/field_writer.h"
+#include "parser/keyword_helper.h"
 
 namespace bustub {
 

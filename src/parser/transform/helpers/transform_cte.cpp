@@ -1,8 +1,8 @@
-#include "bustub/parser/transformer.hpp"
-#include "bustub/common/enums/set_operation_type.hpp"
-#include "bustub/common/exception.hpp"
-#include "bustub/parser/statement/select_statement.hpp"
-#include "bustub/parser/query_node/recursive_cte_node.hpp"
+#include "parser/transformer.h"
+#include "common/enums/set_operation_type.h"
+#include "common/exception.h"
+#include "parser/statement/select_statement.h"
+#include "parser/query_node/recursive_cte_node.h"
 
 namespace bustub {
 

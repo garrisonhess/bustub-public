@@ -1,8 +1,8 @@
-#include "bustub/parser/expression/cast_expression.hpp"
-#include "bustub/parser/expression/constant_expression.hpp"
-#include "bustub/parser/expression/function_expression.hpp"
-#include "bustub/parser/transformer.hpp"
-#include "bustub/common/operator/cast_operators.hpp"
+#include "parser/expression/cast_expression.h"
+#include "parser/expression/constant_expression.h"
+#include "parser/expression/function_expression.h"
+#include "parser/transformer.h"
+#include "common/operator/cast_operators.h"
 
 namespace bustub {
 
@@ -33,7 +33,7 @@ unique_ptr<ParsedExpression> Transformer::TransformInterval(bustub_libpgquery::P
 	}
 
 	int32_t mask = ((bustub_libpgquery::PGAConst *)node->typmods->head->data.ptr_value)->val.val.ival;
-	// these seemingly random constants are from datetime.hpp
+	// these seemingly random constants are from datetime.h
 	// they are copied here to avoid having to include this header
 	// the bitshift is from the function INTERVAL_MASK in the parser
 	constexpr int32_t MONTH_MASK = 1 << 1;

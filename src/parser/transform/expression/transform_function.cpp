@@ -1,13 +1,13 @@
-#include "bustub/common/string_util.hpp"
-#include "bustub/common/to_string.hpp"
-#include "bustub/parser/expression/case_expression.hpp"
-#include "bustub/parser/expression/cast_expression.hpp"
-#include "bustub/parser/expression/function_expression.hpp"
+#include "common/string_util.h"
+#include "common/to_string.h"
+#include "parser/expression/case_expression.h"
+#include "parser/expression/cast_expression.h"
+#include "parser/expression/function_expression.h"
 
-#include "bustub/parser/expression/operator_expression.hpp"
-#include "bustub/parser/expression/star_expression.hpp"
-#include "bustub/parser/expression/window_expression.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "parser/expression/operator_expression.h"
+#include "parser/expression/star_expression.h"
+#include "parser/expression/window_expression.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

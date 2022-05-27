@@ -1,4 +1,4 @@
-#include "bustub/parser/statement/prepare_statement.hpp"
+#include "parser/statement/prepare_statement.h"
 
 namespace bustub {
 

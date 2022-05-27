@@ -1,9 +1,9 @@
-#include "bustub/parser/query_error_context.hpp"
-#include "bustub/parser/sql_statement.hpp"
-#include "bustub/common/string_util.hpp"
-#include "bustub/common/to_string.hpp"
+#include "parser/query_error_context.h"
+#include "parser/sql_statement.h"
+#include "common/string_util.h"
+#include "common/to_string.h"
 
-#include "utf8proc_wrapper.hpp"
+#include "utf8proc_wrapper.h"
 
 namespace bustub {
 

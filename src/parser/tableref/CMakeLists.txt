@@ -1,4 +1,4 @@
-add_library_unity(
+add_library(
   bustub_parser_tableref
   OBJECT
   basetableref.cpp

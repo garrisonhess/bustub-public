@@ -1,4 +1,4 @@
-#include "bustub/parser/statement/copy_statement.hpp"
+#include "parser/statement/copy_statement.h"
 
 namespace bustub {
 

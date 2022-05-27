@@ -1,4 +1,4 @@
-#include "bustub/parser/statement/drop_statement.hpp"
+#include "parser/statement/drop_statement.h"
 
 namespace bustub {
 

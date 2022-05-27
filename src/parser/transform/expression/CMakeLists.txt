@@ -1,4 +1,4 @@
-add_library_unity(
+add_library(
   bustub_transformer_expression
   OBJECT
   transform_array_access.cpp

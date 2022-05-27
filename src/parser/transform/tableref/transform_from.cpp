@@ -1,6 +1,6 @@
-#include "bustub/parser/tableref/crossproductref.hpp"
-#include "bustub/parser/tableref/emptytableref.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "parser/tableref/crossproductref.h"
+#include "parser/tableref/emptytableref.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

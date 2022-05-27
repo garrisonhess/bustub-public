@@ -1,4 +1,4 @@
-add_library_unity(
+add_library(
   bustub_expression
   OBJECT
   between_expression.cpp

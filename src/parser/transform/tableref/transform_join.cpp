@@ -1,8 +1,8 @@
-#include "bustub/common/exception.hpp"
-#include "bustub/parser/tableref/basetableref.hpp"
-#include "bustub/parser/tableref/crossproductref.hpp"
-#include "bustub/parser/tableref/joinref.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "common/exception.h"
+#include "parser/tableref/basetableref.h"
+#include "parser/tableref/crossproductref.h"
+#include "parser/tableref/joinref.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

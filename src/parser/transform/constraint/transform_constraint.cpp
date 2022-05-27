@@ -1,7 +1,7 @@
-#include "bustub/parser/column_definition.hpp"
-#include "bustub/parser/constraint.hpp"
-#include "bustub/parser/constraints/list.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "parser/column_definition.h"
+#include "parser/constraint.h"
+#include "parser/constraints/list.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

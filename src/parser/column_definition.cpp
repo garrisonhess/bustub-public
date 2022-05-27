@@ -1,5 +1,5 @@
-#include "bustub/parser/column_definition.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "parser/column_definition.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

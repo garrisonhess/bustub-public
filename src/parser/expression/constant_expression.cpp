@@ -1,9 +1,9 @@
-#include "bustub/parser/expression/constant_expression.hpp"
+#include "parser/expression/constant_expression.h"
 
-#include "bustub/common/exception.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/common/types/hash.hpp"
-#include "bustub/common/value_operations/value_operations.hpp"
+#include "common/exception.h"
+#include "common/field_writer.h"
+#include "common/types/hash.h"
+#include "common/value_operations/value_operations.h"
 
 namespace bustub {
 

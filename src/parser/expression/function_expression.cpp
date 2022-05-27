@@ -1,10 +1,10 @@
-#include "bustub/parser/expression/function_expression.hpp"
+#include "parser/expression/function_expression.h"
 
 #include <utility>
-#include "bustub/common/string_util.hpp"
-#include "bustub/common/exception.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/common/types/hash.hpp"
+#include "common/string_util.h"
+#include "common/exception.h"
+#include "common/field_writer.h"
+#include "common/types/hash.h"
 
 namespace bustub {
 

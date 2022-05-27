@@ -1,5 +1,5 @@
-#include "bustub/parser/query_node/recursive_cte_node.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "parser/query_node/recursive_cte_node.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

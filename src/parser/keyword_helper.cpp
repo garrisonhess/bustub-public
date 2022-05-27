@@ -1,6 +1,6 @@
-#include "bustub/parser/keyword_helper.hpp"
-#include "bustub/parser/parser.hpp"
-#include "bustub/common/string_util.hpp"
+#include "parser/keyword_helper.h"
+#include "parser/parser.h"
+#include "common/string_util.h"
 
 namespace bustub {
 

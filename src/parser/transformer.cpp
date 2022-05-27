@@ -1,8 +1,8 @@
-#include "bustub/parser/transformer.hpp"
+#include "parser/transformer.h"
 
-#include "bustub/parser/expression/list.hpp"
-#include "bustub/parser/statement/list.hpp"
-#include "bustub/parser/tableref/emptytableref.hpp"
+#include "parser/expression/list.h"
+#include "parser/statement/list.h"
+#include "parser/tableref/emptytableref.h"
 
 namespace bustub {
 

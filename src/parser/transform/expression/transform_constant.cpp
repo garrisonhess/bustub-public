@@ -1,8 +1,8 @@
-#include "bustub/parser/expression/constant_expression.hpp"
-#include "bustub/parser/transformer.hpp"
-#include "bustub/common/operator/cast_operators.hpp"
-#include "bustub/common/limits.hpp"
-#include "bustub/common/types/decimal.hpp"
+#include "parser/expression/constant_expression.h"
+#include "parser/transformer.h"
+#include "common/operator/cast_operators.h"
+#include "common/limits.h"
+#include "common/types/decimal.h"
 
 namespace bustub {
 

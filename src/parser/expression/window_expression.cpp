@@ -1,8 +1,8 @@
-#include "bustub/parser/expression/window_expression.hpp"
+#include "parser/expression/window_expression.h"
 
-#include "bustub/common/limits.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/common/string_util.hpp"
+#include "common/limits.h"
+#include "common/field_writer.h"
+#include "common/string_util.h"
 
 namespace bustub {
 

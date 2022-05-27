@@ -1,7 +1,7 @@
-#include "bustub/parser/tableref/joinref.hpp"
+#include "parser/tableref/joinref.h"
 
-#include "bustub/common/limits.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "common/limits.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

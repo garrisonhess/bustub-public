@@ -1,6 +1,6 @@
-#include "bustub/parser/statement/select_statement.hpp"
+#include "parser/statement/select_statement.h"
 
-#include "bustub/common/serializer.hpp"
+#include "common/serializer.h"
 
 namespace bustub {
 

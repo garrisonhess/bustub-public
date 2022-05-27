@@ -1,6 +1,6 @@
-#include "bustub/parser/tableref/expressionlistref.hpp"
+#include "parser/tableref/expressionlistref.h"
 
-#include "bustub/common/field_writer.hpp"
+#include "common/field_writer.h"
 
 namespace bustub {
 

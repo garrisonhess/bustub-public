@@ -1,7 +1,7 @@
-#include "bustub/common/exception.hpp"
-#include "bustub/parser/expression/columnref_expression.hpp"
-#include "bustub/parser/expression/star_expression.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "common/exception.h"
+#include "parser/expression/columnref_expression.h"
+#include "parser/expression/star_expression.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

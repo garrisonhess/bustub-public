@@ -1,7 +1,7 @@
-#include "bustub/parser/tableref/basetableref.hpp"
+#include "parser/tableref/basetableref.h"
 
-#include "bustub/common/field_writer.hpp"
-#include "bustub/parser/keyword_helper.hpp"
+#include "common/field_writer.h"
+#include "parser/keyword_helper.h"
 
 namespace bustub {
 

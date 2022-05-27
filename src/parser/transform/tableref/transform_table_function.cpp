@@ -1,6 +1,6 @@
-#include "bustub/common/exception.hpp"
-#include "bustub/parser/tableref/table_function_ref.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "common/exception.h"
+#include "parser/tableref/table_function_ref.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

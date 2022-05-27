@@ -1,9 +1,9 @@
-#include "bustub/parser/expression/columnref_expression.hpp"
+#include "parser/expression/columnref_expression.h"
 
-#include "bustub/common/field_writer.hpp"
-#include "bustub/common/types/hash.hpp"
-#include "bustub/common/string_util.hpp"
-#include "bustub/parser/qualified_name.hpp"
+#include "common/field_writer.h"
+#include "common/types/hash.h"
+#include "common/string_util.h"
+#include "parser/qualified_name.h"
 
 namespace bustub {
 

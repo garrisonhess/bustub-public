@@ -1,6 +1,6 @@
-#include "bustub/parser/expression/constant_expression.hpp"
-#include "bustub/parser/statement/select_statement.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "parser/expression/constant_expression.h"
+#include "parser/statement/select_statement.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

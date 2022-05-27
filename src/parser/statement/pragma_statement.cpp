@@ -1,4 +1,4 @@
-#include "bustub/parser/statement/pragma_statement.hpp"
+#include "parser/statement/pragma_statement.h"
 
 namespace bustub {
 

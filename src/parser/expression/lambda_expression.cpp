@@ -1,6 +1,6 @@
-#include "bustub/parser/expression/lambda_expression.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/common/types/hash.hpp"
+#include "parser/expression/lambda_expression.h"
+#include "common/field_writer.h"
+#include "common/types/hash.h"
 
 namespace bustub {
 

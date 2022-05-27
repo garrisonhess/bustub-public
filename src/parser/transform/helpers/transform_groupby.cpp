@@ -1,8 +1,8 @@
-#include "bustub/parser/parsed_expression.hpp"
-#include "bustub/parser/transformer.hpp"
-#include "bustub/parser/query_node/select_node.hpp"
-#include "bustub/parser/expression_map.hpp"
-#include "bustub/parser/expression/function_expression.hpp"
+#include "parser/parsed_expression.h"
+#include "parser/transformer.h"
+#include "parser/query_node/select_node.h"
+#include "parser/expression_map.h"
+#include "parser/expression/function_expression.h"
 
 namespace bustub {
 

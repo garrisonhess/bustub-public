@@ -1,5 +1,5 @@
-#include "bustub/parser/query_node/set_operation_node.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "parser/query_node/set_operation_node.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

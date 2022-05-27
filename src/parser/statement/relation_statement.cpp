@@ -1,4 +1,4 @@
-#include "bustub/parser/statement/relation_statement.hpp"
+#include "parser/statement/relation_statement.h"
 
 namespace bustub {
 

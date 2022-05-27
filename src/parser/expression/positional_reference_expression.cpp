@@ -1,9 +1,9 @@
-#include "bustub/parser/expression/positional_reference_expression.hpp"
+#include "parser/expression/positional_reference_expression.h"
 
-#include "bustub/common/exception.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/common/types/hash.hpp"
-#include "bustub/common/to_string.hpp"
+#include "common/exception.h"
+#include "common/field_writer.h"
+#include "common/types/hash.h"
+#include "common/to_string.h"
 
 namespace bustub {
 

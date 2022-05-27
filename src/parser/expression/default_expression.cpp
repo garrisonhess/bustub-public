@@ -1,6 +1,6 @@
-#include "bustub/parser/expression/default_expression.hpp"
+#include "parser/expression/default_expression.h"
 
-#include "bustub/common/exception.hpp"
+#include "common/exception.h"
 
 namespace bustub {
 

@@ -1,8 +1,8 @@
-#include "bustub/parser/expression/comparison_expression.hpp"
+#include "parser/expression/comparison_expression.h"
 
-#include "bustub/common/exception.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/parser/expression/cast_expression.hpp"
+#include "common/exception.h"
+#include "common/field_writer.h"
+#include "parser/expression/cast_expression.h"
 
 namespace bustub {
 

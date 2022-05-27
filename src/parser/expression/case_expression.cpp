@@ -1,7 +1,7 @@
-#include "bustub/parser/expression/case_expression.hpp"
+#include "parser/expression/case_expression.h"
 
-#include "bustub/common/exception.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "common/exception.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

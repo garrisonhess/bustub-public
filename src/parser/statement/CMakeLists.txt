@@ -1,4 +1,4 @@
-add_library_unity(
+add_library(
   bustub_statement
   OBJECT
   alter_statement.cpp

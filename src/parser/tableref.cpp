@@ -1,9 +1,9 @@
-#include "bustub/parser/tableref.hpp"
+#include "parser/tableref.h"
 
-#include "bustub/common/printer.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/parser/tableref/list.hpp"
-#include "bustub/common/to_string.hpp"
+#include "common/printer.h"
+#include "common/field_writer.h"
+#include "parser/tableref/list.h"
+#include "common/to_string.h"
 
 namespace bustub {
 

@@ -1,4 +1,4 @@
-add_library_unity(
+add_library(
   bustub_transformer_tableref
   OBJECT
   transform_base_tableref.cpp

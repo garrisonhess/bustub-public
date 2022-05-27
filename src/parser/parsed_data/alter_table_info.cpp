@@ -1,5 +1,5 @@
-#include "bustub/parser/parsed_data/alter_table_info.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "parser/parsed_data/alter_table_info.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

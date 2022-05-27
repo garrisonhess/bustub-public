@@ -1,6 +1,6 @@
-#include "bustub/common/exception.hpp"
-#include "bustub/parser/tableref.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "common/exception.h"
+#include "parser/tableref.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 
@@ -17,7 +17,7 @@ unique_ptr<TableRef> Transformer::TransformTableRefNode(bustub_libpgquery::PGNod
 	case bustub_libpgquery::T_PGRangeFunction:
 		return TransformRangeFunction(reinterpret_cast<bustub_libpgquery::PGRangeFunction *>(n));
 	default:
-		throw NotImplementedException("From Type %d not supported", n->type);
+		throw NotImplementedException("From type not supported");
 	}
 }
 

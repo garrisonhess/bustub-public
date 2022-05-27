@@ -1,7 +1,7 @@
-#include "bustub/parser/tableref/subqueryref.hpp"
+#include "parser/tableref/subqueryref.h"
 
-#include "bustub/common/limits.hpp"
-#include "bustub/common/field_writer.hpp"
+#include "common/limits.h"
+#include "common/field_writer.h"
 
 namespace bustub {
 

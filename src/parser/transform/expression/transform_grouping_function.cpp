@@ -1,5 +1,5 @@
-#include "bustub/parser/transformer.hpp"
-#include "bustub/parser/expression/operator_expression.hpp"
+#include "parser/transformer.h"
+#include "parser/expression/operator_expression.h"
 
 namespace bustub {
 

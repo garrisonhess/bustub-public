@@ -1,6 +1,6 @@
-#include "bustub/parser/result_modifier.hpp"
-#include "bustub/common/field_writer.hpp"
-#include "bustub/parser/expression_util.hpp"
+#include "parser/result_modifier.h"
+#include "common/field_writer.h"
+#include "parser/expression_util.h"
 
 namespace bustub {
 

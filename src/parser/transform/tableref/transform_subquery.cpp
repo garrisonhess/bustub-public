@@ -1,5 +1,5 @@
-#include "bustub/parser/tableref/subqueryref.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "parser/tableref/subqueryref.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

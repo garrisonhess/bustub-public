@@ -1,6 +1,6 @@
-#include "bustub/parser/expression/parameter_expression.hpp"
-#include "bustub/parser/transformer.hpp"
-#include "bustub/common/algorithm.hpp"
+#include "parser/expression/parameter_expression.h"
+#include "parser/transformer.h"
+#include "common/algorithm.h"
 
 namespace bustub {
 

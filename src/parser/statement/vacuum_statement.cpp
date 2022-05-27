@@ -1,4 +1,4 @@
-#include "bustub/parser/statement/vacuum_statement.hpp"
+#include "parser/statement/vacuum_statement.h"
 
 namespace bustub {
 

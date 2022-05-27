@@ -1,6 +1,6 @@
-#include "bustub/parser/expression/operator_expression.hpp"
-#include "bustub/parser/expression/subquery_expression.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "parser/expression/operator_expression.h"
+#include "parser/expression/subquery_expression.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 

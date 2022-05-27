@@ -1,7 +1,7 @@
-#include "bustub/parser/expression/case_expression.hpp"
-#include "bustub/parser/expression/comparison_expression.hpp"
-#include "bustub/parser/expression/constant_expression.hpp"
-#include "bustub/parser/transformer.hpp"
+#include "parser/expression/case_expression.h"
+#include "parser/expression/comparison_expression.h"
+#include "parser/expression/constant_expression.h"
+#include "parser/transformer.h"
 
 namespace bustub {
 
