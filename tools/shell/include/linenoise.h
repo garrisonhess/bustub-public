@@ -44,8 +44,8 @@ extern "C" {
 #endif
 
 typedef struct linenoiseCompletions {
-	size_t len;
-	char **cvec;
+  unsigned int len;
+  char **cvec;
 } linenoiseCompletions;
 
 typedef void(linenoiseCompletionCallback)(const char *, linenoiseCompletions *);
@@ -66,8 +66,8 @@ int linenoiseHistoryLoad(const char *filename);
 void linenoiseClearScreen(void);
 void linenoiseSetMultiLine(int ml);
 void linenoisePrintKeyCodes(void);
-size_t linenoiseComputeRenderWidth(const char *buf, size_t len);
-int linenoiseGetRenderPosition(const char *buf, size_t len, int max_width, int *n);
+unsigned int linenoiseComputeRenderWidth(const char *buf, unsigned int len);
+int linenoiseGetRenderPosition(const char *buf, unsigned int len, int max_width, int *n);
 
 #ifdef __cplusplus
 }

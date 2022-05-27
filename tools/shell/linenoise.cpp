@@ -639,20 +639,20 @@ std::string highlightText(char *buf, size_t len, size_t start_pos, size_t end_po
   auto tokens = bustub::Parser::Tokenize(sql);
   std::stringstream ss;
   for (size_t i = 0; i < tokens.size(); i++) {
-    size_t next = i + 1 < tokens.size() ? tokens[i + 1].start : len;
+    size_t next = i + 1 < tokens.size() ? tokens[i + 1].start_ : len;
     if (next < start_pos) {
       // this token is not rendered at all
       continue;
     }
 
     auto &token = tokens[i];
-    size_t start = token.start > start_pos ? token.start : start_pos;
+    size_t start = static_cast<size_t>(token.start_) > start_pos ? token.start_ : start_pos;
     size_t end = next > end_pos ? end_pos : next;
     if (end <= start) {
       continue;
     }
     std::string text = std::string(buf + start, end - start);
-    switch (token.type) {
+    switch (token.type_) {
       case bustub::SimplifiedTokenType::SIMPLIFIED_TOKEN_KEYWORD:
         ss << keyword << text << reset;
         break;
