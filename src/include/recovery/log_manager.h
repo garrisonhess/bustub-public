@@ -52,7 +52,7 @@ class LogManager {
   inline lsn_t GetPersistentLSN() { return persistent_lsn_; }
   inline void SetPersistentLSN(lsn_t lsn) { persistent_lsn_ = lsn; }
   inline char *GetLogBuffer() { return log_buffer_; }
-  LogManager &Get(DatabaseInstance &db);
+  static LogManager &Get(DatabaseInstance &db);
 
  private:
   // TODO(students): you may add your own member variables

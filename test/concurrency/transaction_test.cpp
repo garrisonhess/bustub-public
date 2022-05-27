@@ -53,23 +53,23 @@ class TransactionTest : public ::testing::Test {
   // This function is called before every test.
   void SetUp() override {
     ::testing::Test::SetUp();
-    // For each test, we create a new DiskManager, BufferPoolManager, TransactionManager, and Catalog.
-    disk_manager_ = std::make_unique<DiskManager>("executor_test.db");
-    bpm_ = std::make_unique<BufferPoolManagerInstance>(2560, disk_manager_.get());
-    page_id_t page_id;
-    bpm_->NewPage(&page_id);
-    lock_manager_ = std::make_unique<LockManager>();
-    txn_mgr_ = std::make_unique<TransactionManager>(lock_manager_.get(), log_manager_.get());
-    catalog_ = std::make_unique<Catalog>(bpm_.get(), lock_manager_.get(), log_manager_.get());
-    // Begin a new transaction, along with its executor context.
-    txn_ = txn_mgr_->Begin();
-    exec_ctx_ =
-        std::make_unique<ExecutorContext>(txn_, catalog_.get(), bpm_.get(), txn_mgr_.get(), lock_manager_.get());
-    // Generate some test tables.
-    TableGenerator gen{exec_ctx_.get()};
-    gen.GenerateTestTables();
+    // // For each test, we create a new DiskManager, BufferPoolManager, TransactionManager, and Catalog.
+    // disk_manager_ = std::make_unique<DiskManager>("executor_test.db");
+    // bpm_ = std::make_unique<BufferPoolManagerInstance>(2560, disk_manager_.get());
+    // page_id_t page_id;
+    // bpm_->NewPage(&page_id);
+    // lock_manager_ = std::make_unique<LockManager>();
+    // txn_mgr_ = std::make_unique<TransactionManager>(lock_manager_.get(), log_manager_.get());
+    // catalog_ = std::make_unique<Catalog>(bpm_.get(), lock_manager_.get(), log_manager_.get());
+    // // Begin a new transaction, along with its executor context.
+    // txn_ = txn_mgr_->Begin();
+    // exec_ctx_ =
+    //     std::make_unique<ExecutorContext>(txn_, catalog_.get(), bpm_.get(), txn_mgr_.get(), lock_manager_.get());
+    // // Generate some test tables.
+    // TableGenerator gen{exec_ctx_.get()};
+    // gen.GenerateTestTables();
 
-    execution_engine_ = std::make_unique<ExecutionEngine>(bpm_.get(), txn_mgr_.get(), catalog_.get());
+    // execution_engine_ = std::make_unique<ExecutionEngine>(bpm_.get(), txn_mgr_.get(), catalog_.get());
   }
 
   // This function is called after every test.
@@ -163,94 +163,94 @@ void CheckTxnLockSize(Transaction *txn, size_t shared_size, size_t exclusive_siz
 
 // NOLINTNEXTLINE
 TEST_F(TransactionTest, DISABLED_SimpleInsertRollbackTest) {
-  // txn1: INSERT INTO empty_table2 VALUES (200, 20), (201, 21), (202, 22)
-  // txn1: abort
-  // txn2: SELECT * FROM empty_table2;
-  auto txn1 = GetTxnManager()->Begin();
-  auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
-  // Create Values to insert
-  std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
-  std::vector<Value> val2{ValueFactory::GetIntegerValue(201), ValueFactory::GetIntegerValue(21)};
-  std::vector<Value> val3{ValueFactory::GetIntegerValue(202), ValueFactory::GetIntegerValue(22)};
-  std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
-  // Create insert plan node
-  auto table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
-  InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
+  // // txn1: INSERT INTO empty_table2 VALUES (200, 20), (201, 21), (202, 22)
+  // // txn1: abort
+  // // txn2: SELECT * FROM empty_table2;
+  // auto txn1 = GetTxnManager()->Begin();
+  // auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
+  // // Create Values to insert
+  // std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
+  // std::vector<Value> val2{ValueFactory::GetIntegerValue(201), ValueFactory::GetIntegerValue(21)};
+  // std::vector<Value> val3{ValueFactory::GetIntegerValue(202), ValueFactory::GetIntegerValue(22)};
+  // std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
+  // // Create insert plan node
+  // auto table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
+  // InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
 
-  GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, exec_ctx1.get());
-  GetTxnManager()->Abort(txn1);
-  delete txn1;
+  // GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, exec_ctx1.get());
+  // GetTxnManager()->Abort(txn1);
+  // delete txn1;
 
-  // Iterate through table make sure that values were not inserted.
-  auto txn2 = GetTxnManager()->Begin();
-  auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
-  auto &schema = table_info->schema_;
-  auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto col_b = MakeColumnValueExpression(schema, 0, "colB");
-  auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
-  SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
+  // // Iterate through table make sure that values were not inserted.
+  // auto txn2 = GetTxnManager()->Begin();
+  // auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
+  // auto &schema = table_info->schema_;
+  // auto col_a = MakeColumnValueExpression(schema, 0, "colA");
+  // auto col_b = MakeColumnValueExpression(schema, 0, "colB");
+  // auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
+  // SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
 
-  std::vector<Tuple> result_set;
-  GetExecutionEngine()->Execute(&scan_plan, &result_set, txn2, exec_ctx2.get());
+  // std::vector<Tuple> result_set;
+  // GetExecutionEngine()->Execute(&scan_plan, &result_set, txn2, exec_ctx2.get());
 
-  // Size
-  ASSERT_EQ(result_set.size(), 0);
-  std::vector<RID> rids;
+  // // Size
+  // ASSERT_EQ(result_set.size(), 0);
+  // std::vector<RID> rids;
 
-  GetTxnManager()->Commit(txn2);
-  delete txn2;
+  // GetTxnManager()->Commit(txn2);
+  // delete txn2;
 }
 
 // NOLINTNEXTLINE
 TEST_F(TransactionTest, DISABLED_DirtyReadsTest) {
-  // txn1: INSERT INTO empty_table2 VALUES (200, 20), (201, 21), (202, 22)
-  // txn2: SELECT * FROM empty_table2;
-  // txn1: abort
-  auto txn1 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
-  auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
-  // Create Values to insert
-  std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
-  std::vector<Value> val2{ValueFactory::GetIntegerValue(201), ValueFactory::GetIntegerValue(21)};
-  std::vector<Value> val3{ValueFactory::GetIntegerValue(202), ValueFactory::GetIntegerValue(22)};
-  std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
-  // Create insert plan node
-  auto table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
-  InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
+  // // txn1: INSERT INTO empty_table2 VALUES (200, 20), (201, 21), (202, 22)
+  // // txn2: SELECT * FROM empty_table2;
+  // // txn1: abort
+  // auto txn1 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
+  // auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
+  // // Create Values to insert
+  // std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
+  // std::vector<Value> val2{ValueFactory::GetIntegerValue(201), ValueFactory::GetIntegerValue(21)};
+  // std::vector<Value> val3{ValueFactory::GetIntegerValue(202), ValueFactory::GetIntegerValue(22)};
+  // std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
+  // // Create insert plan node
+  // auto table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
+  // InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
 
-  GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, exec_ctx1.get());
+  // GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, exec_ctx1.get());
 
-  // Iterate through table to read the tuples.
-  auto txn2 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
-  auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
-  auto &schema = table_info->schema_;
-  auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto col_b = MakeColumnValueExpression(schema, 0, "colB");
-  auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
-  SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
+  // // Iterate through table to read the tuples.
+  // auto txn2 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
+  // auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
+  // auto &schema = table_info->schema_;
+  // auto col_a = MakeColumnValueExpression(schema, 0, "colA");
+  // auto col_b = MakeColumnValueExpression(schema, 0, "colB");
+  // auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
+  // SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
 
-  std::vector<Tuple> result_set;
-  GetExecutionEngine()->Execute(&scan_plan, &result_set, txn2, exec_ctx2.get());
+  // std::vector<Tuple> result_set;
+  // GetExecutionEngine()->Execute(&scan_plan, &result_set, txn2, exec_ctx2.get());
 
-  GetTxnManager()->Abort(txn1);
-  delete txn1;
+  // GetTxnManager()->Abort(txn1);
+  // delete txn1;
 
-  // First value
-  ASSERT_EQ(result_set[0].GetValue(out_schema, out_schema->GetColIdx("colA")).GetAs<int32_t>(), 200);
-  ASSERT_EQ(result_set[0].GetValue(out_schema, out_schema->GetColIdx("colB")).GetAs<int32_t>(), 20);
+  // // First value
+  // ASSERT_EQ(result_set[0].GetValue(out_schema, out_schema->GetColIdx("colA")).GetAs<int32_t>(), 200);
+  // ASSERT_EQ(result_set[0].GetValue(out_schema, out_schema->GetColIdx("colB")).GetAs<int32_t>(), 20);
 
-  // Second value
-  ASSERT_EQ(result_set[1].GetValue(out_schema, out_schema->GetColIdx("colA")).GetAs<int32_t>(), 201);
-  ASSERT_EQ(result_set[1].GetValue(out_schema, out_schema->GetColIdx("colB")).GetAs<int32_t>(), 21);
+  // // Second value
+  // ASSERT_EQ(result_set[1].GetValue(out_schema, out_schema->GetColIdx("colA")).GetAs<int32_t>(), 201);
+  // ASSERT_EQ(result_set[1].GetValue(out_schema, out_schema->GetColIdx("colB")).GetAs<int32_t>(), 21);
 
-  // Third value
-  ASSERT_EQ(result_set[2].GetValue(out_schema, out_schema->GetColIdx("colA")).GetAs<int32_t>(), 202);
-  ASSERT_EQ(result_set[2].GetValue(out_schema, out_schema->GetColIdx("colB")).GetAs<int32_t>(), 22);
+  // // Third value
+  // ASSERT_EQ(result_set[2].GetValue(out_schema, out_schema->GetColIdx("colA")).GetAs<int32_t>(), 202);
+  // ASSERT_EQ(result_set[2].GetValue(out_schema, out_schema->GetColIdx("colB")).GetAs<int32_t>(), 22);
 
-  // Size
-  ASSERT_EQ(result_set.size(), 3);
+  // // Size
+  // ASSERT_EQ(result_set.size(), 3);
 
-  GetTxnManager()->Commit(txn2);
-  delete txn2;
+  // GetTxnManager()->Commit(txn2);
+  // delete txn2;
 }
 
 }  // namespace bustub
