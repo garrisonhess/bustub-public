@@ -10,16 +10,16 @@ unique_ptr<ConstantExpression> Transformer::TransformValue(bustub_libpgquery::PG
 	switch (val.type) {
 	case bustub_libpgquery::T_PGInteger:
 		D_ASSERT(val.val.ival <= NumericLimits<int32_t>::Maximum());
-		return make_unique<ConstantExpression>(Value::INTEGER((int32_t)val.val.ival));
+		return std::make_unique<ConstantExpression>(Value::INTEGER((int32_t)val.val.ival));
 	case bustub_libpgquery::T_PGBitString: // FIXME: this should actually convert to BLOB
 	case bustub_libpgquery::T_PGString:
-		return make_unique<ConstantExpression>(Value(string(val.val.str)));
+		return std::make_unique<ConstantExpression>(Value(string(val.val.str)));
 	case bustub_libpgquery::T_PGFloat: {
 		string_t str_val(val.val.str);
 		bool try_cast_as_integer = true;
 		bool try_cast_as_decimal = true;
 		int decimal_position = -1;
-		for (idx_t i = 0; i < str_val.GetSize(); i++) {
+		for (uint64_t i = 0; i < str_val.GetSize(); i++) {
 			if (val.val.str[i] == '.') {
 				// decimal point: cast as either decimal or double
 				try_cast_as_integer = false;
@@ -38,7 +38,7 @@ unique_ptr<ConstantExpression> Transformer::TransformValue(bustub_libpgquery::PG
 				// successfully cast to bigint: bigint value
 				return make_unique<ConstantExpression>(Value::BIGINT(bigint_value));
 			}
-			hugeint_t hugeint_value;
+			int64_t hugeint_value;
 			// if that is not successful; try to cast as hugeint
 			if (TryCast::Operation<string_t, hugeint_t>(str_val, hugeint_value)) {
 				// successfully cast to bigint: bigint value

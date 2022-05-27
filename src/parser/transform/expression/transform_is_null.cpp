@@ -5,7 +5,7 @@
 namespace bustub {
 
 unique_ptr<ParsedExpression> Transformer::TransformNullTest(bustub_libpgquery::PGNullTest *root) {
-	D_ASSERT(root);
+	// D_ASSERT(root);
 	auto arg = TransformExpression(reinterpret_cast<bustub_libpgquery::PGNode *>(root->arg));
 	if (root->argisrow) {
 		throw NotImplementedException("IS NULL argisrow");

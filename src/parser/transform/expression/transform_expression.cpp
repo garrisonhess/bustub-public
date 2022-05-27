@@ -5,30 +5,30 @@
 namespace bustub {
 
 unique_ptr<ParsedExpression> Transformer::TransformResTarget(bustub_libpgquery::PGResTarget *root) {
-	D_ASSERT(root);
+	// D_ASSERT(root);
 
 	auto expr = TransformExpression(root->val);
 	if (!expr) {
 		return nullptr;
 	}
-	if (root->name) {
+	if (root->name != nullptr) {
 		expr->alias = string(root->name);
 	}
 	return expr;
 }
 
 unique_ptr<ParsedExpression> Transformer::TransformNamedArg(bustub_libpgquery::PGNamedArgExpr *root) {
-	D_ASSERT(root);
+	// D_ASSERT(root);
 
 	auto expr = TransformExpression((bustub_libpgquery::PGNode *)root->arg);
-	if (root->name) {
+	if (root->name != nullptr) {
 		expr->alias = string(root->name);
 	}
 	return expr;
 }
 
 unique_ptr<ParsedExpression> Transformer::TransformExpression(bustub_libpgquery::PGNode *node) {
-	if (!node) {
+	if (node == nullptr) {
 		return nullptr;
 	}
 
@@ -64,7 +64,7 @@ unique_ptr<ParsedExpression> Transformer::TransformExpression(bustub_libpgquery:
 	case bustub_libpgquery::T_PGSQLValueFunction:
 		return TransformSQLValueFunction(reinterpret_cast<bustub_libpgquery::PGSQLValueFunction *>(node));
 	case bustub_libpgquery::T_PGSetToDefault:
-		return make_unique<DefaultExpression>();
+		return std::make_unique<DefaultExpression>();
 	case bustub_libpgquery::T_PGCollateClause:
 		return TransformCollateExpr(reinterpret_cast<bustub_libpgquery::PGCollateClause *>(node));
 	case bustub_libpgquery::T_PGIntervalConstant:
@@ -80,7 +80,7 @@ unique_ptr<ParsedExpression> Transformer::TransformExpression(bustub_libpgquery:
 	case bustub_libpgquery::T_PGAStar:
 		return TransformStarExpression(node);
 	default:
-		throw NotImplementedException("Expr of type %d not implemented\n", (int)node->type);
+		throw NotImplementedException("Expr of type not implemented\n");
 	}
 }
 
@@ -88,10 +88,10 @@ void Transformer::TransformExpressionList(bustub_libpgquery::PGList &list,
                                           vector<unique_ptr<ParsedExpression>> &result) {
 	for (auto node = list.head; node != nullptr; node = node->next) {
 		auto target = reinterpret_cast<bustub_libpgquery::PGNode *>(node->data.ptr_value);
-		D_ASSERT(target);
+		// D_ASSERT(target);
 
 		auto expr = TransformExpression(target);
-		D_ASSERT(expr);
+		// D_ASSERT(expr);
 
 		result.push_back(move(expr));
 	}
