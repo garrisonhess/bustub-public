@@ -4,11 +4,11 @@
 // #include "cast_sqlite.hpp"
 
 // #include "duckdb.hpp"
-// #include "duckdb/parser/parser.hpp"
+#include "parser/parser.h"
 // #include "duckdb/main/client_context.hpp"
 // #include "duckdb/common/types.hpp"
 // #include "duckdb/common/operator/cast_operators.hpp"
-// #include "utf8proc_wrapper.hpp"
+#include "utf8proc_wrapper.hpp"
 
 #include <ctype.h>
 #include <stdio.h>
