@@ -2,6 +2,7 @@
 // #include "parser/expression_util.h"
 #include "common/field_writer.h"
 // #include "parser/keyword_helper.h"
+#include "common/logger.h"
 
 namespace bustub {
 
@@ -10,27 +11,28 @@ SelectNode::SelectNode()
 }
 
 string SelectNode::ToString() const {
-	// string result;
-	// // result = CTEToString();
-	// result += "SELECT ";
+	LOG_INFO("HI FROM SELECT NODE TOSTRING()");
+	string result;
+	// result = CTEToString();
+	result += "SELECT ";
 
-	// // search for a distinct modifier
-	// for (uint64_t modifier_idx = 0; modifier_idx < modifiers_.size(); modifier_idx++) {
-	// 	if (modifiers_[modifier_idx]->type_ == ResultModifierType::DISTINCT_MODIFIER) {
-	// 		auto &distinct_modifier = (DistinctModifier &)*modifiers[modifier_idx];
-	// 		result += "DISTINCT ";
-	// 		if (!distinct_modifier.distinct_on_targets_.empty()) {
-	// 			result += "ON (";
-	// 			for (uint64_t k = 0; k < distinct_modifier.distinct_on_targets_.size(); k++) {
-	// 				if (k > 0) {
-	// 					result += ", ";
-	// 				}
-	// 				result += distinct_modifier.distinct_on_targets_[k]->ToString();
-	// 			}
-	// 			result += ") ";
-	// 		}
-	// 	}
-	// }
+	// search for a distinct modifier
+	for (const auto & modifier : modifiers_) {
+		if (modifier->type_ == ResultModifierType::DISTINCT_MODIFIER) {
+			auto &distinct_modifier = (DistinctModifier &)*modifier;
+			result += "DISTINCT ";
+			if (!distinct_modifier.distinct_on_targets_.empty()) {
+				result += "ON (";
+				for (uint64_t k = 0; k < distinct_modifier.distinct_on_targets_.size(); k++) {
+					if (k > 0) {
+						result += ", ";
+					}
+					result += distinct_modifier.distinct_on_targets_[k]->ToString();
+				}
+				result += ") ";
+			}
+		}
+	}
 	// for (uint64_t i = 0; i < select_list_.size(); i++) {
 	// 	if (i > 0) {
 	// 		result += ", ";
@@ -40,55 +42,56 @@ string SelectNode::ToString() const {
 	// 		result += " AS " + KeywordHelper::WriteOptionallyQuoted(select_list_[i]->alias_);
 	// 	}
 	// }
-	// if (from_table && from_table->type != TableReferenceType::EMPTY) {
-	// 	result += " FROM " + from_table->ToString();
-	// }
-	// if (where_clause) {
-	// 	result += " WHERE " + where_clause->ToString();
-	// }
-	// if (!groups.grouping_sets.empty()) {
-	// 	result += " GROUP BY ";
-	// 	// if we are dealing with multiple grouping sets, we have to add a few additional brackets
-	// 	bool grouping_sets = groups.grouping_sets.size() > 1;
-	// 	if (grouping_sets) {
-	// 		result += "GROUPING SETS (";
-	// 	}
-	// 	for (uint64_t i = 0; i < groups.grouping_sets.size(); i++) {
-	// 		auto &grouping_set = groups.grouping_sets[i];
-	// 		if (i > 0) {
-	// 			result += ",";
-	// 		}
-	// 		if (grouping_set.empty()) {
-	// 			result += "()";
-	// 			continue;
-	// 		}
-	// 		if (grouping_sets) {
-	// 			result += "(";
-	// 		}
-	// 		bool first = true;
-	// 		for (auto &grp : grouping_set) {
-	// 			if (!first) {
-	// 				result += ", ";
-	// 			}
-	// 			result += groups.group_expressions[grp]->ToString();
-	// 			first = false;
-	// 		}
-	// 		if (grouping_sets) {
-	// 			result += ")";
-	// 		}
-	// 	}
-	// 	if (grouping_sets) {
-	// 		result += ")";
-	// 	}
-	// } else if (aggregate_handling == AggregateHandling::FORCE_AGGREGATES) {
+	if (from_table_ && from_table_->type_ != TableReferenceType::EMPTY) {
+		result += " FROM " + from_table_->ToString();
+	}
+	if (where_clause_) {
+		result += " WHERE " + where_clause_->ToString();
+	}
+	if (!groups_.grouping_sets_.empty()) {
+		result += " GROUP BY ";
+		// if we are dealing with multiple grouping sets, we have to add a few additional brackets
+		bool grouping_sets = groups_.grouping_sets_.size() > 1;
+		if (grouping_sets) {
+			result += "GROUPING SETS (";
+		}
+		for (uint64_t i = 0; i < groups_.grouping_sets_.size(); i++) {
+			auto &grouping_set = groups_.grouping_sets_[i];
+			if (i > 0) {
+				result += ",";
+			}
+			if (grouping_set.empty()) {
+				result += "()";
+				continue;
+			}
+			if (grouping_sets) {
+				result += "(";
+			}
+			bool first = true;
+			for (auto &grp : grouping_set) {
+				if (!first) {
+					result += ", ";
+				}
+				result += groups_.group_expressions_[grp]->ToString();
+				first = false;
+			}
+			if (grouping_sets) {
+				result += ")";
+			}
+		}
+		if (grouping_sets) {
+			result += ")";
+		}
+	}
+	//  else if (aggregate_handling == AggregateHandling::FORCE_AGGREGATES) {
 	// 	result += " GROUP BY ALL";
 	// }
-	// if (having) {
-	// 	result += " HAVING " + having->ToString();
-	// }
-	// if (qualify) {
-	// 	result += " QUALIFY " + qualify->ToString();
-	// }
+	if (having_) {
+		result += " HAVING " + having_->ToString();
+	}
+	if (qualify_) {
+		result += " QUALIFY " + qualify_->ToString();
+	}
 	// if (sample) {
 	// 	result += " USING SAMPLE ";
 	// 	result += sample->sample_size.ToString();
@@ -101,8 +104,7 @@ string SelectNode::ToString() const {
 	// 	}
 	// 	result += ")";
 	// }
-	// return result + ResultModifiersToString();
-	return {};
+	return result + ResultModifiersToString();
 }
 
 bool SelectNode::Equals(const QueryNode *other_p) const {

@@ -2,11 +2,9 @@
 
 #include "parser/transformer.h"
 
-
 #include "parser/statement/create_statement.h"
 #include "parser/statement/select_statement.h"
 #include "parser/statement/update_statement.h"
-
 
 #include "parser/parsed_data/create_table_info.h"
 #include "parser/query_node/select_node.h"
@@ -17,7 +15,7 @@
 #include <iostream>
 
 namespace bustub {
-  using std::move;
+using std::move;
 
 // Parser::Parser(ParserOptions options_p) : options(options_p) {
 // }
@@ -27,9 +25,7 @@ void Parser::ParseQuery(const std::string &query) {
   std::cout << "received query string: " << query << "\n";
 
   // Transformer transformer(options.max_expression_depth);
-  LOG_INFO("1");
   Transformer transformer(nullptr);
-  LOG_INFO("2");
   {
     // PostgresParser::SetPreserveIdentifierCase(options.preserve_identifier_case);
     PostgresParser parser;
@@ -51,15 +47,20 @@ void Parser::ParseQuery(const std::string &query) {
     LOG_INFO("about to transform parse tree");
     transformer.TransformParseTree(parser.parse_tree, statements_);
     LOG_INFO("done transforming parse tree");
+    for (auto &&stmt : statements_) {
+      LOG_INFO("parsed statement: %s", stmt->ToString().c_str());
+    }
   }
   if (!statements_.empty()) {
     auto &last_statement = statements_.back();
     last_statement->stmt_length_ = query.size() - last_statement->stmt_location_;
     for (auto &statement : statements_) {
       statement->query_ = query;
+      LOG_INFO("STATEMENT'S QUERY TEXT IS: %s", statement->query_.c_str());
       if (statement->type_ == StatementType::CREATE_STATEMENT) {
         auto &create = (CreateStatement &)*statement;
         create.info->sql_ = query.substr(statement->stmt_location_, statement->stmt_length_);
+        LOG_INFO("CREATE STATEMENT SQL: %s", create.info->sql_.c_str());
       }
     }
   }

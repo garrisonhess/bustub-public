@@ -7,88 +7,95 @@
 
 namespace bustub {
 
-// bool ParsedExpression::IsAggregate() const {
-// 	bool is_aggregate = false;
-// 	ParsedExpressionIterator::EnumerateChildren(
-// 	    *this, [&](const ParsedExpression &child) { is_aggregate |= child.IsAggregate(); });
-// 	return is_aggregate;
-// }
+bool ParsedExpression::IsAggregate() const {
+	return false;
+	// bool is_aggregate = false;
+	// ParsedExpressionIterator::EnumerateChildren(
+	//     *this, [&](const ParsedExpression &child) { is_aggregate |= child.IsAggregate(); });
+	// return is_aggregate;
+}
 
-// bool ParsedExpression::IsWindow() const {
-// 	bool is_window = false;
-// 	ParsedExpressionIterator::EnumerateChildren(*this,
-// 	                                            [&](const ParsedExpression &child) { is_window |= child.IsWindow(); });
-// 	return is_window;
-// }
+bool ParsedExpression::IsWindow() const {
+	return false;
+	// bool is_window = false;
+	// ParsedExpressionIterator::EnumerateChildren(*this,
+	//                                             [&](const ParsedExpression &child) { is_window |= child.IsWindow(); });
+	// return is_window;
+}
 
-// bool ParsedExpression::IsScalar() const {
-// 	bool is_scalar = true;
-// 	ParsedExpressionIterator::EnumerateChildren(*this, [&](const ParsedExpression &child) {
-// 		if (!child.IsScalar()) {
-// 			is_scalar = false;
-// 		}
-// 	});
-// 	return is_scalar;
-// }
+bool ParsedExpression::IsScalar() const {
+	return false;
+	// bool is_scalar = true;
+	// ParsedExpressionIterator::EnumerateChildren(*this, [&](const ParsedExpression &child) {
+	// 	if (!child.IsScalar()) {
+	// 		is_scalar = false;
+	// 	}
+	// });
+	// return is_scalar;
+}
 
-// bool ParsedExpression::HasParameter() const {
-// 	bool has_parameter = false;
-// 	ParsedExpressionIterator::EnumerateChildren(
-// 	    *this, [&](const ParsedExpression &child) { has_parameter |= child.HasParameter(); });
-// 	return has_parameter;
-// }
+bool ParsedExpression::HasParameter() const {
+	return false;
+	// bool has_parameter = false;
+	// ParsedExpressionIterator::EnumerateChildren(
+	//     *this, [&](const ParsedExpression &child) { has_parameter |= child.HasParameter(); });
+	// return has_parameter;
+}
 
-// bool ParsedExpression::HasSubquery() const {
-// 	bool has_subquery = false;
-// 	ParsedExpressionIterator::EnumerateChildren(
-// 	    *this, [&](const ParsedExpression &child) { has_subquery |= child.HasSubquery(); });
-// 	return has_subquery;
-// }
+bool ParsedExpression::HasSubquery() const {
+	return false;
+	// bool has_subquery = false;
+	// ParsedExpressionIterator::EnumerateChildren(
+	//     *this, [&](const ParsedExpression &child) { has_subquery |= child.HasSubquery(); });
+	// return has_subquery;
+}
 
-// bool ParsedExpression::Equals(const BaseExpression *other) const {
-// 	if (!BaseExpression::Equals(other)) {
-// 		return false;
-// 	}
-// 	switch (expression_class) {
-// 	case ExpressionClass::BETWEEN:
-// 		return BetweenExpression::Equals((BetweenExpression *)this, (BetweenExpression *)other);
-// 	case ExpressionClass::CASE:
-// 		return CaseExpression::Equals((CaseExpression *)this, (CaseExpression *)other);
-// 	case ExpressionClass::CAST:
-// 		return CastExpression::Equals((CastExpression *)this, (CastExpression *)other);
-// 	case ExpressionClass::COLLATE:
-// 		return CollateExpression::Equals((CollateExpression *)this, (CollateExpression *)other);
-// 	case ExpressionClass::COLUMN_REF:
-// 		return ColumnRefExpression::Equals((ColumnRefExpression *)this, (ColumnRefExpression *)other);
-// 	case ExpressionClass::COMPARISON:
-// 		return ComparisonExpression::Equals((ComparisonExpression *)this, (ComparisonExpression *)other);
-// 	case ExpressionClass::CONJUNCTION:
-// 		return ConjunctionExpression::Equals((ConjunctionExpression *)this, (ConjunctionExpression *)other);
-// 	case ExpressionClass::CONSTANT:
-// 		return ConstantExpression::Equals((ConstantExpression *)this, (ConstantExpression *)other);
-// 	case ExpressionClass::DEFAULT:
-// 		return true;
-// 	case ExpressionClass::FUNCTION:
-// 		return FunctionExpression::Equals((FunctionExpression *)this, (FunctionExpression *)other);
-// 	case ExpressionClass::LAMBDA:
-// 		return LambdaExpression::Equals((LambdaExpression *)this, (LambdaExpression *)other);
-// 	case ExpressionClass::OPERATOR:
-// 		return OperatorExpression::Equals((OperatorExpression *)this, (OperatorExpression *)other);
-// 	case ExpressionClass::PARAMETER:
-// 		return true;
-// 	case ExpressionClass::POSITIONAL_REFERENCE:
-// 		return PositionalReferenceExpression::Equals((PositionalReferenceExpression *)this,
-// 		                                             (PositionalReferenceExpression *)other);
-// 	case ExpressionClass::STAR:
-// 		return StarExpression::Equals((StarExpression *)this, (StarExpression *)other);
-// 	case ExpressionClass::SUBQUERY:
-// 		return SubqueryExpression::Equals((SubqueryExpression *)this, (SubqueryExpression *)other);
-// 	case ExpressionClass::WINDOW:
-// 		return WindowExpression::Equals((WindowExpression *)this, (WindowExpression *)other);
-// 	default:
-// 		throw SerializationException("Unsupported type for expression comparison!");
-// 	}
-// }
+bool ParsedExpression::Equals(const BaseExpression *other) const {
+	return false;
+
+	// if (!BaseExpression::Equals(other)) {
+	// 	return false;
+	// }
+	// switch (expression_class) {
+	// case ExpressionClass::BETWEEN:
+	// 	return BetweenExpression::Equals((BetweenExpression *)this, (BetweenExpression *)other);
+	// case ExpressionClass::CASE:
+	// 	return CaseExpression::Equals((CaseExpression *)this, (CaseExpression *)other);
+	// case ExpressionClass::CAST:
+	// 	return CastExpression::Equals((CastExpression *)this, (CastExpression *)other);
+	// case ExpressionClass::COLLATE:
+	// 	return CollateExpression::Equals((CollateExpression *)this, (CollateExpression *)other);
+	// case ExpressionClass::COLUMN_REF:
+	// 	return ColumnRefExpression::Equals((ColumnRefExpression *)this, (ColumnRefExpression *)other);
+	// case ExpressionClass::COMPARISON:
+	// 	return ComparisonExpression::Equals((ComparisonExpression *)this, (ComparisonExpression *)other);
+	// case ExpressionClass::CONJUNCTION:
+	// 	return ConjunctionExpression::Equals((ConjunctionExpression *)this, (ConjunctionExpression *)other);
+	// case ExpressionClass::CONSTANT:
+	// 	return ConstantExpression::Equals((ConstantExpression *)this, (ConstantExpression *)other);
+	// case ExpressionClass::DEFAULT:
+	// 	return true;
+	// case ExpressionClass::FUNCTION:
+	// 	return FunctionExpression::Equals((FunctionExpression *)this, (FunctionExpression *)other);
+	// case ExpressionClass::LAMBDA:
+	// 	return LambdaExpression::Equals((LambdaExpression *)this, (LambdaExpression *)other);
+	// case ExpressionClass::OPERATOR:
+	// 	return OperatorExpression::Equals((OperatorExpression *)this, (OperatorExpression *)other);
+	// case ExpressionClass::PARAMETER:
+	// 	return true;
+	// case ExpressionClass::POSITIONAL_REFERENCE:
+	// 	return PositionalReferenceExpression::Equals((PositionalReferenceExpression *)this,
+	// 	                                             (PositionalReferenceExpression *)other);
+	// case ExpressionClass::STAR:
+	// 	return StarExpression::Equals((StarExpression *)this, (StarExpression *)other);
+	// case ExpressionClass::SUBQUERY:
+	// 	return SubqueryExpression::Equals((SubqueryExpression *)this, (SubqueryExpression *)other);
+	// case ExpressionClass::WINDOW:
+	// 	return WindowExpression::Equals((WindowExpression *)this, (WindowExpression *)other);
+	// default:
+	// 	throw SerializationException("Unsupported type for expression comparison!");
+	// }
+}
 
 hash_t ParsedExpression::Hash() const {
 	// hash_t hash = Hash<uint32_t>((uint32_t)type_);

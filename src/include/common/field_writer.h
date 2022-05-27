@@ -103,7 +103,11 @@ class FieldWriter {
   // Called after all fields have been written. Should always be called.
   void Finalize();
 
-  // Serializer &GetSerializer() { return *buffer; }
+  Serializer &GetSerializer() {
+    Serializer &x = serializer_;
+    return x;
+    // return *buffer;
+  }
 
  private:
   void AddField() { field_count_++; }
