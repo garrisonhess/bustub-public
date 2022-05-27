@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-//                         DuckDB
+//                         BusTub
 //
 // bustub/parser/tableref/expressionlistref.hpp
 //

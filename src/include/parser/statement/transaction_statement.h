@@ -1,5 +1,5 @@
 // //===----------------------------------------------------------------------===//
-// //                         DuckDB
+// //                         BusTub
 // //
 // // bustub/parser/statement/transaction_statement.h
 // //

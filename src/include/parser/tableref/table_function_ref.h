@@ -1,5 +1,5 @@
 // //===----------------------------------------------------------------------===//
-// //                         DuckDB
+// //                         BusTub
 // //
 // // bustub/parser/tableref/table_function_ref.hpp
 // //
@@ -19,7 +19,7 @@
 // //! Represents a Table producing function
 // class TableFunctionRef : public TableRef {
 //  public:
-//   DUCKDB_API TableFunctionRef();
+//   TableFunctionRef();
 
 //   unique_ptr<ParsedExpression> function;
 //   vector<string> column_name_alias;

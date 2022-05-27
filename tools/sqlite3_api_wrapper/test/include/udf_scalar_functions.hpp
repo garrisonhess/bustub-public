@@ -3,7 +3,7 @@
 
 #include <string>
 
-// SQLite UDF to be register on DuckDB
+// SQLite UDF to be register on BusTub
 static void multiply10(sqlite3_context *context, int argc, sqlite3_value **argv) {
 	REQUIRE(argc == 1);
 	int v = sqlite3_value_int(argv[0]);

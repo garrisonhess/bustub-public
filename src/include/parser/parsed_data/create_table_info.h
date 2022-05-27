@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-//                         DuckDB
+//                         BusTub
 //
 // bustub/parser/parsed_data/create_table_info.hpp
 //

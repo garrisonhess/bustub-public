@@ -67,7 +67,7 @@ void FieldReader::Finalize() {
     // we can handle this case by calling source.ReadData(buffer, source.RemainingData())
     throw Exception(
         "Not all fields were read. This file might have been written with a newer version "
-        "of DuckDB and is incompatible with this version of DuckDB.");
+        "of BusTub and is incompatible with this version of BusTub.");
   }
   // D_ASSERT(source.RemainingData() == 0);
 }

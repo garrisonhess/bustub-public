@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-//                         DuckDB
+//                         BusTub
 //
 // bustub/parser/statement/select_statement.h
 //

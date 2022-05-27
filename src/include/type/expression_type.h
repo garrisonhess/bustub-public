@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-//                         DuckDB
+//                         BusTub
 //
 // bustub/common/enums/expression_type.hpp
 //
@@ -198,7 +198,6 @@ enum class ExpressionClass : uint8_t {
   BOUND_EXPRESSION = 50
 };
 
-// old return type was DUCKDB_API
 std::string ExpressionTypeToString(ExpressionType type);
 std::string ExpressionTypeToOperator(ExpressionType type);
 

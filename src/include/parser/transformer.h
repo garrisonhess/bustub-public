@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-//                         DuckDB
+//                         BusTub
 //
 // bustub/parser/transformer.h
 //
@@ -34,7 +34,7 @@ struct CommonTableExpressionInfo;
 struct GroupingExpressionMap;
 
 //! The transformer class is responsible for transforming the internal Postgres
-//! parser representation into the DuckDB representation
+//! parser representation into the BusTub representation
 class Transformer {
   friend class StackChecker;
 
