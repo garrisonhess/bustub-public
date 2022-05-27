@@ -18,6 +18,7 @@
 #include "recovery/log_manager.h"
 
 namespace bustub {
+class DatabaseInstance;
 
 /**
  * CheckpointManager creates consistent checkpoints by blocking all other transactions temporarily.

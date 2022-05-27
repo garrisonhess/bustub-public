@@ -25,6 +25,7 @@
 
 namespace bustub {
 class LockManager;
+class DatabaseInstance;
 
 /**
  * TransactionManager keeps track of all the transactions running in the system.
@@ -56,26 +57,11 @@ class TransactionManager {
   void Abort(Transaction *txn);
 
   /**
-   * Global list of running transactions
-   */
-
-  /** The transaction map is a global list of all the running transactions in the system. */
-  static std::unordered_map<txn_id_t, Transaction *> txn_map;
-  static std::shared_mutex txn_map_mutex;
-
-  /**
    * Locates and returns the transaction with the given transaction ID.
    * @param txn_id the id of the transaction to be found, it must exist!
    * @return the transaction with the given transaction id
    */
-  static Transaction *GetTransaction(txn_id_t txn_id) {
-    TransactionManager::txn_map_mutex.lock_shared();
-    assert(TransactionManager::txn_map.find(txn_id) != TransactionManager::txn_map.end());
-    auto *res = TransactionManager::txn_map[txn_id];
-    assert(res != nullptr);
-    TransactionManager::txn_map_mutex.unlock_shared();
-    return res;
-  }
+  static Transaction *GetTransaction(txn_id_t txn_id);
 
   /** Prevents all transactions from performing operations, used for checkpointing. */
   void BlockAllTransactions();
@@ -83,30 +69,27 @@ class TransactionManager {
   /** Resumes all transactions, used for checkpointing. */
   void ResumeTransactions();
 
+  /**
+   * Releases all the locks held by the given transaction.
+   * @param txn the transaction whose locks should be released
+   */
+  void ReleaseLocks(Transaction *txn);
+
+  /**
+   * Global list of running transactions
+   */
+  /** The transaction map is a global list of all the running transactions in the system. */
+  static std::unordered_map<txn_id_t, Transaction *> txn_map;
+  static std::shared_mutex txn_map_mutex;
+
  private:
   std::atomic<txn_id_t> next_txn_id_{0};
+
   //! The database instance
   DatabaseInstance &db_;
 
   /** The global transaction latch is used for checkpointing. */
   ReaderWriterLatch global_txn_latch_;
-
-  /**
-   * Releases all the locks held by the given transaction.
-   * @param txn the transaction whose locks should be released
-   */
-  void ReleaseLocks(Transaction *txn) {
-    std::unordered_set<RID> lock_set;
-    for (auto item : *txn->GetExclusiveLockSet()) {
-      lock_set.emplace(item);
-    }
-    for (auto item : *txn->GetSharedLockSet()) {
-      lock_set.emplace(item);
-    }
-    for (auto locked_rid : lock_set) {
-      db_.GetLockManager().Unlock(txn, locked_rid);
-    }
-  }
 };
 
 }  // namespace bustub

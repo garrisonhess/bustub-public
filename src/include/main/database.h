@@ -21,6 +21,7 @@
 #include "storage/disk/disk_manager.h"
 
 namespace bustub {
+class CheckpointManager;
 
 class DatabaseInstance {
   friend class BusTub;

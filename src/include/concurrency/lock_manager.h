@@ -26,7 +26,7 @@
 #include "main/config.h"
 
 namespace bustub {
-
+class DatabaseInstance;
 class TransactionManager;
 
 /**

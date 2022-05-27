@@ -27,6 +27,7 @@
 #include "storage/table/table_heap.h"
 
 namespace bustub {
+class DatabaseInstance;
 
 /**
  * Typedefs

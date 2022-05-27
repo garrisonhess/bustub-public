@@ -21,6 +21,7 @@
 #include "storage/disk/disk_manager.h"
 
 namespace bustub {
+class DatabaseInstance;
 
 /**
  * LogManager maintains a separate thread that is awakened whenever the log buffer is full or whenever a timeout
