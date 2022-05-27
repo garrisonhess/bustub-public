@@ -31,6 +31,7 @@ class CheckpointManager {
 
   void BeginCheckpoint();
   void EndCheckpoint();
+  CheckpointManager &Get(DatabaseInstance &db);
 
  private:
   DatabaseInstance &db_;

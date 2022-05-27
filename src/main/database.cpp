@@ -41,6 +41,20 @@ BusTub::BusTub(const char *path, DBConfig *new_config) : instance_(make_shared<D
   instance_->Initialize(path, new_config);
 }
 
+TransactionManager &TransactionManager::Get(DatabaseInstance &db) { return db.GetTransactionManager(); }
+
+// BufferPoolManagerInstance &BufferPoolManagerInstance::Get(DatabaseInstance &db) { return db.GetBufferPoolManager(); }
+
+LogManager &LogManager::Get(DatabaseInstance &db) { return db.GetLogManager(); }
+
+DiskManager &DiskManager::Get(DatabaseInstance &db) { return db.GetDiskManager(); }
+
+CheckpointManager &CheckpointManager::Get(DatabaseInstance &db) { return db.GetCheckpointManager(); }
+
+Catalog &Catalog::Get(DatabaseInstance &db) { return db.GetCatalog(); }
+
+LockManager &LockManager::Get(DatabaseInstance &db) { return db.GetLockManager(); }
+
 // BusTub::BusTub(const string &path, DBConfig *config) : DuckDB(path.c_str(), config) {}
 
 // BusTub::BusTub(DatabaseInstance &instance_p) : instance(instance_p.shared_from_this()) {}

@@ -18,6 +18,7 @@
 
 #include "buffer/buffer_pool_manager.h"
 #include "buffer/lru_replacer.h"
+#include "main/database.h"
 #include "recovery/log_manager.h"
 #include "storage/disk/disk_manager.h"
 #include "storage/page/page.h"
@@ -57,6 +58,8 @@ class BufferPoolManagerInstance : public BufferPoolManager {
 
   /** @return pointer to all the pages in the buffer pool */
   Page *GetPages() { return pages_; }
+
+  // BufferPoolManagerInstance &Get(DatabaseInstance &db);
 
  protected:
   /**

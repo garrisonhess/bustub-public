@@ -104,6 +104,8 @@ class LockManager {
    */
   bool Unlock(Transaction *txn, const RID &rid);
 
+  LockManager &Get(DatabaseInstance &db);
+
  private:
   std::mutex latch_;
 

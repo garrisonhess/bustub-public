@@ -22,6 +22,7 @@
 
 namespace bustub {
 class DatabaseInstance;
+class DiskManager;
 
 /**
  * LogManager maintains a separate thread that is awakened whenever the log buffer is full or whenever a timeout
@@ -51,6 +52,7 @@ class LogManager {
   inline lsn_t GetPersistentLSN() { return persistent_lsn_; }
   inline void SetPersistentLSN(lsn_t lsn) { persistent_lsn_ = lsn; }
   inline char *GetLogBuffer() { return log_buffer_; }
+  LogManager &Get(DatabaseInstance &db);
 
  private:
   // TODO(students): you may add your own member variables
