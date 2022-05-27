@@ -17,8 +17,8 @@ class PrepareStatement : public SQLStatement {
  public:
   PrepareStatement();
 
-  unique_ptr<SQLStatement> statement;
-  string name;
+  unique_ptr<SQLStatement> statement_;
+  std::string name_;
 
  protected:
   PrepareStatement(const PrepareStatement &other);

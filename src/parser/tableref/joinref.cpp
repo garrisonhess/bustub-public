@@ -20,7 +20,7 @@ string JoinRef::ToString() const {
 		result += ")";
 	} else if (!using_columns.empty()) {
 		result += " USING (";
-		for (idx_t i = 0; i < using_columns.size(); i++) {
+		for (uint64_t i = 0; i < using_columns.size(); i++) {
 			if (i > 0) {
 				result += ", ";
 			}
@@ -39,7 +39,7 @@ bool JoinRef::Equals(const TableRef *other_p) const {
 	if (using_columns.size() != other->using_columns.size()) {
 		return false;
 	}
-	for (idx_t i = 0; i < using_columns.size(); i++) {
+	for (uint64_t i = 0; i < using_columns.size(); i++) {
 		if (using_columns[i] != other->using_columns[i]) {
 			return false;
 		}

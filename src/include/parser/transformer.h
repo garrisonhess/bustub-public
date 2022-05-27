@@ -228,7 +228,7 @@ class Transformer {
   // QualifiedName TransformQualifiedName(bustub_libpgquery::PGRangeVar *root);
 
   //! Transform a Postgres TypeName string into a LogicalType
-  TypeId TransformTypeName(bustub_libpgquery::PGTypeName *name);
+  Type TransformTypeName(bustub_libpgquery::PGTypeName *name);
 
   //! Transform a Postgres GROUP BY expression into a list of Expression
   bool TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &result);

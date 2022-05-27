@@ -15,13 +15,13 @@ string SelectNode::ToString() const {
 	result += "SELECT ";
 
 	// search for a distinct modifier
-	for (idx_t modifier_idx = 0; modifier_idx < modifiers.size(); modifier_idx++) {
+	for (uint64_t modifier_idx = 0; modifier_idx < modifiers.size(); modifier_idx++) {
 		if (modifiers[modifier_idx]->type == ResultModifierType::DISTINCT_MODIFIER) {
 			auto &distinct_modifier = (DistinctModifier &)*modifiers[modifier_idx];
 			result += "DISTINCT ";
 			if (!distinct_modifier.distinct_on_targets.empty()) {
 				result += "ON (";
-				for (idx_t k = 0; k < distinct_modifier.distinct_on_targets.size(); k++) {
+				for (uint64_t k = 0; k < distinct_modifier.distinct_on_targets.size(); k++) {
 					if (k > 0) {
 						result += ", ";
 					}
@@ -31,7 +31,7 @@ string SelectNode::ToString() const {
 			}
 		}
 	}
-	for (idx_t i = 0; i < select_list.size(); i++) {
+	for (uint64_t i = 0; i < select_list.size(); i++) {
 		if (i > 0) {
 			result += ", ";
 		}
@@ -53,7 +53,7 @@ string SelectNode::ToString() const {
 		if (grouping_sets) {
 			result += "GROUPING SETS (";
 		}
-		for (idx_t i = 0; i < groups.grouping_sets.size(); i++) {
+		for (uint64_t i = 0; i < groups.grouping_sets.size(); i++) {
 			auto &grouping_set = groups.grouping_sets[i];
 			if (i > 0) {
 				result += ",";
@@ -181,9 +181,9 @@ void SelectNode::Serialize(FieldWriter &writer) const {
 	writer.WriteField<uint32_t>(groups.grouping_sets.size());
 	auto &serializer = writer.GetSerializer();
 	for (auto &grouping_set : groups.grouping_sets) {
-		serializer.Write<idx_t>(grouping_set.size());
+		serializer.Write<uint64_t>(grouping_set.size());
 		for (auto &idx : grouping_set) {
-			serializer.Write<idx_t>(idx);
+			serializer.Write<uint64_t>(idx);
 		}
 	}
 	writer.WriteField<AggregateHandling>(aggregate_handling);
@@ -201,11 +201,11 @@ unique_ptr<QueryNode> SelectNode::Deserialize(FieldReader &reader) {
 
 	auto grouping_set_count = reader.ReadRequired<uint32_t>();
 	auto &source = reader.GetSource();
-	for (idx_t set_idx = 0; set_idx < grouping_set_count; set_idx++) {
-		auto set_entries = source.Read<idx_t>();
+	for (uint64_t set_idx = 0; set_idx < grouping_set_count; set_idx++) {
+		auto set_entries = source.Read<uint64_t>();
 		GroupingSet grouping_set;
-		for (idx_t i = 0; i < set_entries; i++) {
-			grouping_set.insert(source.Read<idx_t>());
+		for (uint64_t i = 0; i < set_entries; i++) {
+			grouping_set.insert(source.Read<uint64_t>());
 		}
 		result->groups.grouping_sets.push_back(grouping_set);
 	}

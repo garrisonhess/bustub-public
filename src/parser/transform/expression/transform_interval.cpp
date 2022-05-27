@@ -29,7 +29,7 @@
 // 	}
 
 // 	if (!node->typmods) {
-// 		return make_unique<CastExpression>(LogicalType::INTERVAL, move(expr));
+// 		return make_unique<CastExpression>(Type::INTERVAL, move(expr));
 // 	}
 
 // 	int32_t mask = ((bustub_libpgquery::PGAConst *)node->typmods->head->data.ptr_value)->val.val.ival;
@@ -51,7 +51,7 @@
 // 	// (we might add support if someone complains about it)
 
 // 	string fname;
-// 	LogicalType target_type;
+// 	Type target_type;
 // 	if (mask & YEAR_MASK && mask & MONTH_MASK) {
 // 		// DAY TO HOUR
 // 		throw ParserException("YEAR TO MONTH is not supported");
@@ -76,35 +76,35 @@
 // 	} else if (mask & YEAR_MASK) {
 // 		// YEAR
 // 		fname = "to_years";
-// 		target_type = LogicalType::INTEGER;
+// 		target_type = Type::INTEGER;
 // 	} else if (mask & MONTH_MASK) {
 // 		// MONTH
 // 		fname = "to_months";
-// 		target_type = LogicalType::INTEGER;
+// 		target_type = Type::INTEGER;
 // 	} else if (mask & DAY_MASK) {
 // 		// DAY
 // 		fname = "to_days";
-// 		target_type = LogicalType::INTEGER;
+// 		target_type = Type::INTEGER;
 // 	} else if (mask & HOUR_MASK) {
 // 		// HOUR
 // 		fname = "to_hours";
-// 		target_type = LogicalType::BIGINT;
+// 		target_type = Type::BIGINT;
 // 	} else if (mask & MINUTE_MASK) {
 // 		// MINUTE
 // 		fname = "to_minutes";
-// 		target_type = LogicalType::BIGINT;
+// 		target_type = Type::BIGINT;
 // 	} else if (mask & SECOND_MASK) {
 // 		// SECOND
 // 		fname = "to_seconds";
-// 		target_type = LogicalType::BIGINT;
+// 		target_type = Type::BIGINT;
 // 	} else if (mask & MILLISECOND_MASK) {
 // 		// MILLISECOND
 // 		fname = "to_milliseconds";
-// 		target_type = LogicalType::BIGINT;
+// 		target_type = Type::BIGINT;
 // 	} else if (mask & MICROSECOND_MASK) {
 // 		// SECOND
 // 		fname = "to_microseconds";
-// 		target_type = LogicalType::BIGINT;
+// 		target_type = Type::BIGINT;
 // 	} else {
 // 		throw InternalException("Unsupported interval post-fix");
 // 	}

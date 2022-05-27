@@ -35,14 +35,14 @@ public:
 		if (!azCols || !azVals) {
 			rc = SQLITE_NOMEM;
 		}
-		for (duckdb::idx_t i = 0; i < nCol; i++) {
+		for (duckdb::uint64_t i = 0; i < nCol; i++) {
 			azCols[i] = (char *)sqlite3_column_name(stmt, i);
 		}
 
 		while (rc == SQLITE_ROW) {
 			rc = sqlite3_step(stmt);
 			if (rc == SQLITE_ROW) {
-				for (duckdb::idx_t i = 0; i < nCol; i++) {
+				for (duckdb::uint64_t i = 0; i < nCol; i++) {
 					azVals[i] = (char *)sqlite3_column_text(stmt, i);
 					if (!azVals[i] && sqlite3_column_type(stmt, i) != SQLITE_NULL) {
 						rc = SQLITE_NOMEM;

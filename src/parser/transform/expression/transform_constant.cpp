@@ -45,7 +45,7 @@ unique_ptr<ConstantExpression> Transformer::TransformValue(bustub_libpgquery::PG
 				return make_unique<ConstantExpression>(Value::HUGEINT(hugeint_value));
 			}
 		}
-		idx_t decimal_offset = val.val.str[0] == '-' ? 3 : 2;
+		uint64_t decimal_offset = val.val.str[0] == '-' ? 3 : 2;
 		if (try_cast_as_decimal && decimal_position >= 0 &&
 		    str_val.GetSize() < Decimal::MAX_WIDTH_DECIMAL + decimal_offset) {
 			// figure out the width/scale based on the decimal position
@@ -57,7 +57,7 @@ unique_ptr<ConstantExpression> Transformer::TransformValue(bustub_libpgquery::PG
 			if (width <= Decimal::MAX_WIDTH_DECIMAL) {
 				// we can cast the value as a decimal
 				Value val = Value(str_val);
-				val = val.CastAs(LogicalType::DECIMAL(width, scale));
+				val = val.CastAs(Type::DECIMAL(width, scale));
 				return make_unique<ConstantExpression>(move(val));
 			}
 		}
@@ -66,7 +66,7 @@ unique_ptr<ConstantExpression> Transformer::TransformValue(bustub_libpgquery::PG
 		return make_unique<ConstantExpression>(Value::DOUBLE(dbl_value));
 	}
 	case bustub_libpgquery::T_PGNull:
-		return make_unique<ConstantExpression>(Value(LogicalType::SQLNULL));
+		return make_unique<ConstantExpression>(Value(Type::SQLNULL));
 	default:
 		throw NotImplementedException("Value not implemented!");
 	}

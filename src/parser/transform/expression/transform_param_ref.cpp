@@ -12,7 +12,7 @@
 // 	} else {
 // 		expr->parameter_nr = node->number;
 // 	}
-// 	SetParamCount(MaxValue<idx_t>(ParamCount(), expr->parameter_nr));
+// 	SetParamCount(MaxValue<uint64_t>(ParamCount(), expr->parameter_nr));
 // 	return move(expr);
 // }
 

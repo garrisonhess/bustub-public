@@ -14,7 +14,7 @@
 // 	// now go over the indices
 // 	// note that a single indirection node can contain multiple indices
 // 	// this happens for e.g. more complex accesses (e.g. (foo).field1[42])
-// 	idx_t list_size = 0;
+// 	uint64_t list_size = 0;
 // 	for (auto node = indirection_node->indirection->head; node != nullptr; node = node->next) {
 // 		auto target = reinterpret_cast<bustub_libpgquery::PGNode *>(node->data.ptr_value);
 // 		D_ASSERT(target);

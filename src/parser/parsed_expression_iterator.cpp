@@ -200,8 +200,8 @@ void ParsedExpressionIterator::EnumerateTableRefChildren(
 	}
 	case TableReferenceType::EXPRESSION_LIST: {
 		auto &el_ref = (ExpressionListRef &)ref;
-		for (idx_t i = 0; i < el_ref.values.size(); i++) {
-			for (idx_t j = 0; j < el_ref.values[i].size(); j++) {
+		for (uint64_t i = 0; i < el_ref.values.size(); i++) {
+			for (uint64_t j = 0; j < el_ref.values[i].size(); j++) {
 				callback(el_ref.values[i][j]);
 			}
 		}
@@ -244,10 +244,10 @@ void ParsedExpressionIterator::EnumerateQueryNodeChildren(
 	}
 	case QueryNodeType::SELECT_NODE: {
 		auto &sel_node = (SelectNode &)node;
-		for (idx_t i = 0; i < sel_node.select_list.size(); i++) {
+		for (uint64_t i = 0; i < sel_node.select_list.size(); i++) {
 			callback(sel_node.select_list[i]);
 		}
-		for (idx_t i = 0; i < sel_node.groups.group_expressions.size(); i++) {
+		for (uint64_t i = 0; i < sel_node.groups.group_expressions.size(); i++) {
 			callback(sel_node.groups.group_expressions[i]);
 		}
 		if (sel_node.where_clause) {

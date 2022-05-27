@@ -53,10 +53,10 @@ ColumnDefinition Transformer::TransformColumnDefinition(bustub_libpgquery::PGCol
 	}
 	TypeId target_type = TransformTypeName(cdef->typeName);
 	if (cdef->collClause != nullptr) {
-		if (target_type.id() != LogicalTypeId::VARCHAR) {
+		if (target_type.id() != TypeId::VARCHAR) {
 			throw Exception("Only VARCHAR columns can have collations!");
 		}
-		target_type = LogicalType::VARCHAR_COLLATION(TransformCollation(cdef->collClause));
+		target_type = Type::VARCHAR_COLLATION(TransformCollation(cdef->collClause));
 	}
 
 	return ColumnDefinition(colname, target_type);

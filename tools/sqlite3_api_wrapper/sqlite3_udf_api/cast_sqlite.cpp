@@ -37,7 +37,7 @@ void CastSQLite::InputVectorsToVarchar(DataChunk &data_chunk, DataChunk &new_chu
 	}
 	new_chunk.Initialize(new_types);
 
-	for (idx_t i = 0; i < data_chunk.ColumnCount(); ++i) {
+	for (uint64_t i = 0; i < data_chunk.ColumnCount(); ++i) {
 		if (CastSQLite::RequiresCastToVarchar(data_chunk.data[i].GetType())) {
 			VectorOperations::Cast(data_chunk.data[i], new_chunk.data[i], data_chunk.size(), true);
 		} else {
@@ -52,7 +52,7 @@ VectorType CastSQLite::ToVectorsSQLiteValue(DataChunk &data_chunk, Vector &resul
 	VectorType result_vec_type = VectorType::CONSTANT_VECTOR;
 
 	// Casting input data to sqlite_value
-	for (idx_t i = 0; i < data_chunk.ColumnCount(); ++i) {
+	for (uint64_t i = 0; i < data_chunk.ColumnCount(); ++i) {
 		auto input_data = vec_data[i];
 		auto sqlite_values = CastSQLite::ToVector(data_chunk.data[i].GetType(), input_data, data_chunk.size(), result);
 		vec_sqlite_values[i] = move(sqlite_values);
@@ -66,7 +66,7 @@ VectorType CastSQLite::ToVectorsSQLiteValue(DataChunk &data_chunk, Vector &resul
 }
 
 //*** Cast to vectors ***********************************/
-unique_ptr<vector<sqlite3_value>> CastSQLite::ToVector(LogicalType type, VectorData &vec_data, idx_t size,
+unique_ptr<vector<sqlite3_value>> CastSQLite::ToVector(LogicalType type, VectorData &vec_data, uint64_t size,
                                                        Vector &result) {
 	LogicalTypeId type_id = type.id();
 	switch (type_id) {
@@ -132,9 +132,9 @@ void CastSQLite::ToVectorString(SQLiteTypeValue type, vector<sqlite3_value> &vec
 }
 
 template <>
-void CastSQLite::ToVectorStringValue<string_t>(sqlite3_value *__restrict data, idx_t count,
+void CastSQLite::ToVectorStringValue<string_t>(sqlite3_value *__restrict data, uint64_t count,
                                                string_t *__restrict result_data, Vector &result) {
-	for (idx_t i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		string_t str_value = CastFromSQLiteValue::GetValue<string_t>(data[i]);
 		result_data[i] = StringVector::AddString(result, str_value);
 	}

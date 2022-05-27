@@ -6,20 +6,20 @@
 
 namespace bustub {
 
-static void CheckGroupingSetMax(idx_t count) {
-	static constexpr const idx_t MAX_GROUPING_SETS = 65535;
+static void CheckGroupingSetMax(uint64_t count) {
+	static constexpr const uint64_t MAX_GROUPING_SETS = 65535;
 	if (count > MAX_GROUPING_SETS) {
 		throw ParserException("Maximum grouping set count of %d exceeded", MAX_GROUPING_SETS);
 	}
 }
 
 struct GroupingExpressionMap {
-	expression_map_t<idx_t> map;
+	expression_map_t<uint64_t> map;
 };
 
-static GroupingSet VectorToGroupingSet(vector<idx_t> &indexes) {
+static GroupingSet VectorToGroupingSet(vector<uint64_t> &indexes) {
 	GroupingSet result;
-	for (idx_t i = 0; i < indexes.size(); i++) {
+	for (uint64_t i = 0; i < indexes.size(); i++) {
 		result.insert(indexes[i]);
 	}
 	return result;
@@ -31,7 +31,7 @@ static void MergeGroupingSet(GroupingSet &result, GroupingSet &other) {
 }
 
 void Transformer::AddGroupByExpression(unique_ptr<ParsedExpression> expression, GroupingExpressionMap &map,
-                                       GroupByNode &result, vector<idx_t> &result_set) {
+                                       GroupByNode &result, vector<uint64_t> &result_set) {
 	if (expression->type == ExpressionType::FUNCTION) {
 		auto &func = (FunctionExpression &)*expression;
 		if (func.function_name == "row") {
@@ -42,7 +42,7 @@ void Transformer::AddGroupByExpression(unique_ptr<ParsedExpression> expression, 
 		}
 	}
 	auto entry = map.map.find(expression.get());
-	idx_t result_idx;
+	uint64_t result_idx;
 	if (entry == map.map.end()) {
 		result_idx = result.group_expressions.size();
 		map.map[expression.get()] = result_idx;
@@ -54,10 +54,10 @@ void Transformer::AddGroupByExpression(unique_ptr<ParsedExpression> expression, 
 }
 
 static void AddCubeSets(const GroupingSet &current_set, vector<GroupingSet> &result_set,
-                        vector<GroupingSet> &result_sets, idx_t start_idx = 0) {
+                        vector<GroupingSet> &result_sets, uint64_t start_idx = 0) {
 	CheckGroupingSetMax(result_sets.size());
 	result_sets.push_back(current_set);
-	for (idx_t k = start_idx; k < result_set.size(); k++) {
+	for (uint64_t k = start_idx; k < result_set.size(); k++) {
 		auto child_set = current_set;
 		MergeGroupingSet(child_set, result_set[k]);
 		AddCubeSets(child_set, result_set, result_sets, k + 1);
@@ -65,7 +65,7 @@ static void AddCubeSets(const GroupingSet &current_set, vector<GroupingSet> &res
 }
 
 void Transformer::TransformGroupByExpression(bustub_libpgquery::PGNode *n, GroupingExpressionMap &map,
-                                             GroupByNode &result, vector<idx_t> &indexes) {
+                                             GroupByNode &result, vector<uint64_t> &indexes) {
 	auto expression = TransformExpression(n);
 	AddGroupByExpression(move(expression), map, result, indexes);
 }
@@ -95,14 +95,14 @@ void Transformer::TransformGroupByNode(bustub_libpgquery::PGNode *n, GroupingExp
 			vector<GroupingSet> rollup_sets;
 			for (auto node = grouping_set->content->head; node; node = node->next) {
 				auto pg_node = (bustub_libpgquery::PGNode *)node->data.ptr_value;
-				vector<idx_t> rollup_set;
+				vector<uint64_t> rollup_set;
 				TransformGroupByExpression(pg_node, map, result.groups, rollup_set);
 				rollup_sets.push_back(VectorToGroupingSet(rollup_set));
 			}
 			// generate the subsets of the rollup set and add them to the grouping sets
 			GroupingSet current_set;
 			result_sets.push_back(current_set);
-			for (idx_t i = 0; i < rollup_sets.size(); i++) {
+			for (uint64_t i = 0; i < rollup_sets.size(); i++) {
 				MergeGroupingSet(current_set, rollup_sets[i]);
 				result_sets.push_back(current_set);
 			}
@@ -112,7 +112,7 @@ void Transformer::TransformGroupByNode(bustub_libpgquery::PGNode *n, GroupingExp
 			vector<GroupingSet> cube_sets;
 			for (auto node = grouping_set->content->head; node; node = node->next) {
 				auto pg_node = (bustub_libpgquery::PGNode *)node->data.ptr_value;
-				vector<idx_t> cube_set;
+				vector<uint64_t> cube_set;
 				TransformGroupByExpression(pg_node, map, result.groups, cube_set);
 				cube_sets.push_back(VectorToGroupingSet(cube_set));
 			}
@@ -125,7 +125,7 @@ void Transformer::TransformGroupByNode(bustub_libpgquery::PGNode *n, GroupingExp
 			throw InternalException("Unsupported GROUPING SET type %d", grouping_set->kind);
 		}
 	} else {
-		vector<idx_t> indexes;
+		vector<uint64_t> indexes;
 		TransformGroupByExpression(n, map, result.groups, indexes);
 		result_sets.push_back(VectorToGroupingSet(indexes));
 	}
@@ -150,12 +150,12 @@ bool Transformer::TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode 
 		} else {
 			// compute the cross product
 			vector<GroupingSet> new_sets;
-			idx_t grouping_set_count = result.grouping_sets.size() * result_sets.size();
+			uint64_t grouping_set_count = result.grouping_sets.size() * result_sets.size();
 			CheckGroupingSetMax(grouping_set_count);
 			new_sets.reserve(grouping_set_count);
-			for (idx_t current_idx = 0; current_idx < result.grouping_sets.size(); current_idx++) {
+			for (uint64_t current_idx = 0; current_idx < result.grouping_sets.size(); current_idx++) {
 				auto &current_set = result.grouping_sets[current_idx];
-				for (idx_t new_idx = 0; new_idx < result_sets.size(); new_idx++) {
+				for (uint64_t new_idx = 0; new_idx < result_sets.size(); new_idx++) {
 					auto &new_set = result_sets[new_idx];
 					GroupingSet set;
 					set.insert(current_set.begin(), current_set.end());

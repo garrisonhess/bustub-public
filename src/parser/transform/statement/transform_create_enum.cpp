@@ -18,9 +18,9 @@
 // 	return result;
 // }
 
-// Vector ReadPgListToVector(bustub_libpgquery::PGList *column_list, idx_t &size) {
+// Vector ReadPgListToVector(bustub_libpgquery::PGList *column_list, uint64_t &size) {
 // 	if (!column_list) {
-// 		Vector result(LogicalType::VARCHAR);
+// 		Vector result(Type::VARCHAR);
 // 		return result;
 // 	}
 // 	// First we discover the size of this list
@@ -28,7 +28,7 @@
 // 		size++;
 // 	}
 
-// 	Vector result(LogicalType::VARCHAR, size);
+// 	Vector result(Type::VARCHAR, size);
 // 	auto result_ptr = FlatVector::GetData<string_t>(result);
 
 // 	size = 0;
@@ -46,9 +46,9 @@
 // 	auto info = make_unique<CreateTypeInfo>();
 // 	info->internal = false;
 // 	info->name = ReadPgListToString(stmt->typeName)[0];
-// 	idx_t size = 0;
+// 	uint64_t size = 0;
 // 	auto ordered_array = ReadPgListToVector(stmt->vals, size);
-// 	info->type = LogicalType::ENUM(info->name, ordered_array, size);
+// 	info->type = Type::ENUM(info->name, ordered_array, size);
 // 	result->info = move(info);
 // 	return result;
 // }

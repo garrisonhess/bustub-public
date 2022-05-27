@@ -117,7 +117,7 @@ bool OrderModifier::Equals(const ResultModifier *other_p) const {
 	if (orders.size() != other.orders.size()) {
 		return false;
 	}
-	for (idx_t i = 0; i < orders.size(); i++) {
+	for (uint64_t i = 0; i < orders.size(); i++) {
 		if (orders[i].type != other.orders[i].type) {
 			return false;
 		}

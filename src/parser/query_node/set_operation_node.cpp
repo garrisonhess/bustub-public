@@ -8,7 +8,7 @@ string SetOperationNode::ToString() const {
 	result = CTEToString();
 	result += "(" + left->ToString() + ") ";
 	bool is_distinct = false;
-	for (idx_t modifier_idx = 0; modifier_idx < modifiers.size(); modifier_idx++) {
+	for (uint64_t modifier_idx = 0; modifier_idx < modifiers.size(); modifier_idx++) {
 		if (modifiers[modifier_idx]->type == ResultModifierType::DISTINCT_MODIFIER) {
 			is_distinct = true;
 			break;

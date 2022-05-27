@@ -1,8 +1,9 @@
 #include "parser/statement/prepare_statement.h"
+#include "common/constants.h"
 
 namespace bustub {
 
-PrepareStatement::PrepareStatement() : SQLStatement(StatementType::PREPARE_STATEMENT), statement(nullptr), name("") {
+PrepareStatement::PrepareStatement() : SQLStatement(StatementType::PREPARE_STATEMENT), statement(nullptr), name(INVALID_SCHEMA) {
 }
 
 PrepareStatement::PrepareStatement(const PrepareStatement &other)

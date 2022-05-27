@@ -56,7 +56,7 @@ unique_ptr<Constraint> Transformer::TransformConstraint(bustub_libpgquery::PGLis
 }
 
 unique_ptr<Constraint> Transformer::TransformConstraint(bustub_libpgquery::PGListCell *cell, ColumnDefinition &column,
-                                                        idx_t index) {
+                                                        uint64_t index) {
 	auto constraint = reinterpret_cast<bustub_libpgquery::PGConstraint *>(cell->data.ptr_value);
 	D_ASSERT(constraint);
 	switch (constraint->contype) {

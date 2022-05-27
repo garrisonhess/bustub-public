@@ -32,9 +32,9 @@ duckdb::scalar_function_t duckdb::SQLiteUDFWrapper::CreateSQLiteScalarFunction(d
 		unique_ptr<sqlite3_value *[]> argv = unique_ptr<sqlite3_value *[]>(new sqlite3_value *[argc]);
 
 		// traversing the vector of sqlite values
-		for (idx_t row_idx = 0; row_idx < res_sqlite_values.size(); ++row_idx) {
+		for (uint64_t row_idx = 0; row_idx < res_sqlite_values.size(); ++row_idx) {
 			// create a tuple from sqlite_values
-			for (idx_t col_idx = 0; col_idx < argc; ++col_idx) {
+			for (uint64_t col_idx = 0; col_idx < argc; ++col_idx) {
 				argv[col_idx] = &(*(vec_sqlite[col_idx]))[row_idx];
 				argv[col_idx]->db = db_sqlite3;
 				db_sqlite3->errCode = SQLITE_OK;

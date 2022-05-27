@@ -11,7 +11,7 @@ void BaseExpression::Print() const {
 }
 
 std::string BaseExpression::GetName() const {
-	return !alias.empty() ? alias : ToString();
+	return !alias_.empty() ? alias_ : ToString();
 }
 
 bool BaseExpression::Equals(const BaseExpression *other) const {

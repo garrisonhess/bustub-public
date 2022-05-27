@@ -28,7 +28,7 @@ bool OperatorExpression::Equals(const OperatorExpression *a, const OperatorExpre
 	if (a->children.size() != b->children.size()) {
 		return false;
 	}
-	for (idx_t i = 0; i < a->children.size(); i++) {
+	for (uint64_t i = 0; i < a->children.size(); i++) {
 		if (!a->children[i]->Equals(b->children[i].get())) {
 			return false;
 		}

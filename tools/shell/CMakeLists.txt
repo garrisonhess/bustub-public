@@ -20,11 +20,11 @@ if(STATIC_LIBCPP)
   target_link_libraries(shell -static-libstdc++ -static-libgcc)
 endif()
 
-if(NOT AMALGAMATION_BUILD AND NOT WIN32)
-  target_link_libraries(shell duckdb_utf8proc)
-endif()
+# if(NOT AMALGAMATION_BUILD AND NOT WIN32)
+#   target_link_libraries(shell duckdb_utf8proc)
+# endif()
 
-set_target_properties(shell PROPERTIES OUTPUT_NAME duckdb)
+set_target_properties(shell PROPERTIES OUTPUT_NAME bustub)
 set_target_properties(shell PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                        ${CMAKE_BINARY_DIR})
 

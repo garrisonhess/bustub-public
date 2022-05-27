@@ -83,11 +83,11 @@ unique_ptr<ParsedExpression> StarExpression::Deserialize(ExpressionType type, Fi
 	auto result = make_unique<StarExpression>();
 	result->relation_name = reader.ReadRequired<string>();
 	auto exclusion_count = reader.ReadRequired<uint32_t>();
-	for (idx_t i = 0; i < exclusion_count; i++) {
+	for (uint64_t i = 0; i < exclusion_count; i++) {
 		result->exclude_list.insert(source.Read<string>());
 	}
 	auto replace_count = reader.ReadRequired<uint32_t>();
-	for (idx_t i = 0; i < replace_count; i++) {
+	for (uint64_t i = 0; i < replace_count; i++) {
 		auto name = source.Read<string>();
 		auto expr = ParsedExpression::Deserialize(source);
 		result->replace_list.insert(make_pair(name, move(expr)));

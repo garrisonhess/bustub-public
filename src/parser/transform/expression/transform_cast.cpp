@@ -11,10 +11,10 @@
 
 // 	// get the type to cast to
 // 	auto type_name = root->typeName;
-// 	LogicalType target_type = TransformTypeName(type_name);
+// 	Type target_type = TransformTypeName(type_name);
 
 // 	// check for a constant BLOB value, then return ConstantExpression with BLOB
-// 	if (!root->tryCast && target_type == LogicalType::BLOB && root->arg->type == bustub_libpgquery::T_PGAConst) {
+// 	if (!root->tryCast && target_type == Type::BLOB && root->arg->type == bustub_libpgquery::T_PGAConst) {
 // 		auto c = reinterpret_cast<bustub_libpgquery::PGAConst *>(root->arg);
 // 		if (c->val.type == bustub_libpgquery::T_PGString) {
 // 			return make_unique<ConstantExpression>(Value::BLOB(string(c->val.val.str)));

@@ -142,7 +142,7 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
 			return SQLITE_OK;
 		}
 		// extract the remainder
-		idx_t next_location = parser.statements[0]->stmt_location + parser.statements[0]->stmt_length;
+		uint64_t next_location = parser.statements[0]->stmt_location + parser.statements[0]->stmt_length;
 		bool set_remainder = next_location < query.size();
 
 		// extract the first statement
@@ -153,7 +153,7 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
 
 		// if there are multiple statements here, we are dealing with an import database statement
 		// we directly execute all statements besides the final one
-		for (idx_t i = 0; i + 1 < statements.size(); i++) {
+		for (uint64_t i = 0; i + 1 < statements.size(); i++) {
 			auto res = db->con->Query(move(statements[i]));
 			if (!res->success) {
 				db->last_error = res->error;
@@ -175,7 +175,7 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
 		stmt->query_string = query;
 		stmt->prepared = move(prepared);
 		stmt->current_row = -1;
-		for (idx_t i = 0; i < stmt->prepared->n_param; i++) {
+		for (uint64_t i = 0; i < stmt->prepared->n_param; i++) {
 			stmt->bound_names.push_back("$" + to_string(i + 1));
 			stmt->bound_values.push_back(Value());
 		}
@@ -538,7 +538,7 @@ int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) {
 	if (!stmt || !zName) {
 		return 0;
 	}
-	for (idx_t i = 0; i < stmt->bound_names.size(); i++) {
+	for (uint64_t i = 0; i < stmt->bound_names.size(); i++) {
 		if (stmt->bound_names[i] == string(zName)) {
 			return i + 1;
 		}
@@ -1171,7 +1171,7 @@ int sqlite3_create_function(sqlite3 *db, const char *zFunctionName, int nArg, in
 	}
 
 	vector<LogicalType> argv_types(nArg);
-	for (idx_t i = 0; i < (idx_t)nArg; ++i) {
+	for (uint64_t i = 0; i < (uint64_t)nArg; ++i) {
 		argv_types[i] = LogicalType::ANY;
 	}
 

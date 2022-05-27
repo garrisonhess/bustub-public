@@ -24,7 +24,7 @@ string UpdateStatement::ToString() const {
 	result += table->ToString();
 	result += " SET ";
 	D_ASSERT(columns.size() == expressions.size());
-	for (idx_t i = 0; i < columns.size(); i++) {
+	for (uint64_t i = 0; i < columns.size(); i++) {
 		if (i > 0) {
 			result += ", ";
 		}
@@ -40,7 +40,7 @@ string UpdateStatement::ToString() const {
 	}
 	if (!returning_list.empty()) {
 		result += " RETURNING ";
-		for (idx_t i = 0; i < returning_list.size(); i++) {
+		for (uint64_t i = 0; i < returning_list.size(); i++) {
 			if (i > 0) {
 				result += ", ";
 			}

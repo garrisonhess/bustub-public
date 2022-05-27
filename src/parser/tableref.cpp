@@ -19,7 +19,7 @@ string TableRef::BaseToString(string result, const vector<string> &column_name_a
 	if (!column_name_alias.empty()) {
 		D_ASSERT(!alias.empty());
 		result += "(";
-		for (idx_t i = 0; i < column_name_alias.size(); i++) {
+		for (uint64_t i = 0; i < column_name_alias.size(); i++) {
 			if (i > 0) {
 				result += ", ";
 			}

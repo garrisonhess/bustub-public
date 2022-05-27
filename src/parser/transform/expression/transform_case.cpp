@@ -29,7 +29,7 @@
 // 	if (root->defresult) {
 // 		case_node->else_expr = TransformExpression(reinterpret_cast<bustub_libpgquery::PGNode *>(root->defresult));
 // 	} else {
-// 		case_node->else_expr = make_unique<ConstantExpression>(Value(LogicalType::SQLNULL));
+// 		case_node->else_expr = make_unique<ConstantExpression>(Value(Type::SQLNULL));
 // 	}
 // 	return move(case_node);
 // }

@@ -13,7 +13,7 @@ unique_ptr<TableRef> Transformer::TransformFrom(bustub_libpgquery::PGList *root)
 		// Cross Product
 		auto result = make_unique<CrossProductRef>();
 		CrossProductRef *cur_root = result.get();
-		idx_t list_size = 0;
+		uint64_t list_size = 0;
 		for (auto node = root->head; node != nullptr; node = node->next) {
 			auto n = reinterpret_cast<bustub_libpgquery::PGNode *>(node->data.ptr_value);
 			unique_ptr<TableRef> next = TransformTableRefNode(n);

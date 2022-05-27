@@ -1,13 +1,13 @@
 #include "udf_struct_sqlite3.h"
 #include "sqlite3_value_type.hpp"
 
-#include "duckdb/common/types/vector.hpp"
-#include "duckdb/common/constants.hpp"
-#include "duckdb/common/operator/cast_operators.hpp"
-#include "duckdb/common/types/data_chunk.hpp"
-#include "duckdb/common/operator/string_cast.hpp"
+#include "common/types/vector.hpp"
+#include "common/constants.hpp"
+#include "common/operator/cast_operators.hpp"
+#include "common/types/data_chunk.hpp"
+#include "common/operator/string_cast.hpp"
 
-namespace duckdb {
+namespace bustub {
 
 struct CastFromSQLiteValue {
 	/**
@@ -29,15 +29,15 @@ struct CastSQLite {
 	                                       vector<unique_ptr<vector<sqlite3_value>>> &vec_sqlites,
 	                                       unique_ptr<VectorData[]> vec_data);
 
-	static unique_ptr<vector<sqlite3_value>> ToVector(LogicalType type, VectorData &vec_data, idx_t size,
+	static unique_ptr<vector<sqlite3_value>> ToVector(LogicalType type, VectorData &vec_data, uint64_t size,
 	                                                  Vector &result);
 
 	static void ToVectorString(SQLiteTypeValue type, vector<sqlite3_value> &vec_sqlite, Vector &result);
 
 	template <class T>
-	static void ToVectorStringValue(sqlite3_value *__restrict data, idx_t count, string_t *__restrict result_data,
+	static void ToVectorStringValue(sqlite3_value *__restrict data, uint64_t count, string_t *__restrict result_data,
 	                                Vector &result) {
-		for (idx_t i = 0; i < count; ++i) {
+		for (uint64_t i = 0; i < count; ++i) {
 			T value = CastFromSQLiteValue::GetValue<T>(data[i]);
 			result_data[i] = StringCast::Operation(value, result);
 		}
@@ -46,7 +46,7 @@ struct CastSQLite {
 };
 // Specialization from string_t
 template <>
-void CastSQLite::ToVectorStringValue<string_t>(sqlite3_value *__restrict data, idx_t count,
+void CastSQLite::ToVectorStringValue<string_t>(sqlite3_value *__restrict data, uint64_t count,
                                                string_t *__restrict result_data, Vector &result);
 
 struct CastToSQLiteValue {
@@ -87,20 +87,20 @@ struct CastToSQLiteValue {
 struct CastToVectorSQLiteValue {
 
 	template <class INPUT_TYPE, class OPCAST>
-	static inline unique_ptr<vector<sqlite3_value>> Operation(VectorData &vec_data, idx_t count) {
+	static inline unique_ptr<vector<sqlite3_value>> Operation(VectorData &vec_data, uint64_t count) {
 		unique_ptr<vector<sqlite3_value>> result = make_unique<vector<sqlite3_value>>(count);
 		auto res_data = (*result).data();
 
 		auto input_data = (INPUT_TYPE *)vec_data.data;
 
 		if (vec_data.validity.AllValid()) {
-			for (idx_t i = 0; i < count; ++i) {
+			for (uint64_t i = 0; i < count; ++i) {
 				res_data[i] = OPCAST::template Operation<INPUT_TYPE>(input_data[i]);
 			}
 			return result;
 		}
 
-		for (idx_t i = 0; i < count; ++i) {
+		for (uint64_t i = 0; i < count; ++i) {
 			auto idx = vec_data.sel->get_index(i);
 			if (vec_data.validity.RowIsValidUnsafe(idx)) {
 				res_data[i] = OPCAST::template Operation<INPUT_TYPE>(input_data[idx]);
@@ -111,10 +111,10 @@ struct CastToVectorSQLiteValue {
 		return result;
 	}
 
-	static inline unique_ptr<vector<sqlite3_value>> FromNull(idx_t count) {
+	static inline unique_ptr<vector<sqlite3_value>> FromNull(uint64_t count) {
 		unique_ptr<vector<sqlite3_value>> result = make_unique<vector<sqlite3_value>>(count);
 		auto res_data = (*result).data();
-		for (idx_t i = 0; i < count; ++i) {
+		for (uint64_t i = 0; i < count; ++i) {
 			res_data[i] = CastToSQLiteValue::OperationNull();
 		}
 		return result;
@@ -160,4 +160,4 @@ double CastFromSQLiteValue::GetValue(sqlite3_value input);
 template <>
 string_t CastFromSQLiteValue::GetValue(sqlite3_value input);
 
-} // namespace duckdb
+} // namespace bustub
