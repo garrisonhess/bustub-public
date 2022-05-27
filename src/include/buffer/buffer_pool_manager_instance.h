@@ -18,12 +18,11 @@
 
 #include "buffer/buffer_pool_manager.h"
 #include "buffer/lru_replacer.h"
-#include "main/database.h"
 #include "storage/disk/disk_manager.h"
 #include "storage/page/page.h"
 
 namespace bustub {
-class DatabaseInstance;
+// class DatabaseInstance;
 
 /**
  * BufferPoolManager reads disk pages to and from its internal buffer pool.
@@ -58,7 +57,7 @@ class BufferPoolManagerInstance : public BufferPoolManager {
   /** @return pointer to all the pages in the buffer pool */
   Page *GetPages() { return pages_; }
 
-  // BufferPoolManagerInstance &Get(DatabaseInstance &db);
+  static BufferPoolManagerInstance &Get(DatabaseInstance &db);
 
  protected:
   /**

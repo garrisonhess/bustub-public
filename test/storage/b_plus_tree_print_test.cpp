@@ -57,11 +57,15 @@ TEST(BptTreeTest, DISABLED_UnitTest) {
   auto key_schema = ParseCreateStatement(create_stmt);
   GenericComparator<8> comparator(key_schema.get());
 
-  DiskManager *disk_manager = new DiskManager("test.db");
-  BufferPoolManager *bpm = new BufferPoolManagerInstance(100, disk_manager);
+  // DiskManager *disk_manager = new DiskManager("test.db");
+  // BufferPoolManager *bpm = new BufferPoolManagerInstance(100, disk_manager);
+
+  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub());
+  auto bpm = BufferPoolManagerInstance::Get(*tub->instance_);
+
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto header_page = bpm.NewPage(&page_id);
   // create b+ tree
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator, leaf_max_size, internal_max_size);
   // create transaction

@@ -13,6 +13,7 @@
 #include <cassert>
 
 #include "storage/table/table_heap.h"
+#include "buffer/buffer_pool_manager_instance.h"
 
 namespace bustub {
 
@@ -34,7 +35,7 @@ Tuple *TableIterator::operator->() {
 }
 
 TableIterator &TableIterator::operator++() {
-  BufferPoolManager &bpm = table_heap_->db_.GetBufferPoolManager();
+  BufferPoolManagerInstance &bpm = table_heap_->db_.GetBufferPoolManager();
   auto cur_page = static_cast<TablePage *>(bpm.FetchPage(tuple_->rid_.GetPageId()));
   cur_page->RLatch();
   assert(cur_page != nullptr);  // all pages are pinned
