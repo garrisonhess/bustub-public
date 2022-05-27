@@ -45,7 +45,7 @@ class RecoveryTest : public ::testing::Test {
 
 // NOLINTNEXTLINE
 TEST_F(RecoveryTest, DISABLED_RedoTest) {
-  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub());
+  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("test.db"));
   shared_ptr<DatabaseInstance> db = tub->instance_;
 
   ASSERT_FALSE(enable_logging);

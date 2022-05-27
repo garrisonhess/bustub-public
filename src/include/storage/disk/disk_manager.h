@@ -91,7 +91,7 @@ class DiskManager {
   /** Checks if the non-blocking flush future was set. */
   inline bool HasFlushLogFuture() { return flush_log_f_ != nullptr; }
 
-  DiskManager &Get(DatabaseInstance &db);
+  static DiskManager &Get(DatabaseInstance &db);
 
  private:
   int GetFileSize(const std::string &file_name);

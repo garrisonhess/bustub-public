@@ -9,7 +9,7 @@
 #include <memory>
 
 namespace bustub {
-  class BufferPoolManagerInstance;
+class BufferPoolManagerInstance;
 
 using std::make_unique;
 
@@ -28,7 +28,9 @@ Catalog &DatabaseInstance::GetCatalog() { return *catalog_; }
 LockManager &DatabaseInstance::GetLockManager() { return *lock_manager_; }
 
 // The initialization must occur in DB-bootstrap order.
-void DatabaseInstance::Initialize(const char *path, DBConfig *new_config) {
+void DatabaseInstance::Initialize(const char *path, DBConfig *config) {
+
+
   int default_num_frames = 1234;
   disk_manager_ = make_unique<DiskManager>(path);
   buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, default_num_frames);
@@ -39,9 +41,17 @@ void DatabaseInstance::Initialize(const char *path, DBConfig *new_config) {
   transaction_manager_ = make_unique<TransactionManager>(*this);
 }
 
-BusTub::BusTub(const char *path, DBConfig *new_config) : instance_(make_shared<DatabaseInstance>()) {
-  instance_->Initialize(path, new_config);
+BusTub::BusTub(const string &path, DBConfig *config) : BusTub(path.c_str(), config) {}
+
+BusTub::BusTub(const char *path, DBConfig *config) : instance_(make_shared<DatabaseInstance>()) {
+  if (config == nullptr){
+    config = new DBConfig();
+  }
+  
+  instance_->Initialize(path, config);
 }
+
+// BusTub::BusTub(DatabaseInstance &instance) : instance_(instance.shared_from_this()) {}
 
 TransactionManager &TransactionManager::Get(DatabaseInstance &db) { return db.GetTransactionManager(); }
 
@@ -57,12 +67,8 @@ Catalog &Catalog::Get(DatabaseInstance &db) { return db.GetCatalog(); }
 
 LockManager &LockManager::Get(DatabaseInstance &db) { return db.GetLockManager(); }
 
-// BusTub::BusTub(const string &path, DBConfig *config) : DuckDB(path.c_str(), config) {}
 
-// BusTub::BusTub(DatabaseInstance &instance_p) : instance(instance_p.shared_from_this()) {}
 
-// Catalog &DatabaseInstance::GetCatalog() { return *catalog; }
 
-// TransactionManager &DatabaseInstance::GetTransactionManager() { return *transaction_manager; }
 
 }  // namespace bustub
