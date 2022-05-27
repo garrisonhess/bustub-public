@@ -1,15 +1,15 @@
-#include "parser/statement/load_statement.h"
+// #include "parser/statement/load_statement.h"
 
-namespace bustub {
+// namespace bustub {
 
-LoadStatement::LoadStatement() : SQLStatement(StatementType::LOAD_STATEMENT) {
-}
+// LoadStatement::LoadStatement() : SQLStatement(StatementType::LOAD_STATEMENT) {
+// }
 
-LoadStatement::LoadStatement(const LoadStatement &other) : SQLStatement(other), info(other.info->Copy()) {
-}
+// LoadStatement::LoadStatement(const LoadStatement &other) : SQLStatement(other), info(other.info->Copy()) {
+// }
 
-unique_ptr<SQLStatement> LoadStatement::Copy() const {
-	return unique_ptr<LoadStatement>(new LoadStatement(*this));
-}
+// unique_ptr<SQLStatement> LoadStatement::Copy() const {
+// 	return unique_ptr<LoadStatement>(new LoadStatement(*this));
+// }
 
-} // namespace bustub
+// } // namespace bustub

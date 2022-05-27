@@ -1,30 +1,30 @@
-//===----------------------------------------------------------------------===//
-//                         DuckDB
-//
-// bustub/parser/statement/vacuum_statement.h
-//
-//
-//===----------------------------------------------------------------------===//
+// //===----------------------------------------------------------------------===//
+// //                         DuckDB
+// //
+// // bustub/parser/statement/vacuum_statement.h
+// //
+// //
+// //===----------------------------------------------------------------------===//
 
-#pragma once
+// #pragma once
 
-#include "parser/parsed_data/vacuum_info.h"
-#include "parser/parsed_expression.h"
-#include "parser/sql_statement.h"
+// #include "parser/parsed_data/vacuum_info.h"
+// #include "parser/parsed_expression.h"
+// #include "parser/sql_statement.h"
 
-namespace bustub {
+// namespace bustub {
 
-class VacuumStatement : public SQLStatement {
- public:
-  VacuumStatement();
+// class VacuumStatement : public SQLStatement {
+//  public:
+//   VacuumStatement();
 
-  unique_ptr<VacuumInfo> info;
+//   unique_ptr<VacuumInfo> info;
 
- protected:
-  VacuumStatement(const VacuumStatement &other) : SQLStatement(other){};
+//  protected:
+//   VacuumStatement(const VacuumStatement &other) : SQLStatement(other){};
 
- public:
-  unique_ptr<SQLStatement> Copy() const override;
-};
+//  public:
+//   unique_ptr<SQLStatement> Copy() const override;
+// };
 
-}  // namespace bustub
+// }  // namespace bustub

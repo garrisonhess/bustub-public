@@ -1,30 +1,30 @@
-//===----------------------------------------------------------------------===//
-//                         DuckDB
-//
-// bustub/parser/statement/execute_statement.h
-//
-//
-//===----------------------------------------------------------------------===//
+// //===----------------------------------------------------------------------===//
+// //                         DuckDB
+// //
+// // bustub/parser/statement/execute_statement.h
+// //
+// //
+// //===----------------------------------------------------------------------===//
 
-#pragma once
+// #pragma once
 
-#include "common/vector.h"
-#include "parser/parsed_expression.h"
-#include "parser/sql_statement.h"
+// #include "common/vector.h"
+// #include "parser/parsed_expression.h"
+// #include "parser/sql_statement.h"
 
-namespace bustub {
+// namespace bustub {
 
-class ExecuteStatement : public SQLStatement {
- public:
-  ExecuteStatement();
+// class ExecuteStatement : public SQLStatement {
+//  public:
+//   ExecuteStatement();
 
-  string name;
-  vector<unique_ptr<ParsedExpression>> values;
+//   string name;
+//   vector<unique_ptr<ParsedExpression>> values;
 
- protected:
-  ExecuteStatement(const ExecuteStatement &other);
+//  protected:
+//   ExecuteStatement(const ExecuteStatement &other);
 
- public:
-  unique_ptr<SQLStatement> Copy() const override;
-};
-}  // namespace bustub
+//  public:
+//   unique_ptr<SQLStatement> Copy() const override;
+// };
+// }  // namespace bustub

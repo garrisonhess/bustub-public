@@ -1,5 +1,5 @@
 #include "common/exception.h"
-#include "parser/expression/default_expression.h"
+// #include "parser/expression/default_expression.h"
 #include "parser/transformer.h"
 
 namespace bustub {
@@ -12,7 +12,7 @@ unique_ptr<ParsedExpression> Transformer::TransformResTarget(bustub_libpgquery::
 		return nullptr;
 	}
 	if (root->name != nullptr) {
-		expr->alias = string(root->name);
+		expr->alias_ = string(root->name);
 	}
 	return expr;
 }
@@ -20,9 +20,9 @@ unique_ptr<ParsedExpression> Transformer::TransformResTarget(bustub_libpgquery::
 unique_ptr<ParsedExpression> Transformer::TransformNamedArg(bustub_libpgquery::PGNamedArgExpr *root) {
 	// D_ASSERT(root);
 
-	auto expr = TransformExpression((bustub_libpgquery::PGNode *)root->arg);
+	auto expr = TransformExpression(reinterpret_cast<bustub_libpgquery::PGNode *>(root->arg));
 	if (root->name != nullptr) {
-		expr->alias = string(root->name);
+		expr->alias_ = string(root->name);
 	}
 	return expr;
 }
@@ -64,7 +64,7 @@ unique_ptr<ParsedExpression> Transformer::TransformExpression(bustub_libpgquery:
 	case bustub_libpgquery::T_PGSQLValueFunction:
 		return TransformSQLValueFunction(reinterpret_cast<bustub_libpgquery::PGSQLValueFunction *>(node));
 	case bustub_libpgquery::T_PGSetToDefault:
-		return std::make_unique<DefaultExpression>();
+		// return std::make_unique<DefaultExpression>();
 	case bustub_libpgquery::T_PGCollateClause:
 		return TransformCollateExpr(reinterpret_cast<bustub_libpgquery::PGCollateClause *>(node));
 	case bustub_libpgquery::T_PGIntervalConstant:

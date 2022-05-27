@@ -253,7 +253,7 @@ class Transformer {
 
  private:
   //! Current stack depth
-  int64_t stack_depth_;
+  uint64_t stack_depth_;
 
   void InitializeStackCheck();
   StackChecker StackCheck(int64_t extra_stack = 1);

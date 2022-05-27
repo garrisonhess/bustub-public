@@ -1,15 +1,15 @@
-#include "parser/statement/call_statement.h"
+// #include "parser/statement/call_statement.h"
 
-namespace bustub {
+// namespace bustub {
 
-CallStatement::CallStatement() : SQLStatement(StatementType::CALL_STATEMENT) {
-}
+// CallStatement::CallStatement() : SQLStatement(StatementType::CALL_STATEMENT) {
+// }
 
-CallStatement::CallStatement(const CallStatement &other) : SQLStatement(other), function(other.function->Copy()) {
-}
+// CallStatement::CallStatement(const CallStatement &other) : SQLStatement(other), function(other.function->Copy()) {
+// }
 
-unique_ptr<SQLStatement> CallStatement::Copy() const {
-	return unique_ptr<CallStatement>(new CallStatement(*this));
-}
+// unique_ptr<SQLStatement> CallStatement::Copy() const {
+// 	return unique_ptr<CallStatement>(new CallStatement(*this));
+// }
 
-} // namespace bustub
+// } // namespace bustub

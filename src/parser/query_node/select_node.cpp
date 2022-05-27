@@ -1,7 +1,7 @@
 #include "parser/query_node/select_node.h"
 // #include "parser/expression_util.h"
 #include "common/field_writer.h"
-#include "parser/keyword_helper.h"
+// #include "parser/keyword_helper.h"
 
 namespace bustub {
 
@@ -155,7 +155,7 @@ bool SelectNode::Equals(const QueryNode *other_p) const {
 }
 
 unique_ptr<QueryNode> SelectNode::Copy() const {
-	// auto result = make_unique<SelectNode>();
+	auto result = std::make_unique<SelectNode>();
 	// for (auto &child : select_list) {
 	// 	result->select_list.push_back(child->Copy());
 	// }
@@ -171,7 +171,7 @@ unique_ptr<QueryNode> SelectNode::Copy() const {
 	// result->qualify = qualify ? qualify->Copy() : nullptr;
 	// result->sample = sample ? sample->Copy() : nullptr;
 	// this->CopyProperties(*result);
-	// return move(result);
+	return result;
 }
 
 void SelectNode::Serialize(FieldWriter &writer) const {
@@ -214,7 +214,7 @@ unique_ptr<QueryNode> SelectNode::Deserialize(FieldReader &reader) {
 	// result->having = reader.ReadOptional<ParsedExpression>(nullptr);
 	// result->sample = reader.ReadOptional<SampleOptions>(nullptr);
 	// result->qualify = reader.ReadOptional<ParsedExpression>(nullptr);
-	return move(result);
+	return result;
 }
 
 } // namespace bustub

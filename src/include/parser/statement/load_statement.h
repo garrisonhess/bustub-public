@@ -1,28 +1,28 @@
-//===----------------------------------------------------------------------===//
-//                         DuckDB
-//
-// bustub/parser/statement/load_statement.h
-//
-//
-//===----------------------------------------------------------------------===//
+// //===----------------------------------------------------------------------===//
+// //                         DuckDB
+// //
+// // bustub/parser/statement/load_statement.h
+// //
+// //
+// //===----------------------------------------------------------------------===//
 
-#pragma once
+// #pragma once
 
-#include "parser/parsed_data/load_info.h"
-#include "parser/sql_statement.h"
+// #include "parser/parsed_data/load_info.h"
+// #include "parser/sql_statement.h"
 
-namespace bustub {
+// namespace bustub {
 
-class LoadStatement : public SQLStatement {
- public:
-  LoadStatement();
+// class LoadStatement : public SQLStatement {
+//  public:
+//   LoadStatement();
 
- protected:
-  LoadStatement(const LoadStatement &other);
+//  protected:
+//   LoadStatement(const LoadStatement &other);
 
- public:
-  unique_ptr<SQLStatement> Copy() const override;
+//  public:
+//   unique_ptr<SQLStatement> Copy() const override;
 
-  unique_ptr<LoadInfo> info;
-};
-}  // namespace bustub
+//   unique_ptr<LoadInfo> info;
+// };
+// }  // namespace bustub

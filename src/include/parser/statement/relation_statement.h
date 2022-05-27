@@ -1,29 +1,29 @@
-//===----------------------------------------------------------------------===//
-//                         DuckDB
-//
-// bustub/parser/statement/relation_statement.h
-//
-//
-//===----------------------------------------------------------------------===//
+// //===----------------------------------------------------------------------===//
+// //                         DuckDB
+// //
+// // bustub/parser/statement/relation_statement.h
+// //
+// //
+// //===----------------------------------------------------------------------===//
 
-#pragma once
+// #pragma once
 
-#include "main/relation.h"
-#include "parser/sql_statement.h"
+// #include "main/relation.h"
+// #include "parser/sql_statement.h"
 
-namespace bustub {
+// namespace bustub {
 
-class RelationStatement : public SQLStatement {
- public:
-  explicit RelationStatement(shared_ptr<Relation> relation);
+// class RelationStatement : public SQLStatement {
+//  public:
+//   explicit RelationStatement(shared_ptr<Relation> relation);
 
-  shared_ptr<Relation> relation;
+//   shared_ptr<Relation> relation;
 
- protected:
-  RelationStatement(const RelationStatement &other) = default;
+//  protected:
+//   RelationStatement(const RelationStatement &other) = default;
 
- public:
-  unique_ptr<SQLStatement> Copy() const override;
-};
+//  public:
+//   unique_ptr<SQLStatement> Copy() const override;
+// };
 
-}  // namespace bustub
+// }  // namespace bustub
