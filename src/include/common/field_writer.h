@@ -31,7 +31,7 @@ class BufferedSerializer;
 class FieldWriter {
  public:
   explicit FieldWriter(Serializer &serializer);
-  ~FieldWriter();
+  ~FieldWriter() = default;
 
  public:
   template <class T>
@@ -39,7 +39,7 @@ class FieldWriter {
     static_assert(std::is_trivially_destructible<T>(), "WriteField object must be trivially destructible");
 
     AddField();
-    WriteData((const_data_ptr_t)&element, sizeof(T));
+    // WriteData((const_data_ptr_t)&element, sizeof(T));
   }
 
   //! Write a string with a length prefix
@@ -110,7 +110,7 @@ class FieldWriter {
 
   template <class T>
   void Write(const T &element) {
-    WriteData((const_data_ptr_t)&element, sizeof(T));
+    // WriteData((const_data_ptr_t)&element, sizeof(T));
   }
 
   void WriteData(const_data_ptr_t buffer, uint64_t write_size);
@@ -143,7 +143,7 @@ class FieldDeserializer : public Deserializer {
 class FieldReader {
  public:
   explicit FieldReader(Deserializer &source);
-  ~FieldReader();
+  ~FieldReader() = default;
 
  public:
   template <class T>
@@ -254,6 +254,7 @@ class FieldReader {
   //   }
   //   return result;
   // }
+
   void ReadBlob(data_ptr_t result, uint64_t read_size) {
     if (field_count_ >= max_field_count_) {
       // field is not there, throw an exception

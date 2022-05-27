@@ -30,7 +30,7 @@ void Parser::ParseQuery(const std::string &query) {
   LOG_INFO("parser success: %d", parser.success);
 
   // Transformer transformer(options.max_expression_depth);
-  Transformer transformer(1000);
+  Transformer transformer(nullptr);
   {
     // PostgresParser::SetPreserveIdentifierCase(options.preserve_identifier_case);
     PostgresParser parser;

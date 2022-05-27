@@ -1,11 +1,11 @@
-// #include "parser/parsed_expression.hpp"
+#include "parser/parsed_expression.h"
 
-// #include "common/field_writer.hpp"
-// #include "common/types/hash.hpp"
-// #include "parser/expression/list.hpp"
-// #include "parser/parsed_expression_iterator.hpp"
+#include "common/field_writer.h"
+#include "common/util/hash_util.h"
+// #include "parser/expression/list.h"
+// #include "parser/parsed_expression_iterator.h"
 
-// namespace bustub {
+namespace bustub {
 
 // bool ParsedExpression::IsAggregate() const {
 // 	bool is_aggregate = false;
@@ -90,86 +90,87 @@
 // 	}
 // }
 
-// hash_t ParsedExpression::Hash() const {
-// 	hash_t hash = bustub::Hash<uint32_t>((uint32_t)type);
-// 	ParsedExpressionIterator::EnumerateChildren(
-// 	    *this, [&](const ParsedExpression &child) { hash = CombineHash(child.Hash(), hash); });
-// 	return hash;
-// }
+hash_t ParsedExpression::Hash() const {
+	// hash_t hash = Hash<uint32_t>((uint32_t)type_);
+	// ParsedExpressionIterator::EnumerateChildren(
+	//     *this, [&](const ParsedExpression &child) { hash = CombineHash(child.Hash(), hash); });
+	// return hash;
+	return 0;
+}
 
-// void ParsedExpression::Serialize(Serializer &serializer) const {
-// 	FieldWriter writer(serializer);
-// 	writer.WriteField<ExpressionClass>(GetExpressionClass());
-// 	writer.WriteField<ExpressionType>(type);
-// 	writer.WriteString(alias);
-// 	Serialize(writer);
-// 	writer.Finalize();
-// }
+void ParsedExpression::Serialize(Serializer &serializer) const {
+	FieldWriter writer(serializer);
+	writer.WriteField<ExpressionClass>(GetExpressionClass());
+	writer.WriteField<ExpressionType>(type_);
+	writer.WriteString(alias_);
+	Serialize(writer);
+	writer.Finalize();
+}
 
-// unique_ptr<ParsedExpression> ParsedExpression::Deserialize(Deserializer &source) {
-// 	FieldReader reader(source);
-// 	auto expression_class = reader.ReadRequired<ExpressionClass>();
-// 	auto type = reader.ReadRequired<ExpressionType>();
-// 	auto alias = reader.ReadRequired<string>();
-// 	unique_ptr<ParsedExpression> result;
-// 	switch (expression_class) {
-// 	case ExpressionClass::BETWEEN:
-// 		result = BetweenExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::CASE:
-// 		result = CaseExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::CAST:
-// 		result = CastExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::COLLATE:
-// 		result = CollateExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::COLUMN_REF:
-// 		result = ColumnRefExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::COMPARISON:
-// 		result = ComparisonExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::CONJUNCTION:
-// 		result = ConjunctionExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::CONSTANT:
-// 		result = ConstantExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::DEFAULT:
-// 		result = DefaultExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::FUNCTION:
-// 		result = FunctionExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::LAMBDA:
-// 		result = LambdaExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::OPERATOR:
-// 		result = OperatorExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::PARAMETER:
-// 		result = ParameterExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::POSITIONAL_REFERENCE:
-// 		result = PositionalReferenceExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::STAR:
-// 		result = StarExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::SUBQUERY:
-// 		result = SubqueryExpression::Deserialize(type, reader);
-// 		break;
-// 	case ExpressionClass::WINDOW:
-// 		result = WindowExpression::Deserialize(type, reader);
-// 		break;
-// 	default:
-// 		throw SerializationException("Unsupported type for expression deserialization!");
-// 	}
-// 	result->alias = alias;
-// 	reader.Finalize();
-// 	return result;
-// }
+unique_ptr<ParsedExpression> ParsedExpression::Deserialize(Deserializer &source) {
+	FieldReader reader(source);
+	// auto expression_class = reader.ReadRequired<ExpressionClass>();
+	// auto type = reader.ReadRequired<ExpressionType>();
+	auto alias = reader.ReadRequired<string>();
+	unique_ptr<ParsedExpression> result;
+	// switch (expression_class) {
+	// case ExpressionClass::BETWEEN:
+	// 	result = BetweenExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::CASE:
+	// 	result = CaseExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::CAST:
+	// 	result = CastExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::COLLATE:
+	// 	result = CollateExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::COLUMN_REF:
+	// 	result = ColumnRefExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::COMPARISON:
+	// 	result = ComparisonExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::CONJUNCTION:
+	// 	result = ConjunctionExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::CONSTANT:
+	// 	result = ConstantExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::DEFAULT:
+	// 	result = DefaultExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::FUNCTION:
+	// 	result = FunctionExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::LAMBDA:
+	// 	result = LambdaExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::OPERATOR:
+	// 	result = OperatorExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::PARAMETER:
+	// 	result = ParameterExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::POSITIONAL_REFERENCE:
+	// 	result = PositionalReferenceExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::STAR:
+	// 	result = StarExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::SUBQUERY:
+	// 	result = SubqueryExpression::Deserialize(type, reader);
+	// 	break;
+	// case ExpressionClass::WINDOW:
+	// 	result = WindowExpression::Deserialize(type, reader);
+	// 	break;
+	// default:
+	// 	throw SerializationException("Unsupported type for expression deserialization!");
+	// }
+	result->alias_ = alias;
+	reader.Finalize();
+	return result;
+}
 
-// } // namespace bustub
+} // namespace bustub

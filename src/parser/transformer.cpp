@@ -20,9 +20,6 @@ namespace bustub {
 //   other.stack_usage_ = 0;
 // }
 
-// Transformer::Transformer(uint64_t max_expression_depth_p)
-//     : parent_(nullptr), max_expression_depth_(max_expression_depth_p), stack_depth_(-1) {}
-
 Transformer::Transformer(Transformer *parent)
     : parent_(parent), max_expression_depth_(parent->max_expression_depth_)  {}
 
