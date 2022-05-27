@@ -18,6 +18,7 @@
 #include "storage/page/page.h"
 
 namespace bustub {
+class DatabaseInstance;
 
 class ParallelBufferPoolManager : public BufferPoolManager {
  public:
@@ -28,8 +29,7 @@ class ParallelBufferPoolManager : public BufferPoolManager {
    * @param disk_manager the disk manager
    * @param log_manager the log manager (for testing only: nullptr = disable logging)
    */
-  ParallelBufferPoolManager(size_t num_instances, size_t pool_size, DiskManager *disk_manager,
-                            LogManager *log_manager = nullptr);
+  explicit ParallelBufferPoolManager(DatabaseInstance &db, size_t num_instances, size_t pool_size);
 
   /**
    * Destroys an existing ParallelBufferPoolManager.
