@@ -88,6 +88,8 @@ class BufferPoolManager {
   /** @return size of the buffer pool */
   virtual size_t GetPoolSize() = 0;
 
+  BufferPoolManager &Get(DatabaseInstance &db);
+
  protected:
   /**
    * Grading function. Do not modify!

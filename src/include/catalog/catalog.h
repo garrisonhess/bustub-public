@@ -180,6 +180,8 @@ class Catalog {
    */
   std::vector<IndexInfo *> GetTableIndexes(const std::string &table_name);
 
+  Catalog &Get(DatabaseInstance &db);
+
  private:
   DatabaseInstance &db_;
 

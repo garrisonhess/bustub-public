@@ -75,6 +75,8 @@ class TransactionManager {
    */
   void ReleaseLocks(Transaction *txn);
 
+  static TransactionManager &Get(DatabaseInstance &db);
+
   /**
    * Global list of running transactions
    */

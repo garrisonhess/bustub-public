@@ -12,6 +12,7 @@
 
 #include <cassert>
 
+#include "buffer/parallel_buffer_pool_manager.h"
 #include "common/logger.h"
 #include "storage/table/table_heap.h"
 
@@ -162,7 +163,10 @@ bool TableHeap::GetTuple(const RID &rid, Tuple *tuple, Transaction *txn) {
   page->RLatch();
   bool res = page->GetTuple(rid, tuple, txn, &db_.GetLockManager());
   page->RUnlatch();
-  db_.GetBufferPoolManager().UnpinPage(rid.GetPageId(), false);
+  // ParallelBufferPoolManager & x = db_.GetBufferPoolManager();
+  // x.UnpinPage(rid.GetPageId(), false);
+db_.GetBufferPoolManager().UnpinPage(rid.GetPageId(), false);
+
   return res;
 }
 

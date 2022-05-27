@@ -19,8 +19,10 @@
 #include <string>
 
 #include "main/config.h"
+#include "main/database.h"
 
 namespace bustub {
+class DatabaseInstance;
 
 /**
  * DiskManager takes care of the allocation and deallocation of pages within a database. It performs the reading and
@@ -88,6 +90,8 @@ class DiskManager {
 
   /** Checks if the non-blocking flush future was set. */
   inline bool HasFlushLogFuture() { return flush_log_f_ != nullptr; }
+
+  DiskManager &Get(DatabaseInstance &db);
 
  private:
   int GetFileSize(const std::string &file_name);

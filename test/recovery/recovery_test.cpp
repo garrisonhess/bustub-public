@@ -44,13 +44,13 @@ class RecoveryTest : public ::testing::Test {
 
 // NOLINTNEXTLINE
 TEST_F(RecoveryTest, DISABLED_RedoTest) {
-
-  BusTub * tub = new BusTub();
+  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub());
 
   ASSERT_FALSE(enable_logging);
   LOG_INFO("Skip system recovering...");
 
-  bustub_instance->log_manager_->RunFlushThread();
+  LogManager::Get(*tub)->RunFlushThread();
+  tub->log_manager_->RunFlushThread();
   ASSERT_TRUE(enable_logging);
   LOG_INFO("System logging thread running...");
 

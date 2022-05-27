@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "buffer/buffer_pool_manager_instance.h"
+#include "buffer/buffer_pool_manager.h"
 #include "common/constants.h"
 #include "concurrency/lock_manager.h"
 #include "main/config.h"
@@ -22,8 +22,12 @@
 
 namespace bustub {
 class CheckpointManager;
+class DiskManager;
+class LogManager;
+class LockManager;
+class BufferPoolManager;
 
-class DatabaseInstance {
+class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
   friend class BusTub;
 
  public:

@@ -2,6 +2,7 @@
 
 #include "main/database.h"
 #include "buffer/buffer_pool_manager.h"
+#include "buffer/parallel_buffer_pool_manager.h"
 #include "catalog/catalog.h"
 #include "recovery/checkpoint_manager.h"
 #include "storage/disk/disk_manager.h"
@@ -29,7 +30,7 @@ LockManager &DatabaseInstance::GetLockManager() { return *lock_manager_; }
 void DatabaseInstance::Initialize(const char *path, DBConfig *new_config) {
   int default_num_frames = 1234;
   disk_manager_ = make_unique<DiskManager>(path);
-  buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, default_num_frames);
+  buffer_pool_manager_ = make_unique<ParallelBufferPoolManager>(*this, 1, default_num_frames);
   checkpoint_manager_ = make_unique<CheckpointManager>(*this);
   catalog_ = make_unique<Catalog>(*this);
   log_manager_ = make_unique<LogManager>(*this->disk_manager_);
@@ -40,6 +41,20 @@ void DatabaseInstance::Initialize(const char *path, DBConfig *new_config) {
 BusTub::BusTub(const char *path, DBConfig *new_config) : instance_(make_shared<DatabaseInstance>()) {
   instance_->Initialize(path, new_config);
 }
+
+TransactionManager &TransactionManager::Get(DatabaseInstance &db) { return db.GetTransactionManager(); }
+
+BufferPoolManager &BufferPoolManager::Get(DatabaseInstance &db) { return db.GetBufferPoolManager(); }
+
+LogManager &LogManager::Get(DatabaseInstance &db) { return db.GetLogManager(); }
+
+DiskManager &DiskManager::Get(DatabaseInstance &db) { return db.GetDiskManager(); }
+
+CheckpointManager &CheckpointManager::Get(DatabaseInstance &db) { return db.GetCheckpointManager(); }
+
+Catalog &Catalog::Get(DatabaseInstance &db) { return db.GetCatalog(); }
+
+LockManager &LockManager::Get(DatabaseInstance &db) { return db.GetLockManager(); }
 
 // BusTub::BusTub(const string &path, DBConfig *config) : DuckDB(path.c_str(), config) {}
 
