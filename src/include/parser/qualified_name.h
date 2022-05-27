@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "common/constants.h"
 #include "common/exception.h"
 
 // #include "parser/keyword_helper.h"
@@ -28,7 +29,7 @@ struct QualifiedName {
   static QualifiedName Parse(const string &input) {
     string schema;
     string name;
-    int64_t idx = 0;
+    uint64_t idx = 0;
     vector<string> entries;
     string entry;
   normal:

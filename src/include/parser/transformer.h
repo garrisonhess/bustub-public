@@ -14,14 +14,12 @@
 
 #include "nodes/parsenodes.hpp"
 #include "parser/group_by_node.h"
+#include "parser/parsed_data/create_info.h"
+#include "parser/qualified_name.h"
+#include "parser/tokens.h"
 #include "pg_definitions.hpp"
 #include "type/expression_type.h"
 #include "type/type_id.h"
-
-#include "parser/tokens.h"
-
-// #include "parser/qualified_name.h"
-// #include "parser/parsed_data/create_info.h"
 
 namespace bustub {
 using std::string;
