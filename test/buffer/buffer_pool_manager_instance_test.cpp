@@ -93,7 +93,6 @@ TEST(BufferPoolManagerInstanceTest, DISABLED_SampleTest) {
   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub(db_name, config));
   auto &bpm = BufferPoolManagerInstance::Get(*tub->instance_);
 
-
   page_id_t page_id_temp;
   auto *page0 = bpm.NewPage(&page_id_temp);
 

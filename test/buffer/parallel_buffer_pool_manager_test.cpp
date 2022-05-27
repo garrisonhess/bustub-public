@@ -146,9 +146,6 @@ namespace bustub {
 //   // Shutdown the disk manager and remove the temporary file we created.
 //   disk_manager->ShutDown();
 //   remove("test.db");
-
-//   delete bpm;
-//   delete disk_manager;
 // }
 
 }  // namespace bustub
