@@ -2,9 +2,9 @@
 
 #include "main/database.h"
 #include "buffer/buffer_pool_manager.h"
+#include "catalog/catalog.h"
 #include "recovery/checkpoint_manager.h"
 #include "storage/disk/disk_manager.h"
-#include "catalog/catalog.h"
 
 #include <memory>
 
@@ -25,20 +25,15 @@ Catalog &DatabaseInstance::GetCatalog() { return *catalog_; }
 
 LockManager &DatabaseInstance::GetLockManager() { return *lock_manager_; }
 
+// The initialization must occur in DB-bootstrap order.
 void DatabaseInstance::Initialize(const char *path, DBConfig *new_config) {
-
+  int default_num_frames = 1234;
   disk_manager_ = make_unique<DiskManager>(path);
-
-  buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, 12345);
-
+  buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, default_num_frames);
   checkpoint_manager_ = make_unique<CheckpointManager>(*this);
-
   catalog_ = make_unique<Catalog>(*this);
-
   log_manager_ = make_unique<LogManager>(*this->disk_manager_);
-
   lock_manager_ = make_unique<LockManager>();
-
   transaction_manager_ = make_unique<TransactionManager>(*this);
 }
 
