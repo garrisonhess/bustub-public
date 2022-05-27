@@ -1,7 +1,7 @@
 //===----------------------------------------------------------------------===//
 //                         DuckDB
 //
-// bustub/parser/transformer.hpp
+// bustub/parser/transformer.h
 //
 //
 //===----------------------------------------------------------------------===//
@@ -13,16 +13,15 @@
 #include <vector>
 
 #include "nodes/parsenodes.hpp"
+#include "parser/group_by_node.h"
 #include "pg_definitions.hpp"
 #include "type/expression_type.h"
+#include "type/type_id.h"
 
 #include "parser/tokens.h"
 
-// #include "bustub/common/constants.hpp"
-// #include "bustub/common/types.hpp"
-// #include "bustub/parser/qualified_name.hpp"
-// #include "bustub/parser/parsed_data/create_info.hpp"
-// #include "bustub/parser/group_by_node.hpp"
+// #include "parser/qualified_name.h"
+// #include "parser/parsed_data/create_info.h"
 
 namespace bustub {
 using std::string;
@@ -198,7 +197,7 @@ class Transformer {
   //===--------------------------------------------------------------------===//
   // Helpers
   //===--------------------------------------------------------------------===//
-  OnCreateConflict TransformOnConflict(bustub_libpgquery::PGOnCreateConflict conflict);
+  // OnCreateConflict TransformOnConflict(bustub_libpgquery::PGOnCreateConflict conflict);
   string TransformAlias(bustub_libpgquery::PGAlias *root, std::vector<string> &column_name_alias);
   void TransformCTE(bustub_libpgquery::PGWithClause *de_with_clause, QueryNode &select);
   unique_ptr<SelectStatement> TransformRecursiveCTE(bustub_libpgquery::PGCommonTableExpr *node,
@@ -227,11 +226,11 @@ class Transformer {
   //! Transform a VALUES list into a set of expressions
   unique_ptr<TableRef> TransformValuesList(bustub_libpgquery::PGList *list);
 
-  //! Transform a range var into a (schema) qualified name
-  QualifiedName TransformQualifiedName(bustub_libpgquery::PGRangeVar *root);
+  // //! Transform a range var into a (schema) qualified name
+  // QualifiedName TransformQualifiedName(bustub_libpgquery::PGRangeVar *root);
 
   //! Transform a Postgres TypeName string into a LogicalType
-  LogicalType TransformTypeName(bustub_libpgquery::PGTypeName *name);
+  TypeId TransformTypeName(bustub_libpgquery::PGTypeName *name);
 
   //! Transform a Postgres GROUP BY expression into a list of Expression
   bool TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &result);

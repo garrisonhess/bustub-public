@@ -1,7 +1,7 @@
 //===----------------------------------------------------------------------===//
 //                         DuckDB
 //
-// duckdb/parser/query_node.hpp
+// bustub/parser/query_node.h
 //
 //
 //===----------------------------------------------------------------------===//
@@ -11,8 +11,8 @@
 #include "parser/parsed_expression.h"
 #include "parser/result_modifier.h"
 
-// #include "duckdb/common/serializer.hpp"
-// #include "duckdb/parser/common_table_expression_info.hpp"
+// #include "common/serializer.h"
+// #include "parser/common_table_expression_info.h"
 
 #include <cstdint>
 #include <string>

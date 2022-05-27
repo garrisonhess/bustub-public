@@ -1,7 +1,7 @@
 //===----------------------------------------------------------------------===//
 //                         DuckDB
 //
-// duckdb/parser/parsed_expression.hpp
+// bustub/parser/parsed_expression.h
 //
 //
 //===----------------------------------------------------------------------===//
@@ -11,10 +11,10 @@
 #include <memory>
 #include "parser/base_expression.h"
 
-// #include "duckdb/common/string_util.hpp"
-// #include "duckdb/common/vector.hpp"
-// #include "duckdb/parser/expression_util.hpp"
-// #include "duckdb/parser/qualified_name.hpp"
+// #include "common/string_util.h"
+// #include "common/vector.h"
+// #include "parser/expression_util.h"
+// #include "parser/qualified_name.h"
 
 namespace bustub {
 using std::unique_ptr;

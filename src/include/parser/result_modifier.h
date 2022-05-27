@@ -1,7 +1,7 @@
 //===----------------------------------------------------------------------===//
 //                         DuckDB
 //
-// duckdb/parser/result_modifier.hpp
+// bustub/parser/result_modifier.h
 //
 //
 //===----------------------------------------------------------------------===//
@@ -49,7 +49,7 @@ class ResultModifier {
 //! Single node in ORDER BY statement
 struct OrderByNode {
   OrderByNode(OrderType type, OrderByNullType null_order, std::unique_ptr<ParsedExpression> expression)
-      : type(type), null_order(null_order), expression_(move(expression)) {}
+      : type_(type), null_order_(null_order), expression_(move(expression)) {}
 
   //! Sort order, ASC or DESC
   OrderType type_;
