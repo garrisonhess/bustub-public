@@ -10,11 +10,11 @@
 // #include "duckdb/common/operator/cast_operators.hpp"
 #include "utf8proc_wrapper.hpp"
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
 #include <cassert>
 #include <chrono>
 #include <climits>
