@@ -18,6 +18,7 @@
 #include <utility>
 #include <vector>
 
+#include "main/database.h"
 #include "buffer/buffer_pool_manager_instance.h"
 #include "catalog/table_generator.h"
 #include "concurrency/transaction.h"

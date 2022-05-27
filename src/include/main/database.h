@@ -28,8 +28,8 @@ class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
   friend class BusTub;
 
  public:
-  DatabaseInstance();
-  ~DatabaseInstance();
+  DatabaseInstance() = default;
+  ~DatabaseInstance() = default;
 
   DBConfig config_;
 
@@ -66,7 +66,7 @@ class BusTub {
   explicit BusTub(const string &path, DBConfig *config = nullptr);
   explicit BusTub(DatabaseInstance &instance);
 
-  ~BusTub();
+  ~BusTub() = default;
 
   shared_ptr<DatabaseInstance> instance_;
 };
