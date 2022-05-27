@@ -5,7 +5,7 @@
 namespace bustub {
 
 unique_ptr<TableRef> Transformer::TransformTableRefNode(bustub_libpgquery::PGNode *n) {
-	auto stack_checker = StackCheck();
+	// auto stack_checker = StackCheck();
 
 	switch (n->type) {
 	case bustub_libpgquery::T_PGRangeVar:

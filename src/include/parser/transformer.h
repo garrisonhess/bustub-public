@@ -253,22 +253,22 @@ class Transformer {
 
  private:
   //! Current stack depth
-  uint64_t stack_depth_;
+  // uint64_t stack_depth_;
 
-  void InitializeStackCheck();
-  StackChecker StackCheck(int64_t extra_stack = 1);
+  // void InitializeStackCheck();
+  // StackChecker StackCheck(int64_t extra_stack = 1);
 };
 
-class StackChecker {
- public:
-  StackChecker(Transformer &transformer, int64_t stack_usage);
-  ~StackChecker();
-  StackChecker(StackChecker &&) noexcept;
-  StackChecker(const StackChecker &) = delete;
+// class StackChecker {
+//  public:
+//   StackChecker(Transformer &transformer, int64_t stack_usage);
+//   ~StackChecker();
+//   StackChecker(StackChecker &&) noexcept;
+//   StackChecker(const StackChecker &) = delete;
 
- private:
-  Transformer &transformer_;
-  int64_t stack_usage_;
-};
+//  private:
+//   Transformer &transformer_;
+//   int64_t stack_usage_;
+// };
 
 }  // namespace bustub

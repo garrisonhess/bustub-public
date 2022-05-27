@@ -32,7 +32,7 @@ unique_ptr<ParsedExpression> Transformer::TransformExpression(bustub_libpgquery:
 		return nullptr;
 	}
 
-	auto stack_checker = StackCheck();
+	// auto stack_checker = StackCheck();
 
 	switch (node->type) {
 	case bustub_libpgquery::T_PGColumnRef:
