@@ -62,9 +62,9 @@ class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
 //! database-specific meta information.
 class BusTub {
  public:
-  explicit BusTub(const char *path, DBConfig *config);
-  explicit BusTub(const string &path, DBConfig *config = nullptr);
-  explicit BusTub(DatabaseInstance &instance);
+  explicit BusTub(const string &path, DBConfig *config);
+  explicit BusTub(const char *path, DBConfig *config = nullptr);
+  // explicit BusTub(DatabaseInstance &instance);
 
   ~BusTub() = default;
 

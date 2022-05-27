@@ -23,17 +23,18 @@
 
 namespace bustub {
 
-// /** Index creation parameters for a BIGINT key */
-// constexpr static const auto BIGINT_SIZE = 8;
-// using BigintKeyType = GenericKey<BIGINT_SIZE>;
-// using BigintValueType = RID;
-// using BigintComparatorType = GenericComparator<BIGINT_SIZE>;
-// using BigintHashFunctionType = HashFunction<BigintKeyType>;
+/** Index creation parameters for a BIGINT key */
+constexpr static const auto BIGINT_SIZE = 8;
+using BigintKeyType = GenericKey<BIGINT_SIZE>;
+using BigintValueType = RID;
+using BigintComparatorType = GenericComparator<BIGINT_SIZE>;
+using BigintHashFunctionType = HashFunction<BigintKeyType>;
 
 // TEST(CatalogTest, DISABLED_CreateTable1) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 
 //   const std::string table_name{"foobar"};
 
@@ -62,9 +63,10 @@ namespace bustub {
 // }
 
 // TEST(CatalogTest, DISABLED_CreateTable2) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 
 //   const std::string table_name{"foobar"};
 
@@ -90,9 +92,10 @@ namespace bustub {
 // }
 
 // TEST(CatalogTest, DISABLED_CreateTable3) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 
 //   const std::string table_name{"foobar"};
 
@@ -122,9 +125,10 @@ namespace bustub {
 // }
 
 // TEST(CatalogTest, DISABLED_CreateTableTest) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 
 //   const std::string table_name{"foobar"};
 
@@ -177,9 +181,10 @@ namespace bustub {
 
 // // Vanilla index creation for valid table
 // TEST(CatalogTest, DISABLED_CreateIndex1) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -219,9 +224,10 @@ namespace bustub {
 
 // // Attempts to create an index with duplicate name should fail
 // TEST(CatalogTest, DISABLED_CreateIndex2) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -267,9 +273,10 @@ namespace bustub {
 // }
 
 // TEST(CatalogTest, DISABLED_CreateIndex3) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 
 //   Transaction txn{0};
 
@@ -300,9 +307,10 @@ namespace bustub {
 
 // // Vanilla index queries by name
 // TEST(CatalogTest, DISABLED_QueryIndex1) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -342,9 +350,10 @@ namespace bustub {
 
 // // Vanilla index queries by index OID
 // TEST(CatalogTest, DISABLED_QueryIndex2) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -392,9 +401,10 @@ namespace bustub {
 
 // // Query for nonexistent index on table should fail
 // TEST(CatalogTest, DISABLED_FailedQuery1) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -414,9 +424,10 @@ namespace bustub {
 
 // // Query for index on nonexistent table should fail
 // TEST(CatalogTest, DISABLED_FailedQuery2) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   EXPECT_EQ(Catalog::NULL_INDEX_INFO, catalog->GetIndex("index1", "invalid_table"));
@@ -427,9 +438,10 @@ namespace bustub {
 
 // // Query for nonexistent index OID should throw
 // TEST(CatalogTest, DISABLED_FailedQuery3) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const index_oid_t bad_oid = 1337;
@@ -441,9 +453,10 @@ namespace bustub {
 
 // // Query for all indexes on nonexistent table should give empty collection
 // TEST(CatalogTest, DISABLED_FailedQuery4) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const auto indexes = catalog->GetTableIndexes("invalid_table");
@@ -456,9 +469,10 @@ namespace bustub {
 // // Query for all indexes on existing table with no
 // // indexes defined should return empty collection
 // TEST(CatalogTest, DISABLED_FailedQuery5) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -479,9 +493,10 @@ namespace bustub {
 
 // // Should be able to create and interact with an index with a single BIGINT key
 // TEST(CatalogTest, DISABLED_IndexInteraction0) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -531,9 +546,10 @@ namespace bustub {
 
 // // Should be able to create and interact with an index that is keyed by two INTEGER values
 // TEST(CatalogTest, DISABLED_IndexInteraction1) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -583,9 +599,10 @@ namespace bustub {
 
 // // Should be able to create and interact with an index that is keyed by a single INTEGER column
 // TEST(CatalogTest, DISABLED_IndexInteraction2) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};
@@ -634,9 +651,10 @@ namespace bustub {
 // }
 
 // TEST(CatalogTest, DISABLED_IndexInteraction3) {
-//   auto disk_manager = std::make_unique<DiskManager>("catalog_test.db");
-//   auto bpm = std::make_unique<BufferPoolManagerInstance>(32, disk_manager.get());
-//   auto catalog = std::make_unique<Catalog>(bpm.get(), nullptr, nullptr);
+//   DBConfig config;
+//   config.buffer_pool_frames_ = 32;
+//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
 //   auto txn = std::make_unique<Transaction>(0);
 
 //   const std::string table_name{"foobar"};

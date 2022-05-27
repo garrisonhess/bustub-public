@@ -28,10 +28,9 @@ TEST(BufferPoolManagerInstanceTest, DISABLED_BinaryDataTest) {
   std::uniform_int_distribution<char> uniform_dist(0);
   
   const std::string db_name = "test.db";
-  DBConfig * config = new DBConfig();
-  config->buffer_pool_frames_ = 10;
-
-  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub(db_name, config));
+  DBConfig config;
+  config.buffer_pool_frames_ = 10;
+  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub(db_name, &config));
   auto &bpm = BufferPoolManagerInstance::Get(*tub->instance_);
 
   page_id_t page_id_temp;
@@ -56,12 +55,12 @@ TEST(BufferPoolManagerInstanceTest, DISABLED_BinaryDataTest) {
   EXPECT_EQ(0, std::memcmp(page0->GetData(), random_binary_data, PAGE_SIZE));
 
   // Scenario: We should be able to create new pages until we fill up the buffer pool.
-  for (size_t i = 1; i < config->buffer_pool_frames_; ++i) {
+  for (size_t i = 1; i < config.buffer_pool_frames_; ++i) {
     EXPECT_NE(nullptr, bpm.NewPage(&page_id_temp));
   }
 
   // Scenario: Once the buffer pool is full, we should not be able to create any new pages.
-  for (size_t i = config->buffer_pool_frames_; i < config->buffer_pool_frames_ * 2; ++i) {
+  for (size_t i = config.buffer_pool_frames_; i < config.buffer_pool_frames_ * 2; ++i) {
     EXPECT_EQ(nullptr, bpm.NewPage(&page_id_temp));
   }
 
@@ -87,10 +86,9 @@ TEST(BufferPoolManagerInstanceTest, DISABLED_BinaryDataTest) {
 // NOLINTNEXTLINE
 TEST(BufferPoolManagerInstanceTest, DISABLED_SampleTest) {
   const std::string db_name = "test.db";
-  DBConfig * config = new DBConfig();
-  config->buffer_pool_frames_ = 10;
-
-  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub(db_name, config));
+  DBConfig config;
+  config.buffer_pool_frames_ = 10;
+  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub(db_name, &config));
   auto &bpm = BufferPoolManagerInstance::Get(*tub->instance_);
 
   page_id_t page_id_temp;
@@ -105,12 +103,12 @@ TEST(BufferPoolManagerInstanceTest, DISABLED_SampleTest) {
   EXPECT_EQ(0, strcmp(page0->GetData(), "Hello"));
 
   // Scenario: We should be able to create new pages until we fill up the buffer pool.
-  for (size_t i = 1; i < config->buffer_pool_frames_; ++i) {
+  for (size_t i = 1; i < config.buffer_pool_frames_; ++i) {
     EXPECT_NE(nullptr, bpm.NewPage(&page_id_temp));
   }
 
   // Scenario: Once the buffer pool is full, we should not be able to create any new pages.
-  for (size_t i = config->buffer_pool_frames_; i < config->buffer_pool_frames_ * 2; ++i) {
+  for (size_t i = config.buffer_pool_frames_; i < config.buffer_pool_frames_ * 2; ++i) {
     EXPECT_EQ(nullptr, bpm.NewPage(&page_id_temp));
   }
 
