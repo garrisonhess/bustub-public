@@ -8,6 +8,6 @@
 
 #pragma once
 
-#include "duckdb/main/connection.hpp"
-#include "duckdb/main/database.hpp"
-#include "duckdb/main/query_result.hpp"
+#include "main/connection.h"
+#include "main/database.h"
+#include "main/query_result.h"

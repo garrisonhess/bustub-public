@@ -17,6 +17,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include "main/database.h"
 
 #include "buffer/buffer_pool_manager.h"
 #include "catalog/schema.h"
@@ -105,14 +106,7 @@ class Catalog {
   /** Indicates that an operation returning a `IndexInfo*` failed */
   static constexpr IndexInfo *NULL_INDEX_INFO{nullptr};
 
-  /**
-   * Construct a new Catalog instance.
-   * @param bpm The buffer pool manager backing tables created by this catalog
-   * @param lock_manager The lock manager in use by the system
-   * @param log_manager The log manager in use by the system
-   */
-  Catalog(BufferPoolManager *bpm, LockManager *lock_manager, LogManager *log_manager)
-      : bpm_{bpm}, lock_manager_{lock_manager}, log_manager_{log_manager} {}
+  explicit Catalog(DatabaseInstance &db) : db_(db) {}
 
   /**
    * Create a new table and return its metadata.
@@ -127,7 +121,7 @@ class Catalog {
     }
 
     // Construct the table heap
-    auto table = std::make_unique<TableHeap>(bpm_, lock_manager_, log_manager_, txn);
+    auto table = std::make_unique<TableHeap>(db_, txn);
 
     // Fetch the table OID for the new table
     const auto table_oid = next_table_oid_.fetch_add(1);
@@ -214,8 +208,8 @@ class Catalog {
     // TODO(Kyle): We should update the API for CreateIndex
     // to allow specification of the index type itself, not
     // just the key, value, and comparator types
-    auto index = std::make_unique<ExtendibleHashTableIndex<KeyType, ValueType, KeyComparator>>(std::move(meta), bpm_,
-                                                                                               hash_function);
+    auto index = std::make_unique<ExtendibleHashTableIndex<KeyType, ValueType, KeyComparator>>(
+        std::move(meta), db_.GetBufferPoolManager(), hash_function);
 
     // Populate the index with all tuples in table heap
     auto *table_meta = GetTable(table_name);
@@ -323,9 +317,7 @@ class Catalog {
   }
 
  private:
-  [[maybe_unused]] BufferPoolManager *bpm_;
-  [[maybe_unused]] LockManager *lock_manager_;
-  [[maybe_unused]] LogManager *log_manager_;
+  [[maybe_unused]] DatabaseInstance &db_;
 
   /**
    * Map table identifier -> table metadata.

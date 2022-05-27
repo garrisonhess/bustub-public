@@ -2,6 +2,7 @@
 add_library(bustub_main
             OBJECT
             client_context.cpp
+            config.cpp
             connection.cpp
             connection_manager.cpp
             database.cpp

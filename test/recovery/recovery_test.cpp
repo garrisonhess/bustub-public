@@ -13,8 +13,8 @@
 #include <string>
 #include <vector>
 
-#include "common/bustub_instance.h"
-#include "common/config.h"
+#include "main/database.h"
+#include "main/config.h"
 #include "concurrency/lock_manager.h"
 #include "concurrency/transaction_manager.h"
 #include "gtest/gtest.h"
@@ -44,7 +44,8 @@ class RecoveryTest : public ::testing::Test {
 
 // NOLINTNEXTLINE
 TEST_F(RecoveryTest, DISABLED_RedoTest) {
-  BustubInstance *bustub_instance = new BustubInstance("test.db");
+
+  BusTub * tub = new BusTub();
 
   ASSERT_FALSE(enable_logging);
   LOG_INFO("Skip system recovering...");

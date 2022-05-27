@@ -14,6 +14,7 @@
 
 #include "buffer/buffer_pool_manager.h"
 #include "concurrency/transaction_manager.h"
+#include "main/database.h"
 #include "recovery/log_manager.h"
 
 namespace bustub {
@@ -23,11 +24,7 @@ namespace bustub {
  */
 class CheckpointManager {
  public:
-  CheckpointManager(TransactionManager *transaction_manager, LogManager *log_manager,
-                    BufferPoolManager *buffer_pool_manager)
-      : transaction_manager_(transaction_manager),
-        log_manager_(log_manager),
-        buffer_pool_manager_(buffer_pool_manager) {}
+  explicit CheckpointManager(DatabaseInstance &db);
 
   ~CheckpointManager() = default;
 
@@ -35,9 +32,7 @@ class CheckpointManager {
   void EndCheckpoint();
 
  private:
-  TransactionManager *transaction_manager_ __attribute__((__unused__));
-  LogManager *log_manager_ __attribute__((__unused__));
-  BufferPoolManager *buffer_pool_manager_ __attribute__((__unused__));
+  DatabaseInstance &db_;
 };
 
 }  // namespace bustub

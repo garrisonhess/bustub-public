@@ -21,9 +21,9 @@
 #include <utility>
 #include <vector>
 
-#include "common/config.h"
 #include "common/rid.h"
 #include "concurrency/transaction.h"
+#include "main/config.h"
 
 namespace bustub {
 

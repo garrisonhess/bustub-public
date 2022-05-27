@@ -18,7 +18,7 @@
 #include <mutex>   // NOLINT
 #include <string>
 
-#include "common/config.h"
+#include "main/config.h"
 
 namespace bustub {
 
@@ -30,9 +30,9 @@ class DiskManager {
  public:
   /**
    * Creates a new disk manager that writes to the specified database file.
-   * @param db_file the file name of the database file to write to
+   * @param path the file name of the database file to write to
    */
-  explicit DiskManager(const std::string &db_file);
+  explicit DiskManager(const std::string &path);
 
   ~DiskManager() = default;
 

@@ -8,7 +8,6 @@
 
 #pragma once
 
-// #include "duckdb/common/common.hpp"
 #include <unordered_set>
 
 #include <mutex>

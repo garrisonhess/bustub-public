@@ -17,9 +17,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "common/config.h"
 #include "concurrency/lock_manager.h"
 #include "concurrency/transaction.h"
+#include "main/config.h"
+#include "main/database.h"
 #include "recovery/log_manager.h"
 
 namespace bustub {
@@ -30,8 +31,7 @@ class LockManager;
  */
 class TransactionManager {
  public:
-  explicit TransactionManager(LockManager *lock_manager, LogManager *log_manager = nullptr)
-      : lock_manager_(lock_manager), log_manager_(log_manager) {}
+  explicit TransactionManager(DatabaseInstance &db);
 
   ~TransactionManager() = default;
 
@@ -84,6 +84,13 @@ class TransactionManager {
   void ResumeTransactions();
 
  private:
+  std::atomic<txn_id_t> next_txn_id_{0};
+  //! The database instance
+  DatabaseInstance &db_;
+
+  /** The global transaction latch is used for checkpointing. */
+  ReaderWriterLatch global_txn_latch_;
+
   /**
    * Releases all the locks held by the given transaction.
    * @param txn the transaction whose locks should be released
@@ -97,16 +104,9 @@ class TransactionManager {
       lock_set.emplace(item);
     }
     for (auto locked_rid : lock_set) {
-      lock_manager_->Unlock(txn, locked_rid);
+      db_.GetLockManager().Unlock(txn, locked_rid);
     }
   }
-
-  std::atomic<txn_id_t> next_txn_id_{0};
-  LockManager *lock_manager_ __attribute__((__unused__));
-  LogManager *log_manager_ __attribute__((__unused__));
-
-  /** The global transaction latch is used for checkpointing. */
-  ReaderWriterLatch global_txn_latch_;
 };
 
 }  // namespace bustub
