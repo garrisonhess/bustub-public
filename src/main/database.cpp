@@ -4,6 +4,7 @@
 #include "buffer/buffer_pool_manager.h"
 #include "recovery/checkpoint_manager.h"
 #include "storage/disk/disk_manager.h"
+#include "catalog/catalog.h"
 
 #include <memory>
 
@@ -26,19 +27,19 @@ LockManager &DatabaseInstance::GetLockManager() { return *lock_manager_; }
 
 void DatabaseInstance::Initialize(const char *path, DBConfig *new_config) {
 
-  // disk_manager_ = make_unique<DiskManager>(path);
+  disk_manager_ = make_unique<DiskManager>(path);
 
-  // buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(12345, *this);
+  buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, 12345);
 
-  // checkpoint_manager_ = make_unique<CheckpointManager>(*this);
+  checkpoint_manager_ = make_unique<CheckpointManager>(*this);
 
-  // catalog_ = make_unique<Catalog>(*this);
+  catalog_ = make_unique<Catalog>(*this);
 
-  // log_manager_ = make_unique<LogManager>();
+  log_manager_ = make_unique<LogManager>(*this->disk_manager_);
 
-  // lock_manager_ = make_unique<LockManager>();
+  lock_manager_ = make_unique<LockManager>();
 
-  // transaction_manager_ = make_unique<TransactionManager>(*this);
+  transaction_manager_ = make_unique<TransactionManager>(*this);
 }
 
 BusTub::BusTub(const char *path, DBConfig *new_config) : instance_(make_shared<DatabaseInstance>()) {

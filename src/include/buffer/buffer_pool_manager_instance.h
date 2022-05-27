@@ -23,6 +23,7 @@
 #include "storage/page/page.h"
 
 namespace bustub {
+class DatabaseInstance;
 
 /**
  * BufferPoolManager reads disk pages to and from its internal buffer pool.
@@ -35,7 +36,7 @@ class BufferPoolManagerInstance : public BufferPoolManager {
    * @param disk_manager the disk manager
    * @param log_manager the log manager (for testing only: nullptr = disable logging)
    */
-  BufferPoolManagerInstance(size_t pool_size, DiskManager *disk_manager, LogManager *log_manager = nullptr);
+  BufferPoolManagerInstance(DatabaseInstance &db, size_t pool_size);
   /**
    * Creates a new BufferPoolManagerInstance.
    * @param pool_size the size of the buffer pool
@@ -44,8 +45,7 @@ class BufferPoolManagerInstance : public BufferPoolManager {
    * @param disk_manager the disk manager
    * @param log_manager the log manager (for testing only: nullptr = disable logging)
    */
-  BufferPoolManagerInstance(size_t pool_size, uint32_t num_instances, uint32_t instance_index,
-                            DiskManager *disk_manager, LogManager *log_manager = nullptr);
+  BufferPoolManagerInstance(DatabaseInstance &db, size_t pool_size, uint32_t num_instances, uint32_t instance_index);
 
   /**
    * Destroys an existing BufferPoolManagerInstance.
@@ -132,10 +132,7 @@ class BufferPoolManagerInstance : public BufferPoolManager {
 
   /** Array of buffer pool pages. */
   Page *pages_;
-  /** Pointer to the disk manager. */
-  DiskManager *disk_manager_ __attribute__((__unused__));
-  /** Pointer to the log manager. */
-  LogManager *log_manager_ __attribute__((__unused__));
+  DatabaseInstance &db_;
   /** Page table for keeping track of buffer pool pages. */
   std::unordered_map<page_id_t, frame_id_t> page_table_;
   /** Replacer to find unpinned pages for replacement. */
