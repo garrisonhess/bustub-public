@@ -7,25 +7,25 @@
 namespace bustub {
 
 StackChecker::StackChecker(Transformer &transformer_p, uint64_t stack_usage_p)
-    : transformer(transformer_p), stack_usage(stack_usage_p) {
-	transformer.stack_depth += stack_usage;
+    : transformer_(transformer_p), stack_usage_(stack_usage_p) {
+	transformer_.stack_depth_ += stack_usage_;
 }
 
 StackChecker::~StackChecker() {
-	transformer.stack_depth -= stack_usage;
+	transformer_.stack_depth_ -= stack_usage_;
 }
 
 StackChecker::StackChecker(StackChecker &&other) noexcept
-    : transformer(other.transformer), stack_usage(other.stack_usage) {
-	other.stack_usage = 0;
+    : transformer_(other.transformer_), stack_usage_(other.stack_usage_) {
+	other.stack_usage_ = 0;
 }
 
 Transformer::Transformer(uint64_t max_expression_depth_p)
-    : parent(nullptr), max_expression_depth(max_expression_depth_p), stack_depth(DConstants::INVALID_INDEX) {
+    : parent_(nullptr), max_expression_depth_(max_expression_depth_p), stack_depth_(-1) {
 }
 
 Transformer::Transformer(Transformer *parent)
-    : parent(parent), max_expression_depth(parent->max_expression_depth), stack_depth(DConstants::INVALID_INDEX) {
+    : parent_(parent), max_expression_depth_(parent->max_expression_depth_), stack_depth_(-1) {
 }
 
 bool Transformer::TransformParseTree(bustub_libpgquery::PGList *tree, vector<unique_ptr<SQLStatement>> &statements) {
@@ -33,34 +33,32 @@ bool Transformer::TransformParseTree(bustub_libpgquery::PGList *tree, vector<uni
 	for (auto entry = tree->head; entry != nullptr; entry = entry->next) {
 		SetParamCount(0);
 		auto stmt = TransformStatement((bustub_libpgquery::PGNode *)entry->data.ptr_value);
-		D_ASSERT(stmt);
-		stmt->n_param = ParamCount();
+		stmt->n_param_ = ParamCount();
 		statements.push_back(move(stmt));
 	}
 	return true;
 }
 
 void Transformer::InitializeStackCheck() {
-	stack_depth = 0;
+	stack_depth_ = 0;
 }
 
 StackChecker Transformer::StackCheck(uint64_t extra_stack) {
 	auto node = this;
-	while (node->parent) {
-		node = node->parent;
+	while (node->parent_) {
+		node = node->parent_;
 	}
-	D_ASSERT(node->stack_depth != DConstants::INVALID_INDEX);
-	if (node->stack_depth + extra_stack >= max_expression_depth) {
-		throw ParserException("Max expression depth limit of %lld exceeded. Use \"SET max_expression_depth TO x\" to "
-		                      "increase the maximum expression depth.",
-		                      max_expression_depth);
+	// D_ASSERT(node->stack_depth_ != -1);
+	if (node->stack_depth_ + extra_stack >= max_expression_depth_) {
+		throw Exception("Max expression depth limit of exceeded. Use \"SET max_expression_depth TO x\" to "
+		                      "increase the maximum expression depth.");
 	}
 	return StackChecker(*node, extra_stack);
 }
 
 unique_ptr<SQLStatement> Transformer::TransformStatement(bustub_libpgquery::PGNode *stmt) {
 	auto result = TransformStatementInternal(stmt);
-	result->n_param = ParamCount();
+	result->n_param_ = ParamCount();
 	return result;
 }
 
@@ -70,8 +68,8 @@ unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgque
 		auto raw_stmt = (bustub_libpgquery::PGRawStmt *)stmt;
 		auto result = TransformStatement(raw_stmt->stmt);
 		if (result) {
-			result->stmt_location = raw_stmt->stmt_location;
-			result->stmt_length = raw_stmt->stmt_len;
+			result->stmt_location_ = raw_stmt->stmt_location;
+			result->stmt_length_ = raw_stmt->stmt_len;
 		}
 		return result;
 	}

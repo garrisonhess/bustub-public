@@ -1,13 +1,14 @@
 #include "parser/column_definition.h"
 #include "common/field_writer.h"
+#include "parser/parsed_expression.h"
 
 namespace bustub {
 
-ColumnDefinition::ColumnDefinition(string name_p, TypeId type_p) : name_(move(name_p)), type(move(type_p)) {
+ColumnDefinition::ColumnDefinition(string name_p, Type type_p) : name_(move(name_p)), type_(type_p) {
 }
 
-ColumnDefinition::ColumnDefinition(string name_p, TypeId type_p, unique_ptr<ParsedExpression> default_value)
-    : name_(move(name_p)), type_(type_p), default_value_(move(default_value)) {
+ColumnDefinition::ColumnDefinition(string name_p, Type type_p, unique_ptr<ParsedExpression> default_value)
+    : name_(move(name_p)), type_(type_p), default_value_(std::move(default_value)) {
 }
 
 ColumnDefinition ColumnDefinition::Copy() const {
@@ -26,14 +27,14 @@ void ColumnDefinition::Serialize(Serializer &serializer) const {
 	writer.Finalize();
 }
 
-ColumnDefinition ColumnDefinition::Deserialize(Deserializer &source) {
-	FieldReader reader(source);
-	auto column_name = reader.ReadRequired<string>();
-	auto column_type = reader.ReadRequiredSerializable<TypeId, TypeId>();
-	auto default_value = reader.ReadOptional<ParsedExpression>(nullptr);
-	reader.Finalize();
+// ColumnDefinition ColumnDefinition::Deserialize(Deserializer &source) {
+// 	FieldReader reader(source);
+// 	auto column_name = reader.ReadRequired<string>();
+// 	auto column_type = reader.ReadRequiredSerializable<TypeId, TypeId>();
+// 	auto default_value = reader.ReadOptional<ParsedExpression>(nullptr);
+// 	reader.Finalize();
 
-	return {column_name, column_type, move(default_value)};
-}
+// 	return {column_name, column_type, std::move(default_value)};
+// }
 
 } // namespace bustub

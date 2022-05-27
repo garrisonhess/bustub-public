@@ -158,7 +158,7 @@ unique_ptr<QueryNode> QueryNode::Deserialize(Deserializer &main_source) {
 	FieldReader reader(main_source);
 
 	auto type = reader.ReadRequired<QueryNodeType>();
-	auto modifiers = reader.ReadRequiredSerializableList<ResultModifier>();
+	// auto modifiers = reader.ReadRequiredSerializableList<ResultModifier>();
 	// cte_map
 	// auto cte_count = reader.ReadRequired<uint32_t>();
 	// auto &source = reader.GetSource();
@@ -185,7 +185,7 @@ unique_ptr<QueryNode> QueryNode::Deserialize(Deserializer &main_source) {
 	default:
 		throw Exception("Could not deserialize Query Node: unknown type!");
 	}
-	result->modifiers_ = move(modifiers);
+	// result->modifiers_ = std::move(modifiers);
 	// result->cte_map = move(cte_map);
 	reader.Finalize();
 	return result;

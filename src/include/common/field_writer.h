@@ -122,8 +122,8 @@ class FieldWriter {
   bool finalized_;
 };
 
-template <>
-void FieldWriter::Write(const string &val);
+// template <>
+// void FieldWriter::Write(const string &val);
 
 class FieldDeserializer : public Deserializer {
  public:
@@ -227,33 +227,33 @@ class FieldReader {
     return T::Deserialize(source_);
   }
 
-  template <class T, class RETURN_TYPE = unique_ptr<T>, typename... ARGS>
-  RETURN_TYPE ReadRequiredSerializable(ARGS &&...args) {
-    if (field_count_ >= max_field_count_) {
-      // field is not there, read the default value
-      throw Exception("Attempting to read mandatory field, but field is missing");
-    }
-    // field is there, read the actual value
-    AddField();
-    return T::Deserialize(source_, std::forward<ARGS>(args)...);
-  }
+  // template <class T, class RETURN_TYPE = unique_ptr<T>, typename... ARGS>
+  // RETURN_TYPE ReadRequiredSerializable(ARGS &&...args) {
+  //   if (field_count_ >= max_field_count_) {
+  //     // field is not there, read the default value
+  //     throw Exception("Attempting to read mandatory field, but field is missing");
+  //   }
+  //   // field is there, read the actual value
+  //   AddField();
+  //   return T::Deserialize(source_, std::forward<ARGS>(args)...);
+  // }
 
-  template <class T, class RETURN_TYPE = unique_ptr<T>>
-  vector<RETURN_TYPE> ReadRequiredSerializableList() {
-    if (field_count_ >= max_field_count_) {
-      // field is not there, read the default value
-      throw Exception("Attempting to read mandatory field, but field is missing");
-    }
-    // field is there, read the actual value
-    AddField();
-    auto result_count = source_.Read<uint32_t>();
+  // template <class T, class RETURN_TYPE = unique_ptr<T>>
+  // vector<RETURN_TYPE> ReadRequiredSerializableList() {
+  //   if (field_count_ >= max_field_count_) {
+  //     // field is not there, read the default value
+  //     throw Exception("Attempting to read mandatory field, but field is missing");
+  //   }
+  //   // field is there, read the actual value
+  //   AddField();
+  //   auto result_count = source_.Read<uint32_t>();
 
-    vector<RETURN_TYPE> result;
-    for (uint64_t i = 0; i < result_count; i++) {
-      result.push_back(T::Deserialize(source_));
-    }
-    return result;
-  }
+  //   vector<RETURN_TYPE> result;
+  //   for (uint64_t i = 0; i < result_count; i++) {
+  //     result.push_back(T::Deserialize(source_));
+  //   }
+  //   return result;
+  // }
   void ReadBlob(data_ptr_t result, uint64_t read_size) {
     if (field_count_ >= max_field_count_) {
       // field is not there, throw an exception

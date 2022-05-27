@@ -1,43 +1,43 @@
-#include "parser/tableref/crossproductref.h"
+// #include "parser/tableref/crossproductref.h"
 
-#include "common/field_writer.h"
+// #include "common/field_writer.h"
 
-namespace bustub {
+// namespace bustub {
 
-string CrossProductRef::ToString() const {
-	return left->ToString() + ", " + right->ToString();
-}
+// string CrossProductRef::ToString() const {
+// 	return left->ToString() + ", " + right->ToString();
+// }
 
-bool CrossProductRef::Equals(const TableRef *other_p) const {
-	if (!TableRef::Equals(other_p)) {
-		return false;
-	}
-	auto other = (CrossProductRef *)other_p;
-	return left->Equals(other->left.get()) && right->Equals(other->right.get());
-}
+// bool CrossProductRef::Equals(const TableRef *other_p) const {
+// 	if (!TableRef::Equals(other_p)) {
+// 		return false;
+// 	}
+// 	auto other = (CrossProductRef *)other_p;
+// 	return left->Equals(other->left.get()) && right->Equals(other->right.get());
+// }
 
-unique_ptr<TableRef> CrossProductRef::Copy() {
-	auto copy = make_unique<CrossProductRef>();
-	copy->left = left->Copy();
-	copy->right = right->Copy();
-	copy->alias = alias;
-	return move(copy);
-}
+// unique_ptr<TableRef> CrossProductRef::Copy() {
+// 	auto copy = make_unique<CrossProductRef>();
+// 	copy->left = left->Copy();
+// 	copy->right = right->Copy();
+// 	copy->alias = alias;
+// 	return move(copy);
+// }
 
-void CrossProductRef::Serialize(FieldWriter &writer) const {
-	writer.WriteSerializable(*left);
-	writer.WriteSerializable(*right);
-}
+// void CrossProductRef::Serialize(FieldWriter &writer) const {
+// 	writer.WriteSerializable(*left);
+// 	writer.WriteSerializable(*right);
+// }
 
-unique_ptr<TableRef> CrossProductRef::Deserialize(FieldReader &reader) {
-	auto result = make_unique<CrossProductRef>();
+// unique_ptr<TableRef> CrossProductRef::Deserialize(FieldReader &reader) {
+// 	auto result = make_unique<CrossProductRef>();
 
-	result->left = reader.ReadRequiredSerializable<TableRef>();
-	result->right = reader.ReadRequiredSerializable<TableRef>();
-	D_ASSERT(result->left);
-	D_ASSERT(result->right);
+// 	result->left = reader.ReadRequiredSerializable<TableRef>();
+// 	result->right = reader.ReadRequiredSerializable<TableRef>();
+// 	D_ASSERT(result->left);
+// 	D_ASSERT(result->right);
 
-	return move(result);
-}
+// 	return move(result);
+// }
 
-} // namespace bustub
+// } // namespace bustub

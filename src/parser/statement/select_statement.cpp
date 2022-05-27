@@ -16,13 +16,13 @@ void SelectStatement::Serialize(Serializer &serializer) const {
 }
 
 unique_ptr<SelectStatement> SelectStatement::Deserialize(Deserializer &source) {
-	auto result = make_unique<SelectStatement>();
+	auto result = std::make_unique<SelectStatement>();
 	result->node = QueryNode::Deserialize(source);
 	return result;
 }
 
 bool SelectStatement::Equals(const SQLStatement *other_p) const {
-	if (type != other_p->type) {
+	if (type_ != other_p->type_) {
 		return false;
 	}
 	auto other = (SelectStatement *)other_p;

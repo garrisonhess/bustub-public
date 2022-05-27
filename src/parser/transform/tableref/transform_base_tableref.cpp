@@ -17,7 +17,7 @@ unique_ptr<TableRef> Transformer::TransformRangeVar(bustub_libpgquery::PGRangeVa
 	// 	result->sample = TransformSampleOptions(root->sample);
 	// }
 	result->query_location_ = root->location;
-	return move(result);
+	return result;
 }
 
 // QualifiedName Transformer::TransformQualifiedName(bustub_libpgquery::PGRangeVar *root) {

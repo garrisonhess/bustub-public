@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <memory>
+#include "common/field_writer.h"
 #include "type/tableref_type.h"
 
 // #include "parser/parsed_data/sample_options.h"

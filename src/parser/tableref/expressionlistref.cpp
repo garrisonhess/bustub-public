@@ -48,7 +48,7 @@ bool ExpressionListRef::Equals(const TableRef *other_p) const {
 
 unique_ptr<TableRef> ExpressionListRef::Copy() {
 	// value list
-	auto result = make_unique<ExpressionListRef>();
+	auto result = std::make_unique<ExpressionListRef>();
 	for (auto &val_list : values_) {
 		vector<unique_ptr<ParsedExpression>> new_val_list;
 		new_val_list.reserve(val_list.size());
@@ -60,32 +60,32 @@ unique_ptr<TableRef> ExpressionListRef::Copy() {
 	result->expected_names_ = expected_names_;
 	result->expected_types_ = expected_types_;
 	CopyProperties(*result);
-	return move(result);
+	return result;
 }
 
 void ExpressionListRef::Serialize(FieldWriter &writer) const {
-	writer.WriteList<string>(expected_names_);
-	writer.WriteRegularSerializableList<Type>(expected_types_);
-	auto &serializer = writer.GetSerializer();
-	writer.WriteField<uint32_t>(values_.size());
-	for (uint64_t i = 0; i < values_.size(); i++) {
-		serializer.WriteList(values_[i]);
-	}
+	// writer.WriteList<string>(expected_names_);
+	// writer.WriteRegularSerializableList<Type>(expected_types_);
+	// auto &serializer = writer.GetSerializer();
+	// writer.WriteField<uint32_t>(values_.size());
+	// for (uint64_t i = 0; i < values_.size(); i++) {
+	// 	serializer.WriteList(values_[i]);
+	// }
 }
 
 unique_ptr<TableRef> ExpressionListRef::Deserialize(FieldReader &reader) {
-	auto result = make_unique<ExpressionListRef>();
-	// value list
-	result->expected_names_ = reader.ReadRequiredList<string>();
-	result->expected_types_ = reader.ReadRequiredSerializableList<Type, Type>();
-	uint64_t value_list_size = reader.ReadRequired<uint32_t>();
-	auto &source = reader.GetSource();
-	for (uint64_t i = 0; i < value_list_size; i++) {
-		vector<unique_ptr<ParsedExpression>> value_list;
-		source.ReadList<ParsedExpression>(value_list);
-		result->values_.push_back(move(value_list));
-	}
-	return move(result);
+	auto result = std::make_unique<ExpressionListRef>();
+	// // value list
+	// result->expected_names_ = reader.ReadRequiredList<string>();
+	// result->expected_types_ = reader.ReadRequiredSerializableList<Type, Type>();
+	// uint64_t value_list_size = reader.ReadRequired<uint32_t>();
+	// auto &source = reader.GetSource();
+	// for (uint64_t i = 0; i < value_list_size; i++) {
+	// 	vector<unique_ptr<ParsedExpression>> value_list;
+	// 	source.ReadList<ParsedExpression>(value_list);
+	// 	result->values_.push_back(move(value_list));
+	// }
+	return result;
 }
 
 } // namespace bustub

@@ -3,15 +3,14 @@
 
 namespace bustub {
 
-PrepareStatement::PrepareStatement() : SQLStatement(StatementType::PREPARE_STATEMENT), statement(nullptr), name(INVALID_SCHEMA) {
-}
+PrepareStatement::PrepareStatement()
+    : SQLStatement(StatementType::PREPARE_STATEMENT), statement_(nullptr), name_(INVALID_SCHEMA) {}
 
 PrepareStatement::PrepareStatement(const PrepareStatement &other)
-    : SQLStatement(other), statement(other.statement->Copy()), name(other.name) {
-}
+    : SQLStatement(other), statement_(other.statement_->Copy()), name_(other.name_) {}
 
 unique_ptr<SQLStatement> PrepareStatement::Copy() const {
-	return unique_ptr<PrepareStatement>(new PrepareStatement(*this));
+  return unique_ptr<PrepareStatement>(new PrepareStatement(*this));
 }
 
-} // namespace bustub
+}  // namespace bustub
