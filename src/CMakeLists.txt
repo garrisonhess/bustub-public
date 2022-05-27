@@ -4,6 +4,7 @@ add_subdirectory(common)
 add_subdirectory(concurrency)
 add_subdirectory(container)
 add_subdirectory(execution)
+add_subdirectory(main)
 add_subdirectory(parser)
 add_subdirectory(recovery)
 add_subdirectory(storage)
@@ -23,6 +24,7 @@ bustub_common_util
 bustub_common 
 bustub_concurrency 
 bustub_execution 
+bustub_main
 bustub_parser 
 bustub_recovery 
 bustub_type
@@ -42,10 +44,6 @@ target_link_libraries(
     bustub 
     ${BUSTUB_LIBS}
     ${BUSTUB_THIRDPARTY_LIBS})
-
-
-
-
 
 target_include_directories(
 bustub PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
