@@ -431,7 +431,8 @@ int sqlite3_column_int(sqlite3_stmt *stmt, int iCol) {
   if (!Sqlite3ColumnHasValue(stmt, iCol, bustub::TypeId::INTEGER, val)) {
     return 0;
   }
-  return val.value_.integer;
+  
+  return val.GetAs<int>();
 }
 
 sqlite3_int64 sqlite3_column_int64(sqlite3_stmt *stmt, int iCol) {
@@ -439,32 +440,32 @@ sqlite3_int64 sqlite3_column_int64(sqlite3_stmt *stmt, int iCol) {
   if (!Sqlite3ColumnHasValue(stmt, iCol, bustub::TypeId::BIGINT, val)) {
     return 0;
   }
-  return val.value_.bigint;
+  return val.GetAs<sqlite_int64>();
 }
 
 const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
   bustub::Value val;
 
-  if (!Sqlite3ColumnHasValue(pStmt, iCol, bustub::TypeId::VARCHAR, val)) {
-    return nullptr;
-  }
-  try {
-    if (!pStmt->current_text_) {
-      pStmt->current_text_ =
-          std::unique_ptr<Sqlite3StringBuffer[]>(new Sqlite3StringBuffer[pStmt->result_->types.size()]);
-    }
+  // if (!Sqlite3ColumnHasValue(pStmt, iCol, bustub::TypeId::VARCHAR, val)) {
+  //   return nullptr;
+  // }
+  // try {
+  //   if (!pStmt->current_text_) {
+  //     pStmt->current_text_ =
+  //         std::unique_ptr<Sqlite3StringBuffer[]>(new Sqlite3StringBuffer[pStmt->result_->types.size()]);
+  //   }
 
-    auto &entry = pStmt->current_text_[iCol];
-    if (!entry.data_) {
-      // not initialized yet, convert the value and initialize it
-      entry.data_ = std::unique_ptr<char[]>(new char[val.str_value.size() + 1]);
-      memcpy(entry.data_.get(), val.ToString().c_str(), val.str_value.size() + 1);
-    }
-    return reinterpret_cast<const unsigned char *>(entry.data_.get());
-  } catch (...) {
-    // memory error!
-    return nullptr;
-  }
+  //   auto &entry = pStmt->current_text_[iCol];
+  //   if (!entry.data_) {
+  //     // not initialized yet, convert the value and initialize it
+  //     entry.data_ = std::unique_ptr<char[]>(new char[val.str_value.size() + 1]);
+  //     memcpy(entry.data_.get(), val.ToString().c_str(), val.str_value.size() + 1);
+  //   }
+  //   return reinterpret_cast<const unsigned char *>(entry.data_.get());
+  // } catch (...) {
+  //   // memory error!
+  //   return nullptr;
+  // }
 
   return nullptr;
 }
@@ -473,11 +474,10 @@ const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
 //      sqlite3_bind      //
 ////////////////////////////
 int sqlite3_bind_parameter_count(sqlite3_stmt *stmt) {
-  // if (!stmt) {
-  //   return 0;
-  // }
-  // return stmt->prepared->n_param;
-  return -1;
+  if (stmt == nullptr) {
+    return 0;
+  }
+  return stmt->prepared_->n_param_;
 }
 
 const char *sqlite3_bind_parameter_name(sqlite3_stmt *stmt, int idx) {
@@ -502,7 +502,7 @@ int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) {
   return -1;
 }
 
-int Sqlite3InternalBindValue(sqlite3_stmt *stmt, int idx, bustub::Value value) {
+int Sqlite3InternalBindValue(sqlite3_stmt *stmt, int idx, const bustub::Value& value) {
   if ((stmt == nullptr) || !stmt->prepared_ || stmt->result_) {
     return SQLITE_MISUSE;
   }
@@ -800,8 +800,8 @@ const char *sqlite3_column_decltype(sqlite3_stmt *pStmt, int iCol) {
     return nullptr;
   }
 
-  auto column_type = pStmt->prepared_->types_[iCol];
-  switch (column_type.id()) {
+  auto column_type = pStmt->prepared_->GetTypes()[iCol];
+  switch (column_type.GetTypeId()) {
     case TypeId::BOOLEAN:
       return "BOOLEAN";
     case TypeId::TINYINT:
