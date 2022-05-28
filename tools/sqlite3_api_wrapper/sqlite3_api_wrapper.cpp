@@ -707,12 +707,12 @@ void sqlite3_interrupt(sqlite3 *db) {
 
 const char *sqlite3_libversion(void) {
   // return BusTub::LibraryVersion();
-  static const char *libver = "12345";
+  static const char *libver = "BusTub version 1.0.1.";
   return libver;
 }
 
 const char *sqlite3_sourceid(void) {
-  static const char *sourceid = "12345";
+  static const char *sourceid = "SourceID: 100.";
   return sourceid;
   // return BusTub::SourceID();
 }
@@ -955,7 +955,7 @@ static int UnixCurrentTimeInt64(sqlite3_vfs *NotUsed, sqlite3_int64 *piNow) {
 // virtual file system, providing some dummies to avoid crashes
 sqlite3_vfs *sqlite3_vfs_find(const char *zVfsName) {
   // return a dummy because the shell does not check the return code.
-  fprintf(stderr, "sqlite3_vfs_find: unsupported.\n");
+  // fprintf(stderr, "sqlite3_vfs_find: unsupported.\n");
   sqlite3_vfs *res = static_cast<sqlite3_vfs *>(sqlite3_malloc(sizeof(sqlite3_vfs)));
   res->xCurrentTimeInt64 = UnixCurrentTimeInt64;
   res->iVersion = 2;
@@ -965,7 +965,7 @@ sqlite3_vfs *sqlite3_vfs_find(const char *zVfsName) {
   return res;
 }
 int sqlite3_vfs_register(sqlite3_vfs * /*unused*/, int makeDflt) {
-  fprintf(stderr, "sqlite3_vfs_register: unsupported.\n");
+  // fprintf(stderr, "sqlite3_vfs_register: unsupported.\n");
   return -1;
 }
 
@@ -1043,7 +1043,6 @@ SQLITE_API int sqlite3_value_nochange(sqlite3_value * /*unused*/) { return 0; }
 
 SQLITE_API void *sqlite3_aggregate_context(sqlite3_context * /*unused*/, int nBytes) {
   fprintf(stderr, "sqlite3_aggregate_context: unsupported.\n");
-
   return nullptr;
 }
 

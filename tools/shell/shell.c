@@ -19546,8 +19546,6 @@ int SQLITE_CDECL wmain(int argc, wchar_t **wargv) {
   char **argv;
 #endif
 
-  printf("HI FROM SQLITE MAIN!!!!\n");
-
   char *zErrMsg = 0;
   ShellState data;
   const char *zInitFile = 0;
