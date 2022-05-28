@@ -95,20 +95,8 @@ unique_ptr<Tuple> ClientContext::Fetch() {
   //   open_result->success = false;
   //   return nullptr;
   // }
-  // try {
-  //   // fetch the chunk and return it
-  //   auto chunk = FetchInternal();
-  //   return chunk;
-  // } catch (Exception &ex) {
-  //   open_result->error = ex.what();
-  // } catch (...) {
-  //   open_result->error = "Unhandled exception in Fetch";
-  // }
-  // open_result->success = false;
-  // CleanupInternal();
-  throw NotImplementedException("");
 
-  return nullptr;
+  return FetchInternal();
 }
 
 string ClientContext::FinalizeQuery(bool success) {
@@ -158,9 +146,22 @@ void ClientContext::CleanupInternal() {
 }
 
 unique_ptr<Tuple> ClientContext::FetchInternal() {
-  throw NotImplementedException("");
+  // constructor for creating a new tuple based on input value
+  static int counter = 0;
+  counter++;
 
-  return nullptr;
+  if ((counter % 100) == 0) {
+    return nullptr;
+  }
+
+  std::vector<Column> columns;
+  auto column1 = Column("column1", TypeId::INTEGER, nullptr);
+  columns.push_back(column1);
+  Schema schema = Schema(columns);
+
+  std::vector<Value> values;
+  values.emplace_back(Value(TypeId::INTEGER, counter));
+  return make_unique<Tuple>(Tuple(values, &schema));
   // return executor_.FetchChunk();
 }
 
@@ -169,21 +170,18 @@ unique_ptr<PreparedStatementData> ClientContext::CreatePreparedStatement(const s
   StatementType statement_type = statement->type_;
   auto result = make_unique<PreparedStatementData>(statement_type);
 
-  throw NotImplementedException("CREATE PREPARED STATEMENT NO IMPL");
-
-  // profiler.StartPhase("planner");
   // Planner planner(*this);
   // planner.CreatePlan(move(statement));
   // D_ASSERT(planner.plan);
-  // profiler.EndPhase();
 
   // auto plan = move(planner.plan);
-  // // extract the result column names from the plan
+  // extract the result column names from the plan
   // result->read_only = planner.read_only;
   // result->requires_valid_transaction = planner.requires_valid_transaction;
-  // result->names = planner.names;
-  // result->types = planner.types;
-  // result->value_map = move(planner.value_map);
+
+  result->names_ = {"column1"};
+  result->types_ = {Type(TypeId::INTEGER)};
+  // result->value_map_ = move(planner.value_map);
 
   // if (enable_optimizer) {
   //   profiler.StartPhase("optimizer");
@@ -201,53 +199,43 @@ unique_ptr<PreparedStatementData> ClientContext::CreatePreparedStatement(const s
 
   // result->dependencies = move(physical_planner.dependencies);
   // result->plan = move(physical_plan);
+
   return result;
 }
 
 unique_ptr<QueryResult> ClientContext::ExecutePreparedStatement(const string &query, PreparedStatementData &statement,
                                                                 vector<Value> bound_values, bool allow_stream_result) {
-  //   if (ActiveTransaction().is_invalidated && statement.requires_valid_transaction) {
-  //     throw Exception("Current transaction is aborted (please ROLLBACK)");
-  //   }
-  //   if (db.config.access_mode == AccessMode::READ_ONLY && !statement.read_only) {
-  //     throw Exception(StringUtil::Format("Cannot execute statement of type \"%s\" in read-only mode!",
-  //                                        StatementTypeToString(statement.statement_type)));
-  //   }
+  // if (ActiveTransaction().is_invalidated && statement.requires_valid_transaction) {
+  //   throw Exception("Current transaction is aborted (please ROLLBACK)");
+  // }
+  // if (db_->config_.access_mode == AccessMode::READ_ONLY && !statement.read_only) {
+  //   throw Exception(StringUtil::Format("Cannot execute statement of type \"%s\" in read-only mode!",
+  //                                      StatementTypeToString(statement.statement_type)));
+  // }
 
-  //   // bind the bound values before execution
-  //   statement.Bind(move(bound_values));
+  // // bind the bound values before execution
+  // statement.Bind(move(bound_values));
 
-  //   bool create_stream_result = statement.statement_type == StatementType::SELECT_STATEMENT && allow_stream_result;
+  // // store the physical plan in the context for calls to Fetch()
+  // executor_.Initialize(move(statement.plan_));
 
-  //   // store the physical plan in the context for calls to Fetch()
-  //   executor.Initialize(move(statement.plan));
+  // auto types = executor_.GetTypes();
 
-  //   auto types = executor.GetTypes();
-  //   D_ASSERT(types == statement.types);
+  // create a materialized result by continuously fetching
+  // auto result = make_unique<QueryResult>(statement.statement_type, statement.types, statement.names);
 
-  //   if (create_stream_result) {
-  //     // successfully compiled SELECT clause and it is the last statement
-  //     // return a StreamQueryResult so the client can call Fetch() on it and stream the result
-  //     return make_unique<StreamQueryResult>(statement.statement_type, *this, statement.types, statement.names);
-  //   }
-  //   // create a materialized result by continuously fetching
-  //   auto result = make_unique<MaterializedQueryResult>(statement.statement_type, statement.types, statement.names);
-  //   while (true) {
-  //     auto chunk = FetchInternal();
-  //     if (chunk->size() == 0) {
-  //       break;
-  //     }
-  // #ifdef DEBUG
-  //     for (idx_t i = 0; i < chunk->ColumnCount(); i++) {
-  //       if (statement.types[i].id() == LogicalTypeId::VARCHAR) {
-  //         chunk->data[i].UTFVerify(chunk->size());
-  //       }
-  //     }
-  // #endif
-  //     result->collection.Append(*chunk);
-  //   }
-  //   return move(result);
-  return nullptr;
+  auto result = make_unique<QueryResult>();
+
+  while (true) {
+    auto tuple = FetchInternal();
+    if (tuple == nullptr) {
+      break;
+    }
+
+    result->data_.push_back(move(tuple));
+  }
+
+  return result;
 }
 
 void ClientContext::InitialCleanup() {
@@ -380,22 +368,22 @@ unique_ptr<QueryResult> ClientContext::RunStatementInternal(const string &query,
 
 unique_ptr<QueryResult> ClientContext::RunStatement(const string &query, unique_ptr<SQLStatement> statement,
                                                     bool allow_stream_result) {
-  this->query_ = query;
+  // this->query_ = query;
 
   unique_ptr<QueryResult> result;
-  // check if we are on AutoCommit. In this case we should start a transaction.
-  if (transaction_.IsAutoCommit()) {
-    transaction_.BeginTransaction();
-  }
-  ActiveTransaction().active_query = db_.transaction_manager_->GetQueryNumber();
+  // // check if we are on AutoCommit. In this case we should start a transaction.
+  // if (transaction_.IsAutoCommit()) {
+  //   transaction_.BeginTransaction();
+  // }
+  // ActiveTransaction().active_query = db_.transaction_manager_->GetQueryNumber();
 
   try {
     result = RunStatementInternal(query, move(statement), allow_stream_result);
   } catch (std::exception &ex) {
     // other types of exceptions do invalidate the current transaction
-    if (transaction_.HasActiveTransaction()) {
-      ActiveTransaction().is_invalidated = true;
-    }
+    // if (transaction_.HasActiveTransaction()) {
+    //   ActiveTransaction().is_invalidated = true;
+    // }
     result = make_unique<QueryResult>(ex.what());
   }
 

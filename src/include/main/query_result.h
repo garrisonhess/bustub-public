@@ -35,7 +35,7 @@ class QueryResult {
   explicit QueryResult(string error);
   ~QueryResult() = default;
 
-  vector<Tuple> data_;
+  vector<unique_ptr<Tuple>> data_;
   bool success_;
   string error_;
 };

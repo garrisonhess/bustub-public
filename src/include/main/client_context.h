@@ -32,7 +32,7 @@ namespace bustub {
 using std::string;
 using std::unique_ptr;
 
-class Appender;
+// class Appender;
 class Catalog;
 class BusTub;
 class PreparedStatementData;
@@ -61,9 +61,7 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
   //! Interrupt execution of a query
   void Interrupt();
 
-  //! Issue a query, returning a QueryResult. The QueryResult can be either a StreamQueryResult or a
-  //! MaterializedQueryResult. The StreamQueryResult will only be returned in the case of a successful SELECT
-  //! statement.
+  //! Issue a query, returning a QueryResult.
   unique_ptr<QueryResult> Query(string query, bool allow_stream_result);
   unique_ptr<QueryResult> Query(unique_ptr<SQLStatement> statement, bool allow_stream_result);
 
@@ -92,12 +90,14 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
 
   //! Prepare a query
   unique_ptr<PreparedStatement> Prepare(string query);
+
   //! Directly prepare a SQL statement
   unique_ptr<PreparedStatement> Prepare(unique_ptr<SQLStatement> statement);
 
   //! Execute a prepared statement with the given name and set of parameters
   unique_ptr<QueryResult> Execute(string name, vector<Value> &values, bool allow_stream_result = true,
                                   string query = string());
+
   //! Removes a prepared statement from the set of prepared statements in the client context
   void RemovePreparedStatement(PreparedStatement *statement);
 
@@ -123,8 +123,10 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
   string VerifyQuery(string query, unique_ptr<SQLStatement> statement);
 
   void InitialCleanup();
+
   //! Internal clean up, does not lock. Caller must hold the context_lock.
   void CleanupInternal();
+
   string FinalizeQuery(bool success);
 
   //! Internal fetch, does not lock. Caller must hold the context_lock.
@@ -148,17 +150,18 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
   //! Call CreatePreparedStatement() and ExecutePreparedStatement() without any bound values
   unique_ptr<QueryResult> RunStatementInternal(const string &query, unique_ptr<SQLStatement> statement,
                                                bool allow_stream_result);
+
   unique_ptr<PreparedStatement> PrepareInternal(unique_ptr<SQLStatement> statement);
+
   void LogQueryInternal(string query);
 
  private:
   int64_t prepare_count_ = 0;
-  // //! The currently opened StreamQueryResult (if any)
-  // StreamQueryResult *open_result_ = nullptr;
+
   //! Prepared statement objects that were created using the ClientContext::Prepare method
   std::unordered_set<PreparedStatement *> prepared_statement_objects_;
 
-  //! Appenders that were attached to this client context
-  std::unordered_set<Appender *> appenders_;
+  // //! Appenders that were attached to this client context
+  // std::unordered_set<Appender *> appenders_;
 };
 }  // namespace bustub
