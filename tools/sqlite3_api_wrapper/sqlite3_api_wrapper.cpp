@@ -1,3 +1,4 @@
+#include "common/exception.h"
 #include "sqlite3.h"
 
 #include "bustub.h"
@@ -211,16 +212,17 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
   pStmt->current_text_ = nullptr;
   if (!pStmt->result_) {
     // no result yet! call Execute()
-    // pStmt->result_ = pStmt->prepared_->Execute(pStmt->bound_values_);
-    // if (!pStmt->result_->success_) {
-    //   // error in execute: clear prepared statement
-    //   pStmt->db_->last_error_ = pStmt->result_->error_;
-    //   pStmt->prepared_ = nullptr;
-    //   return SQLITE_ERROR;
-    // }
-    // fetch a chunk
-    // pStmt->current_tuple_ = pStmt->result_->Fetch();
-    pStmt->current_row_ = -1;
+    pStmt->result_ = pStmt->prepared_->Execute(pStmt->bound_values_);
+    if (!pStmt->result_->success_) {
+      // error in execute: clear prepared statement
+      pStmt->db_->last_error_ = pStmt->result_->error_;
+      pStmt->prepared_ = nullptr;
+      return SQLITE_ERROR;
+    }
+    // fetch a tuple
+    pStmt->current_tuple_ = std::move(pStmt->result_->data_[pStmt->current_row_]);
+
+    // TODO(GH): reset if it's not a select statement
     // if (!sqlite3_display_result(pStmt->prepared_->type)) {
     //   // only SELECT statements return results
     //   sqlite3_reset(pStmt);
@@ -231,16 +233,6 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
   }
 
   pStmt->current_row_++;
-
-  // if (pStmt->current_row_ >= (int32_t)pStmt->current_tuple_->size()) {
-  //   // have to fetch again!
-  //   pStmt->current_row_ = 0;
-  //   pStmt->current_tuple_ = pStmt->result_->Fetch();
-  //   if (!pStmt->current_tuple_ || pStmt->current_tuple_->size() == 0) {
-  //     sqlite3_reset(pStmt);
-  //     return SQLITE_DONE;
-  //   }
-  // }
 
   return SQLITE_ROW;
 }
@@ -378,22 +370,22 @@ int sqlite3_column_type(sqlite3_stmt *pStmt, int iCol) {
   //   return SQLITE_NULL;
   // }
 
-  // auto column_type = pStmt->result_->types_[iCol];
-  // switch (column_type.id()) {
-  //   case TypeId::BOOLEAN:
-  //   case TypeId::TINYINT:
-  //   case TypeId::SMALLINT:
-  //   case TypeId::INTEGER:
-  //   case TypeId::BIGINT:
-  //     return SQLITE_INTEGER;
-  //   case TypeId::DECIMAL:
-  //     return SQLITE_FLOAT;
-  //   case TypeId::TIMESTAMP:
-  //   case TypeId::VARCHAR:
-  //     return SQLITE_TEXT;
-  //   default:
-  //     return 0;
-  // }
+  auto column_type = pStmt->result_->types_[iCol];
+  switch (column_type.GetTypeId()) {
+    case TypeId::BOOLEAN:
+    case TypeId::TINYINT:
+    case TypeId::SMALLINT:
+    case TypeId::INTEGER:
+    case TypeId::BIGINT:
+      return SQLITE_INTEGER;
+    case TypeId::DECIMAL:
+      return SQLITE_FLOAT;
+    case TypeId::TIMESTAMP:
+    case TypeId::VARCHAR:
+      return SQLITE_TEXT;
+    default:
+      return 0;
+  }
 
 
   return 0;
@@ -403,17 +395,16 @@ const char *sqlite3_column_name(sqlite3_stmt *pStmt, int N) {
   if (pStmt == nullptr) {
     return nullptr;
   }
-  return nullptr;
-  // return pStmt->prepared_->names_[N].c_str();
+  return pStmt->prepared_->GetNames()[N].c_str();
 }
 
 static bool Sqlite3ColumnHasValue(sqlite3_stmt *pStmt, int iCol, bustub::TypeId target_type, bustub::Value &val) {
   if ((pStmt == nullptr) || !pStmt->result_ || !pStmt->current_tuple_) {
     return false;
   }
-  // if (iCol < 0 || iCol >= (int)pStmt->result_->types.size()) {
-  //   return false;
-  // }
+  if (iCol < 0 || iCol >= static_cast<int>(pStmt->result_->types_.size())) {
+    return false;
+  }
   // if (FlatVector::IsNull(pStmt->current_chunk->data[iCol], pStmt->current_row)) {
   //   return false;
   // }
@@ -446,26 +437,27 @@ sqlite3_int64 sqlite3_column_int64(sqlite3_stmt *stmt, int iCol) {
 const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
   bustub::Value val;
 
-  // if (!Sqlite3ColumnHasValue(pStmt, iCol, bustub::TypeId::VARCHAR, val)) {
-  //   return nullptr;
-  // }
-  // try {
-  //   if (!pStmt->current_text_) {
-  //     pStmt->current_text_ =
-  //         std::unique_ptr<Sqlite3StringBuffer[]>(new Sqlite3StringBuffer[pStmt->result_->types.size()]);
-  //   }
+  if (!Sqlite3ColumnHasValue(pStmt, iCol, bustub::TypeId::VARCHAR, val)) {
+    return nullptr;
+  }
+  try {
+    if (!pStmt->current_text_) {
+      pStmt->current_text_ =
+          std::unique_ptr<Sqlite3StringBuffer[]>(new Sqlite3StringBuffer[pStmt->result_->types_.size()]);
+    }
 
-  //   auto &entry = pStmt->current_text_[iCol];
-  //   if (!entry.data_) {
-  //     // not initialized yet, convert the value and initialize it
-  //     entry.data_ = std::unique_ptr<char[]>(new char[val.str_value.size() + 1]);
-  //     memcpy(entry.data_.get(), val.ToString().c_str(), val.str_value.size() + 1);
-  //   }
-  //   return reinterpret_cast<const unsigned char *>(entry.data_.get());
-  // } catch (...) {
-  //   // memory error!
-  //   return nullptr;
-  // }
+    auto &entry = pStmt->current_text_[iCol];
+    if (!entry.data_) {
+      throw bustub::NotImplementedException("COLTEXT NOT IMPLEMENTED");
+      // // not initialized yet, convert the value and initialize it
+      // entry.data_ = std::unique_ptr<char[]>(new char[val.str_value.size() + 1]);
+      // memcpy(entry.data_.get(), val.ToString().c_str(), val.str_value.size() + 1);
+    }
+    return reinterpret_cast<const unsigned char *>(entry.data_.get());
+  } catch (...) {
+    // memory error!
+    return nullptr;
+  }
 
   return nullptr;
 }

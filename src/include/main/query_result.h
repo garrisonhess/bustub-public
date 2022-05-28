@@ -31,11 +31,21 @@ enum class QueryResultType : uint8_t { MATERIALIZED_RESULT, STREAM_RESULT };
 //! incrementally fetch data from the database.
 class QueryResult {
  public:
-  explicit QueryResult();
+  explicit QueryResult(StatementType statement_type, vector<Type> types, vector<string> names);
   explicit QueryResult(string error);
   ~QueryResult() = default;
 
+  //! The type of the statement that created this result
+  StatementType statement_type_;
+
+  //! The SQL types of the result
+  vector<Type> types_;
+
+  //! The names of the result
+  vector<string> names_;
+
   vector<unique_ptr<Tuple>> data_;
+  int curr_idx_;
   bool success_;
   string error_;
 };

@@ -41,15 +41,18 @@ const vector<string> &PreparedStatement::GetNames() {
   return data_->names_;
 }
 
-// unique_ptr<QueryResult> PreparedStatement::Execute(vector<Value> &values, bool allow_stream_result) {
-//   auto pending = PendingQuery(values, allow_stream_result);
-//   if (!pending->success) {
-//     return make_unique<MaterializedQueryResult>(pending->error);
-//   }
-//   return pending->Execute();
-// }
+unique_ptr<QueryResult> PreparedStatement::Execute(vector<Value> &values, bool allow_stream_result) {
+  // auto pending = PendingQuery(values, allow_stream_result);
+  // if (!pending->success) {
+  //   return make_unique<QueryResult>(pending->error);
+  // }
 
-// unique_ptr<PendingQueryResult> PreparedStatement::PendingQuery(vector<Value> &values, bool allow_stream_result) {
+  LOG_INFO("PreparedStatement Executing");
+  return nullptr;
+  // return pending->Execute();
+}
+
+// unique_ptr<QueryResult> PreparedStatement::PendingQuery(vector<Value> &values, bool allow_stream_result) {
 //   if (!success_) {
 //     throw Exception("Attempting to execute an unsuccessfully prepared statement!");
 //   }

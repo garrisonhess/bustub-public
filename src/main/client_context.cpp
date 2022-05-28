@@ -10,31 +10,6 @@
 #include "parser/parser.h"
 #include "type/statement_type.h"
 
-// #include "catalog/catalog_entry/table_catalog_entry.hpp"
-// #include "common/serializer/buffered_deserializer.hpp"
-// #include "common/serializer/buffered_serializer.hpp"
-// #include "execution/physical_plan_generator.hpp"
-// #include "main/materialized_query_result.hpp"
-// #include "main/stream_query_result.hpp"
-// #include "optimizer/optimizer.hpp"
-// #include "parser/expression/constant_expression.hpp"
-// #include "parser/statement/drop_statement.hpp"
-// #include "parser/statement/execute_statement.hpp"
-// #include "parser/statement/explain_statement.hpp"
-// #include "parser/statement/prepare_statement.hpp"
-// #include "parser/statement/select_statement.hpp"
-// #include "planner/operator/logical_execute.hpp"
-// #include "planner/planner.hpp"
-// #include "transaction/transaction_manager.hpp"
-// #include "transaction/transaction.hpp"
-// #include "storage/data_table.hpp"
-// #include "main/appender.hpp"
-// #include "main/relation.hpp"
-// #include "parser/statement/relation_statement.hpp"
-// #include "parallel/task_scheduler.hpp"
-// #include "common/serializer/buffered_file_writer.hpp"
-// #include "planner/pragma_handler.hpp"
-// #include "common/to_string.hpp"
 
 #include <mutex>
 #include <utility>
@@ -222,9 +197,7 @@ unique_ptr<QueryResult> ClientContext::ExecutePreparedStatement(const string &qu
   // auto types = executor_.GetTypes();
 
   // create a materialized result by continuously fetching
-  // auto result = make_unique<QueryResult>(statement.statement_type, statement.types, statement.names);
-
-  auto result = make_unique<QueryResult>();
+  auto result = make_unique<QueryResult>(statement.statement_type_, statement.types_, statement.names_);
 
   while (true) {
     auto tuple = FetchInternal();
@@ -336,8 +309,7 @@ unique_ptr<QueryResult> ClientContext::Execute(string name, vector<Value> &value
   try {
     InitialCleanup();
   } catch (std::exception &ex) {
-    // return make_unique<QueryResult>(ex.what());
-    return make_unique<QueryResult>();
+    return make_unique<QueryResult>(ex.what());
   }
 
   // // create the execute statement
