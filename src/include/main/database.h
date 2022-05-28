@@ -68,6 +68,12 @@ class BusTub {
 
   ~BusTub() = default;
 
+  uint64_t NumberOfThreads();
+  static const char *SourceID();
+
+  static const char *LibraryVersion();
+  static string Platform();
+
   shared_ptr<DatabaseInstance> instance_;
 };
 

@@ -29,8 +29,6 @@ LockManager &DatabaseInstance::GetLockManager() { return *lock_manager_; }
 
 // The initialization must occur in DB-bootstrap order.
 void DatabaseInstance::Initialize(const char *path, DBConfig *config) {
-
-
   int default_num_frames = 1234;
   disk_manager_ = make_unique<DiskManager>(path);
   buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, default_num_frames);
@@ -44,14 +42,18 @@ void DatabaseInstance::Initialize(const char *path, DBConfig *config) {
 BusTub::BusTub(const string &path, DBConfig *config) : BusTub(path.c_str(), config) {}
 
 BusTub::BusTub(const char *path, DBConfig *config) : instance_(make_shared<DatabaseInstance>()) {
-  if (config == nullptr){
+  if (config == nullptr) {
     config = new DBConfig();
   }
-  
+
   instance_->Initialize(path, config);
 }
 
 // BusTub::BusTub(DatabaseInstance &instance) : instance_(instance.shared_from_this()) {}
+
+// const char *BusTub::SourceID() { return "12345"; }
+
+// const char *BusTub::LibraryVersion() { return "12345"; }
 
 TransactionManager &TransactionManager::Get(DatabaseInstance &db) { return db.GetTransactionManager(); }
 
@@ -66,9 +68,5 @@ CheckpointManager &CheckpointManager::Get(DatabaseInstance &db) { return db.GetC
 Catalog &Catalog::Get(DatabaseInstance &db) { return db.GetCatalog(); }
 
 LockManager &LockManager::Get(DatabaseInstance &db) { return db.GetLockManager(); }
-
-
-
-
 
 }  // namespace bustub
