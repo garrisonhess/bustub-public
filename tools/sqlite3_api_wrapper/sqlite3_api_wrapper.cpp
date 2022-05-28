@@ -33,7 +33,7 @@ struct sqlite3_stmt {
   //! The result object, if successfully executed
   unique_ptr<QueryResult> result;
   //! The current chunk that we are iterating over
-  unique_ptr<DataChunk> current_chunk;
+  unique_ptr<Tuple> current_chunk;
   //! The current row into the current chunk that we are iterating over
   int64_t current_row;
   //! Bound values, used for binding to the prepared statement
@@ -46,7 +46,7 @@ struct sqlite3_stmt {
 
 struct sqlite3 {
   unique_ptr<BusTub> db;
-  // unique_ptr<Connection> con;
+  unique_ptr<Connection> con;
   string last_error;
 };
 
@@ -121,71 +121,73 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
                        sqlite3_stmt **ppStmt, /* OUT: Statement handle */
                        const char **pzTail    /* OUT: Pointer to unused portion of zSql */
 ) {
-  if (!db || !ppStmt || !zSql) {
-    return SQLITE_MISUSE;
-  }
-  *ppStmt = nullptr;
-  string query = nByte < 0 ? zSql : string(zSql, nByte);
-  if (pzTail) {
-    *pzTail = zSql + query.size();
-  }
-  try {
-    Parser parser;
-    parser.ParseQuery(query);
-    if (parser.statements_.size() == 0) {
-      return SQLITE_OK;
-    }
-    // extract the remainder
-    int64_t next_location = parser.statements_[0]->stmt_location_ + parser.statements_[0]->stmt_length_;
-    bool set_remainder = next_location < query.size();
+  return SQLITE_ERROR;
 
-    // extract the first statement
-    vector<unique_ptr<SQLStatement>> statements;
-    statements.push_back(move(parser.statements_[0]));
+  // if (!db || !ppStmt || !zSql) {
+  //   return SQLITE_MISUSE;
+  // }
+  // *ppStmt = nullptr;
+  // string query = nByte < 0 ? zSql : string(zSql, nByte);
+  // if (pzTail) {
+  //   *pzTail = zSql + query.size();
+  // }
+  // try {
+  //   Parser parser;
+  //   parser.ParseQuery(query);
+  //   if (parser.statements_.size() == 0) {
+  //     return SQLITE_OK;
+  //   }
+  //   // extract the remainder
+  //   int64_t next_location = parser.statements_[0]->stmt_location_ + parser.statements_[0]->stmt_length_;
+  //   bool set_remainder = static_cast<size_t>(next_location) < query.size();
 
-    // PragmaHandler handler(*db->con->context);
-    // handler.HandlePragmaStatements(statements);
+  //   // extract the first statement
+  //   vector<unique_ptr<SQLStatement>> statements;
+  //   statements.push_back(move(parser.statements_[0]));
 
-    // if there are multiple statements here, we are dealing with an import database statement
-    // we directly execute all statements besides the final one
-    for (int64_t i = 0; i + 1 < statements.size(); i++) {
-      auto res = db->con->Query(move(statements[i]));
-      if (!res->success) {
-        db->last_error = res->error;
-        return SQLITE_ERROR;
-      }
-    }
+  //   // PragmaHandler handler(*db->con->context);
+  //   // handler.HandlePragmaStatements(statements);
 
-    // now prepare the query
-    auto prepared = db->con->Prepare(move(statements.back()));
-    if (!prepared->success) {
-      // failed to prepare: set the error message
-      db->last_error = prepared->error;
-      return SQLITE_ERROR;
-    }
+  //   // if there are multiple statements here, we are dealing with an import database statement
+  //   // we directly execute all statements besides the final one
+  //   for (uint64_t i = 0; i + 1 < statements.size(); i++) {
+  //     auto res = db->con->Query(move(statements[i]));
+  //     if (!res->success) {
+  //       db->last_error = res->error;
+  //       return SQLITE_ERROR;
+  //     }
+  //   }
 
-    // create the statement entry
-    unique_ptr<sqlite3_stmt> stmt = make_unique<sqlite3_stmt>();
-    stmt->db = db;
-    stmt->query_string = query;
-    stmt->prepared = move(prepared);
-    stmt->current_row = -1;
-    for (int64_t i = 0; i < stmt->prepared->n_param; i++) {
-      stmt->bound_names.push_back("$" + to_string(i + 1));
-      stmt->bound_values.push_back(Value());
-    }
+  //   // now prepare the query
+  //   auto prepared = db->con->Prepare(move(statements.back()));
+  //   if (!prepared->success_) {
+  //     // failed to prepare: set the error message
+  //     db->last_error = prepared->error_;
+  //     return SQLITE_ERROR;
+  //   }
 
-    // extract the remainder of the query and assign it to the pzTail
-    if (pzTail && set_remainder) {
-      *pzTail = zSql + next_location + 1;
-    }
+  //   // create the statement entry
+  //   unique_ptr<sqlite3_stmt> stmt = make_unique<sqlite3_stmt>();
+  //   stmt->db = db;
+  //   stmt->query_string = query;
+  //   stmt->prepared = move(prepared);
+  //   stmt->current_row = -1;
+  //   for (int64_t i = 0; i < stmt->prepared->n_param_; i++) {
+  //     stmt->bound_names.push_back("$" + to_string(i + 1));
+  //     stmt->bound_values.push_back(Value());
+  //   }
 
-    *ppStmt = stmt.release();
-    return SQLITE_OK;
-  } catch (std::exception &ex) {
-    db->last_error = ex.what();
-    return SQLITE_ERROR;
-  }
+  //   // extract the remainder of the query and assign it to the pzTail
+  //   if (pzTail && set_remainder) {
+  //     *pzTail = zSql + next_location + 1;
+  //   }
+
+  //   *ppStmt = stmt.release();
+  //   return SQLITE_OK;
+  // } catch (std::exception &ex) {
+  //   db->last_error = ex.what();
+  //   return SQLITE_ERROR;
+  // }
 }
 
 bool sqlite3_display_result(StatementType type) {
@@ -202,45 +204,47 @@ bool sqlite3_display_result(StatementType type) {
 
 /* Prepare the next result to be retrieved */
 int sqlite3_step(sqlite3_stmt *pStmt) {
-  if (!pStmt) {
-    return SQLITE_MISUSE;
-  }
-  if (!pStmt->prepared) {
-    pStmt->db->last_error = "Attempting sqlite3_step() on a non-successfully prepared statement";
-    return SQLITE_ERROR;
-  }
-  pStmt->current_text = nullptr;
-  if (!pStmt->result) {
-    // no result yet! call Execute()
-    pStmt->result = pStmt->prepared->Execute(pStmt->bound_values);
-    if (!pStmt->result->success) {
-      // error in execute: clear prepared statement
-      pStmt->db->last_error = pStmt->result->error;
-      pStmt->prepared = nullptr;
-      return SQLITE_ERROR;
-    }
-    // fetch a chunk
-    pStmt->current_chunk = pStmt->result->Fetch();
-    pStmt->current_row = -1;
-    if (!sqlite3_display_result(pStmt->prepared->type)) {
-      // only SELECT statements return results
-      sqlite3_reset(pStmt);
-    }
-  }
-  if (!pStmt->current_chunk) {
-    return SQLITE_DONE;
-  }
-  pStmt->current_row++;
-  if (pStmt->current_row >= (int32_t)pStmt->current_chunk->size()) {
-    // have to fetch again!
-    pStmt->current_row = 0;
-    pStmt->current_chunk = pStmt->result->Fetch();
-    if (!pStmt->current_chunk || pStmt->current_chunk->size() == 0) {
-      sqlite3_reset(pStmt);
-      return SQLITE_DONE;
-    }
-  }
-  return SQLITE_ROW;
+  return SQLITE_ERROR;
+
+  // if (!pStmt) {
+  //   return SQLITE_MISUSE;
+  // }
+  // if (!pStmt->prepared) {
+  //   pStmt->db->last_error = "Attempting sqlite3_step() on a non-successfully prepared statement";
+  //   return SQLITE_ERROR;
+  // }
+  // pStmt->current_text = nullptr;
+  // if (!pStmt->result) {
+  //   // no result yet! call Execute()
+  //   pStmt->result = pStmt->prepared->Execute(pStmt->bound_values);
+  //   // if (!pStmt->result->success_) {
+  //   //   // error in execute: clear prepared statement
+  //   //   pStmt->db->last_error = pStmt->result->error_;
+  //   //   pStmt->prepared = nullptr;
+  //   //   return SQLITE_ERROR;
+  //   // }
+  //   // fetch a chunk
+  //   pStmt->current_chunk = pStmt->result->Fetch();
+  //   pStmt->current_row = -1;
+  //   // if (!sqlite3_display_result(pStmt->prepared->type)) {
+  //   //   // only SELECT statements return results
+  //   //   sqlite3_reset(pStmt);
+  //   // }
+  // }
+  // if (!pStmt->current_chunk) {
+  //   return SQLITE_DONE;
+  // }
+  // pStmt->current_row++;
+  // if (pStmt->current_row >= (int32_t)pStmt->current_chunk->size()) {
+  //   // have to fetch again!
+  //   pStmt->current_row = 0;
+  //   pStmt->current_chunk = pStmt->result->Fetch();
+  //   if (!pStmt->current_chunk || pStmt->current_chunk->size() == 0) {
+  //     sqlite3_reset(pStmt);
+  //     return SQLITE_DONE;
+  //   }
+  // }
+  // return SQLITE_ROW;
 }
 
 /* Execute multiple semicolon separated SQL statements
@@ -354,24 +358,27 @@ exec_out:
 const char *sqlite3_sql(sqlite3_stmt *pStmt) { return pStmt->query_string.c_str(); }
 
 int sqlite3_column_count(sqlite3_stmt *pStmt) {
-  if (!pStmt) {
-    return 0;
-  }
-  return (int)pStmt->prepared->types.size();
+  // if (!pStmt) {
+  //   return 0;
+  // }
+  // return (int)pStmt->prepared->types.size();
+  return -1;
 }
 
 ////////////////////////////
 //     sqlite3_column     //
 ////////////////////////////
 int sqlite3_column_type(sqlite3_stmt *pStmt, int iCol) {
-  if (!pStmt || !pStmt->result || !pStmt->current_chunk) {
-    return 0;
-  }
-  if (FlatVector::IsNull(pStmt->current_chunk->data[iCol], pStmt->current_row)) {
-    return SQLITE_NULL;
-  }
+  return -1;
 
-  return SQLITE_INTEGER;
+  // if (!pStmt || !pStmt->result || !pStmt->current_chunk) {
+  //   return 0;
+  // }
+  // // if (FlatVector::IsNull(pStmt->current_chunk->data[iCol], pStmt->current_row)) {
+  // //   return SQLITE_NULL;
+  // // }
+
+  // return SQLITE_INTEGER;
 
   // auto column_type = pStmt->result->types[iCol];
   // switch (column_type.id()) {
@@ -401,129 +408,141 @@ int sqlite3_column_type(sqlite3_stmt *pStmt, int iCol) {
 }
 
 const char *sqlite3_column_name(sqlite3_stmt *pStmt, int N) {
-  if (!pStmt) {
+  if (pStmt == nullptr) {
     return nullptr;
   }
-  return pStmt->prepared->names[N].c_str();
+  return nullptr;
+  // return pStmt->prepared->names[N].c_str();
 }
 
-static bool sqlite3_column_has_value(sqlite3_stmt *pStmt, int iCol, LogicalType target_type, Value &val) {
-  if (!pStmt || !pStmt->result || !pStmt->current_chunk) {
-    return false;
-  }
-  if (iCol < 0 || iCol >= (int)pStmt->result->types.size()) {
-    return false;
-  }
-  if (FlatVector::IsNull(pStmt->current_chunk->data[iCol], pStmt->current_row)) {
-    return false;
-  }
-  try {
-    val = pStmt->current_chunk->data[iCol].GetValue(pStmt->current_row).CastAs(target_type);
-  } catch (...) {
-    return false;
-  }
-  return true;
-}
+// static bool sqlite3_column_has_value(sqlite3_stmt *pStmt, int iCol, Type target_type, Value &val) {
+//   // if (!pStmt || !pStmt->result || !pStmt->current_chunk) {
+//   //   return false;
+//   // }
+//   // if (iCol < 0 || iCol >= (int)pStmt->result->types.size()) {
+//   //   return false;
+//   // }
+//   // if (FlatVector::IsNull(pStmt->current_chunk->data[iCol], pStmt->current_row)) {
+//   //   return false;
+//   // }
+//   // try {
+//   //   val = pStmt->current_chunk->data[iCol].GetValue(pStmt->current_row).CastAs(target_type);
+//   // } catch (...) {
+//   //   return false;
+//   // }
+//   return true;
+// }
 
 double sqlite3_column_double(sqlite3_stmt *stmt, int iCol) {
   Value val;
-  if (!sqlite3_column_has_value(stmt, iCol, LogicalType::DOUBLE, val)) {
-    return 0;
-  }
-  return val.value_.double_;
+  // if (!sqlite3_column_has_value(stmt, iCol, LogicalType::DOUBLE, val)) {
+  //   return 0;
+  // }
+  // return val.value_.double_;
+  return 0;
 }
 
 int sqlite3_column_int(sqlite3_stmt *stmt, int iCol) {
-  Value val;
-  if (!sqlite3_column_has_value(stmt, iCol, LogicalType::INTEGER, val)) {
-    return 0;
-  }
-  return val.value_.integer;
+  // Value val;
+  // if (!sqlite3_column_has_value(stmt, iCol, LogicalType::INTEGER, val)) {
+  //   return 0;
+  // }
+  // return val.value_.integer;
+  return 0;
 }
 
 sqlite3_int64 sqlite3_column_int64(sqlite3_stmt *stmt, int iCol) {
-  Value val;
-  if (!sqlite3_column_has_value(stmt, iCol, LogicalType::BIGINT, val)) {
-    return 0;
-  }
-  return val.value_.bigint;
+  // Value val;
+  // if (!sqlite3_column_has_value(stmt, iCol, LogicalType::BIGINT, val)) {
+  //   return 0;
+  // }
+  // return val.value_.bigint;
+  return 0;
 }
 
 const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
-  Value val;
-  if (!sqlite3_column_has_value(pStmt, iCol, LogicalType::VARCHAR, val)) {
-    return nullptr;
-  }
-  try {
-    if (!pStmt->current_text) {
-      pStmt->current_text = unique_ptr<sqlite3_string_buffer[]>(new sqlite3_string_buffer[pStmt->result->types.size()]);
-    }
-    auto &entry = pStmt->current_text[iCol];
-    if (!entry.data) {
-      // not initialized yet, convert the value and initialize it
-      entry.data = unique_ptr<char[]>(new char[val.str_value.size() + 1]);
-      memcpy(entry.data.get(), val.str_value.c_str(), val.str_value.size() + 1);
-    }
-    return (const unsigned char *)entry.data.get();
-  } catch (...) {
-    // memory error!
-    return nullptr;
-  }
+  // Value val;
+  // if (!sqlite3_column_has_value(pStmt, iCol, LogicalType::VARCHAR, val)) {
+  //   return nullptr;
+  // }
+  // try {
+  //   if (!pStmt->current_text) {
+  //     pStmt->current_text = unique_ptr<sqlite3_string_buffer[]>(new
+  //     sqlite3_string_buffer[pStmt->result->types.size()]);
+  //   }
+  //   auto &entry = pStmt->current_text[iCol];
+  //   if (!entry.data) {
+  //     // not initialized yet, convert the value and initialize it
+  //     entry.data = unique_ptr<char[]>(new char[val.str_value.size() + 1]);
+  //     memcpy(entry.data.get(), val.str_value.c_str(), val.str_value.size() + 1);
+  //   }
+  //   return (const unsigned char *)entry.data.get();
+  // } catch (...) {
+  //   // memory error!
+  //   return nullptr;
+  // }
+
+  return nullptr;
 }
 
 ////////////////////////////
 //      sqlite3_bind      //
 ////////////////////////////
 int sqlite3_bind_parameter_count(sqlite3_stmt *stmt) {
-  if (!stmt) {
-    return 0;
-  }
-  return stmt->prepared->n_param;
+  // if (!stmt) {
+  //   return 0;
+  // }
+  // return stmt->prepared->n_param;
+  return 0;
 }
 
 const char *sqlite3_bind_parameter_name(sqlite3_stmt *stmt, int idx) {
-  if (!stmt) {
-    return nullptr;
-  }
-  if (idx < 1 || idx > (int)stmt->prepared->n_param) {
-    return nullptr;
-  }
-  return stmt->bound_names[idx - 1].c_str();
+  // if (!stmt) {
+  //   return nullptr;
+  // }
+  // if (idx < 1 || idx > (int)stmt->prepared->n_param) {
+  //   return nullptr;
+  // }
+  // return stmt->bound_names[idx - 1].c_str();
+  return nullptr;
 }
 
 int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) {
-  if (!stmt || !zName) {
-    return 0;
-  }
-  for (int64_t i = 0; i < stmt->bound_names.size(); i++) {
-    if (stmt->bound_names[i] == string(zName)) {
-      return i + 1;
-    }
-  }
+  // if (!stmt || !zName) {
+  //   return 0;
+  // }
+  // for (int64_t i = 0; i < stmt->bound_names.size(); i++) {
+  //   if (stmt->bound_names[i] == string(zName)) {
+  //     return i + 1;
+  //   }
+  // }
   return 0;
 }
 
 int sqlite3_internal_bind_value(sqlite3_stmt *stmt, int idx, Value value) {
-  if (!stmt || !stmt->prepared || stmt->result) {
-    return SQLITE_MISUSE;
-  }
-  if (idx < 1 || idx > (int)stmt->prepared->n_param) {
-    return SQLITE_RANGE;
-  }
-  stmt->bound_values[idx - 1] = value;
+  // if (!stmt || !stmt->prepared || stmt->result) {
+  //   return SQLITE_MISUSE;
+  // }
+  // if (idx < 1 || idx > (int)stmt->prepared->n_param) {
+  //   return SQLITE_RANGE;
+  // }
+  // stmt->bound_values[idx - 1] = value;
   return SQLITE_OK;
 }
 
 int sqlite3_bind_int(sqlite3_stmt *stmt, int idx, int val) {
-  return sqlite3_internal_bind_value(stmt, idx, Value::INTEGER(val));
+  // return sqlite3_internal_bind_value(stmt, idx, Value::INTEGER(val));
+  return 0;
 }
 
 int sqlite3_bind_int64(sqlite3_stmt *stmt, int idx, sqlite3_int64 val) {
-  return sqlite3_internal_bind_value(stmt, idx, Value::BIGINT(val));
+  // return sqlite3_internal_bind_value(stmt, idx, Value::BIGINT(val));
+  return 0;
 }
 
 int sqlite3_bind_double(sqlite3_stmt *stmt, int idx, double val) {
-  return sqlite3_internal_bind_value(stmt, idx, Value::DOUBLE(val));
+  // return sqlite3_internal_bind_value(stmt, idx, Value::DOUBLE(val));
+  return 0;
 }
 
 int sqlite3_bind_null(sqlite3_stmt *stmt, int idx) { return sqlite3_internal_bind_value(stmt, idx, Value()); }
@@ -534,23 +553,24 @@ SQLITE_API int sqlite3_bind_value(sqlite3_stmt *, int, const sqlite3_value *) {
 }
 
 int sqlite3_bind_text(sqlite3_stmt *stmt, int idx, const char *val, int length, void (*free_func)(void *)) {
-  if (!val) {
-    return SQLITE_MISUSE;
-  }
-  string value;
-  if (length < 0) {
-    value = string(val);
-  } else {
-    value = string(val, val + length);
-  }
-  if (free_func && ((ptrdiff_t)free_func) != -1) {
-    free_func((void *)val);
-  }
-  try {
-    return sqlite3_internal_bind_value(stmt, idx, Value(value));
-  } catch (std::exception &ex) {
-    return SQLITE_ERROR;
-  }
+  // if (!val) {
+  //   return SQLITE_MISUSE;
+  // }
+  // string value;
+  // if (length < 0) {
+  //   value = string(val);
+  // } else {
+  //   value = string(val, val + length);
+  // }
+  // if (free_func && ((ptrdiff_t)free_func) != -1) {
+  //   free_func((void *)val);
+  // }
+  // try {
+  //   return sqlite3_internal_bind_value(stmt, idx, Value(value));
+  // } catch (std::exception &ex) {
+  //   return SQLITE_ERROR;
+  // }
+  return 0;
 }
 
 int sqlite3_clear_bindings(sqlite3_stmt *stmt) {
@@ -563,15 +583,15 @@ int sqlite3_clear_bindings(sqlite3_stmt *stmt) {
 int sqlite3_initialize(void) { return SQLITE_OK; }
 
 int sqlite3_finalize(sqlite3_stmt *pStmt) {
-  if (pStmt) {
-    if (pStmt->result && !pStmt->result->success) {
-      pStmt->db->last_error = string(pStmt->result->error);
-      delete pStmt;
-      return SQLITE_ERROR;
-    }
+  // if (pStmt) {
+  //   if (pStmt->result && !pStmt->result->success) {
+  //     pStmt->db->last_error = string(pStmt->result->error);
+  //     delete pStmt;
+  //     return SQLITE_ERROR;
+  //   }
 
-    delete pStmt;
-  }
+  //   delete pStmt;
+  // }
   return SQLITE_OK;
 }
 
@@ -674,13 +694,20 @@ const char *sqlite3_errmsg(sqlite3 *db) {
 }
 
 void sqlite3_interrupt(sqlite3 *db) {
-  if (db) {
-    db->con->Interrupt();
-  }
+  // if (db) {
+  //   db->con->Interrupt();
+  // }
 }
 
-const char *sqlite3_libversion(void) { return DuckDB::LibraryVersion(); }
-const char *sqlite3_sourceid(void) { return DuckDB::SourceID(); }
+const char *sqlite3_libversion(void) {
+  // return DuckDB::LibraryVersion();
+  return nullptr;
+}
+
+const char *sqlite3_sourceid(void) {
+  // return DuckDB::SourceID();
+  return nullptr;
+}
 
 int sqlite3_reset(sqlite3_stmt *stmt) {
   if (stmt) {
@@ -775,45 +802,45 @@ int sqlite3_table_column_metadata(sqlite3 *db,             /* Connection handle 
 }
 
 const char *sqlite3_column_decltype(sqlite3_stmt *pStmt, int iCol) {
-  if (!pStmt || !pStmt->prepared) {
-    return NULL;
-  }
-  auto column_type = pStmt->prepared->types[iCol];
-  switch (column_type.id()) {
-    case LogicalTypeId::BOOLEAN:
-      return "BOOLEAN";
-    case LogicalTypeId::TINYINT:
-      return "TINYINT";
-    case LogicalTypeId::SMALLINT:
-      return "SMALLINT";
-    case LogicalTypeId::INTEGER:
-      return "INTEGER";
-    case LogicalTypeId::BIGINT:
-      return "BIGINT";
-    case LogicalTypeId::FLOAT:
-      return "FLOAT";
-    case LogicalTypeId::DOUBLE:
-      return "DOUBLE";
-    case LogicalTypeId::DECIMAL:
-      return "DECIMAL";
-    case LogicalTypeId::DATE:
-      return "DATE";
-    case LogicalTypeId::TIME:
-      return "TIME";
-    case LogicalTypeId::TIMESTAMP:
-      return "TIMESTAMP";
-    case LogicalTypeId::VARCHAR:
-      return "VARCHAR";
-    case LogicalTypeId::LIST:
-      return "LIST";
-    case LogicalTypeId::STRUCT:
-      return "STRUCT";
-    case LogicalTypeId::BLOB:
-      return "BLOB";
-    default:
-      return NULL;
-  }
-  return NULL;
+  // if (!pStmt || !pStmt->prepared) {
+  //   return NULL;
+  // }
+  // auto column_type = pStmt->prepared->types[iCol];
+  // switch (column_type.id()) {
+  //   case LogicalTypeId::BOOLEAN:
+  //     return "BOOLEAN";
+  //   case LogicalTypeId::TINYINT:
+  //     return "TINYINT";
+  //   case LogicalTypeId::SMALLINT:
+  //     return "SMALLINT";
+  //   case LogicalTypeId::INTEGER:
+  //     return "INTEGER";
+  //   case LogicalTypeId::BIGINT:
+  //     return "BIGINT";
+  //   case LogicalTypeId::FLOAT:
+  //     return "FLOAT";
+  //   case LogicalTypeId::DOUBLE:
+  //     return "DOUBLE";
+  //   case LogicalTypeId::DECIMAL:
+  //     return "DECIMAL";
+  //   case LogicalTypeId::DATE:
+  //     return "DATE";
+  //   case LogicalTypeId::TIME:
+  //     return "TIME";
+  //   case LogicalTypeId::TIMESTAMP:
+  //     return "TIMESTAMP";
+  //   case LogicalTypeId::VARCHAR:
+  //     return "VARCHAR";
+  //   case LogicalTypeId::LIST:
+  //     return "LIST";
+  //   case LogicalTypeId::STRUCT:
+  //     return "STRUCT";
+  //   case LogicalTypeId::BLOB:
+  //     return "BLOB";
+  //   default:
+  //     return NULL;
+  // }
+  return nullptr;
 }
 
 int sqlite3_status64(int op, sqlite3_int64 *pCurrent, sqlite3_int64 *pHighwater, int resetFlag) {
@@ -1166,10 +1193,11 @@ SQLITE_API void sqlite3_progress_handler(sqlite3 *, int, int (*)(void *), void *
 }
 
 SQLITE_API int sqlite3_stmt_isexplain(sqlite3_stmt *pStmt) {
-  if (!pStmt || !pStmt->prepared) {
-    return 0;
-  }
-  return pStmt->prepared->type == StatementType::EXPLAIN_STATEMENT;
+  // if (!pStmt || !pStmt->prepared) {
+  //   return 0;
+  // }
+  // return pStmt->prepared->type == StatementType::EXPLAIN_STATEMENT;
+  return 0;
 }
 
 SQLITE_API int sqlite3_vtab_config(sqlite3 *, int op, ...) {
