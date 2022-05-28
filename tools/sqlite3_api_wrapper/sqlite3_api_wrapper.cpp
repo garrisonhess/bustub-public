@@ -1,6 +1,7 @@
 #include "sqlite3.h"
 
 #include "bustub.h"
+#include "common/logger.h"
 #include "parser/parser.h"
 
 #include <cassert>
@@ -87,9 +88,9 @@ int sqlite3_open_v2(const char *filename, /* Database filename (UTF-8) */
     // 	config.access_mode = AccessMode::READ_ONLY;
     // }
     p_db->db_ = std::make_unique<bustub::BusTub>(filename, &config);
-    // pDb->con = make_unique<Connection>(*pDb->db);
-
-    // ExtensionHelper::LoadAllExtensions(*pDb->db);
+    printf("initialized DB\n");
+    p_db->con_ = std::make_unique<bustub::Connection>(*p_db->db_);
+    printf("initialized DB\n");
   } catch (std::exception &ex) {
     if (p_db != nullptr) {
       p_db->last_error_ = ex.what();
@@ -698,13 +699,13 @@ const char *sqlite3_errmsg(sqlite3 *db) {
 }
 
 void sqlite3_interrupt(sqlite3 *db) {
-  // if (db) {
-  //   db->con->Interrupt();
+  // if (db != nullptr) {
+  //   db->con_->Interrupt();
   // }
 }
 
 const char *sqlite3_libversion(void) {
-  // return DuckDB::LibraryVersion();
+  // return BusTub::LibraryVersion();
   static const char *libver = "12345";
   return libver;
 }
@@ -712,7 +713,6 @@ const char *sqlite3_libversion(void) {
 const char *sqlite3_sourceid(void) {
   static const char *sourceid = "12345";
   return sourceid;
-
   // return BusTub::SourceID();
 }
 
@@ -746,7 +746,8 @@ int sqlite3_total_changes(sqlite3 * /*unused*/) {
 
 // checks if input ends with ;
 int sqlite3_complete(const char *sql) {
-  // FIXME fprintf(stderr, "sqlite3_complete: unsupported.\n");
+  // FIXME 
+  fprintf(stderr, "sqlite3_complete: unsupported.\n");
   return -1;
 }
 
@@ -778,10 +779,10 @@ int sqlite3_db_config(sqlite3 * /*unused*/, int op, ...) {
 }
 
 int sqlite3_get_autocommit(sqlite3 *db) {
-  return 1;
-  // TODO(xx) fix this
+  // TODO(GH) fix this
   // return db->con->context->transaction.IsAutoCommit();
   fprintf(stderr, "sqlite3_get_autocommit: unsupported.\n");
+  return -1;
 }
 
 int sqlite3_limit(sqlite3 * /*unused*/, int id, int newVal) {
@@ -810,9 +811,9 @@ int sqlite3_table_column_metadata(sqlite3 *db,             /* Connection handle 
 }
 
 const char *sqlite3_column_decltype(sqlite3_stmt *pStmt, int iCol) {
-  // if (!pStmt || !pStmt->prepared) {
-  //   return NULL;
-  // }
+  if ((pStmt == nullptr) || !pStmt->prepared_) {
+    return nullptr;
+  }
   // auto column_type = pStmt->prepared->types[iCol];
   // switch (column_type.id()) {
   //   case LogicalTypeId::BOOLEAN:
@@ -905,7 +906,7 @@ int sqlite3_test_control(int op, ...) {
 }
 
 int sqlite3_enable_load_extension(sqlite3 *db, int onoff) {
-  // fprintf(stderr, "sqlite3_enable_load_extension: unsupported.\n");
+  fprintf(stderr, "sqlite3_enable_load_extension: unsupported.\n");
   return -1;
 }
 
@@ -914,7 +915,7 @@ int sqlite3_load_extension(sqlite3 *db,       /* Load the extension into this da
                            const char *zProc, /* Entry point.  Derived from zFile if 0 */
                            char **pzErrMsg    /* Put error message here if not 0 */
 ) {
-  // fprintf(stderr, "sqlite3_load_extension: unsupported.\n");
+  fprintf(stderr, "sqlite3_load_extension: unsupported.\n");
   return -1;
 }
 
@@ -923,7 +924,7 @@ int sqlite3_create_module(sqlite3 *db,             /* SQLite connection to regis
                           const sqlite3_module *p, /* Methods for the module */
                           void *pClientData        /* Client data for xCreate/xConnect */
 ) {
-  // fprintf(stderr, "sqlite3_create_module: unsupported.\n");
+  fprintf(stderr, "sqlite3_create_module: unsupported.\n");
   return -1;
 }
 
@@ -931,11 +932,12 @@ int sqlite3_create_function(sqlite3 *db, const char *zFunctionName, int nArg, in
                             void (*xFunc)(sqlite3_context *, int, sqlite3_value **),
                             void (*xStep)(sqlite3_context *, int, sqlite3_value **),
                             void (*xFinal)(sqlite3_context *)) {
-  // fprintf(stderr, "sqlite3_create_function: unsupported.\n");
+  fprintf(stderr, "sqlite3_create_function: unsupported.\n");
   return -1;
 }
 
-int sqlite3_set_authorizer(sqlite3 * /*unused*/, int (*xAuth)(void *, int, const char *, const char *, const char *, const char *),
+int sqlite3_set_authorizer(sqlite3 * /*unused*/,
+                           int (*xAuth)(void *, int, const char *, const char *, const char *, const char *),
                            void *pUserData) {
   fprintf(stderr, "sqlite3_set_authorizer: unsupported.\n");
   return -1;
@@ -952,7 +954,7 @@ static int UnixCurrentTimeInt64(sqlite3_vfs *NotUsed, sqlite3_int64 *piNow) {
 // virtual file system, providing some dummies to avoid crashes
 sqlite3_vfs *sqlite3_vfs_find(const char *zVfsName) {
   // return a dummy because the shell does not check the return code.
-  // fprintf(stderr, "sqlite3_vfs_find: unsupported.\n");
+  fprintf(stderr, "sqlite3_vfs_find: unsupported.\n");
   sqlite3_vfs *res = static_cast<sqlite3_vfs *>(sqlite3_malloc(sizeof(sqlite3_vfs)));
   res->xCurrentTimeInt64 = UnixCurrentTimeInt64;
   res->iVersion = 2;
@@ -962,7 +964,7 @@ sqlite3_vfs *sqlite3_vfs_find(const char *zVfsName) {
   return res;
 }
 int sqlite3_vfs_register(sqlite3_vfs * /*unused*/, int makeDflt) {
-  // fprintf(stderr, "sqlite3_vfs_register: unsupported.\n");
+  fprintf(stderr, "sqlite3_vfs_register: unsupported.\n");
   return -1;
 }
 
@@ -991,134 +993,6 @@ sqlite3_backup *sqlite3_backup_init(sqlite3 *pDest,         /* Destination datab
 SQLITE_API sqlite3 *sqlite3_context_db_handle(sqlite3_context * /*unused*/) { return nullptr; }
 
 void *sqlite3_user_data(sqlite3_context * /*unused*/) { return nullptr; }
-
-#ifdef _WIN32
-#include <windows.h>
-
-static void *sqlite3MallocZero(size_t n) {
-  auto res = sqlite3_malloc(n);
-  assert(res);
-  memset(res, 0, n);
-  return res;
-}
-
-static LPWSTR winUtf8ToUnicode(const char *zText) {
-  int nChar;
-  LPWSTR zWideText;
-
-  nChar = MultiByteToWideChar(CP_UTF8, 0, zText, -1, NULL, 0);
-  if (nChar == 0) {
-    return 0;
-  }
-  zWideText = (LPWSTR)sqlite3MallocZero(nChar * sizeof(WCHAR));
-  if (zWideText == 0) {
-    return 0;
-  }
-  nChar = MultiByteToWideChar(CP_UTF8, 0, zText, -1, zWideText, nChar);
-  if (nChar == 0) {
-    sqlite3_free(zWideText);
-    zWideText = 0;
-  }
-  return zWideText;
-}
-
-static char *winUnicodeToMbcs(LPCWSTR zWideText, int useAnsi) {
-  int nByte;
-  char *zText;
-  int codepage = useAnsi ? CP_ACP : CP_OEMCP;
-
-  nByte = WideCharToMultiByte(codepage, 0, zWideText, -1, 0, 0, 0, 0);
-  if (nByte == 0) {
-    return 0;
-  }
-  zText = (char *)sqlite3MallocZero(nByte);
-  if (zText == 0) {
-    return 0;
-  }
-  nByte = WideCharToMultiByte(codepage, 0, zWideText, -1, zText, nByte, 0, 0);
-  if (nByte == 0) {
-    sqlite3_free(zText);
-    zText = 0;
-  }
-  return zText;
-}
-
-static char *winUtf8ToMbcs(const char *zText, int useAnsi) {
-  char *zTextMbcs;
-  LPWSTR zTmpWide;
-
-  zTmpWide = winUtf8ToUnicode(zText);
-  if (zTmpWide == 0) {
-    return 0;
-  }
-  zTextMbcs = winUnicodeToMbcs(zTmpWide, useAnsi);
-  sqlite3_free(zTmpWide);
-  return zTextMbcs;
-}
-
-SQLITE_API char *sqlite3_win32_utf8_to_mbcs_v2(const char *zText, int useAnsi) { return winUtf8ToMbcs(zText, useAnsi); }
-
-LPWSTR sqlite3_win32_utf8_to_unicode(const char *zText) { return winUtf8ToUnicode(zText); }
-
-static LPWSTR winMbcsToUnicode(const char *zText, int useAnsi) {
-  int nByte;
-  LPWSTR zMbcsText;
-  int codepage = useAnsi ? CP_ACP : CP_OEMCP;
-
-  nByte = MultiByteToWideChar(codepage, 0, zText, -1, NULL, 0) * sizeof(WCHAR);
-  if (nByte == 0) {
-    return 0;
-  }
-  zMbcsText = (LPWSTR)sqlite3MallocZero(nByte * sizeof(WCHAR));
-  if (zMbcsText == 0) {
-    return 0;
-  }
-  nByte = MultiByteToWideChar(codepage, 0, zText, -1, zMbcsText, nByte);
-  if (nByte == 0) {
-    sqlite3_free(zMbcsText);
-    zMbcsText = 0;
-  }
-  return zMbcsText;
-}
-
-static char *winUnicodeToUtf8(LPCWSTR zWideText) {
-  int nByte;
-  char *zText;
-
-  nByte = WideCharToMultiByte(CP_UTF8, 0, zWideText, -1, 0, 0, 0, 0);
-  if (nByte == 0) {
-    return 0;
-  }
-  zText = (char *)sqlite3MallocZero(nByte);
-  if (zText == 0) {
-    return 0;
-  }
-  nByte = WideCharToMultiByte(CP_UTF8, 0, zWideText, -1, zText, nByte, 0, 0);
-  if (nByte == 0) {
-    sqlite3_free(zText);
-    zText = 0;
-  }
-  return zText;
-}
-
-static char *winMbcsToUtf8(const char *zText, int useAnsi) {
-  char *zTextUtf8;
-  LPWSTR zTmpWide;
-
-  zTmpWide = winMbcsToUnicode(zText, useAnsi);
-  if (zTmpWide == 0) {
-    return 0;
-  }
-  zTextUtf8 = winUnicodeToUtf8(zTmpWide);
-  sqlite3_free(zTmpWide);
-  return zTextUtf8;
-}
-
-SQLITE_API char *sqlite3_win32_mbcs_to_utf8_v2(const char *zText, int useAnsi) { return winMbcsToUtf8(zText, useAnsi); }
-
-SQLITE_API char *sqlite3_win32_unicode_to_utf8(LPCWSTR zWideText) { return winUnicodeToUtf8(zWideText); }
-
-#endif
 
 // TODO(xx) complain
 SQLITE_API void sqlite3_result_blob(sqlite3_context * /*unused*/, const void * /*unused*/, int /*unused*/,
@@ -1213,10 +1087,10 @@ SQLITE_API void sqlite3_progress_handler(sqlite3 * /*unused*/, int /*unused*/, i
 }
 
 SQLITE_API int sqlite3_stmt_isexplain(sqlite3_stmt *pStmt) {
-  // if (!pStmt || !pStmt->prepared) {
-  //   return 0;
-  // }
-  // return pStmt->prepared->type == StatementType::EXPLAIN_STATEMENT;
+  if ((pStmt == nullptr) || !pStmt->prepared_) {
+    return 0;
+  }
+  // return pStmt->prepared_->type == bustub::StatementType::EXPLAIN_STATEMENT;
   return 0;
 }
 

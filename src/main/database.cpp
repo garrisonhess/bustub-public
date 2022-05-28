@@ -29,14 +29,30 @@ LockManager &DatabaseInstance::GetLockManager() { return *lock_manager_; }
 
 // The initialization must occur in DB-bootstrap order.
 void DatabaseInstance::Initialize(const char *path, DBConfig *config) {
-  int default_num_frames = 1234;
+  BUSTUB_ASSERT(config->buffer_pool_frames_ > 0, "Can't have zero buffer pool frames.");
+
+  LOG_INFO("disk_manager_");
   disk_manager_ = make_unique<DiskManager>(path);
-  buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, default_num_frames);
+
+  LOG_INFO("buffer_pool_manager_");
+  buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, config->buffer_pool_frames_);
+  
+  LOG_INFO("checkpoint_manager_");
   checkpoint_manager_ = make_unique<CheckpointManager>(*this);
+
+  LOG_INFO("catalog_");
   catalog_ = make_unique<Catalog>(*this);
+
+  LOG_INFO("log_manager_");
   log_manager_ = make_unique<LogManager>(*this->disk_manager_);
+
+  LOG_INFO("lock_manager_");
   lock_manager_ = make_unique<LockManager>();
+
+  LOG_INFO("transaction_manager_");
   transaction_manager_ = make_unique<TransactionManager>(*this);
+
+  LOG_INFO("Initialized DB");
 }
 
 BusTub::BusTub(const string &path, DBConfig *config) : BusTub(path.c_str(), config) {}
@@ -46,6 +62,11 @@ BusTub::BusTub(const char *path, DBConfig *config) : instance_(make_shared<Datab
     config = new DBConfig();
   }
 
+  if (path == nullptr) {
+    path = "main.db";
+  }
+
+  LOG_INFO("Initializing BusTub database: %s.", path);
   instance_->Initialize(path, config);
 }
 
