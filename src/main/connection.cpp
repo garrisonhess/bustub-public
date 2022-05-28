@@ -68,17 +68,13 @@ Connection::~Connection() = default;
 // 	return context->Query(query, true);
 // }
 
-// unique_ptr<MaterializedQueryResult> Connection::Query(string query) {
-// 	auto result = context->Query(query, false);
-// 	D_ASSERT(result->type == QueryResultType::MATERIALIZED_RESULT);
-// 	return unique_ptr_cast<QueryResult, MaterializedQueryResult>(move(result));
-// }
+unique_ptr<QueryResult> Connection::Query(string query) {
+	return context_->Query(move(query), false);
+}
 
-// unique_ptr<MaterializedQueryResult> Connection::Query(unique_ptr<SQLStatement> statement) {
-// 	auto result = context->Query(move(statement), false);
-// 	D_ASSERT(result->type == QueryResultType::MATERIALIZED_RESULT);
-// 	return unique_ptr_cast<QueryResult, MaterializedQueryResult>(move(result));
-// }
+unique_ptr<QueryResult> Connection::Query(unique_ptr<SQLStatement> statement) {
+	return context_->Query(move(statement), false);
+}
 
 // unique_ptr<PreparedStatement> Connection::Prepare(string query) {
 // 	return context_->Prepare(query);

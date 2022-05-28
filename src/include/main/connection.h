@@ -62,12 +62,13 @@ class Connection {
   //! one active StreamQueryResult per Connection object. Calling SendQuery() will invalidate any previously existing
   //! StreamQueryResult.
   unique_ptr<QueryResult> SendQuery(string query);
-  //   //! Issues a query to the database and materializes the result (if necessary). Always returns a
-  //   //! MaterializedQueryResult.
-  //   unique_ptr<MaterializedQueryResult> Query(string query);
-  //   //! Issues a query to the database and materializes the result (if necessary). Always returns a
-  //   //! MaterializedQueryResult.
-  //   unique_ptr<MaterializedQueryResult> Query(unique_ptr<SQLStatement> statement);
+
+  //! Issues a query to the database and materializes the result (if necessary).
+  unique_ptr<QueryResult> Query(string query);
+
+  //! Issues a query to the database and materializes the result (if necessary).
+  unique_ptr<QueryResult> Query(unique_ptr<SQLStatement> statement);
+
   // prepared statements
   template <typename... Args>
   unique_ptr<QueryResult> Query(string query, Args... args) {

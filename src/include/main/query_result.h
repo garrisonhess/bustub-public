@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <utility>
 #include <vector>
 #include "storage/table/tuple.h"
 #include "type/data_chunk.h"
@@ -29,7 +30,14 @@ enum class QueryResultType : uint8_t { MATERIALIZED_RESULT, STREAM_RESULT };
 //! result contains the entire result set, or a StreamQueryResult in which case the Fetch method can be called to
 //! incrementally fetch data from the database.
 class QueryResult {
+ public:
+  explicit QueryResult();
+  explicit QueryResult(string error);
+  ~QueryResult() = default;
+
   vector<Tuple> data_;
+  bool success_;
+  string error_;
 };
 
 }  // namespace bustub

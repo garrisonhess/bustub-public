@@ -15,15 +15,14 @@
 #include <iostream>
 
 namespace bustub {
+using bustub_libpgquery::PGSimplifiedTokenType;
+using bustub_libpgquery::PGKeywordCategory;
 using std::move;
 
 // Parser::Parser(ParserOptions options_p) : options(options_p) {
 // }
 
 void Parser::ParseQuery(const std::string &query) {
-  std::cout << "HI FROM PARSER\n";
-  std::cout << "received query string: " << query << "\n";
-
   // Transformer transformer(options.max_expression_depth);
   Transformer transformer(nullptr);
   {
@@ -51,6 +50,7 @@ void Parser::ParseQuery(const std::string &query) {
       LOG_INFO("parsed statement: %s", stmt->ToString().c_str());
     }
   }
+
   if (!statements_.empty()) {
     auto &last_statement = statements_.back();
     last_statement->stmt_length_ = query.size() - last_statement->stmt_location_;
@@ -73,28 +73,28 @@ std::vector<SimplifiedToken> Parser::Tokenize(const std::string &query) {
   for (auto &pg_token : pg_tokens) {
     SimplifiedToken token;
     switch (pg_token.type) {
-      case bustub_libpgquery::PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_IDENTIFIER:
+      case PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_IDENTIFIER:
         token.type_ = SimplifiedTokenType::SIMPLIFIED_TOKEN_IDENTIFIER;
         break;
-      case bustub_libpgquery::PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_NUMERIC_CONSTANT:
+      case PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_NUMERIC_CONSTANT:
         token.type_ = SimplifiedTokenType::SIMPLIFIED_TOKEN_NUMERIC_CONSTANT;
         break;
-      case bustub_libpgquery::PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_STRING_CONSTANT:
+      case PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_STRING_CONSTANT:
         token.type_ = SimplifiedTokenType::SIMPLIFIED_TOKEN_STRING_CONSTANT;
         break;
-      case bustub_libpgquery::PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_OPERATOR:
+      case PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_OPERATOR:
         token.type_ = SimplifiedTokenType::SIMPLIFIED_TOKEN_OPERATOR;
         break;
-      case bustub_libpgquery::PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_KEYWORD:
+      case PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_KEYWORD:
         token.type_ = SimplifiedTokenType::SIMPLIFIED_TOKEN_KEYWORD;
         break;
       // comments are not supported by our tokenizer right now
-      case bustub_libpgquery::PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_COMMENT:  // LCOV_EXCL_START
+      case PGSimplifiedTokenType::PG_SIMPLIFIED_TOKEN_COMMENT:
         token.type_ = SimplifiedTokenType::SIMPLIFIED_TOKEN_COMMENT;
         break;
       default:
         throw Exception("Unrecognized token category");
-    }  // LCOV_EXCL_STOP
+    }
     token.start_ = pg_token.start;
     result.push_back(token);
   }
@@ -110,16 +110,16 @@ std::vector<ParserKeyword> Parser::KeywordList() {
     ParserKeyword res;
     res.name_ = kw.text;
     switch (kw.category) {
-      case bustub_libpgquery::PGKeywordCategory::PG_KEYWORD_RESERVED:
+      case PGKeywordCategory::PG_KEYWORD_RESERVED:
         res.category_ = KeywordCategory::KEYWORD_RESERVED;
         break;
-      case bustub_libpgquery::PGKeywordCategory::PG_KEYWORD_UNRESERVED:
+      case PGKeywordCategory::PG_KEYWORD_UNRESERVED:
         res.category_ = KeywordCategory::KEYWORD_UNRESERVED;
         break;
-      case bustub_libpgquery::PGKeywordCategory::PG_KEYWORD_TYPE_FUNC:
+      case PGKeywordCategory::PG_KEYWORD_TYPE_FUNC:
         res.category_ = KeywordCategory::KEYWORD_TYPE_FUNC;
         break;
-      case bustub_libpgquery::PGKeywordCategory::PG_KEYWORD_COL_NAME:
+      case PGKeywordCategory::PG_KEYWORD_COL_NAME:
         res.category_ = KeywordCategory::KEYWORD_COL_NAME;
         break;
       default:

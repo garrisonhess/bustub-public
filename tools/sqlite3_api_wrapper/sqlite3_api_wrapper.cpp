@@ -147,11 +147,12 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     // if there are multiple statements here, we are dealing with an import database statement
     // we directly execute all statements besides the final one
     for (uint64_t i = 0; i + 1 < statements.size(); i++) {
-      // auto res = db->con_->Query(move(statements[i]));
-      // if (!res->success_) {
-      //   db->last_error_ = res->error;
-      //   return SQLITE_ERROR;
-      // }
+      auto res = db->con_->Query(move(statements[i]));
+      if (!res->success_) {
+        db->last_error_ = res->error_;
+        return SQLITE_ERROR;
+      }
+      printf("query statement: %lu\n", i);
     }
 
     // now prepare the query

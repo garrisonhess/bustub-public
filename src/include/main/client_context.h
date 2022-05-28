@@ -41,7 +41,7 @@ class PreparedStatementData;
 
 //! The ClientContext holds information relevant to the current client session
 //! during execution
-class ClientContext {
+class ClientContext : public std::enable_shared_from_this<ClientContext> {
  public:
   explicit ClientContext(shared_ptr<DatabaseInstance> database);
   ~ClientContext() = default;
