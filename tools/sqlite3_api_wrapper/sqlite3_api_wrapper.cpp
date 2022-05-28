@@ -545,7 +545,7 @@ int sqlite3_bind_double(sqlite3_stmt *stmt, int idx, double val) {
 
 int sqlite3_bind_null(sqlite3_stmt *stmt, int idx) { return Sqlite3InternalBindValue(stmt, idx, bustub::Value()); }
 
-SQLITE_API int sqlite3_bind_value(sqlite3_stmt *, int, const sqlite3_value *) {
+SQLITE_API int sqlite3_bind_value(sqlite3_stmt * /*unused*/, int /*unused*/, const sqlite3_value * /*unused*/) {
   fprintf(stderr, "sqlite3_bind_value: unsupported.\n");
   return SQLITE_ERROR;
 }
@@ -678,7 +678,7 @@ void *sqlite3_realloc(void *ptr, int n) { return sqlite3_realloc64(ptr, n); }
 
 void *sqlite3_realloc64(void *ptr, sqlite3_uint64 n) { return realloc(ptr, n); }
 
-// TODO: stub
+// TODO(xx): stub
 int sqlite3_config(int i, ...) { return SQLITE_OK; }
 
 int sqlite3_errcode(sqlite3 *db) {
@@ -750,7 +750,8 @@ int sqlite3_complete(const char *sql) {
   return -1;
 }
 
-int sqlite3_bind_blob(sqlite3_stmt * /*unused*/, int /*unused*/, const void * /*unused*/, int n, void (* /*unused*/)(void *)) {
+int sqlite3_bind_blob(sqlite3_stmt * /*unused*/, int /*unused*/, const void * /*unused*/, int n,
+                      void (* /*unused*/)(void *)) {
   fprintf(stderr, "sqlite3_bind_blob: unsupported.\n");
   return -1;
 }
@@ -875,12 +876,12 @@ int sqlite3_declare_vtab(sqlite3 * /*unused*/, const char *zSQL) {
   return -1;
 }
 
-const char *sqlite3_vtab_collation(sqlite3_index_info *, int) {
+const char *sqlite3_vtab_collation(sqlite3_index_info * /*unused*/, int /*unused*/) {
   fprintf(stderr, "sqlite3_vtab_collation: unsupported.\n");
   return nullptr;
 }
 
-int sqlite3_sleep(int) {
+int sqlite3_sleep(int /*unused*/) {
   fprintf(stderr, "sqlite3_sleep: unsupported.\n");
   return -1;
 }
@@ -892,7 +893,8 @@ int sqlite3_busy_timeout(sqlite3 * /*unused*/, int ms) {
 
 // unlikely to be supported
 
-int sqlite3_trace_v2(sqlite3 * /*unused*/, unsigned uMask, int (*xCallback)(unsigned, void *, void *, void *), void *pCtx) {
+int sqlite3_trace_v2(sqlite3 * /*unused*/, unsigned uMask, int (*xCallback)(unsigned, void *, void *, void *),
+                     void *pCtx) {
   fprintf(stderr, "sqlite3_trace_v2: unsupported.\n");
   return -1;
 }
@@ -933,16 +935,17 @@ int sqlite3_create_function(sqlite3 *db, const char *zFunctionName, int nArg, in
   return -1;
 }
 
-int sqlite3_set_authorizer(sqlite3 *, int (*xAuth)(void *, int, const char *, const char *, const char *, const char *),
+int sqlite3_set_authorizer(sqlite3 * /*unused*/, int (*xAuth)(void *, int, const char *, const char *, const char *, const char *),
                            void *pUserData) {
   fprintf(stderr, "sqlite3_set_authorizer: unsupported.\n");
   return -1;
 }
 
 // needed in shell timer
-static int unixCurrentTimeInt64(sqlite3_vfs *NotUsed, sqlite3_int64 *piNow) {
-  using namespace std::chrono;
-  *piNow = (sqlite3_int64)duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+static int UnixCurrentTimeInt64(sqlite3_vfs *NotUsed, sqlite3_int64 *piNow) {
+  *piNow = static_cast<sqlite3_int64>(
+      std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+          .count());
   return SQLITE_OK;
 }
 
@@ -951,14 +954,14 @@ sqlite3_vfs *sqlite3_vfs_find(const char *zVfsName) {
   // return a dummy because the shell does not check the return code.
   // fprintf(stderr, "sqlite3_vfs_find: unsupported.\n");
   sqlite3_vfs *res = static_cast<sqlite3_vfs *>(sqlite3_malloc(sizeof(sqlite3_vfs)));
-  res->xCurrentTimeInt64 = unixCurrentTimeInt64;
+  res->xCurrentTimeInt64 = UnixCurrentTimeInt64;
   res->iVersion = 2;
   res->zName = "dummy";
   res->pNext = nullptr;
   assert(res);
   return res;
 }
-int sqlite3_vfs_register(sqlite3_vfs *, int makeDflt) {
+int sqlite3_vfs_register(sqlite3_vfs * /*unused*/, int makeDflt) {
   // fprintf(stderr, "sqlite3_vfs_register: unsupported.\n");
   return -1;
 }
@@ -985,9 +988,9 @@ sqlite3_backup *sqlite3_backup_init(sqlite3 *pDest,         /* Destination datab
 
 // UDF support stuff, unused for now. These cannot be called as create_function above is disabled
 
-SQLITE_API sqlite3 *sqlite3_context_db_handle(sqlite3_context *) { return nullptr; }
+SQLITE_API sqlite3 *sqlite3_context_db_handle(sqlite3_context * /*unused*/) { return nullptr; }
 
-void *sqlite3_user_data(sqlite3_context *) { return nullptr; }
+void *sqlite3_user_data(sqlite3_context * /*unused*/) { return nullptr; }
 
 #ifdef _WIN32
 #include <windows.h>
@@ -1118,8 +1121,10 @@ SQLITE_API char *sqlite3_win32_unicode_to_utf8(LPCWSTR zWideText) { return winUn
 #endif
 
 // TODO(xx) complain
-SQLITE_API void sqlite3_result_blob(sqlite3_context * /*unused*/, const void * /*unused*/, int /*unused*/, void (* /*unused*/)(void *)) {}
-SQLITE_API void sqlite3_result_blob64(sqlite3_context * /*unused*/, const void * /*unused*/, sqlite3_uint64 /*unused*/, void (* /*unused*/)(void *)) {}
+SQLITE_API void sqlite3_result_blob(sqlite3_context * /*unused*/, const void * /*unused*/, int /*unused*/,
+                                    void (* /*unused*/)(void *)) {}
+SQLITE_API void sqlite3_result_blob64(sqlite3_context * /*unused*/, const void * /*unused*/, sqlite3_uint64 /*unused*/,
+                                      void (* /*unused*/)(void *)) {}
 SQLITE_API void sqlite3_result_double(sqlite3_context * /*unused*/, double /*unused*/) {}
 SQLITE_API void sqlite3_result_error(sqlite3_context * /*unused*/, const char * /*unused*/, int /*unused*/) {}
 SQLITE_API void sqlite3_result_error16(sqlite3_context * /*unused*/, const void * /*unused*/, int /*unused*/) {}
@@ -1129,40 +1134,45 @@ SQLITE_API void sqlite3_result_error_code(sqlite3_context * /*unused*/, int /*un
 SQLITE_API void sqlite3_result_int(sqlite3_context * /*unused*/, int /*unused*/) {}
 SQLITE_API void sqlite3_result_int64(sqlite3_context * /*unused*/, sqlite3_int64 /*unused*/) {}
 SQLITE_API void sqlite3_result_null(sqlite3_context * /*unused*/) {}
-SQLITE_API void sqlite3_result_text(sqlite3_context * /*unused*/, const char * /*unused*/, int /*unused*/, void (* /*unused*/)(void *)) {}
-SQLITE_API void sqlite3_result_text64(sqlite3_context * /*unused*/, const char * /*unused*/, sqlite3_uint64 /*unused*/, void (* /*unused*/)(void *),
-                                      unsigned char encoding) {}
-SQLITE_API void sqlite3_result_text16(sqlite3_context *, const void *, int, void (*)(void *)) {}
-SQLITE_API void sqlite3_result_text16le(sqlite3_context *, const void *, int, void (*)(void *)) {}
-SQLITE_API void sqlite3_result_text16be(sqlite3_context *, const void *, int, void (*)(void *)) {}
-SQLITE_API void sqlite3_result_value(sqlite3_context *, sqlite3_value *) {}
-SQLITE_API void sqlite3_result_pointer(sqlite3_context *, void *, const char *, void (*)(void *)) {}
-SQLITE_API void sqlite3_result_zeroblob(sqlite3_context *, int n) {}
-SQLITE_API int sqlite3_result_zeroblob64(sqlite3_context *, sqlite3_uint64 n) { return -1; }
+SQLITE_API void sqlite3_result_text(sqlite3_context * /*unused*/, const char * /*unused*/, int /*unused*/,
+                                    void (* /*unused*/)(void *)) {}
+SQLITE_API void sqlite3_result_text64(sqlite3_context * /*unused*/, const char * /*unused*/, sqlite3_uint64 /*unused*/,
+                                      void (* /*unused*/)(void *), unsigned char encoding) {}
+SQLITE_API void sqlite3_result_text16(sqlite3_context * /*unused*/, const void * /*unused*/, int /*unused*/,
+                                      void (* /*unused*/)(void *)) {}
+SQLITE_API void sqlite3_result_text16le(sqlite3_context * /*unused*/, const void * /*unused*/, int /*unused*/,
+                                        void (* /*unused*/)(void *)) {}
+SQLITE_API void sqlite3_result_text16be(sqlite3_context * /*unused*/, const void * /*unused*/, int /*unused*/,
+                                        void (* /*unused*/)(void *)) {}
+SQLITE_API void sqlite3_result_value(sqlite3_context * /*unused*/, sqlite3_value * /*unused*/) {}
+SQLITE_API void sqlite3_result_pointer(sqlite3_context * /*unused*/, void * /*unused*/, const char * /*unused*/,
+                                       void (* /*unused*/)(void *)) {}
+SQLITE_API void sqlite3_result_zeroblob(sqlite3_context * /*unused*/, int n) {}
+SQLITE_API int sqlite3_result_zeroblob64(sqlite3_context * /*unused*/, sqlite3_uint64 n) { return -1; }
 
 // TODO(xx) complain
-const void *sqlite3_value_blob(sqlite3_value *) { return nullptr; }
-double sqlite3_value_double(sqlite3_value *) { return 0; }
-int sqlite3_value_int(sqlite3_value *) { return 0; }
-sqlite3_int64 sqlite3_value_int64(sqlite3_value *) { return 0; }
-void *sqlite3_value_pointer(sqlite3_value *, const char *) { return nullptr; }
-const unsigned char *sqlite3_value_text(sqlite3_value *) { return nullptr; }
-SQLITE_API const void *sqlite3_value_text16(sqlite3_value *) { return nullptr; }
-SQLITE_API const void *sqlite3_value_text16le(sqlite3_value *) { return nullptr; }
-SQLITE_API const void *sqlite3_value_text16be(sqlite3_value *) { return nullptr; }
-SQLITE_API int sqlite3_value_bytes(sqlite3_value *) { return 0; }
-SQLITE_API int sqlite3_value_bytes16(sqlite3_value *) { return 0; }
-SQLITE_API int sqlite3_value_type(sqlite3_value *) { return 0; }
-SQLITE_API int sqlite3_value_numeric_type(sqlite3_value *) { return 0; }
-SQLITE_API int sqlite3_value_nochange(sqlite3_value *) { return 0; }
+const void *sqlite3_value_blob(sqlite3_value * /*unused*/) { return nullptr; }
+double sqlite3_value_double(sqlite3_value * /*unused*/) { return 0; }
+int sqlite3_value_int(sqlite3_value * /*unused*/) { return 0; }
+sqlite3_int64 sqlite3_value_int64(sqlite3_value * /*unused*/) { return 0; }
+void *sqlite3_value_pointer(sqlite3_value * /*unused*/, const char * /*unused*/) { return nullptr; }
+const unsigned char *sqlite3_value_text(sqlite3_value * /*unused*/) { return nullptr; }
+SQLITE_API const void *sqlite3_value_text16(sqlite3_value * /*unused*/) { return nullptr; }
+SQLITE_API const void *sqlite3_value_text16le(sqlite3_value * /*unused*/) { return nullptr; }
+SQLITE_API const void *sqlite3_value_text16be(sqlite3_value * /*unused*/) { return nullptr; }
+SQLITE_API int sqlite3_value_bytes(sqlite3_value * /*unused*/) { return 0; }
+SQLITE_API int sqlite3_value_bytes16(sqlite3_value * /*unused*/) { return 0; }
+SQLITE_API int sqlite3_value_type(sqlite3_value * /*unused*/) { return 0; }
+SQLITE_API int sqlite3_value_numeric_type(sqlite3_value * /*unused*/) { return 0; }
+SQLITE_API int sqlite3_value_nochange(sqlite3_value * /*unused*/) { return 0; }
 
-SQLITE_API void *sqlite3_aggregate_context(sqlite3_context *, int nBytes) {
+SQLITE_API void *sqlite3_aggregate_context(sqlite3_context * /*unused*/, int nBytes) {
   fprintf(stderr, "sqlite3_aggregate_context: unsupported.\n");
 
   return nullptr;
 }
 
-SQLITE_API int sqlite3_create_collation(sqlite3 *, const char *zName, int eTextRep, void *pArg,
+SQLITE_API int sqlite3_create_collation(sqlite3 * /*unused*/, const char *zName, int eTextRep, void *pArg,
                                         int (*xCompare)(void *, int, const void *, int, const void *)) {
   return SQLITE_ERROR;
 }
@@ -1192,12 +1202,13 @@ SQLITE_API int sqlite3_keyword_count(void) {
   return 0;
 }
 
-SQLITE_API int sqlite3_keyword_name(int, const char **, int *) {
+SQLITE_API int sqlite3_keyword_name(int /*unused*/, const char ** /*unused*/, int * /*unused*/) {
   fprintf(stderr, "sqlite3_keyword_name: unsupported.\n");
   return 0;
 }
 
-SQLITE_API void sqlite3_progress_handler(sqlite3 *, int, int (*)(void *), void *) {
+SQLITE_API void sqlite3_progress_handler(sqlite3 * /*unused*/, int /*unused*/, int (* /*unused*/)(void *),
+                                         void * /*unused*/) {
   fprintf(stderr, "sqlite3_progress_handler: unsupported.\n");
 }
 
@@ -1209,7 +1220,7 @@ SQLITE_API int sqlite3_stmt_isexplain(sqlite3_stmt *pStmt) {
   return 0;
 }
 
-SQLITE_API int sqlite3_vtab_config(sqlite3 *, int op, ...) {
+SQLITE_API int sqlite3_vtab_config(sqlite3 * /*unused*/, int op, ...) {
   fprintf(stderr, "sqlite3_vtab_config: unsupported.\n");
   return SQLITE_ERROR;
 }
