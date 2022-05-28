@@ -5,6 +5,7 @@ include_directories(../../third_party/utf8proc/include)
 
 add_library(sqlite3_api_wrapper SHARED sqlite3_api_wrapper.cpp ${ALL_OBJECT_FILES})
 target_link_libraries(sqlite3_api_wrapper bustub ${BUSTUB_EXTRA_LINK_FLAGS})
+link_threads(sqlite3_api_wrapper)
 
 include_directories(../../third_party/catch)
 
