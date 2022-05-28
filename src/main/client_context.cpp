@@ -332,6 +332,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(string query) {
 unique_ptr<QueryResult> ClientContext::Execute(string name, vector<Value> &values, bool allow_stream_result,
                                                string query) {
   // lock_guard<mutex> client_guard(context_lock);
+  printf("execute\n");
   try {
     InitialCleanup();
   } catch (std::exception &ex) {
@@ -416,6 +417,9 @@ unique_ptr<QueryResult> ClientContext::RunStatement(const string &query, unique_
     // failure in committing transaction
     return make_unique<QueryResult>(error);
   }
+
+
+  LOG_INFO("done with runstatement");
 
   return result;
 }
