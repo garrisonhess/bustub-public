@@ -3,6 +3,7 @@
 #include "bustub.h"
 #include "common/logger.h"
 #include "parser/parser.h"
+#include "parser/sql_statement.h"
 
 #include <cassert>
 #include <cctype>
@@ -117,73 +118,72 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
                        sqlite3_stmt **ppStmt, /* OUT: Statement handle */
                        const char **pzTail    /* OUT: Pointer to unused portion of zSql */
 ) {
-  return SQLITE_ERROR;
+  if ((db == nullptr) || (ppStmt == nullptr) || (zSql == nullptr)) {
+    return SQLITE_MISUSE;
+  }
+  *ppStmt = nullptr;
+  bustub::string query = nByte < 0 ? zSql : std::string(zSql, nByte);
+  if (pzTail != nullptr) {
+    *pzTail = zSql + query.size();
+  }
+  try {
+    bustub::Parser parser;
+    parser.ParseQuery(query);
+    if (parser.statements_.empty()) {
+      return SQLITE_OK;
+    }
 
-  // if (!db || !ppStmt || !zSql) {
-  //   return SQLITE_MISUSE;
-  // }
-  // *ppStmt = nullptr;
-  // string query = nByte < 0 ? zSql : string(zSql, nByte);
-  // if (pzTail) {
-  //   *pzTail = zSql + query.size();
-  // }
-  // try {
-  //   Parser parser;
-  //   parser.ParseQuery(query);
-  //   if (parser.statements_.size() == 0) {
-  //     return SQLITE_OK;
-  //   }
-  //   // extract the remainder
-  //   int64_t next_location = parser.statements_[0]->stmt_location_ + parser.statements_[0]->stmt_length_;
-  //   bool set_remainder = static_cast<size_t>(next_location) < query.size();
+    // // extract the remainder
+    // int64_t next_location = parser.statements_[0]->stmt_location_ + parser.statements_[0]->stmt_length_;
+    // bool set_remainder = static_cast<size_t>(next_location) < query.size();
 
-  //   // extract the first statement
-  //   vector<unique_ptr<SQLStatement>> statements;
-  //   statements.push_back(move(parser.statements_[0]));
+    // // extract the first statement
+    // std::vector<std::unique_ptr<bustub::SQLStatement>> statements;
+    // statements.push_back(move(parser.statements_[0]));
 
-  //   // PragmaHandler handler(*db->con->context);
-  //   // handler.HandlePragmaStatements(statements);
+    // // PragmaHandler handler(*db->con->context);
+    // // handler.HandlePragmaStatements(statements);
 
-  //   // if there are multiple statements here, we are dealing with an import database statement
-  //   // we directly execute all statements besides the final one
-  //   for (uint64_t i = 0; i + 1 < statements.size(); i++) {
-  //     auto res = db->con->Query(move(statements[i]));
-  //     if (!res->success) {
-  //       db->last_error = res->error;
-  //       return SQLITE_ERROR;
-  //     }
-  //   }
+    // // if there are multiple statements here, we are dealing with an import database statement
+    // // we directly execute all statements besides the final one
+    // for (uint64_t i = 0; i + 1 < statements.size(); i++) {
+    //   // auto res = db->con_->Query(move(statements[i]));
+    //   // if (!res->success_) {
+    //   //   db->last_error_ = res->error;
+    //   //   return SQLITE_ERROR;
+    //   // }
+    // }
 
-  //   // now prepare the query
-  //   auto prepared = db->con->Prepare(move(statements.back()));
-  //   if (!prepared->success_) {
-  //     // failed to prepare: set the error message
-  //     db->last_error = prepared->error_;
-  //     return SQLITE_ERROR;
-  //   }
+    // // now prepare the query
+    // auto prepared = db->con_->Prepare(move(statements.back()));
+    // if (!prepared->success_) {
+    //   // failed to prepare: set the error message
+    //   db->last_error_ = prepared->error_;
+    //   return SQLITE_ERROR;
+    // }
 
-  //   // create the statement entry
-  //   unique_ptr<sqlite3_stmt> stmt = make_unique<sqlite3_stmt>();
-  //   stmt->db = db;
-  //   stmt->query_string = query;
-  //   stmt->prepared = move(prepared);
-  //   stmt->current_row = -1;
-  //   for (int64_t i = 0; i < stmt->prepared->n_param_; i++) {
-  //     stmt->bound_names.push_back("$" + to_string(i + 1));
-  //     stmt->bound_values.push_back(Value());
-  //   }
+    // // create the statement entry
+    // bustub::unique_ptr<sqlite3_stmt> stmt = std::make_unique<sqlite3_stmt>();
+    // stmt->db_ = db;
+    // stmt->query_string_ = query;
+    // stmt->prepared_ = move(prepared);
+    // stmt->current_row_ = -1;
+    // for (int64_t i = 0; i < stmt->prepared_->n_param_; i++) {
+    //   stmt->bound_names_.push_back("$" + std::to_string(i + 1));
+    //   stmt->bound_values_.emplace_back();
+    // }
 
-  //   // extract the remainder of the query and assign it to the pzTail
-  //   if (pzTail && set_remainder) {
-  //     *pzTail = zSql + next_location + 1;
-  //   }
+    // // extract the remainder of the query and assign it to the pzTail
+    // if ((pzTail != nullptr) && set_remainder) {
+    //   *pzTail = zSql + next_location + 1;
+    // }
 
-  //   *ppStmt = stmt.release();
-  //   return SQLITE_OK;
-  // } catch (std::exception &ex) {
-  //   db->last_error = ex.what();
-  //   return SQLITE_ERROR;
-  // }
+    // *ppStmt = stmt.release();
+    return SQLITE_OK;
+  } catch (std::exception &ex) {
+    db->last_error_ = ex.what();
+    return SQLITE_ERROR;
+  }
 }
 
 bool Sqlite3DisplayResult(bustub::StatementType type) {
@@ -200,47 +200,49 @@ bool Sqlite3DisplayResult(bustub::StatementType type) {
 
 /* Prepare the next result to be retrieved */
 int sqlite3_step(sqlite3_stmt *pStmt) {
-  return SQLITE_ERROR;
+  if (pStmt == nullptr) {
+    return SQLITE_MISUSE;
+  }
+  if (!pStmt->prepared_) {
+    pStmt->db_->last_error_ = "Attempting sqlite3_step() on a non-successfully prepared statement";
+    return SQLITE_ERROR;
+  }
 
-  // if (!pStmt) {
-  //   return SQLITE_MISUSE;
-  // }
-  // if (!pStmt->prepared) {
-  //   pStmt->db->last_error = "Attempting sqlite3_step() on a non-successfully prepared statement";
-  //   return SQLITE_ERROR;
-  // }
-  // pStmt->current_text = nullptr;
-  // if (!pStmt->result) {
-  //   // no result yet! call Execute()
-  //   pStmt->result = pStmt->prepared->Execute(pStmt->bound_values);
-  //   // if (!pStmt->result->success_) {
-  //   //   // error in execute: clear prepared statement
-  //   //   pStmt->db->last_error = pStmt->result->error_;
-  //   //   pStmt->prepared = nullptr;
-  //   //   return SQLITE_ERROR;
-  //   // }
-  //   // fetch a chunk
-  //   pStmt->current_chunk = pStmt->result->Fetch();
-  //   pStmt->current_row = -1;
-  //   // if (!sqlite3_display_result(pStmt->prepared->type)) {
-  //   //   // only SELECT statements return results
-  //   //   sqlite3_reset(pStmt);
-  //   // }
-  // }
-  // if (!pStmt->current_chunk) {
-  //   return SQLITE_DONE;
-  // }
-  // pStmt->current_row++;
-  // if (pStmt->current_row >= (int32_t)pStmt->current_chunk->size()) {
+  pStmt->current_text_ = nullptr;
+  if (!pStmt->result_) {
+    // no result yet! call Execute()
+    // pStmt->result_ = pStmt->prepared_->Execute(pStmt->bound_values_);
+    // if (!pStmt->result_->success_) {
+    //   // error in execute: clear prepared statement
+    //   pStmt->db_->last_error_ = pStmt->result_->error_;
+    //   pStmt->prepared_ = nullptr;
+    //   return SQLITE_ERROR;
+    // }
+    // fetch a chunk
+    // pStmt->current_chunk_ = pStmt->result_->Fetch();
+    pStmt->current_row_ = -1;
+    // if (!sqlite3_display_result(pStmt->prepared_->type)) {
+    //   // only SELECT statements return results
+    //   sqlite3_reset(pStmt);
+    // }
+  }
+  if (!pStmt->current_chunk_) {
+    return SQLITE_DONE;
+  }
+
+  pStmt->current_row_++;
+
+  // if (pStmt->current_row_ >= (int32_t)pStmt->current_chunk_->size()) {
   //   // have to fetch again!
-  //   pStmt->current_row = 0;
-  //   pStmt->current_chunk = pStmt->result->Fetch();
-  //   if (!pStmt->current_chunk || pStmt->current_chunk->size() == 0) {
+  //   pStmt->current_row_ = 0;
+  //   pStmt->current_chunk_ = pStmt->result_->Fetch();
+  //   if (!pStmt->current_chunk_ || pStmt->current_chunk_->size() == 0) {
   //     sqlite3_reset(pStmt);
   //     return SQLITE_DONE;
   //   }
   // }
-  // return SQLITE_ROW;
+
+  return SQLITE_ROW;
 }
 
 /* Execute multiple semicolon separated SQL statements
@@ -357,11 +359,10 @@ exec_out:
 const char *sqlite3_sql(sqlite3_stmt *pStmt) { return pStmt->query_string_.c_str(); }
 
 int sqlite3_column_count(sqlite3_stmt *pStmt) {
-  // if (!pStmt) {
-  //   return 0;
-  // }
-  // return (int)pStmt->prepared->types.size();
-  return -1;
+  if (pStmt == nullptr) {
+    return 0;
+  }
+  return static_cast<int>(pStmt->prepared_->ColumnCount());
 }
 
 ////////////////////////////
@@ -746,7 +747,7 @@ int sqlite3_total_changes(sqlite3 * /*unused*/) {
 
 // checks if input ends with ;
 int sqlite3_complete(const char *sql) {
-  // FIXME 
+  // FIXME
   fprintf(stderr, "sqlite3_complete: unsupported.\n");
   return -1;
 }

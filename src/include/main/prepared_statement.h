@@ -36,26 +36,35 @@ class PreparedStatement {
  public:
   //! The client context this prepared statement belongs to
   shared_ptr<ClientContext> context_;
+
   //! The prepared statement data
   shared_ptr<PreparedStatementData> data_;
+
   //! The query that is being prepared
   string query_;
+
   //! Whether or not the statement was successfully prepared
   bool success_;
+
   //! The error message (if success = false)
   string error_;
+
   //! The amount of bound parameters
   int64_t n_param_;
 
  public:
   //! Returns the number of columns in the result
   int64_t ColumnCount();
+
   //! Returns the statement type of the underlying prepared statement object
   StatementType GetStatementType();
+
   //! Returns the underlying statement properties
   StatementProperties GetStatementProperties();
+
   //! Returns the result SQL types of the prepared statement
   const vector<Type> &GetTypes();
+
   //! Returns the result names of the prepared statement
   const vector<string> &GetNames();
 
