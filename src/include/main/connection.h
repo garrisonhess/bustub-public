@@ -34,7 +34,7 @@ class Connection {
   ~Connection();
 
   BusTub &db_;
-  unique_ptr<ClientContext> context_;
+  shared_ptr<ClientContext> context_;
   //   warning_callback warning_cb;
 
  public:

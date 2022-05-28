@@ -8,6 +8,7 @@
 #include "main/prepared_statement_data.h"
 #include "main/query_result.h"
 #include "parser/parser.h"
+#include "type/statement_type.h"
 
 // #include "catalog/catalog_entry/table_catalog_entry.hpp"
 // #include "common/serializer/buffered_deserializer.hpp"
@@ -100,8 +101,7 @@ unique_ptr<Tuple> ClientContext::Fetch() {
 }
 
 string ClientContext::FinalizeQuery(bool success) {
-  // profiler.EndQuery();
-
+  LOG_INFO("FINALIZING QUERY. success: %d.", success);
   // executor_.Reset();
 
   string error;
@@ -161,7 +161,7 @@ unique_ptr<Tuple> ClientContext::FetchInternal() {
 
   std::vector<Value> values;
   values.emplace_back(Value(TypeId::INTEGER, counter));
-  return make_unique<Tuple>(Tuple(values, &schema));
+  return make_unique<Tuple>(values, &schema);
   // return executor_.FetchChunk();
 }
 
@@ -235,6 +235,8 @@ unique_ptr<QueryResult> ClientContext::ExecutePreparedStatement(const string &qu
     result->data_.push_back(move(tuple));
   }
 
+  result->success_ = true;
+
   return result;
 }
 
@@ -265,20 +267,32 @@ unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLState
   prepare_count_++;
 
   auto statement_query = statement->query_;
-  shared_ptr<PreparedStatementData> prepared_data;
   auto unbound_statement = statement->Copy();
 
   // now perform the actual PREPARE query
   auto result = RunStatement(statement->query_, move(statement), false);
 
   if (!result->success_) {
+    LOG_DEBUG("prepare internal failed");
     throw Exception(result->error_);
   }
 
+
+  LOG_DEBUG("about to copy unbound statement");
+  shared_ptr<PreparedStatementData> prepared_data = make_shared<PreparedStatementData>(StatementType::SELECT_STATEMENT);
   prepared_data->unbound_statement_ = move(unbound_statement);
+  LOG_DEBUG("done copying to unbound statement");
+  // PreparedStatement(shared_ptr<ClientContext> context, shared_ptr<PreparedStatementData> data, string query,
+  //                   int64_t n_param);
+
+  LOG_INFO("stmt query: %s", statement_query.c_str());
+
+  auto t1 = shared_from_this();
+
+  auto result_stmt = make_unique<PreparedStatement>(t1, move(prepared_data), move(statement_query), n_param);
 
   //! Create a successfully prepared prepared statement object with the given name
-  return make_unique<PreparedStatement>(shared_from_this(), move(prepared_data), move(statement_query), n_param);
+  return result_stmt;
 }
 
 unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
@@ -288,6 +302,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     // InitialCleanup();
     return PrepareInternal(move(statement));
   } catch (Exception &ex) {
+    LOG_DEBUG("PREPARE FAILED");
     return std::make_unique<PreparedStatement>(ex.what());
   }
 }
@@ -309,6 +324,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(string query) {
     // }
     // return PrepareInternal(move(statements[0]));
   } catch (Exception &ex) {
+    LOG_DEBUG("PREPARE FAILED");
     return make_unique<PreparedStatement>(ex.what());
   }
 }
@@ -330,7 +346,7 @@ unique_ptr<QueryResult> ClientContext::Execute(string name, vector<Value> &value
   //   execute->values.push_back(make_unique<ConstantExpression>(val));
   // }
 
-  throw NotImplementedException("");
+  throw NotImplementedException("jkldfdsflk;");
 
   // return RunStatement(query, move(execute), allow_stream_result);
   return nullptr;
@@ -384,6 +400,8 @@ unique_ptr<QueryResult> ClientContext::RunStatement(const string &query, unique_
     // if (transaction_.HasActiveTransaction()) {
     //   ActiveTransaction().is_invalidated = true;
     // }
+
+    LOG_DEBUG("RUNSTATEMENT INTERNAL THREW EXCEPTION");
     result = make_unique<QueryResult>(ex.what());
   }
 
@@ -467,7 +485,8 @@ unique_ptr<QueryResult> ClientContext::Query(string query, bool allow_stream_res
   // }
 
   // return RunStatements(query, statements, allow_stream_result);
-  throw NotImplementedException("");
+  LOG_DEBUG("QUERY FAILED");
+  throw NotImplementedException("QUERY FAILED");
 
   return nullptr;
 }

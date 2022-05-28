@@ -16,7 +16,7 @@
 namespace bustub {
 
 Connection::Connection(BusTub &database)
-    : db_(database), context_(std::make_unique<ClientContext>(database.instance_)) {
+    : db_(database), context_(std::make_shared<ClientContext>(database.instance_)) {
   // db_.connection_manager->AddConnection(this);
 }
 

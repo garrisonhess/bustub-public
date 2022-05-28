@@ -9,6 +9,7 @@ PreparedStatement::PreparedStatement(shared_ptr<ClientContext> context, shared_p
                                      string query, int64_t n_param)
     : context_(move(context)), data_(move(data_p)), query_(move(query)), success_(true), n_param_(n_param) {
   // D_ASSERT(data || !success);
+  LOG_INFO("hi from prepared statement constructor");
 }
 
 PreparedStatement::PreparedStatement(string error) : context_(nullptr), success_(false), error_(move(error)) {}
