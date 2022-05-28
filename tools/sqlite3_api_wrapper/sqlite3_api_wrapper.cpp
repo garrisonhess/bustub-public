@@ -133,50 +133,50 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
       return SQLITE_OK;
     }
 
-    // // extract the remainder
-    // int64_t next_location = parser.statements_[0]->stmt_location_ + parser.statements_[0]->stmt_length_;
-    // bool set_remainder = static_cast<size_t>(next_location) < query.size();
+    // extract the remainder
+    int64_t next_location = parser.statements_[0]->stmt_location_ + parser.statements_[0]->stmt_length_;
+    bool set_remainder = static_cast<size_t>(next_location) < query.size();
 
-    // // extract the first statement
-    // std::vector<std::unique_ptr<bustub::SQLStatement>> statements;
-    // statements.push_back(move(parser.statements_[0]));
+    // extract the first statement
+    std::vector<std::unique_ptr<bustub::SQLStatement>> statements;
+    statements.push_back(move(parser.statements_[0]));
 
-    // // PragmaHandler handler(*db->con->context);
-    // // handler.HandlePragmaStatements(statements);
+    // PragmaHandler handler(*db->con->context);
+    // handler.HandlePragmaStatements(statements);
 
-    // // if there are multiple statements here, we are dealing with an import database statement
-    // // we directly execute all statements besides the final one
-    // for (uint64_t i = 0; i + 1 < statements.size(); i++) {
-    //   // auto res = db->con_->Query(move(statements[i]));
-    //   // if (!res->success_) {
-    //   //   db->last_error_ = res->error;
-    //   //   return SQLITE_ERROR;
-    //   // }
-    // }
+    // if there are multiple statements here, we are dealing with an import database statement
+    // we directly execute all statements besides the final one
+    for (uint64_t i = 0; i + 1 < statements.size(); i++) {
+      // auto res = db->con_->Query(move(statements[i]));
+      // if (!res->success_) {
+      //   db->last_error_ = res->error;
+      //   return SQLITE_ERROR;
+      // }
+    }
 
-    // // now prepare the query
-    // auto prepared = db->con_->Prepare(move(statements.back()));
-    // if (!prepared->success_) {
-    //   // failed to prepare: set the error message
-    //   db->last_error_ = prepared->error_;
-    //   return SQLITE_ERROR;
-    // }
+    // now prepare the query
+    auto prepared = db->con_->Prepare(move(statements.back()));
+    if (!prepared->success_) {
+      // failed to prepare: set the error message
+      db->last_error_ = prepared->error_;
+      return SQLITE_ERROR;
+    }
 
-    // // create the statement entry
-    // bustub::unique_ptr<sqlite3_stmt> stmt = std::make_unique<sqlite3_stmt>();
-    // stmt->db_ = db;
-    // stmt->query_string_ = query;
-    // stmt->prepared_ = move(prepared);
-    // stmt->current_row_ = -1;
-    // for (int64_t i = 0; i < stmt->prepared_->n_param_; i++) {
-    //   stmt->bound_names_.push_back("$" + std::to_string(i + 1));
-    //   stmt->bound_values_.emplace_back();
-    // }
+    // create the statement entry
+    bustub::unique_ptr<sqlite3_stmt> stmt = std::make_unique<sqlite3_stmt>();
+    stmt->db_ = db;
+    stmt->query_string_ = query;
+    stmt->prepared_ = move(prepared);
+    stmt->current_row_ = -1;
+    for (int64_t i = 0; i < stmt->prepared_->n_param_; i++) {
+      stmt->bound_names_.push_back("$" + std::to_string(i + 1));
+      stmt->bound_values_.emplace_back();
+    }
 
-    // // extract the remainder of the query and assign it to the pzTail
-    // if ((pzTail != nullptr) && set_remainder) {
-    //   *pzTail = zSql + next_location + 1;
-    // }
+    // extract the remainder of the query and assign it to the pzTail
+    if ((pzTail != nullptr) && set_remainder) {
+      *pzTail = zSql + next_location + 1;
+    }
 
     // *ppStmt = stmt.release();
     return SQLITE_OK;

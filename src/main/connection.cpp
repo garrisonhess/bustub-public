@@ -84,9 +84,9 @@ Connection::~Connection() = default;
 // 	return context_->Prepare(query);
 // }
 
-// unique_ptr<PreparedStatement> Connection::Prepare(unique_ptr<SQLStatement> statement) {
-// 	return context_->Prepare(move(statement));
-// }
+unique_ptr<PreparedStatement> Connection::Prepare(unique_ptr<SQLStatement> statement) {
+	return context_->Prepare(move(statement));
+}
 
 // unique_ptr<QueryResult> Connection::QueryParamsRecursive(string query, vector<Value> &values) {
 // 	auto statement = Prepare(query);
