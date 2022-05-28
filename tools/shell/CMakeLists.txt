@@ -1,29 +1,12 @@
-add_definitions(-DSQLITE_OMIT_LOAD_EXTENSION=1)
-
-set(SHELL_SOURCES shell.c)
-add_definitions(-DHAVE_LINENOISE=1)
-set(SHELL_SOURCES ${SHELL_SOURCES} linenoise.cpp)
-include_directories(../../third_party/utf8proc/include)
-include_directories(../../third_party/libpg_query/include)
-
-option(STATIC_LIBCPP "Statically link CLI to libc++" FALSE)
-
 include_directories(include)
+include_directories(../../third_party/libpg_query/include)
 include_directories(../sqlite3_api_wrapper/include)
-add_executable(shell ${SHELL_SOURCES})
-target_link_libraries(shell sqlite3_api_wrapper_static
-                      ${DUCKDB_EXTRA_LINK_FLAGS})
+add_executable(shell shell.c linenoise.cpp)
 # link_threads(shell)
 
-if(STATIC_LIBCPP)
-  message("Statically linking CLI")
-  target_link_libraries(shell -static-libstdc++ -static-libgcc)
-endif()
+target_link_libraries(shell sqlite3_api_wrapper bustub_utf8proc ${BUSTUB_EXTRA_LINK_FLAGS})
 
-target_link_libraries(shell bustub_utf8proc)
+set_target_properties(shell PROPERTIES OUTPUT_NAME bustub)
+set_target_properties(shell PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-# set_target_properties(shell PROPERTIES OUTPUT_NAME bustub)
-# set_target_properties(shell PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-#                                        ${CMAKE_BINARY_DIR})
-
-# install(TARGETS shell RUNTIME DESTINATION "${INSTALL_BIN_DIR}")
+install(TARGETS shell RUNTIME DESTINATION "${INSTALL_BIN_DIR}")
