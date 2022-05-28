@@ -1,197 +1,195 @@
-// //===----------------------------------------------------------------------===//
-// //                         DuckDB
-// //
-// // duckdb/main/connection.h
-// //
-// //
-// //===----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
+//                         DuckDB
+//
+// duckdb/main/connection.h
+//
+//
+//===----------------------------------------------------------------------===//
 
-// #pragma once
+#pragma once
 
-// // #include "main/materialized_query_result.h"
-// #include "main/query_result.h"
-// // #include "main/stream_query_result.h"
-// // #include "main/prepared_statement.h"
-// // #include "main/table_description.h"
-// // #include "main/relation.h"
-// // #include "common/enums/profiler_format.h"
-// // #include "parser/sql_statement.h"
-// // #include "function/udf_function.h"
-// // #include "common/serializer/buffered_file_writer.h"
+// #include "main/table_description.h"
+// #include "main/relation.h"
 
-// namespace bustub {
-// using std::string;
-// using std::unique_ptr;
+#include "common/constants.h"
+#include "main/prepared_statement.h"
+#include "main/query_result.h"
+#include "parser/sql_statement.h"
+#include "type/value.h"
 
-// class ClientContext;
-// class BusTub;
+namespace bustub {
+using std::string;
+using std::unique_ptr;
 
-// // typedef void (*warning_callback)(std::string);
+class ClientContext;
+class BusTub;
 
-// //! A connection to a database. This represents a (client) connection that can
-// //! be used to query the database.
-// class Connection {
-//  public:
-//   explicit Connection(BusTub &database);
-//   ~Connection();
+// typedef void (*warning_callback)(std::string);
 
-//   BusTub &db_;
-//   unique_ptr<ClientContext> context_;
-//   //   warning_callback warning_cb;
+//! A connection to a database. This represents a (client) connection that can
+//! be used to query the database.
+class Connection {
+ public:
+  explicit Connection(BusTub &database);
+  ~Connection();
 
-//  public:
-//   //   //! Returns query profiling information for the current query
-//   //   string GetProfilingInformation(ProfilerPrintFormat format = ProfilerPrintFormat::QUERY_TREE);
+  BusTub &db_;
+  unique_ptr<ClientContext> context_;
+  //   warning_callback warning_cb;
 
-//   //   //! Interrupt execution of the current query
-//   //   void Interrupt();
+ public:
+  //   //! Returns query profiling information for the current query
+  //   string GetProfilingInformation(ProfilerPrintFormat format = ProfilerPrintFormat::QUERY_TREE);
 
-//   //   //! Enable query profiling
-//   //   void EnableProfiling();
-//   //   //! Disable query profiling
-//   //   void DisableProfiling();
+  //   //! Interrupt execution of the current query
+  //   void Interrupt();
 
-//   //   void SetWarningCallback(warning_callback);
+  //   //! Enable query profiling
+  //   void EnableProfiling();
+  //   //! Disable query profiling
+  //   void DisableProfiling();
 
-//   //   //! Enable aggressive verification/testing of queries, should only be used in testing
-//   //   void EnableQueryVerification();
-//   //   void DisableQueryVerification();
-//   //   //! Force parallel execution, even for smaller tables. Should only be used in testing.
-//   //   void ForceParallelism();
+  //   void SetWarningCallback(warning_callback);
 
-//   //! Issues a query to the database and returns a QueryResult. This result can be either a StreamQueryResult or a
-//   //! MaterializedQueryResult. The result can be stepped through with calls to Fetch(). Note that there can only be
-//   //! one active StreamQueryResult per Connection object. Calling SendQuery() will invalidate any previously existing
-//   //! StreamQueryResult.
-//   unique_ptr<QueryResult> SendQuery(string query);
-//   //   //! Issues a query to the database and materializes the result (if necessary). Always returns a
-//   //   //! MaterializedQueryResult.
-//   //   unique_ptr<MaterializedQueryResult> Query(string query);
-//   //   //! Issues a query to the database and materializes the result (if necessary). Always returns a
-//   //   //! MaterializedQueryResult.
-//   //   unique_ptr<MaterializedQueryResult> Query(unique_ptr<SQLStatement> statement);
-//   // prepared statements
-//   template <typename... Args>
-//   unique_ptr<QueryResult> Query(string query, Args... args) {
-//     vector<Value> values;
-//     return QueryParamsRecursive(query, values, args...);
-//   }
+  //   //! Enable aggressive verification/testing of queries, should only be used in testing
+  //   void EnableQueryVerification();
+  //   void DisableQueryVerification();
+  //   //! Force parallel execution, even for smaller tables. Should only be used in testing.
+  //   void ForceParallelism();
 
-//   //! Prepare the specified query, returning a prepared statement object
-//   unique_ptr<PreparedStatement> Prepare(string query);
-//   //! Prepare the specified statement, returning a prepared statement object
-//   unique_ptr<PreparedStatement> Prepare(unique_ptr<SQLStatement> statement);
+  //! Issues a query to the database and returns a QueryResult. This result can be either a StreamQueryResult or a
+  //! MaterializedQueryResult. The result can be stepped through with calls to Fetch(). Note that there can only be
+  //! one active StreamQueryResult per Connection object. Calling SendQuery() will invalidate any previously existing
+  //! StreamQueryResult.
+  unique_ptr<QueryResult> SendQuery(string query);
+  //   //! Issues a query to the database and materializes the result (if necessary). Always returns a
+  //   //! MaterializedQueryResult.
+  //   unique_ptr<MaterializedQueryResult> Query(string query);
+  //   //! Issues a query to the database and materializes the result (if necessary). Always returns a
+  //   //! MaterializedQueryResult.
+  //   unique_ptr<MaterializedQueryResult> Query(unique_ptr<SQLStatement> statement);
+  // prepared statements
+  template <typename... Args>
+  unique_ptr<QueryResult> Query(string query, Args... args) {
+    vector<Value> values;
+    return QueryParamsRecursive(query, values, args...);
+  }
 
-//   //! Get the table info of a specific table (in the default schema), or nullptr if it cannot be found
-//   unique_ptr<TableDescription> TableInfo(string table_name);
-//   //! Get the table info of a specific table, or nullptr if it cannot be found
-//   unique_ptr<TableDescription> TableInfo(string schema_name, string table_name);
+  //! Prepare the specified query, returning a prepared statement object
+  unique_ptr<PreparedStatement> Prepare(string query);
+  //! Prepare the specified statement, returning a prepared statement object
+  unique_ptr<PreparedStatement> Prepare(unique_ptr<SQLStatement> statement);
 
-//   //! Extract a set of SQL statements from a specific query
-//   vector<unique_ptr<SQLStatement>> ExtractStatements(string query);
+  // //! Get the table info of a specific table (in the default schema), or nullptr if it cannot be found
+  // unique_ptr<TableDescription> TableInfo(string table_name);
+  // //! Get the table info of a specific table, or nullptr if it cannot be found
+  // unique_ptr<TableDescription> TableInfo(string schema_name, string table_name);
 
-//   //! Appends a DataChunk to the specified table
-//   void Append(TableDescription &description, DataChunk &chunk);
+  //! Extract a set of SQL statements from a specific query
+  vector<unique_ptr<SQLStatement>> ExtractStatements(string query);
 
-//   //! Returns a relation that produces a table from this connection
-//   shared_ptr<Relation> Table(string tname);
-//   shared_ptr<Relation> Table(string schema_name, string table_name);
-//   //   //! Returns a relation that produces a view from this connection
-//   //   shared_ptr<Relation> View(string tname);
-//   //   shared_ptr<Relation> View(string schema_name, string table_name);
-//   //   //! Returns a relation that calls a specified table function
-//   //   shared_ptr<Relation> TableFunction(string tname);
-//   //   shared_ptr<Relation> TableFunction(string tname, vector<Value> values);
-//   //! Returns a relation that produces values
-//   shared_ptr<Relation> Values(vector<vector<Value>> values);
-//   shared_ptr<Relation> Values(vector<vector<Value>> values, vector<string> column_names, string alias = "values");
-//   shared_ptr<Relation> Values(string values);
-//   shared_ptr<Relation> Values(string values, vector<string> column_names, string alias = "values");
-//   //   //! Reads CSV file
-//   //   shared_ptr<Relation> ReadCSV(string csv_file);
-//   //   shared_ptr<Relation> ReadCSV(string csv_file, vector<string> columns);
+  // //! Appends a DataChunk to the specified table
+  // void Append(TableDescription &description, DataChunk &chunk);
 
-//   void BeginTransaction();
-//   void Commit();
-//   void Rollback();
+  //! Returns a relation that produces a table from this connection
+  // shared_ptr<Relation> Table(string tname);
+  // shared_ptr<Relation> Table(string schema_name, string table_name);
+  //   //! Returns a relation that produces a view from this connection
+  //   shared_ptr<Relation> View(string tname);
+  //   shared_ptr<Relation> View(string schema_name, string table_name);
+  //   //! Returns a relation that calls a specified table function
+  //   shared_ptr<Relation> TableFunction(string tname);
+  //   shared_ptr<Relation> TableFunction(string tname, vector<Value> values);
+  //! Returns a relation that produces values
+  // shared_ptr<Relation> Values(vector<vector<Value>> values);
+  // shared_ptr<Relation> Values(vector<vector<Value>> values, vector<string> column_names, string alias = "values");
+  // shared_ptr<Relation> Values(string values);
+  // shared_ptr<Relation> Values(string values, vector<string> column_names, string alias = "values");
+  //   //! Reads CSV file
+  //   shared_ptr<Relation> ReadCSV(string csv_file);
+  //   shared_ptr<Relation> ReadCSV(string csv_file, vector<string> columns);
 
-//   //   template <typename TR, typename... Args>
-//   //   void CreateScalarFunction(string name, TR (*udf_func)(Args...)) {
-//   //     scalar_function_t function = UDFWrapper::CreateScalarFunction<TR, Args...>(name, udf_func);
-//   //     UDFWrapper::RegisterFunction<TR, Args...>(name, function, *context);
-//   //   }
+  void BeginTransaction();
+  void Commit();
+  void Rollback();
 
-//   //   template <typename TR, typename... Args>
-//   //   void CreateScalarFunction(string name, vector<LogicalType> args, LogicalType ret_type, TR
-//   (*udf_func)(Args...)) {
-//   //     scalar_function_t function = UDFWrapper::CreateScalarFunction<TR, Args...>(name, args, ret_type, udf_func);
-//   //     UDFWrapper::RegisterFunction(name, args, ret_type, function, *context);
-//   //   }
+  //   template <typename TR, typename... Args>
+  //   void CreateScalarFunction(string name, TR (*udf_func)(Args...)) {
+  //     scalar_function_t function = UDFWrapper::CreateScalarFunction<TR, Args...>(name, udf_func);
+  //     UDFWrapper::RegisterFunction<TR, Args...>(name, function, *context);
+  //   }
 
-//   //   template <typename TR, typename... Args>
-//   //   void CreateVectorizedFunction(string name, scalar_function_t udf_func, LogicalType varargs =
-//   //   LogicalType::INVALID) {
-//   //     UDFWrapper::RegisterFunction<TR, Args...>(name, udf_func, *context, varargs);
-//   //   }
+  //   template <typename TR, typename... Args>
+  //   void CreateScalarFunction(string name, vector<LogicalType> args, LogicalType ret_type, TR
+  // (*udf_func)(Args...)) {
+  //     scalar_function_t function = UDFWrapper::CreateScalarFunction<TR, Args...>(name, args, ret_type, udf_func);
+  //     UDFWrapper::RegisterFunction(name, args, ret_type, function, *context);
+  //   }
 
-//   //   void CreateVectorizedFunction(string name, vector<LogicalType> args, LogicalType ret_type, scalar_function_t
-//   //   udf_func,
-//   //                                 LogicalType varargs = LogicalType::INVALID) {
-//   //     UDFWrapper::RegisterFunction(name, args, ret_type, udf_func, *context, varargs);
-//   //   }
+  //   template <typename TR, typename... Args>
+  //   void CreateVectorizedFunction(string name, scalar_function_t udf_func, LogicalType varargs =
+  //   LogicalType::INVALID) {
+  //     UDFWrapper::RegisterFunction<TR, Args...>(name, udf_func, *context, varargs);
+  //   }
 
-//   //   //------------------------------------- Aggreate Functions ----------------------------------------//
+  //   void CreateVectorizedFunction(string name, vector<LogicalType> args, LogicalType ret_type, scalar_function_t
+  //   udf_func,
+  //                                 LogicalType varargs = LogicalType::INVALID) {
+  //     UDFWrapper::RegisterFunction(name, args, ret_type, udf_func, *context, varargs);
+  //   }
 
-//   //   template <typename UDF_OP, typename STATE, typename TR, typename TA>
-//   //   void CreateAggregateFunction(string name) {
-//   //     AggregateFunction function = UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA>(name);
-//   //     UDFWrapper::RegisterAggrFunction(function, *context);
-//   //   }
+  //   //------------------------------------- Aggreate Functions ----------------------------------------//
 
-//   //   template <typename UDF_OP, typename STATE, typename TR, typename TA, typename TB>
-//   //   void CreateAggregateFunction(string name) {
-//   //     AggregateFunction function = UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA, TB>(name);
-//   //     UDFWrapper::RegisterAggrFunction(function, *context);
-//   //   }
+  //   template <typename UDF_OP, typename STATE, typename TR, typename TA>
+  //   void CreateAggregateFunction(string name) {
+  //     AggregateFunction function = UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA>(name);
+  //     UDFWrapper::RegisterAggrFunction(function, *context);
+  //   }
 
-//   //   template <typename UDF_OP, typename STATE, typename TR, typename TA>
-//   //   void CreateAggregateFunction(string name, LogicalType ret_type, LogicalType input_typeA) {
-//   //     AggregateFunction function =
-//   //         UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA>(name, ret_type, input_typeA);
-//   //     UDFWrapper::RegisterAggrFunction(function, *context);
-//   //   }
+  //   template <typename UDF_OP, typename STATE, typename TR, typename TA, typename TB>
+  //   void CreateAggregateFunction(string name) {
+  //     AggregateFunction function = UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA, TB>(name);
+  //     UDFWrapper::RegisterAggrFunction(function, *context);
+  //   }
 
-//   //   template <typename UDF_OP, typename STATE, typename TR, typename TA, typename TB>
-//   //   void CreateAggregateFunction(string name, LogicalType ret_type, LogicalType input_typeA, LogicalType
-//   input_typeB)
-//   //   {
-//   //     AggregateFunction function =
-//   //         UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA, TB>(name, ret_type, input_typeA,
-//   input_typeB);
-//   //     UDFWrapper::RegisterAggrFunction(function, *context);
-//   //   }
+  //   template <typename UDF_OP, typename STATE, typename TR, typename TA>
+  //   void CreateAggregateFunction(string name, LogicalType ret_type, LogicalType input_typeA) {
+  //     AggregateFunction function =
+  //         UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA>(name, ret_type, input_typeA);
+  //     UDFWrapper::RegisterAggrFunction(function, *context);
+  //   }
 
-//   //   void CreateAggregateFunction(string name, vector<LogicalType> arguments, LogicalType return_type,
-//   //                                aggregate_size_t state_size, aggregate_initialize_t initialize,
-//   //                                aggregate_update_t update, aggregate_combine_t combine, aggregate_finalize_t
-//   //                                finalize, aggregate_simple_update_t simple_update = nullptr,
-//   //                                bind_aggregate_function_t bind = nullptr, aggregate_destructor_t destructor =
-//   //                                nullptr) {
-//   //     AggregateFunction function =
-//   //         UDFWrapper::CreateAggregateFunction(name, arguments, return_type, state_size, initialize, update,
-//   combine,
-//   //                                             finalize, simple_update, bind, destructor);
-//   //     UDFWrapper::RegisterAggrFunction(function, *context);
-//   //   }
+  //   template <typename UDF_OP, typename STATE, typename TR, typename TA, typename TB>
+  //   void CreateAggregateFunction(string name, LogicalType ret_type, LogicalType input_typeA, LogicalType
+  // input_typeB)
+  //   {
+  //     AggregateFunction function =
+  //         UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA, TB>(name, ret_type, input_typeA,
+  // input_typeB);
+  //     UDFWrapper::RegisterAggrFunction(function, *context);
+  //   }
 
-//  private:
-//   unique_ptr<QueryResult> QueryParamsRecursive(string query, vector<Value> &values);
+  //   void CreateAggregateFunction(string name, vector<LogicalType> arguments, LogicalType return_type,
+  //                                aggregate_size_t state_size, aggregate_initialize_t initialize,
+  //                                aggregate_update_t update, aggregate_combine_t combine, aggregate_finalize_t
+  //                                finalize, aggregate_simple_update_t simple_update = nullptr,
+  //                                bind_aggregate_function_t bind = nullptr, aggregate_destructor_t destructor =
+  //                                nullptr) {
+  //     AggregateFunction function =
+  //         UDFWrapper::CreateAggregateFunction(name, arguments, return_type, state_size, initialize, update,
+  // combine,
+  //                                             finalize, simple_update, bind, destructor);
+  //     UDFWrapper::RegisterAggrFunction(function, *context);
+  //   }
 
-//   template <typename T, typename... Args>
-//   unique_ptr<QueryResult> QueryParamsRecursive(string query, vector<Value> &values, T value, Args... args) {
-//     values.push_back(Value::CreateValue<T>(value));
-//     return QueryParamsRecursive(query, values, args...);
-//   }
-// };
+ private:
+  // unique_ptr<QueryResult> QueryParamsRecursive(string query, vector<Value> & values);
 
-// }  // namespace bustub
+  // template <typename T, typename... Args>
+  // unique_ptr<QueryResult> QueryParamsRecursive(string query, vector<Value> &values, T value, Args... args) {
+  //   values.push_back(Value::CreateValue<T>(value));
+  //   return QueryParamsRecursive(query, values, args...);
+  // }
+};
+
+}  // namespace bustub

@@ -1,22 +1,26 @@
-// #include "main/connection.h"
+#include "main/connection.h"
 
-// // #include "main/client_context.h"
-// #include "main/connection_manager.h"
-// #include "main/database.h"
-// // #include "main/appender.h"
-// // #include "main/relation/read_csv_relation.h"
-// // #include "main/relation/table_relation.h"
-// // #include "main/relation/table_function_relation.h"
-// // #include "main/relation/value_relation.h"
-// // #include "main/relation/view_relation.h"
-// // #include "execution/operator/persistent/buffered_csv_reader.h"
-// #include "parser/parser.h"
+#include "main/client_context.h"
+#include "main/connection_manager.h"
+#include "main/database.h"
+// #include "main/appender.h"
+// #include "main/relation/read_csv_relation.h"
+// #include "main/relation/table_relation.h"
+// #include "main/relation/table_function_relation.h"
+// #include "main/relation/value_relation.h"
+// #include "main/relation/view_relation.h"
+// #include "execution/operator/persistent/buffered_csv_reader.h"
 
-// namespace bustub {
+#include "parser/parser.h"
 
-// Connection::Connection(BusTub &database) : db_(database), context_(std::make_unique<ClientContext>(database)) {
-// 	db_.connection_manager->AddConnection(this);
-// }
+namespace bustub {
+
+Connection::Connection(BusTub &database)
+    : db_(database), context_(std::make_unique<ClientContext>(database.instance_)) {
+  // db_.connection_manager->AddConnection(this);
+}
+
+Connection::~Connection() = default;
 
 // Connection::~Connection() {
 // 	// if (!context_->is_invalidated) {
@@ -25,69 +29,70 @@
 // 	// }
 // }
 
-// // string Connection::GetProfilingInformation(ProfilerPrintFormat format) {
-// // 	if (context->is_invalidated) {
-// // 		return "Context is invalidated.";
-// // 	}
-// // 	if (format == ProfilerPrintFormat::JSON) {
-// // 		return context->profiler.ToJSON();
-// // 	} else {
-// // 		return context->profiler.ToString();
-// // 	}
-// // }
+// string Connection::GetProfilingInformation(ProfilerPrintFormat format) {
+// 	if (context->is_invalidated) {
+// 		return "Context is invalidated.";
+// 	}
+// 	if (format == ProfilerPrintFormat::JSON) {
+// 		return context->profiler.ToJSON();
+// 	} else {
+// 		return context->profiler.ToString();
+// 	}
+// }
 
-// // void Connection::Interrupt() {
-// // 	context->Interrupt();
-// // }
+// void Connection::Interrupt() {
+// 	context->Interrupt();
+// }
 
-// // void Connection::EnableProfiling() {
-// // 	context->EnableProfiling();
-// // }
+// void Connection::EnableProfiling() {
+// 	context->EnableProfiling();
+// }
 
-// // void Connection::DisableProfiling() {
-// // 	context->DisableProfiling();
-// // }
+// void Connection::DisableProfiling() {
+// 	context->DisableProfiling();
+// }
 
-// // void Connection::EnableQueryVerification() {
-// // 	context->query_verification_enabled = true;
-// // }
+// void Connection::EnableQueryVerification() {
+// 	context->query_verification_enabled = true;
+// }
 
-// // void Connection::DisableQueryVerification() {
-// // 	context->query_verification_enabled = false;
-// // }
+// void Connection::DisableQueryVerification() {
+// 	context->query_verification_enabled = false;
+// }
 
-// // void Connection::ForceParallelism() {
-// // 	context->force_parallelism = true;
-// // }
+// void Connection::ForceParallelism() {
+// 	context->force_parallelism = true;
+// }
 
 // unique_ptr<QueryResult> Connection::SendQuery(string query) {
 // 	return context->Query(query, true);
 // }
 
-// // unique_ptr<MaterializedQueryResult> Connection::Query(string query) {
-// // 	auto result = context->Query(query, false);
-// // 	D_ASSERT(result->type == QueryResultType::MATERIALIZED_RESULT);
-// // 	return unique_ptr_cast<QueryResult, MaterializedQueryResult>(move(result));
-// // }
+// unique_ptr<MaterializedQueryResult> Connection::Query(string query) {
+// 	auto result = context->Query(query, false);
+// 	D_ASSERT(result->type == QueryResultType::MATERIALIZED_RESULT);
+// 	return unique_ptr_cast<QueryResult, MaterializedQueryResult>(move(result));
+// }
 
-// // unique_ptr<MaterializedQueryResult> Connection::Query(unique_ptr<SQLStatement> statement) {
-// // 	auto result = context->Query(move(statement), false);
-// // 	D_ASSERT(result->type == QueryResultType::MATERIALIZED_RESULT);
-// // 	return unique_ptr_cast<QueryResult, MaterializedQueryResult>(move(result));
-// // }
+// unique_ptr<MaterializedQueryResult> Connection::Query(unique_ptr<SQLStatement> statement) {
+// 	auto result = context->Query(move(statement), false);
+// 	D_ASSERT(result->type == QueryResultType::MATERIALIZED_RESULT);
+// 	return unique_ptr_cast<QueryResult, MaterializedQueryResult>(move(result));
+// }
 
 // unique_ptr<PreparedStatement> Connection::Prepare(string query) {
-// 	return context->Prepare(query);
+// 	return context_->Prepare(query);
 // }
 
 // unique_ptr<PreparedStatement> Connection::Prepare(unique_ptr<SQLStatement> statement) {
-// 	return context->Prepare(move(statement));
+// 	return context_->Prepare(move(statement));
 // }
 
 // unique_ptr<QueryResult> Connection::QueryParamsRecursive(string query, vector<Value> &values) {
 // 	auto statement = Prepare(query);
-// 	if (!statement->success) {
-// 		return make_unique<MaterializedQueryResult>(statement->error);
+// 	if (!statement->success_) {
+// 		// return std::make_unique<QueryResult>(statement->success_);
+// 		return std::make_unique<QueryResult>();
 // 	}
 // 	return statement->Execute(values);
 // }
@@ -109,15 +114,17 @@
 // }
 
 // shared_ptr<Relation> Connection::Table(string table_name) {
-// 	return Table(DEFAULT_SCHEMA, move(table_name));
+// 	throw Exception("not implemented");
+// 	// return Table(DEFAULT_SCHEMA, move(table_name));
 // }
 
 // shared_ptr<Relation> Connection::Table(string schema_name, string table_name) {
-// 	auto table_info = TableInfo(schema_name, table_name);
-// 	if (!table_info) {
-// 		throw Exception("Table does not exist!");
-// 	}
-// 	return make_shared<TableRelation>(*context, move(table_info));
+// 	throw Exception("not implemented");
+// 	// auto table_info = TableInfo(schema_name, table_name);
+// 	// if (!table_info) {
+// 	// 	throw Exception("Table does not exist!");
+// 	// }
+// 	// return make_shared<TableRelation>(*context, move(table_info));
 // }
 
 // shared_ptr<Relation> Connection::View(string tname) {
@@ -179,25 +186,25 @@
 // 	return make_shared<ReadCSVRelation>(*context, csv_file, move(column_list));
 // }
 
-// void Connection::BeginTransaction() {
-// 	auto result = Query("BEGIN TRANSACTION");
-// 	if (!result->success) {
-// 		throw Exception(result->error);
-// 	}
-// }
+void Connection::BeginTransaction() {
+  // auto result = Query("BEGIN TRANSACTION");
+  // if (!result->success_) {
+  // 	throw Exception("err");
+  // }
+}
 
-// void Connection::Commit() {
-// 	auto result = Query("COMMIT");
-// 	if (!result->success) {
-// 		throw Exception(result->error);
-// 	}
-// }
+void Connection::Commit() {
+  // auto result = Query("COMMIT");
+  // if (!result->success) {
+  // 	throw Exception(result->error);
+  // }
+}
 
-// void Connection::Rollback() {
-// 	auto result = Query("ROLLBACK");
-// 	if (!result->success) {
-// 		throw Exception(result->error);
-// 	}
-// }
+void Connection::Rollback() {
+  // auto result = Query("ROLLBACK");
+  // if (!result->success) {
+  // 	throw Exception(result->error);
+  // }
+}
 
-// } // namespace bustub
+}  // namespace bustub
