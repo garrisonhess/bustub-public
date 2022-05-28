@@ -907,7 +907,7 @@ int sqlite3_test_control(int op, ...) {
 }
 
 int sqlite3_enable_load_extension(sqlite3 *db, int onoff) {
-  fprintf(stderr, "sqlite3_enable_load_extension: unsupported.\n");
+  // fprintf(stderr, "sqlite3_enable_load_extension: unsupported.\n");
   return -1;
 }
 
@@ -916,7 +916,7 @@ int sqlite3_load_extension(sqlite3 *db,       /* Load the extension into this da
                            const char *zProc, /* Entry point.  Derived from zFile if 0 */
                            char **pzErrMsg    /* Put error message here if not 0 */
 ) {
-  fprintf(stderr, "sqlite3_load_extension: unsupported.\n");
+  // fprintf(stderr, "sqlite3_load_extension: unsupported.\n");
   return -1;
 }
 
