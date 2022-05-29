@@ -19,38 +19,22 @@ using std::mutex;
 
 ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) {
   db_ = std::move(database);
-  // transaction_ = TODO;
-}
-
-unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLStatement> statement) {
-  static int prepare_count = 0;
-  // now write the prepared statement data into the catalog
-  string prepare_name = "____bustub_internal_prepare_" + std::to_string(prepare_count);
-  prepare_count_++;
-
-  auto statement_query = statement->query_;
-  auto unbound_statement = statement->Copy();
-  // auto prepared = CreatePreparedStatement(query, move(statement));
-  // auto result = ExecutePreparedStatement(query, *prepared);
-
-  // if (!result->success_) {
-  //   LOG_DEBUG("prepare internal failed");
-  //   throw Exception(result->error_);
-  // }
-
-  unique_ptr<PreparedStatement> result = make_unique<PreparedStatement>(shared_from_this(), statement->query_);
-  result->statement_type_ = StatementType::SELECT_STATEMENT;
-  result->types_ = {Type(TypeId::INTEGER)};
-  result->names_ = {"column1"};
-  LOG_INFO("stmt query: %s", statement_query.c_str());
-
-  //! Create a successfully prepared prepared statement object with the given name
-  return result;
 }
 
 unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
   try {
-    return PrepareInternal(move(statement));
+    static int prepare_count = 0;
+    string prepare_name = "____bustub_internal_prepare_" + std::to_string(prepare_count);
+    prepare_count_++;
+    auto statement_query = statement->query_;
+    auto unbound_statement = statement->Copy();
+    unique_ptr<PreparedStatement> result = make_unique<PreparedStatement>(shared_from_this(), statement->query_);
+    result->statement_type_ = StatementType::SELECT_STATEMENT;
+    result->types_ = {Type(TypeId::INTEGER)};
+    result->names_ = {"column1"};
+    LOG_INFO("stmt query: %s", statement_query.c_str());
+    return result;
+
   } catch (Exception &ex) {
     LOG_DEBUG("PREPARE FAILED");
     return std::make_unique<PreparedStatement>(ex.what());
