@@ -151,8 +151,8 @@
 // 				}
 // 				if (win_fun_type == ExpressionType::WINDOW_LEAD || win_fun_type ==
 // ExpressionType::WINDOW_LAG)
-// { 					if (function_list.size() > 1) { 						expr->offset_expr =
-// move(function_list[1]);
+// { 					if (function_list.size() > 1) { 						expr->offset_expr
+// = move(function_list[1]);
 // 					}
 // 					if (function_list.size() > 2) {
 // 						expr->default_expr = move(function_list[2]);

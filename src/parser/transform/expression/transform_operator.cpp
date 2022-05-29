@@ -151,9 +151,9 @@
 // *>(between_args->tail->data.ptr_value));
 
 // 		auto compare_between = make_unique<BetweenExpression>(move(input), move(between_left),
-// move(between_right)); 		if (root->kind == bustub_libpgquery::PG_AEXPR_BETWEEN) { 			return
-// move(compare_between); 		} else { 			return make_unique<OperatorExpression>(ExpressionType::OPERATOR_NOT,
-// move(compare_between));
+// move(between_right)); 		if (root->kind == bustub_libpgquery::PG_AEXPR_BETWEEN) {
+// return move(compare_between); 		} else { 			return
+// make_unique<OperatorExpression>(ExpressionType::OPERATOR_NOT, move(compare_between));
 // 		}
 // 	}
 // 	// rewrite SIMILAR TO into regexp_full_match('asdf', '.*sd.*')
