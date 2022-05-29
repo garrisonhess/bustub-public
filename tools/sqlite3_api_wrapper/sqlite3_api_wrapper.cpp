@@ -437,8 +437,11 @@ static bool Sqlite3ColumnHasValue(sqlite3_stmt *pStmt, int iCol, bustub::TypeId 
   //   return false;
   // }
   try {
-    // auto tmp = pStmt->current_tuple_->GetData()[iCol];
-    // val = ->CastAs(target_type);
+    // pStmt->types_
+    const std::vector<bustub::Column> &columns = {bustub::Column("column1", bustub::TypeId::INTEGER)};
+    bustub::Schema result_schema = bustub::Schema(columns);
+    val = pStmt->current_tuple_->GetValue(&result_schema, 0).CastAs(target_type);
+    // val = pStmt->current_tuple_->GetValue(&result_schema, 0);
   } catch (...) {
     return false;
   }
@@ -464,7 +467,6 @@ sqlite3_int64 sqlite3_column_int64(sqlite3_stmt *stmt, int iCol) {
 
 const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
   bustub::Value val;
-  printf("in col text\n");
 
   if (!Sqlite3ColumnHasValue(pStmt, iCol, bustub::TypeId::VARCHAR, val)) {
     printf("doesn't have value\n");
@@ -479,18 +481,25 @@ const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
 
     auto &entry = pStmt->current_text_[iCol];
     if (!entry.data_) {
-      printf("col text not implemented!\n");
-      // // not initialized yet, convert the value and initialize it
-      // entry.data_ = std::unique_ptr<char[]>(new char[val.str_value.size() + 1]);
-      // memcpy(entry.data_.get(), val.ToString().c_str(), val.str_value.size() + 1);
+      // not initialized yet, convert the value and initialize it
+      printf("about to try val.tostring() on val w/ typeid %d!\n", val.GetTypeId());
+      uint32_t strlen = val.ToString().size();
+      printf("value has string length: %d\n", strlen);
+      entry.data_ = std::unique_ptr<char[]>(new char[strlen + 1]);
+      // bustub::string x = bustub::Type::ToString(val);
+
+      printf("assigned data\n");
+      memcpy(entry.data_.get(), val.ToString().c_str(), strlen + 1);
+      printf("memcpy done!\n");
     }
 
-    return reinterpret_cast<const unsigned char *>("column_test_text");
-    // return reinterpret_cast<const unsigned char *>(entry.data_.get());
+    // return reinterpret_cast<const unsigned char *>("column_test_text");
+    return reinterpret_cast<const unsigned char *>(entry.data_.get());
   } catch (...) {
     // memory error!
     printf("col text memory err\n");
-    return nullptr;
+    return reinterpret_cast<const unsigned char *>("error_text");
+    // return nullptr;
   }
 }
 
