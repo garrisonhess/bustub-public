@@ -111,7 +111,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest1) {
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator);
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
   // keys to Insert
   std::vector<int64_t> keys;
@@ -162,7 +162,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_InsertTest2) {
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator);
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
   // keys to Insert
   std::vector<int64_t> keys;
@@ -215,7 +215,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest1) {
   GenericKey<8> index_key;
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
   // sequential insert
   std::vector<int64_t> keys = {1, 2, 3, 4, 5};
@@ -257,7 +257,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_DeleteTest2) {
   GenericKey<8> index_key;
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
 
   // sequential insert
@@ -301,7 +301,7 @@ TEST(BPlusTreeConcurrentTest, DISABLED_MixTest) {
 
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
   // first, populate index
   std::vector<int64_t> keys = {1, 2, 3, 4, 5};

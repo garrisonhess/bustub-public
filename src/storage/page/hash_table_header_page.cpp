@@ -15,11 +15,11 @@
 namespace bustub {
 auto HashTableHeaderPage::GetBlockPageId(size_t index) -> page_id_t { return 0; }
 
-auto HashTableHeaderPage::GetPageId() const -> page_id_t { return 0; }
+auto HashTableHeaderPage::GetPageId() -> page_id_t { return 0; }
 
 void HashTableHeaderPage::SetPageId(bustub::page_id_t page_id) {}
 
-auto HashTableHeaderPage::GetLSN() const -> lsn_t { return 0; }
+auto HashTableHeaderPage::GetLSN() -> lsn_t { return 0; }
 
 void HashTableHeaderPage::SetLSN(lsn_t lsn) {}
 
@@ -29,6 +29,6 @@ auto HashTableHeaderPage::NumBlocks() -> size_t { return 0; }
 
 void HashTableHeaderPage::SetSize(size_t size) {}
 
-auto HashTableHeaderPage::GetSize() const -> size_t { return 0; }
+auto HashTableHeaderPage::GetSize() -> size_t { return 0; }
 
 }  // namespace bustub

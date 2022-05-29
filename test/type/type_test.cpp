@@ -40,7 +40,7 @@ class BPlusTreePage {
 TEST(TypeTests, InvalidTypeTest) {
   // First get the INVALID type instance
   TypeId type_id = TypeId::INVALID;
-  auto t = Type::GetInstance(type_id);
+  auto *t = Type::GetInstance(type_id);
   EXPECT_NE(nullptr, t);
   EXPECT_EQ(type_id, t->GetTypeId());
   EXPECT_FALSE(t->IsCoercableFrom(type_id));
@@ -55,7 +55,7 @@ TEST(TypeTests, InvalidTypeTest) {
 // NOLINTNEXTLINE
 TEST(TypeTests, GetInstanceTest) {
   for (auto col_type : TYPE_TEST_TYPES) {
-    auto t = Type::GetInstance(col_type);
+    auto *t = Type::GetInstance(col_type);
     EXPECT_NE(nullptr, t);
     EXPECT_EQ(col_type, t->GetTypeId());
     EXPECT_TRUE(t->IsCoercableFrom(col_type));

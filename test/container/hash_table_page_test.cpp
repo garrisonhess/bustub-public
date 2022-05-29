@@ -29,7 +29,7 @@ TEST(HashTablePageTest, DISABLED_DirectoryPageSampleTest) {
 
   // get a directory page from the BufferPoolManager
   page_id_t directory_page_id = INVALID_PAGE_ID;
-  auto directory_page =
+  auto *directory_page =
       reinterpret_cast<HashTableDirectoryPage *>(bpm->NewPage(&directory_page_id, nullptr)->GetData());
 
   EXPECT_EQ(0, directory_page->GetGlobalDepth());
@@ -64,7 +64,7 @@ TEST(HashTablePageTest, DISABLED_BucketPageSampleTest) {
   // get a bucket page from the BufferPoolManager
   page_id_t bucket_page_id = INVALID_PAGE_ID;
 
-  auto bucket_page = reinterpret_cast<HashTableBucketPage<int, int, IntComparator> *>(
+  auto *bucket_page = reinterpret_cast<HashTableBucketPage<int, int, IntComparator> *>(
       bpm->NewPage(&bucket_page_id, nullptr)->GetData());
 
   // insert a few (key, value) pairs

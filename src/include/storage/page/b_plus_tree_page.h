@@ -42,22 +42,22 @@ enum class IndexPageType { INVALID_INDEX_PAGE = 0, LEAF_PAGE, INTERNAL_PAGE };
  */
 class BPlusTreePage {
  public:
-  auto IsLeafPage() const -> bool;
-  auto IsRootPage() const -> bool;
+  static auto IsLeafPage() -> bool;
+  static auto IsRootPage() -> bool;
   void SetPageType(IndexPageType page_type);
 
-  auto GetSize() const -> int;
+  static auto GetSize() -> int;
   void SetSize(int size);
   void IncreaseSize(int amount);
 
-  auto GetMaxSize() const -> int;
+  static auto GetMaxSize() -> int;
   void SetMaxSize(int max_size);
-  auto GetMinSize() const -> int;
+  static auto GetMinSize() -> int;
 
-  auto GetParentPageId() const -> page_id_t;
+  static auto GetParentPageId() -> page_id_t;
   void SetParentPageId(page_id_t parent_page_id);
 
-  auto GetPageId() const -> page_id_t;
+  static auto GetPageId() -> page_id_t;
   void SetPageId(page_id_t page_id);
 
   void SetLSN(lsn_t lsn = INVALID_LSN);

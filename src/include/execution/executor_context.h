@@ -52,7 +52,7 @@ class ExecutorContext {
   auto GetBufferPoolManager() -> BufferPoolManager * { return bpm_; }
 
   /** @return the log manager - don't worry about it for now */
-  auto GetLogManager() -> LogManager * { return nullptr; }
+  static auto GetLogManager() -> LogManager * { return nullptr; }
 
   /** @return the lock manager */
   auto GetLockManager() -> LockManager * { return lock_mgr_; }

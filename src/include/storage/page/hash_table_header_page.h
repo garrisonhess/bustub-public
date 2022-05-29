@@ -36,7 +36,7 @@ class HashTableHeaderPage {
   /**
    * @return the number of buckets in the hash table;
    */
-  auto GetSize() const -> size_t;
+  static auto GetSize() -> size_t;
 
   /**
    * Sets the size field of the hash table to size
@@ -48,7 +48,7 @@ class HashTableHeaderPage {
   /**
    * @return the page ID of this page
    */
-  auto GetPageId() const -> page_id_t;
+  static auto GetPageId() -> page_id_t;
 
   /**
    * Sets the page ID of this page
@@ -60,7 +60,7 @@ class HashTableHeaderPage {
   /**
    * @return the lsn of this page
    */
-  auto GetLSN() const -> lsn_t;
+  static auto GetLSN() -> lsn_t;
 
   /**
    * Sets the LSN of this page
@@ -82,12 +82,12 @@ class HashTableHeaderPage {
    * @param index the index of the block
    * @return the page_id for the block.
    */
-  auto GetBlockPageId(size_t index) -> page_id_t;
+  static auto GetBlockPageId(size_t index) -> page_id_t;
 
   /**
    * @return the number of blocks currently stored in the header page
    */
-  auto NumBlocks() -> size_t;
+  static auto NumBlocks() -> size_t;
 
  private:
   __attribute__((unused)) lsn_t lsn_;

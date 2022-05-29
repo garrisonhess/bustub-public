@@ -41,7 +41,7 @@ TEST(TmpTuplePageTest, DISABLED_BasicTest) {
 
   Tuple tuple(values, &schema);
   TmpTuple tmp_tuple(INVALID_PAGE_ID, 0);
-  page.Insert(tuple, &tmp_tuple);
+  bustub::TmpTuplePage::Insert(tuple, &tmp_tuple);
 
   ASSERT_EQ(*reinterpret_cast<uint32_t *>(data + sizeof(page_id_t) + sizeof(lsn_t)), PAGE_SIZE - 8);
   ASSERT_EQ(*reinterpret_cast<uint32_t *>(data + PAGE_SIZE - 8), 4);

@@ -167,7 +167,7 @@ TEST_F(TransactionTest, DISABLED_SimpleInsertRollbackTest) {
   // txn1: INSERT INTO empty_table2 VALUES (200, 20), (201, 21), (202, 22)
   // txn1: abort
   // txn2: SELECT * FROM empty_table2;
-  auto txn1 = GetTxnManager()->Begin();
+  auto *txn1 = GetTxnManager()->Begin();
   auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
   // Create Values to insert
   std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
@@ -175,7 +175,7 @@ TEST_F(TransactionTest, DISABLED_SimpleInsertRollbackTest) {
   std::vector<Value> val3{ValueFactory::GetIntegerValue(202), ValueFactory::GetIntegerValue(22)};
   std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
   // Create insert plan node
-  auto table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
+  auto *table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
   InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
 
   GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, exec_ctx1.get());
@@ -183,12 +183,12 @@ TEST_F(TransactionTest, DISABLED_SimpleInsertRollbackTest) {
   delete txn1;
 
   // Iterate through table make sure that values were not inserted.
-  auto txn2 = GetTxnManager()->Begin();
+  auto *txn2 = GetTxnManager()->Begin();
   auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
   auto &schema = table_info->schema_;
-  auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto col_b = MakeColumnValueExpression(schema, 0, "colB");
-  auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
+  const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+  const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+  const auto *out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
 
   std::vector<Tuple> result_set;
@@ -207,7 +207,7 @@ TEST_F(TransactionTest, DISABLED_DirtyReadsTest) {
   // txn1: INSERT INTO empty_table2 VALUES (200, 20), (201, 21), (202, 22)
   // txn2: SELECT * FROM empty_table2;
   // txn1: abort
-  auto txn1 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
+  auto *txn1 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
   auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
   // Create Values to insert
   std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
@@ -215,18 +215,18 @@ TEST_F(TransactionTest, DISABLED_DirtyReadsTest) {
   std::vector<Value> val3{ValueFactory::GetIntegerValue(202), ValueFactory::GetIntegerValue(22)};
   std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
   // Create insert plan node
-  auto table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
+  auto *table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
   InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
 
   GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, exec_ctx1.get());
 
   // Iterate through table to read the tuples.
-  auto txn2 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
+  auto *txn2 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
   auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
   auto &schema = table_info->schema_;
-  auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto col_b = MakeColumnValueExpression(schema, 0, "colB");
-  auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
+  const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+  const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+  const auto *out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
 
   std::vector<Tuple> result_set;

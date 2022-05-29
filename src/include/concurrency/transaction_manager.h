@@ -89,7 +89,7 @@ class TransactionManager {
    * Releases all the locks held by the given transaction.
    * @param txn the transaction whose locks should be released
    */
-  void ReleaseLocks(Transaction *txn) {
+  static void ReleaseLocks(Transaction *txn) {
     std::unordered_set<RID> lock_set;
     for (auto item : *txn->GetExclusiveLockSet()) {
       lock_set.emplace(item);
@@ -98,7 +98,7 @@ class TransactionManager {
       lock_set.emplace(item);
     }
     for (auto locked_rid : lock_set) {
-      lock_manager_->Unlock(txn, locked_rid);
+      bustub::LockManager::Unlock(txn, locked_rid);
     }
   }
 

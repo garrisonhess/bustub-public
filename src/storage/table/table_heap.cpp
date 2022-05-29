@@ -28,7 +28,7 @@ TableHeap::TableHeap(BufferPoolManager *buffer_pool_manager, LockManager *lock_m
                      Transaction *txn)
     : buffer_pool_manager_(buffer_pool_manager), lock_manager_(lock_manager), log_manager_(log_manager) {
   // Initialize the first table page.
-  auto first_page = reinterpret_cast<TablePage *>(buffer_pool_manager_->NewPage(&first_page_id_));
+  auto *first_page = reinterpret_cast<TablePage *>(buffer_pool_manager_->NewPage(&first_page_id_));
   BUSTUB_ASSERT(first_page != nullptr, "Couldn't create a page for the table heap.");
   first_page->WLatch();
   first_page->Init(first_page_id_, PAGE_SIZE, INVALID_LSN, log_manager_, txn);
@@ -42,7 +42,7 @@ auto TableHeap::InsertTuple(const Tuple &tuple, RID *rid, Transaction *txn) -> b
     return false;
   }
 
-  auto cur_page = static_cast<TablePage *>(buffer_pool_manager_->FetchPage(first_page_id_));
+  auto *cur_page = static_cast<TablePage *>(buffer_pool_manager_->FetchPage(first_page_id_));
   if (cur_page == nullptr) {
     txn->SetState(TransactionState::ABORTED);
     return false;
@@ -63,7 +63,7 @@ auto TableHeap::InsertTuple(const Tuple &tuple, RID *rid, Transaction *txn) -> b
       cur_page->WLatch();
     } else {
       // Otherwise we have run out of valid pages. We need to create a new page.
-      auto new_page = static_cast<TablePage *>(buffer_pool_manager_->NewPage(&next_page_id));
+      auto *new_page = static_cast<TablePage *>(buffer_pool_manager_->NewPage(&next_page_id));
       // If we could not create a new page,
       if (new_page == nullptr) {
         // Then life sucks and we abort the transaction.
@@ -93,7 +93,7 @@ auto TableHeap::InsertTuple(const Tuple &tuple, RID *rid, Transaction *txn) -> b
 auto TableHeap::MarkDelete(const RID &rid, Transaction *txn) -> bool {
   // TODO(Amadou): remove empty page
   // Find the page which contains the tuple.
-  auto page = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
+  auto *page = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
   // If the page could not be found, then abort the transaction.
   if (page == nullptr) {
     txn->SetState(TransactionState::ABORTED);
@@ -111,7 +111,7 @@ auto TableHeap::MarkDelete(const RID &rid, Transaction *txn) -> bool {
 
 auto TableHeap::UpdateTuple(const Tuple &tuple, const RID &rid, Transaction *txn) -> bool {
   // Find the page which contains the tuple.
-  auto page = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
+  auto *page = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
   // If the page could not be found, then abort the transaction.
   if (page == nullptr) {
     txn->SetState(TransactionState::ABORTED);
@@ -132,19 +132,19 @@ auto TableHeap::UpdateTuple(const Tuple &tuple, const RID &rid, Transaction *txn
 
 void TableHeap::ApplyDelete(const RID &rid, Transaction *txn) {
   // Find the page which contains the tuple.
-  auto page = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
+  auto *page = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
   BUSTUB_ASSERT(page != nullptr, "Couldn't find a page containing that RID.");
   // Delete the tuple from the page.
   page->WLatch();
   page->ApplyDelete(rid, txn, log_manager_);
-  lock_manager_->Unlock(txn, rid);
+  bustub::LockManager::Unlock(txn, rid);
   page->WUnlatch();
   buffer_pool_manager_->UnpinPage(page->GetTablePageId(), true);
 }
 
 void TableHeap::RollbackDelete(const RID &rid, Transaction *txn) {
   // Find the page which contains the tuple.
-  auto page = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
+  auto *page = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
   BUSTUB_ASSERT(page != nullptr, "Couldn't find a page containing that RID.");
   // Rollback the delete.
   page->WLatch();
@@ -155,7 +155,7 @@ void TableHeap::RollbackDelete(const RID &rid, Transaction *txn) {
 
 auto TableHeap::GetTuple(const RID &rid, Tuple *tuple, Transaction *txn) -> bool {
   // Find the page which contains the tuple.
-  auto page = static_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
+  auto *page = static_cast<TablePage *>(buffer_pool_manager_->FetchPage(rid.GetPageId()));
   // If the page could not be found, then abort the transaction.
   if (page == nullptr) {
     txn->SetState(TransactionState::ABORTED);
@@ -175,7 +175,7 @@ auto TableHeap::Begin(Transaction *txn) -> TableIterator {
   RID rid;
   auto page_id = first_page_id_;
   while (page_id != INVALID_PAGE_ID) {
-    auto page = static_cast<TablePage *>(buffer_pool_manager_->FetchPage(page_id));
+    auto *page = static_cast<TablePage *>(buffer_pool_manager_->FetchPage(page_id));
     page->RLatch();
     // If this fails because there is no tuple, then RID will be the default-constructed value, which means EOF.
     auto found_tuple = page->GetFirstTupleRid(&rid);

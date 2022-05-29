@@ -40,13 +40,13 @@ class Page {
   inline auto GetData() -> char * { return data_; }
 
   /** @return the page id of this page */
-  inline auto GetPageId() -> page_id_t { return page_id_; }
+  inline auto GetPageId() const -> page_id_t { return page_id_; }
 
   /** @return the pin count of this page */
-  inline auto GetPinCount() -> int { return pin_count_; }
+  inline auto GetPinCount() const -> int { return pin_count_; }
 
   /** @return true if the page in memory has been modified from the page on disk, false otherwise */
-  inline auto IsDirty() -> bool { return is_dirty_; }
+  inline auto IsDirty() const -> bool { return is_dirty_; }
 
   /** Acquire the page write latch. */
   inline void WLatch() { rwlatch_.WLock(); }

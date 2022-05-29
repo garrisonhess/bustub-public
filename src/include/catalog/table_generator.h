@@ -108,7 +108,6 @@ class TableGenerator {
   template <typename CppType>
   auto GenNumericValues(ColumnInsertMeta *col_meta, uint32_t count) -> std::vector<Value>;
 
- private:
   ExecutorContext *exec_ctx_;
 };
 }  // namespace bustub

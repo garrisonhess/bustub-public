@@ -24,7 +24,7 @@ void TablePage::Init(page_id_t page_id, uint32_t page_size, page_id_t prev_page_
   if (enable_logging) {
     LogRecord log_record =
         LogRecord(txn->GetTransactionId(), txn->GetPrevLSN(), LogRecordType::NEWPAGE, prev_page_id, page_id);
-    lsn_t lsn = log_manager->AppendLogRecord(&log_record);
+    lsn_t lsn = bustub::LogManager::AppendLogRecord(&log_record);
     SetLSN(lsn);
     txn->SetPrevLSN(lsn);
   }
@@ -75,10 +75,10 @@ auto TablePage::InsertTuple(const Tuple &tuple, RID *rid, Transaction *txn, Lock
   if (enable_logging) {
     BUSTUB_ASSERT(!txn->IsSharedLocked(*rid) && !txn->IsExclusiveLocked(*rid), "A new tuple should not be locked.");
     // Acquire an exclusive lock on the new tuple.
-    bool locked = lock_manager->LockExclusive(txn, *rid);
+    bool locked = bustub::LockManager::LockExclusive(txn, *rid);
     BUSTUB_ASSERT(locked, "Locking a new tuple should always work.");
     LogRecord log_record(txn->GetTransactionId(), txn->GetPrevLSN(), LogRecordType::INSERT, *rid, tuple);
-    lsn_t lsn = log_manager->AppendLogRecord(&log_record);
+    lsn_t lsn = bustub::LogManager::AppendLogRecord(&log_record);
     SetLSN(lsn);
     txn->SetPrevLSN(lsn);
   }
@@ -108,15 +108,15 @@ auto TablePage::MarkDelete(const RID &rid, Transaction *txn, LockManager *lock_m
   if (enable_logging) {
     // Acquire an exclusive lock, upgrading from a shared lock if necessary.
     if (txn->IsSharedLocked(rid)) {
-      if (!lock_manager->LockUpgrade(txn, rid)) {
+      if (!bustub::LockManager::LockUpgrade(txn, rid)) {
         return false;
       }
-    } else if (!txn->IsExclusiveLocked(rid) && !lock_manager->LockExclusive(txn, rid)) {
+    } else if (!txn->IsExclusiveLocked(rid) && !bustub::LockManager::LockExclusive(txn, rid)) {
       return false;
     }
     Tuple dummy_tuple;
     LogRecord log_record(txn->GetTransactionId(), txn->GetPrevLSN(), LogRecordType::MARKDELETE, rid, dummy_tuple);
-    lsn_t lsn = log_manager->AppendLogRecord(&log_record);
+    lsn_t lsn = bustub::LogManager::AppendLogRecord(&log_record);
     SetLSN(lsn);
     txn->SetPrevLSN(lsn);
   }
@@ -166,14 +166,14 @@ auto TablePage::UpdateTuple(const Tuple &new_tuple, Tuple *old_tuple, const RID 
   if (enable_logging) {
     // Acquire an exclusive lock, upgrading from shared if necessary.
     if (txn->IsSharedLocked(rid)) {
-      if (!lock_manager->LockUpgrade(txn, rid)) {
+      if (!bustub::LockManager::LockUpgrade(txn, rid)) {
         return false;
       }
-    } else if (!txn->IsExclusiveLocked(rid) && !lock_manager->LockExclusive(txn, rid)) {
+    } else if (!txn->IsExclusiveLocked(rid) && !bustub::LockManager::LockExclusive(txn, rid)) {
       return false;
     }
     LogRecord log_record(txn->GetTransactionId(), txn->GetPrevLSN(), LogRecordType::UPDATE, rid, *old_tuple, new_tuple);
-    lsn_t lsn = log_manager->AppendLogRecord(&log_record);
+    lsn_t lsn = bustub::LogManager::AppendLogRecord(&log_record);
     SetLSN(lsn);
     txn->SetPrevLSN(lsn);
   }
@@ -222,7 +222,7 @@ void TablePage::ApplyDelete(const RID &rid, Transaction *txn, LogManager *log_ma
     BUSTUB_ASSERT(txn->IsExclusiveLocked(rid), "We must own the exclusive lock!");
 
     LogRecord log_record(txn->GetTransactionId(), txn->GetPrevLSN(), LogRecordType::APPLYDELETE, rid, delete_tuple);
-    lsn_t lsn = log_manager->AppendLogRecord(&log_record);
+    lsn_t lsn = bustub::LogManager::AppendLogRecord(&log_record);
     SetLSN(lsn);
     txn->SetPrevLSN(lsn);
   }
@@ -251,7 +251,7 @@ void TablePage::RollbackDelete(const RID &rid, Transaction *txn, LogManager *log
     BUSTUB_ASSERT(txn->IsExclusiveLocked(rid), "We must own an exclusive lock on the RID.");
     Tuple dummy_tuple;
     LogRecord log_record(txn->GetTransactionId(), txn->GetPrevLSN(), LogRecordType::ROLLBACKDELETE, rid, dummy_tuple);
-    lsn_t lsn = log_manager->AppendLogRecord(&log_record);
+    lsn_t lsn = bustub::LogManager::AppendLogRecord(&log_record);
     SetLSN(lsn);
     txn->SetPrevLSN(lsn);
   }
@@ -288,7 +288,7 @@ auto TablePage::GetTuple(const RID &rid, Tuple *tuple, Transaction *txn, LockMan
 
   // Otherwise we have a valid tuple, try to acquire at least a shared lock.
   if (enable_logging) {
-    if (!txn->IsSharedLocked(rid) && !txn->IsExclusiveLocked(rid) && !lock_manager->LockShared(txn, rid)) {
+    if (!txn->IsSharedLocked(rid) && !txn->IsExclusiveLocked(rid) && !bustub::LockManager::LockShared(txn, rid)) {
       return false;
     }
   }

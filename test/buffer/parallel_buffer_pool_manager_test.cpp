@@ -118,7 +118,7 @@ TEST(ParallelBufferPoolManagerTest, DISABLED_SampleTest) {
   }
 
   // Write world out to page 4
-  auto page4 = bpm->FetchPage(4);
+  auto *page4 = bpm->FetchPage(4);
   snprintf(page4->GetData(), PAGE_SIZE, "World");
   EXPECT_EQ(0, strcmp(page4->GetData(), "World"));
   bpm->UnpinPage(4, true);

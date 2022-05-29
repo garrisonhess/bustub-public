@@ -95,7 +95,7 @@ class BufferPoolManager {
    * @param callback_type BEFORE or AFTER
    * @param page_id the page id to invoke the callback with
    */
-  void GradingCallback(bufferpool_callback_fn callback, CallbackType callback_type, page_id_t page_id) {
+  static void GradingCallback(bufferpool_callback_fn callback, CallbackType callback_type, page_id_t page_id) {
     if (callback != nullptr) {
       callback(callback_type, page_id);
     }

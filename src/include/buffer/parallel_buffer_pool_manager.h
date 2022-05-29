@@ -44,7 +44,7 @@ class ParallelBufferPoolManager : public BufferPoolManager {
    * @param page_id id of page
    * @return pointer to the BufferPoolManager responsible for handling given page id
    */
-  auto GetBufferPoolManager(page_id_t page_id) -> BufferPoolManager *;
+  static auto GetBufferPoolManager(page_id_t page_id) -> BufferPoolManager *;
 
   /**
    * Fetch the requested page from the buffer pool.

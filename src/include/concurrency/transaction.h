@@ -126,7 +126,7 @@ class TransactionAbortException : public std::exception {
  public:
   explicit TransactionAbortException(txn_id_t txn_id, AbortReason abort_reason)
       : txn_id_(txn_id), abort_reason_(abort_reason) {}
-  auto GetTransactionId() -> txn_id_t { return txn_id_; }
+  auto GetTransactionId() const -> txn_id_t { return txn_id_; }
   auto GetAbortReason() -> AbortReason { return abort_reason_; }
   auto GetInfo() -> std::string {
     switch (abort_reason_) {
@@ -246,7 +246,7 @@ class Transaction {
   inline void SetState(TransactionState state) { state_ = state; }
 
   /** @return the previous LSN */
-  inline auto GetPrevLSN() -> lsn_t { return prev_lsn_; }
+  inline auto GetPrevLSN() const -> lsn_t { return prev_lsn_; }
 
   /**
    * Set the previous LSN.

@@ -36,7 +36,7 @@ TEST(BPlusTreeTests, DISABLED_DeleteTest1) {
 
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
 
   std::vector<int64_t> keys = {1, 2, 3, 4, 5};
@@ -114,7 +114,7 @@ TEST(BPlusTreeTests, DISABLED_DeleteTest2) {
 
   // create and fetch header_page
   page_id_t page_id;
-  auto header_page = bpm->NewPage(&page_id);
+  auto *header_page = bpm->NewPage(&page_id);
   (void)header_page;
 
   std::vector<int64_t> keys = {1, 2, 3, 4, 5};

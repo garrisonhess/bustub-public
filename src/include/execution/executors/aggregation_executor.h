@@ -203,7 +203,6 @@ class AggregationExecutor : public AbstractExecutor {
     return {vals};
   }
 
- private:
   /** The aggregation plan node */
   const AggregationPlanNode *plan_;
   /** The child executor that produces tuples over which the aggregation is computed */

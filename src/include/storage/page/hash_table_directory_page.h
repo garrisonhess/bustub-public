@@ -63,7 +63,7 @@ class HashTableDirectoryPage {
    * @param bucket_idx the index in the directory to lookup
    * @return bucket page_id corresponding to bucket_idx
    */
-  auto GetBucketPageId(uint32_t bucket_idx) -> page_id_t;
+  static auto GetBucketPageId(uint32_t bucket_idx) -> page_id_t;
 
   /**
    * Updates the directory index using a bucket index and page_id
@@ -95,7 +95,7 @@ class HashTableDirectoryPage {
    *
    * @return mask of global_depth 1's and the rest 0's (with 1's from LSB upwards)
    */
-  auto GetGlobalDepthMask() -> uint32_t;
+  static auto GetGlobalDepthMask() -> uint32_t;
 
   /**
    * GetLocalDepthMask - same as global depth mask, except it
@@ -111,7 +111,7 @@ class HashTableDirectoryPage {
    *
    * @return the global depth of the directory
    */
-  auto GetGlobalDepth() -> uint32_t;
+  auto GetGlobalDepth() const -> uint32_t;
 
   /**
    * Increment the global depth of the directory
@@ -126,12 +126,12 @@ class HashTableDirectoryPage {
   /**
    * @return true if the directory can be shrunk
    */
-  auto CanShrink() -> bool;
+  static auto CanShrink() -> bool;
 
   /**
    * @return the current directory size
    */
-  auto Size() -> uint32_t;
+  static auto Size() -> uint32_t;
 
   /**
    * Gets the local depth of the bucket at bucket_idx
@@ -139,7 +139,7 @@ class HashTableDirectoryPage {
    * @param bucket_idx the bucket index to lookup
    * @return the local depth of the bucket at bucket_idx
    */
-  auto GetLocalDepth(uint32_t bucket_idx) -> uint32_t;
+  static auto GetLocalDepth(uint32_t bucket_idx) -> uint32_t;
 
   /**
    * Set the local depth of the bucket at bucket_idx to local_depth
@@ -169,7 +169,7 @@ class HashTableDirectoryPage {
    * @param bucket_idx bucket index to lookup
    * @return the high bit corresponding to the bucket's local depth
    */
-  auto GetLocalHighBit(uint32_t bucket_idx) -> uint32_t;
+  static auto GetLocalHighBit(uint32_t bucket_idx) -> uint32_t;
 
   /**
    * VerifyIntegrity

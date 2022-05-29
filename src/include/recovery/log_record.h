@@ -126,15 +126,15 @@ class LogRecord {
 
   inline auto GetUpdateRID() -> RID & { return update_rid_; }
 
-  inline auto GetNewPageRecord() -> page_id_t { return prev_page_id_; }
+  inline auto GetNewPageRecord() const -> page_id_t { return prev_page_id_; }
 
-  inline auto GetSize() -> int32_t { return size_; }
+  inline auto GetSize() const -> int32_t { return size_; }
 
-  inline auto GetLSN() -> lsn_t { return lsn_; }
+  inline auto GetLSN() const -> lsn_t { return lsn_; }
 
-  inline auto GetTxnId() -> txn_id_t { return txn_id_; }
+  inline auto GetTxnId() const -> txn_id_t { return txn_id_; }
 
-  inline auto GetPrevLSN() -> lsn_t { return prev_lsn_; }
+  inline auto GetPrevLSN() const -> lsn_t { return prev_lsn_; }
 
   inline auto GetLogRecordType() -> LogRecordType & { return log_record_type_; }
 

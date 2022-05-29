@@ -50,12 +50,12 @@ void BasicTest1() {
   auto task = [&](int txn_id) {
     bool res;
     for (const RID &rid : rids) {
-      res = lock_mgr.LockShared(txns[txn_id], rid);
+      res = bustub::LockManager::LockShared(txns[txn_id], rid);
       EXPECT_TRUE(res);
       CheckGrowing(txns[txn_id]);
     }
     for (const RID &rid : rids) {
-      res = lock_mgr.Unlock(txns[txn_id], rid);
+      res = bustub::LockManager::Unlock(txns[txn_id], rid);
       EXPECT_TRUE(res);
       CheckShrinking(txns[txn_id]);
     }
@@ -85,27 +85,27 @@ void TwoPLTest() {
   RID rid0{0, 0};
   RID rid1{0, 1};
 
-  auto txn = txn_mgr.Begin();
+  auto *txn = txn_mgr.Begin();
   EXPECT_EQ(0, txn->GetTransactionId());
 
   bool res;
-  res = lock_mgr.LockShared(txn, rid0);
+  res = bustub::LockManager::LockShared(txn, rid0);
   EXPECT_TRUE(res);
   CheckGrowing(txn);
   CheckTxnLockSize(txn, 1, 0);
 
-  res = lock_mgr.LockExclusive(txn, rid1);
+  res = bustub::LockManager::LockExclusive(txn, rid1);
   EXPECT_TRUE(res);
   CheckGrowing(txn);
   CheckTxnLockSize(txn, 1, 1);
 
-  res = lock_mgr.Unlock(txn, rid0);
+  res = bustub::LockManager::Unlock(txn, rid0);
   EXPECT_TRUE(res);
   CheckShrinking(txn);
   CheckTxnLockSize(txn, 0, 1);
 
   try {
-    lock_mgr.LockShared(txn, rid0);
+    bustub::LockManager::LockShared(txn, rid0);
     CheckAborted(txn);
     // Size shouldn't change here
     CheckTxnLockSize(txn, 0, 1);
@@ -132,17 +132,17 @@ void UpgradeTest() {
   Transaction txn(0);
   txn_mgr.Begin(&txn);
 
-  bool res = lock_mgr.LockShared(&txn, rid);
+  bool res = bustub::LockManager::LockShared(&txn, rid);
   EXPECT_TRUE(res);
   CheckTxnLockSize(&txn, 1, 0);
   CheckGrowing(&txn);
 
-  res = lock_mgr.LockUpgrade(&txn, rid);
+  res = bustub::LockManager::LockUpgrade(&txn, rid);
   EXPECT_TRUE(res);
   CheckTxnLockSize(&txn, 0, 1);
   CheckGrowing(&txn);
 
-  res = lock_mgr.Unlock(&txn, rid);
+  res = bustub::LockManager::Unlock(&txn, rid);
   EXPECT_TRUE(res);
   CheckTxnLockSize(&txn, 0, 0);
   CheckShrinking(&txn);
@@ -167,7 +167,7 @@ void WoundWaitBasicTest() {
     // younger transaction acquires lock first
     Transaction txn_die(id_die);
     txn_mgr.Begin(&txn_die);
-    bool res = lock_mgr.LockExclusive(&txn_die, rid);
+    bool res = bustub::LockManager::LockExclusive(&txn_die, rid);
     EXPECT_TRUE(res);
 
     CheckGrowing(&txn_die);
@@ -193,7 +193,7 @@ void WoundWaitBasicTest() {
   // wait for txn1 to lock
   t1_future.wait();
 
-  bool res = lock_mgr.LockExclusive(&txn_hold, rid);
+  bool res = bustub::LockManager::LockExclusive(&txn_hold, rid);
   EXPECT_TRUE(res);
 
   wait_thread.join();

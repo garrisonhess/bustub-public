@@ -91,11 +91,11 @@ TEST_F(ExecutorTest, DISABLED_SimpleSeqScanTest) {
   // Construct query plan
   TableInfo *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
   const Schema &schema = table_info->schema_;
-  auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
-  auto *const500 = MakeConstantValueExpression(ValueFactory::GetIntegerValue(500));
-  auto *predicate = MakeComparisonExpression(col_a, const500, ComparisonType::LessThan);
-  auto *out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
+  const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+  const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+  const auto *const500 = MakeConstantValueExpression(ValueFactory::GetIntegerValue(500));
+  const auto *predicate = MakeComparisonExpression(col_a, const500, ComparisonType::LessThan);
+  const auto *out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   SeqScanPlanNode plan{out_schema, predicate, table_info->oid_};
 
   // Execute
@@ -119,7 +119,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleRawInsertTest) {
   std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
 
   // Create insert plan node
-  auto table_info = GetExecutorContext()->GetCatalog()->GetTable("empty_table2");
+  auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("empty_table2");
   InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
 
   GetExecutionEngine()->Execute(&insert_plan, nullptr, GetTxn(), GetExecutorContext());
@@ -128,9 +128,9 @@ TEST_F(ExecutorTest, DISABLED_SimpleRawInsertTest) {
 
   // SELECT * FROM empty_table2;
   const auto &schema = table_info->schema_;
-  auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto col_b = MakeColumnValueExpression(schema, 0, "colB");
-  auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
+  const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+  const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+  const auto *out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
 
   std::vector<Tuple> result_set{};
@@ -157,19 +157,19 @@ TEST_F(ExecutorTest, DISABLED_SimpleSelectInsertTest) {
   const Schema *out_schema1;
   std::unique_ptr<AbstractPlanNode> scan_plan1;
   {
-    auto table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
+    auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
     auto &schema = table_info->schema_;
-    auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-    auto col_b = MakeColumnValueExpression(schema, 0, "colB");
-    auto const500 = MakeConstantValueExpression(ValueFactory::GetIntegerValue(500));
-    auto predicate = MakeComparisonExpression(col_a, const500, ComparisonType::LessThan);
+    const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+    const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+    const auto *const500 = MakeConstantValueExpression(ValueFactory::GetIntegerValue(500));
+    const auto *predicate = MakeComparisonExpression(col_a, const500, ComparisonType::LessThan);
     out_schema1 = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
     scan_plan1 = std::make_unique<SeqScanPlanNode>(out_schema1, predicate, table_info->oid_);
   }
 
   std::unique_ptr<AbstractPlanNode> insert_plan;
   {
-    auto table_info = GetExecutorContext()->GetCatalog()->GetTable("empty_table2");
+    auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("empty_table2");
     insert_plan = std::make_unique<InsertPlanNode>(scan_plan1.get(), table_info->oid_);
   }
 
@@ -180,10 +180,10 @@ TEST_F(ExecutorTest, DISABLED_SimpleSelectInsertTest) {
   const Schema *out_schema2;
   std::unique_ptr<AbstractPlanNode> scan_plan2;
   {
-    auto table_info = GetExecutorContext()->GetCatalog()->GetTable("empty_table2");
+    auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("empty_table2");
     auto &schema = table_info->schema_;
-    auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-    auto col_b = MakeColumnValueExpression(schema, 0, "colB");
+    const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+    const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
     out_schema2 = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
     scan_plan2 = std::make_unique<SeqScanPlanNode>(out_schema2, nullptr, table_info->oid_);
   }
@@ -213,7 +213,7 @@ TEST_F(ExecutorTest, DISABLED_SimpleRawInsertWithIndexTest) {
   std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
 
   // Create insert plan node
-  auto table_info = GetExecutorContext()->GetCatalog()->GetTable("empty_table2");
+  auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("empty_table2");
   InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
 
   auto key_schema = ParseCreateStatement("a bigint");
@@ -228,9 +228,9 @@ TEST_F(ExecutorTest, DISABLED_SimpleRawInsertWithIndexTest) {
 
   // SELECT * FROM empty_table2;
   auto &schema = table_info->schema_;
-  auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto col_b = MakeColumnValueExpression(schema, 0, "colB");
-  auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
+  const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+  const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+  const auto *out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
 
   std::vector<Tuple> result_set{};
@@ -277,8 +277,8 @@ TEST_F(ExecutorTest, DISABLED_SimpleUpdateTest) {
   {
     auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_3");
     auto &schema = table_info->schema_;
-    auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-    auto col_b = MakeColumnValueExpression(schema, 0, "colB");
+    const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+    const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
     out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
     scan_plan = std::make_unique<SeqScanPlanNode>(out_schema, nullptr, table_info->oid_);
   }
@@ -331,12 +331,12 @@ TEST_F(ExecutorTest, DISABLED_SimpleUpdateTest) {
 // DELETE FROM test_1 WHERE col_a == 50;
 TEST_F(ExecutorTest, DISABLED_SimpleDeleteTest) {
   // Construct query plan
-  auto table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
+  auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
   auto &schema = table_info->schema_;
-  auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto const50 = MakeConstantValueExpression(ValueFactory::GetIntegerValue(50));
-  auto predicate = MakeComparisonExpression(col_a, const50, ComparisonType::Equal);
-  auto out_schema1 = MakeOutputSchema({{"colA", col_a}});
+  const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+  const auto *const50 = MakeConstantValueExpression(ValueFactory::GetIntegerValue(50));
+  const auto *predicate = MakeComparisonExpression(col_a, const50, ComparisonType::Equal);
+  const auto *out_schema1 = MakeOutputSchema({{"colA", col_a}});
   auto scan_plan1 = std::make_unique<SeqScanPlanNode>(out_schema1, predicate, table_info->oid_);
 
   // Create the index
@@ -378,10 +378,10 @@ TEST_F(ExecutorTest, DISABLED_SimpleNestedLoopJoinTest) {
   const Schema *out_schema1;
   std::unique_ptr<AbstractPlanNode> scan_plan1;
   {
-    auto table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
+    auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
     auto &schema = table_info->schema_;
-    auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-    auto col_b = MakeColumnValueExpression(schema, 0, "colB");
+    const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+    const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
     out_schema1 = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
     scan_plan1 = std::make_unique<SeqScanPlanNode>(out_schema1, nullptr, table_info->oid_);
   }
@@ -389,10 +389,10 @@ TEST_F(ExecutorTest, DISABLED_SimpleNestedLoopJoinTest) {
   const Schema *out_schema2;
   std::unique_ptr<AbstractPlanNode> scan_plan2;
   {
-    auto table_info = GetExecutorContext()->GetCatalog()->GetTable("test_2");
+    auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_2");
     auto &schema = table_info->schema_;
-    auto col1 = MakeColumnValueExpression(schema, 0, "col1");
-    auto col3 = MakeColumnValueExpression(schema, 0, "col3");
+    const auto *col1 = MakeColumnValueExpression(schema, 0, "col1");
+    const auto *col3 = MakeColumnValueExpression(schema, 0, "col3");
     out_schema2 = MakeOutputSchema({{"col1", col1}, {"col3", col3}});
     scan_plan2 = std::make_unique<SeqScanPlanNode>(out_schema2, nullptr, table_info->oid_);
   }
@@ -401,12 +401,12 @@ TEST_F(ExecutorTest, DISABLED_SimpleNestedLoopJoinTest) {
   std::unique_ptr<NestedLoopJoinPlanNode> join_plan;
   {
     // col_a and col_b have a tuple index of 0 because they are the left side of the join
-    auto col_a = MakeColumnValueExpression(*out_schema1, 0, "colA");
-    auto col_b = MakeColumnValueExpression(*out_schema1, 0, "colB");
+    const auto *col_a = MakeColumnValueExpression(*out_schema1, 0, "colA");
+    const auto *col_b = MakeColumnValueExpression(*out_schema1, 0, "colB");
     // col1 and col2 have a tuple index of 1 because they are the right side of the join
-    auto col1 = MakeColumnValueExpression(*out_schema2, 1, "col1");
-    auto col3 = MakeColumnValueExpression(*out_schema2, 1, "col3");
-    auto predicate = MakeComparisonExpression(col_a, col1, ComparisonType::Equal);
+    const auto *col1 = MakeColumnValueExpression(*out_schema2, 1, "col1");
+    const auto *col3 = MakeColumnValueExpression(*out_schema2, 1, "col3");
+    const auto *predicate = MakeComparisonExpression(col_a, col1, ComparisonType::Equal);
     out_final = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}, {"col1", col1}, {"col3", col3}});
     join_plan = std::make_unique<NestedLoopJoinPlanNode>(
         out_final, std::vector<const AbstractPlanNode *>{scan_plan1.get(), scan_plan2.get()}, predicate);
@@ -425,8 +425,8 @@ TEST_F(ExecutorTest, DISABLED_SimpleHashJoinTest) {
   {
     auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_4");
     auto &schema = table_info->schema_;
-    auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
-    auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+    const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+    const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
     out_schema1 = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
     scan_plan1 = std::make_unique<SeqScanPlanNode>(out_schema1, nullptr, table_info->oid_);
   }
@@ -437,8 +437,8 @@ TEST_F(ExecutorTest, DISABLED_SimpleHashJoinTest) {
   {
     auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_6");
     auto &schema = table_info->schema_;
-    auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
-    auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+    const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+    const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
     out_schema2 = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
     scan_plan2 = std::make_unique<SeqScanPlanNode>(out_schema2, nullptr, table_info->oid_);
   }
@@ -448,12 +448,12 @@ TEST_F(ExecutorTest, DISABLED_SimpleHashJoinTest) {
   std::unique_ptr<HashJoinPlanNode> join_plan{};
   {
     // Columns from Table 4 have a tuple index of 0 because they are the left side of the join (outer relation)
-    auto *table4_col_a = MakeColumnValueExpression(*out_schema1, 0, "colA");
-    auto *table4_col_b = MakeColumnValueExpression(*out_schema1, 0, "colB");
+    const auto *table4_col_a = MakeColumnValueExpression(*out_schema1, 0, "colA");
+    const auto *table4_col_b = MakeColumnValueExpression(*out_schema1, 0, "colB");
 
     // Columns from Table 6 have a tuple index of 1 because they are the right side of the join (inner relation)
-    auto *table6_col_a = MakeColumnValueExpression(*out_schema2, 1, "colA");
-    auto *table6_col_b = MakeColumnValueExpression(*out_schema2, 1, "colB");
+    const auto *table6_col_a = MakeColumnValueExpression(*out_schema2, 1, "colA");
+    const auto *table6_col_b = MakeColumnValueExpression(*out_schema2, 1, "colB");
 
     out_schema = MakeOutputSchema({{"table4_colA", table4_col_a},
                                    {"table4_colB", table4_col_b},
@@ -491,9 +491,9 @@ TEST_F(ExecutorTest, DISABLED_SimpleAggregationTest) {
   const Schema *scan_schema;
   std::unique_ptr<AbstractPlanNode> scan_plan;
   {
-    auto table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
+    auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
     auto &schema = table_info->schema_;
-    auto col_a = MakeColumnValueExpression(schema, 0, "colA");
+    const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
     scan_schema = MakeOutputSchema({{"colA", col_a}});
     scan_plan = std::make_unique<SeqScanPlanNode>(scan_schema, nullptr, table_info->oid_);
   }
@@ -541,11 +541,11 @@ TEST_F(ExecutorTest, DISABLED_SimpleGroupByAggregation) {
   const Schema *scan_schema;
   std::unique_ptr<AbstractPlanNode> scan_plan;
   {
-    auto table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
+    auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_1");
     auto &schema = table_info->schema_;
-    auto col_a = MakeColumnValueExpression(schema, 0, "colA");
-    auto col_b = MakeColumnValueExpression(schema, 0, "colB");
-    auto col_c = MakeColumnValueExpression(schema, 0, "colC");
+    const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+    const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+    const auto *col_c = MakeColumnValueExpression(schema, 0, "colC");
     scan_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}, {"colC", col_c}});
     scan_plan = std::make_unique<SeqScanPlanNode>(scan_schema, nullptr, table_info->oid_);
   }
@@ -594,9 +594,9 @@ TEST_F(ExecutorTest, DISABLED_SimpleLimitTest) {
   auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_3");
   auto &schema = table_info->schema_;
 
-  auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
-  auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
-  auto *out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
+  const auto *col_a = MakeColumnValueExpression(schema, 0, "colA");
+  const auto *col_b = MakeColumnValueExpression(schema, 0, "colB");
+  const auto *out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
 
   // Construct sequential scan
   auto seq_scan_plan = std::make_unique<SeqScanPlanNode>(out_schema, nullptr, table_info->oid_);
@@ -622,8 +622,8 @@ TEST_F(ExecutorTest, DISABLED_SimpleDistinctTest) {
   auto *table_info = GetExecutorContext()->GetCatalog()->GetTable("test_7");
   auto &schema = table_info->schema_;
 
-  auto *col_c = MakeColumnValueExpression(schema, 0, "colC");
-  auto *out_schema = MakeOutputSchema({{"colC", col_c}});
+  const auto *col_c = MakeColumnValueExpression(schema, 0, "colC");
+  const auto *out_schema = MakeOutputSchema({{"colC", col_c}});
 
   // Construct sequential scan
   auto seq_scan_plan = std::make_unique<SeqScanPlanNode>(out_schema, nullptr, table_info->oid_);

@@ -174,7 +174,7 @@ void TableGenerator::GenerateTestTables() {
       }
     }
     Schema schema(cols);
-    auto info = exec_ctx_->GetCatalog()->CreateTable(exec_ctx_->GetTransaction(), table_meta.name_, schema);
+    auto *info = exec_ctx_->GetCatalog()->CreateTable(exec_ctx_->GetTransaction(), table_meta.name_, schema);
     FillTable(info, &table_meta);
   }
 }
