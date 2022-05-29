@@ -8,6 +8,6 @@
 
 #pragma once
 
-#include "main/connection.h"
+#include "main/client_context.h"
 #include "main/database.h"
 #include "main/query_result.h"

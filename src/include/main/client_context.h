@@ -49,6 +49,10 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
   //! Execute a prepared statement with the given name and set of parameters
   unique_ptr<QueryResult> Execute(string name, vector<Value> &values, string query = string());
 
+  void BeginTransaction();
+  void Commit();
+  void Rollback();
+
  private:
   //! Internally prepare a SQL statement. Caller must hold the context_lock.
   unique_ptr<PreparedStatement> CreatePreparedStatement(const string &query, unique_ptr<SQLStatement> statement);

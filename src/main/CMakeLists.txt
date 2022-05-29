@@ -5,8 +5,6 @@ add_library(bustub_main
             OBJECT
             client_context.cpp
             config.cpp
-            connection_manager.cpp
-            connection.cpp
             database.cpp
             prepared_statement.cpp
             query_result.cpp)

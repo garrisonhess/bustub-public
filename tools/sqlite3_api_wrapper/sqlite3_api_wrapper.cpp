@@ -1,4 +1,5 @@
 #include "common/exception.h"
+#include "main/prepared_statement.h"
 #include "sqlite3.h"
 
 #include "bustub.h"
@@ -46,7 +47,7 @@ struct sqlite3_stmt {
 
 struct sqlite3 {
   std::unique_ptr<bustub::BusTub> db_;
-  std::unique_ptr<bustub::Connection> con_;
+  std::unique_ptr<bustub::ClientContext> con_;
   bustub::string last_error_;
 };
 
@@ -86,7 +87,7 @@ int sqlite3_open_v2(const char *filename, /* Database filename (UTF-8) */
     p_db = new sqlite3();
     bustub::DBConfig config;
     p_db->db_ = std::make_unique<bustub::BusTub>(filename, &config);
-    p_db->con_ = std::make_unique<bustub::Connection>(*p_db->db_);
+    p_db->con_ = std::make_unique<bustub::ClientContext>(p_db->db_->instance_);
     printf("initialized DB\n");
   } catch (std::exception &ex) {
     if (p_db != nullptr) {
