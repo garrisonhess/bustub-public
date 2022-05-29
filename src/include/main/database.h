@@ -42,9 +42,6 @@ class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
   CheckpointManager &GetCheckpointManager();
   LockManager &GetLockManager();
 
-  // int64_t NumberOfThreads();
-  // static DatabaseInstance &GetDatabase(ClientContext &context);
-
  private:
   void Initialize(const char *path, DBConfig *config);
 
@@ -64,7 +61,6 @@ class BusTub {
  public:
   explicit BusTub(const string &path, DBConfig *config);
   explicit BusTub(const char *path, DBConfig *config = nullptr);
-  // explicit BusTub(DatabaseInstance &instance);
 
   ~BusTub() = default;
 

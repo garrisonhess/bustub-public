@@ -41,6 +41,7 @@ class Connection {
 
   //! Prepare the specified query, returning a prepared statement object
   unique_ptr<PreparedStatement> Prepare(string query);
+
   //! Prepare the specified statement, returning a prepared statement object
   unique_ptr<PreparedStatement> Prepare(unique_ptr<SQLStatement> statement);
 

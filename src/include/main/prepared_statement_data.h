@@ -16,8 +16,6 @@
 #include "type/value.h"
 
 namespace bustub {
-// class CatalogEntry;
-// class PhysicalOperator;
 class SQLStatement;
 using std::vector;
 
@@ -27,6 +25,7 @@ class PreparedStatementData {
   ~PreparedStatementData();
 
   StatementType statement_type_;
+
   //! The unbound SQL statement that was prepared
   unique_ptr<SQLStatement> unbound_statement_;
 
@@ -43,17 +42,6 @@ class PreparedStatementData {
 
   //! The statement properties
   StatementProperties properties_;
-
-  //! The catalog version of when the prepared statement was bound
-  //! If this version is lower than the current catalog version, we have to rebind the prepared statement
-  int64_t catalog_version_;
-
- public:
-  //! Bind a set of values to the prepared statement data
-  void Bind(vector<Value> values);
-
-  // //! Get the expected SQL Type of the bound parameter
-  // Type GetType(int64_t param_index);
 };
 
 }  // namespace bustub

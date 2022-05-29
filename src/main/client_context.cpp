@@ -88,7 +88,6 @@ unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLState
 
   prepared_data->types_ = {Type(TypeId::INTEGER)};
   prepared_data->names_ = {"column1"};
-  prepared_data->catalog_version_ = -1;
   LOG_INFO("stmt query: %s", statement_query.c_str());
 
   auto t1 = shared_from_this();
