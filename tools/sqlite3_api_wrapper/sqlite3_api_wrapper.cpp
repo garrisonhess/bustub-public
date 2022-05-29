@@ -160,6 +160,7 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     if (!prepared->success_) {
       // failed to prepare: set the error message
       db->last_error_ = prepared->error_;
+      printf("prepare returned some err: %s\n", db->last_error_.c_str());
       return SQLITE_ERROR;
     }
 
@@ -179,10 +180,21 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
       *pzTail = zSql + next_location + 1;
     }
 
-    // *ppStmt = stmt.release();
+    auto types = stmt->prepared_->GetTypes();
+    printf("prepared statement number of types: %zu\n", types.size());
+
+    for (auto &t : types) {
+      printf("type ID: %d\n", t.GetTypeId());
+    }
+
+    printf("first prep stmt colname: %s\n", stmt->prepared_->GetNames().at(0).c_str());
+    printf("SQLITE PREPARE V2 returning OK\n");
+    *ppStmt = stmt.release();
+
     return SQLITE_OK;
   } catch (std::exception &ex) {
     db->last_error_ = ex.what();
+    printf("SQLITE PREPARE V2 RETURNED ERR: %s\n", db->last_error_.c_str());
     return SQLITE_ERROR;
   }
 }
@@ -214,13 +226,15 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
     // no result yet! call Execute()
     pStmt->result_ = pStmt->prepared_->Execute(pStmt->bound_values_);
     if (!pStmt->result_->success_) {
+      printf("execute returned non-success\n");
       // error in execute: clear prepared statement
       pStmt->db_->last_error_ = pStmt->result_->error_;
       pStmt->prepared_ = nullptr;
       return SQLITE_ERROR;
     }
     // fetch a tuple
-    pStmt->current_tuple_ = std::move(pStmt->result_->data_[pStmt->current_row_]);
+    // pStmt->current_tuple_ = std::move(pStmt->result_->data_[pStmt->current_row_]);
+    pStmt->current_tuple_ = std::move(pStmt->result_->data_.at(0));
 
     // TODO(GH): reset if it's not a select statement
     // if (!sqlite3_display_result(pStmt->prepared_->type)) {
@@ -228,11 +242,19 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
     //   sqlite3_reset(pStmt);
     // }
   }
+  static int ctr = 0;
+  ctr++;
+  if ((ctr % 5) == 0) {
+    printf("counter mod 5 == 0 so we're done \n");
+    return SQLITE_DONE;
+  }
   if (!pStmt->current_tuple_) {
+    printf("no tuple so we're done\n");
     return SQLITE_DONE;
   }
 
   pStmt->current_row_++;
+  printf("step returned another row \n");
 
   return SQLITE_ROW;
 }
@@ -246,6 +268,7 @@ int sqlite3_exec(sqlite3 *db,                /* The database on which the SQL ex
                  void *pArg,                 /* First argument to xCallback() */
                  char **pzErrMsg             /* Write error messages here */
 ) {
+  printf("sqlite3 exec\n");
   int rc = SQLITE_OK;             /* Return code */
   const char *z_leftover;         /* Tail of unprocessed SQL */
   sqlite3_stmt *p_stmt = nullptr; /* The current SQL statement */
@@ -258,9 +281,12 @@ int sqlite3_exec(sqlite3 *db,                /* The database on which the SQL ex
 
   while (rc == SQLITE_OK && (zSql[0] != 0)) {
     int n_col;
-
+    printf("begin sqlite3 exec loop\n");
     p_stmt = nullptr;
     rc = sqlite3_prepare_v2(db, zSql, -1, &p_stmt, &z_leftover);
+
+    printf("exec is done preparing\n");
+
     if (rc != SQLITE_OK) {
       if (pzErrMsg != nullptr) {
         auto errmsg = sqlite3_errmsg(db);
@@ -285,7 +311,9 @@ int sqlite3_exec(sqlite3 *db,                /* The database on which the SQL ex
     }
 
     while (true) {
+      printf("calling sqlite3 step\n");
       rc = sqlite3_step(p_stmt);
+      printf("returned from step\n");
 
       /* Invoke the callback function if required */
       if ((xCallback != nullptr) && rc == SQLITE_ROW) {
@@ -387,7 +415,6 @@ int sqlite3_column_type(sqlite3_stmt *pStmt, int iCol) {
       return 0;
   }
 
-
   return 0;
 }
 
@@ -399,6 +426,7 @@ const char *sqlite3_column_name(sqlite3_stmt *pStmt, int N) {
 }
 
 static bool Sqlite3ColumnHasValue(sqlite3_stmt *pStmt, int iCol, bustub::TypeId target_type, bustub::Value &val) {
+  printf("in sqlite3 col has val\n");
   if ((pStmt == nullptr) || !pStmt->result_ || !pStmt->current_tuple_) {
     return false;
   }
@@ -422,7 +450,7 @@ int sqlite3_column_int(sqlite3_stmt *stmt, int iCol) {
   if (!Sqlite3ColumnHasValue(stmt, iCol, bustub::TypeId::INTEGER, val)) {
     return 0;
   }
-  
+
   return val.GetAs<int>();
 }
 
@@ -436,10 +464,13 @@ sqlite3_int64 sqlite3_column_int64(sqlite3_stmt *stmt, int iCol) {
 
 const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
   bustub::Value val;
+  printf("in col text\n");
 
   if (!Sqlite3ColumnHasValue(pStmt, iCol, bustub::TypeId::VARCHAR, val)) {
+    printf("doesn't have value\n");
     return nullptr;
   }
+
   try {
     if (!pStmt->current_text_) {
       pStmt->current_text_ =
@@ -448,6 +479,7 @@ const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
 
     auto &entry = pStmt->current_text_[iCol];
     if (!entry.data_) {
+      printf("col text not implemented!\n");
       throw bustub::NotImplementedException("COLTEXT NOT IMPLEMENTED");
       // // not initialized yet, convert the value and initialize it
       // entry.data_ = std::unique_ptr<char[]>(new char[val.str_value.size() + 1]);
@@ -456,10 +488,9 @@ const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
     return reinterpret_cast<const unsigned char *>(entry.data_.get());
   } catch (...) {
     // memory error!
+    printf("col text memory err\n");
     return nullptr;
   }
-
-  return nullptr;
 }
 
 ////////////////////////////
@@ -494,7 +525,7 @@ int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) {
   return -1;
 }
 
-int Sqlite3InternalBindValue(sqlite3_stmt *stmt, int idx, const bustub::Value& value) {
+int Sqlite3InternalBindValue(sqlite3_stmt *stmt, int idx, const bustub::Value &value) {
   if ((stmt == nullptr) || !stmt->prepared_ || stmt->result_) {
     return SQLITE_MISUSE;
   }

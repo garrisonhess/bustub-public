@@ -2,13 +2,15 @@
 #include "common/exception.h"
 #include "main/client_context.h"
 #include "main/prepared_statement_data.h"
+#include "common/macros.h"
+
 
 namespace bustub {
 
 PreparedStatement::PreparedStatement(shared_ptr<ClientContext> context, shared_ptr<PreparedStatementData> data_p,
                                      string query, int64_t n_param)
     : context_(move(context)), data_(move(data_p)), query_(move(query)), success_(true), n_param_(n_param) {
-  // D_ASSERT(data || !success);
+  assert(data_ || !success_);
   LOG_INFO("hi from prepared statement constructor");
 }
 
@@ -17,27 +19,27 @@ PreparedStatement::PreparedStatement(string error) : context_(nullptr), success_
 PreparedStatement::~PreparedStatement() = default;
 
 int64_t PreparedStatement::ColumnCount() {
-  // D_ASSERT(data);
+  assert(data_);
   return data_->types_.size();
 }
 
 StatementType PreparedStatement::GetStatementType() {
-  // D_ASSERT(data);
+  assert(data_);
   return data_->statement_type_;
 }
 
 StatementProperties PreparedStatement::GetStatementProperties() {
-  // D_ASSERT(data);
+  assert(data_);
   return data_->properties_;
 }
 
 const vector<Type> &PreparedStatement::GetTypes() {
-  // D_ASSERT(data);
+  assert(data_);
   return data_->types_;
 }
 
 const vector<string> &PreparedStatement::GetNames() {
-  // D_ASSERT(data);
+  assert(data_);
   return data_->names_;
 }
 
@@ -46,9 +48,22 @@ unique_ptr<QueryResult> PreparedStatement::Execute(vector<Value> &values, bool a
   // if (!pending->success) {
   //   return make_unique<QueryResult>(pending->error);
   // }
+  auto stmt_type = StatementType::SELECT_STATEMENT;
+  vector<Type> types = {Type(TypeId::INTEGER)};
+  vector<string> names = {"column1"};
+  unique_ptr<QueryResult> result = std::make_unique<QueryResult>(stmt_type, types, names);
+  result->success_ = true;
+
+  vector<Value> temp_values = {Value(TypeId::INTEGER, 128)};
+  Column col = Column("column1", TypeId::INTEGER);
+  const std::vector<Column> &columns = {col};
+  Schema schema = Schema(columns);
+  unique_ptr<Tuple> tup2 = std::make_unique<Tuple>(temp_values, &schema);
+
+  result->data_.push_back(std::move(tup2));
 
   LOG_INFO("PreparedStatement Executing");
-  return nullptr;
+  return result;
   // return pending->Execute();
 }
 

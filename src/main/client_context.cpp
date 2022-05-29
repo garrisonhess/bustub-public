@@ -10,7 +10,6 @@
 #include "parser/parser.h"
 #include "type/statement_type.h"
 
-
 #include <mutex>
 #include <utility>
 
@@ -250,10 +249,15 @@ unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLState
     throw Exception(result->error_);
   }
 
-
   LOG_DEBUG("about to copy unbound statement");
   shared_ptr<PreparedStatementData> prepared_data = make_shared<PreparedStatementData>(StatementType::SELECT_STATEMENT);
   prepared_data->unbound_statement_ = move(unbound_statement);
+
+  prepared_data->types_ = {Type(TypeId::INTEGER)};
+  prepared_data->names_ = {"column1"};
+  prepared_data->catalog_version_ = -1;
+  // prepared_data->value_map_
+  // prepared_data->properties_
   LOG_DEBUG("done copying to unbound statement");
   // PreparedStatement(shared_ptr<ClientContext> context, shared_ptr<PreparedStatementData> data, string query,
   //                   int64_t n_param);
@@ -389,7 +393,6 @@ unique_ptr<QueryResult> ClientContext::RunStatement(const string &query, unique_
     // failure in committing transaction
     return make_unique<QueryResult>(error);
   }
-
 
   LOG_INFO("done with runstatement");
 

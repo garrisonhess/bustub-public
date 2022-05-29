@@ -12118,6 +12118,7 @@ static void exec_prepared_stmt_columnar(ShellState *p,      /* Pointer to ShellS
   rc = sqlite3_step(pStmt);
   if (rc != SQLITE_ROW) return;
   nColumn = sqlite3_column_count(pStmt);
+  printf("prepared stmt columnar num cols: %d\n", nColumn);
   nAlloc = nColumn * 4;
   azData = sqlite3_malloc64(nAlloc * sizeof(char *));
   if (azData == 0) shell_out_of_memory();
@@ -12496,18 +12497,22 @@ static int shell_exec(ShellState *pArg, /* Pointer to ShellState */
   while (zSql[0] && (SQLITE_OK == rc)) {
     static const char *zStmtSql;
     rc = sqlite3_prepare_v2(db, zSql, -1, &pStmt, &zLeftover);
+    printf("sqlite prepare v2 returned: %d\n", rc);
     if (SQLITE_OK != rc) {
       if (pzErrMsg) {
         *pzErrMsg = save_err_msg(db);
       }
     } else {
+      printf("pStmt: %p\n", (void *)pStmt);
       if (!pStmt) {
         /* this happens for a comment or white-space */
         zSql = zLeftover;
         while (IsSpace(zSql[0])) zSql++;
         continue;
       }
+      printf("run sqlite3_sql\n");
       zStmtSql = sqlite3_sql(pStmt);
+      printf("done with sqlite3_sql\n");
       if (zStmtSql == 0) zStmtSql = "";
       while (IsSpace(zStmtSql[0])) zStmtSql++;
 
