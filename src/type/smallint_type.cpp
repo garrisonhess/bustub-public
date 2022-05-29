@@ -340,7 +340,7 @@ auto SmallintType::CastAs(const Value &val, const TypeId type_id) const -> Value
       if (val.IsNull()) {
         return {TypeId::VARCHAR, nullptr, 0, false};
       }
-      return Value(TypeId::VARCHAR, val.ToString());
+      return {TypeId::VARCHAR, val.ToString()};
     }
     default:
       break;

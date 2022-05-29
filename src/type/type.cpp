@@ -137,7 +137,7 @@ auto Type::GetMinValue(TypeId type_id) -> Value {
     case TIMESTAMP:
       return {type_id, 0};
     case VARCHAR:
-      return Value(type_id, "");
+      return {type_id, ""};
     default:
       break;
   }

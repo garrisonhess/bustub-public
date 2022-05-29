@@ -71,7 +71,7 @@ class ValueFactory {
 
   static inline auto GetVarcharValue(const std::string &value, __attribute__((__unused__)) AbstractPool *pool = nullptr)
       -> Value {
-    return Value(TypeId::VARCHAR, value);
+    return {TypeId::VARCHAR, value};
   }
 
   static inline auto GetNullValueByType(TypeId type_id) -> Value {

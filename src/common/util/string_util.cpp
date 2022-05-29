@@ -165,7 +165,7 @@ std::string StringUtil::Format(std::string fmt_str, ...) {
       break;
     }
   }
-  return std::string(formatted.get());
+  return {formatted.get()};
 }
 
 auto StringUtil::Split(const std::string &input, const std::string &split) -> std::vector<std::string> {
