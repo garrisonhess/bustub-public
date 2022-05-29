@@ -19,8 +19,8 @@ class ExplainStatement : public SQLStatement {
  public:
   explicit ExplainStatement(unique_ptr<SQLStatement> stmt, ExplainType explain_type = ExplainType::EXPLAIN_STANDARD);
 
-  unique_ptr<SQLStatement> stmt;
-  ExplainType explain_type;
+  unique_ptr<SQLStatement> stmt_;
+  ExplainType explain_type_;
 
  protected:
   ExplainStatement(const ExplainStatement &other);

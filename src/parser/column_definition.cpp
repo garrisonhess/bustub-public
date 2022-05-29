@@ -4,9 +4,9 @@
 
 namespace bustub {
 
-ColumnDefinition::ColumnDefinition(string name_p, Type type_p) : name_(move(name_p)), type_(type_p) {}
+ColumnDefinition::ColumnDefinition(string name_p, const Type &type_p) : name_(move(name_p)), type_(type_p) {}
 
-ColumnDefinition::ColumnDefinition(string name_p, Type type_p, unique_ptr<ParsedExpression> default_value)
+ColumnDefinition::ColumnDefinition(string name_p, const Type &type_p, unique_ptr<ParsedExpression> default_value)
     : name_(move(name_p)), type_(type_p), default_value_(std::move(default_value)) {}
 
 ColumnDefinition ColumnDefinition::Copy() const {

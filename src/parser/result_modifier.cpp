@@ -5,7 +5,7 @@
 namespace bustub {
 
 bool ResultModifier::Equals(const ResultModifier *other) const {
-  if (!other) {
+  if (other == nullptr) {
     return false;
   }
   return type_ == other->type_;

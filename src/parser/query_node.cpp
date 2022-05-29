@@ -55,8 +55,8 @@ namespace bustub {
 
 string QueryNode::ResultModifiersToString() const {
   string result;
-  for (uint64_t modifier_idx = 0; modifier_idx < modifiers_.size(); modifier_idx++) {
-    auto &modifier = *modifiers_[modifier_idx];
+  for (const auto &modifier_idx : modifiers_) {
+    auto &modifier = *modifier_idx;
     if (modifier.type_ == ResultModifierType::ORDER_MODIFIER) {
       auto &order_modifier = (OrderModifier &)modifier;
       result += " ORDER BY ";

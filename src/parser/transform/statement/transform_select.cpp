@@ -17,7 +17,7 @@ unique_ptr<SelectStatement> Transformer::TransformSelect(bustub_libpgquery::PGNo
     }
   }
 
-  result->node = TransformSelectNode(stmt);
+  result->node_ = TransformSelectNode(stmt);
   return result;
 }
 

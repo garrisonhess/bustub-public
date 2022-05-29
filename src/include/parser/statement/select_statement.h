@@ -25,7 +25,7 @@ class SelectStatement : public SQLStatement {
   SelectStatement() : SQLStatement(StatementType::SELECT_STATEMENT) {}
 
   //! The main query node
-  unique_ptr<QueryNode> node;
+  unique_ptr<QueryNode> node_;
 
  protected:
   SelectStatement(const SelectStatement &other);

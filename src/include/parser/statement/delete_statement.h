@@ -18,10 +18,10 @@ class DeleteStatement : public SQLStatement {
  public:
   DeleteStatement();
 
-  unique_ptr<ParsedExpression> condition;
-  unique_ptr<TableRef> table;
-  vector<unique_ptr<TableRef>> using_clauses;
-  vector<unique_ptr<ParsedExpression>> returning_list;
+  unique_ptr<ParsedExpression> condition_;
+  unique_ptr<TableRef> table_;
+  vector<unique_ptr<TableRef>> using_clauses_;
+  vector<unique_ptr<ParsedExpression>> returning_list_;
 
  protected:
   DeleteStatement(const DeleteStatement &other);

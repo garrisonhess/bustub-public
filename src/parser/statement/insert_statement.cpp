@@ -57,10 +57,10 @@ unique_ptr<SQLStatement> InsertStatement::Copy() const {
 }
 
 ExpressionListRef *InsertStatement::GetValuesList() const {
-  if (select_statement->node->type_ != QueryNodeType::SELECT_NODE) {
+  if (select_statement->node_->type_ != QueryNodeType::SELECT_NODE) {
     return nullptr;
   }
-  auto &node = (SelectNode &)*select_statement->node;
+  auto &node = (SelectNode &)*select_statement->node_;
   if (node.where_clause_ || node.qualify_ || node.having_) {
     return nullptr;
   }

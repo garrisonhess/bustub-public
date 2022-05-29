@@ -37,7 +37,7 @@ void FieldWriter::Finalize() {
 //===--------------------------------------------------------------------===//
 // Field Deserializer
 //===--------------------------------------------------------------------===//
-FieldDeserializer::FieldDeserializer(Deserializer &root) : root_(root), remaining_data_(uint64_t(-1)) {}
+FieldDeserializer::FieldDeserializer(Deserializer &root) : root_(root), remaining_data_(static_cast<uint64_t>(-1)) {}
 
 void FieldDeserializer::ReadData(data_ptr_t buffer, uint64_t read_size) {
   // D_ASSERT(remaining_data != uint64_t(-1));

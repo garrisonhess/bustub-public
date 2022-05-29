@@ -17,7 +17,7 @@ class CreateStatement : public SQLStatement {
  public:
   CreateStatement();
 
-  unique_ptr<CreateInfo> info;
+  unique_ptr<CreateInfo> info_;
 
  protected:
   CreateStatement(const CreateStatement &other);

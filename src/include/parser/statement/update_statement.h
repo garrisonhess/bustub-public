@@ -18,13 +18,13 @@ class UpdateStatement : public SQLStatement {
  public:
   UpdateStatement();
 
-  unique_ptr<ParsedExpression> condition;
-  unique_ptr<TableRef> table;
-  unique_ptr<TableRef> from_table;
-  vector<string> columns;
-  vector<unique_ptr<ParsedExpression>> expressions;
+  unique_ptr<ParsedExpression> condition_;
+  unique_ptr<TableRef> table_;
+  unique_ptr<TableRef> from_table_;
+  vector<string> columns_;
+  vector<unique_ptr<ParsedExpression>> expressions_;
   //! keep track of optional returningList if statement contains a RETURNING keyword
-  vector<unique_ptr<ParsedExpression>> returning_list;
+  vector<unique_ptr<ParsedExpression>> returning_list_;
 
  protected:
   UpdateStatement(const UpdateStatement &other);

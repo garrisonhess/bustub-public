@@ -54,7 +54,7 @@ void Parser::ParseQuery(const std::string &query) {
       LOG_INFO("parsed query: %s", statement->query_.c_str());
       if (statement->type_ == StatementType::CREATE_STATEMENT) {
         auto &create = (CreateStatement &)*statement;
-        create.info->sql_ = query.substr(statement->stmt_location_, statement->stmt_length_);
+        create.info_->sql_ = query.substr(statement->stmt_location_, statement->stmt_length_);
       }
     }
   }
@@ -136,10 +136,10 @@ std::vector<std::unique_ptr<ParsedExpression>> Parser::ParseExpressionList(const
     throw Exception("Expected a single SELECT statement");
   }
   auto &select = (SelectStatement &)*parser.statements_[0];
-  if (select.node->type_ != QueryNodeType::SELECT_NODE) {
+  if (select.node_->type_ != QueryNodeType::SELECT_NODE) {
     throw Exception("Expected a single SELECT node");
   }
-  auto &select_node = (SelectNode &)*select.node;
+  auto &select_node = (SelectNode &)*select.node_;
   return move(select_node.select_list_);
 }
 
@@ -154,10 +154,10 @@ std::vector<OrderByNode> Parser::ParseOrderList(const std::string &select_list, 
     throw Exception("Expected a single SELECT statement");
   }
   auto &select = (SelectStatement &)*parser.statements_[0];
-  if (select.node->type_ != QueryNodeType::SELECT_NODE) {
+  if (select.node_->type_ != QueryNodeType::SELECT_NODE) {
     throw Exception("Expected a single SELECT node");
   }
-  auto &select_node = (SelectNode &)*select.node;
+  auto &select_node = (SelectNode &)*select.node_;
   if (select_node.modifiers_.empty() || select_node.modifiers_[0]->type_ != ResultModifierType::ORDER_MODIFIER ||
       select_node.modifiers_.size() != 1) {
     throw Exception("Expected a single ORDER clause");
@@ -178,8 +178,8 @@ void Parser::ParseUpdateList(const std::string &update_list, std::vector<std::st
     throw Exception("Expected a single UPDATE statement");
   }
   auto &update = (UpdateStatement &)*parser.statements_[0];
-  update_columns = move(update.columns);
-  expressions = move(update.expressions);
+  update_columns = move(update.columns_);
+  expressions = move(update.expressions_);
 }
 
 std::vector<std::vector<std::unique_ptr<ParsedExpression>>> Parser::ParseValuesList(const std::string &value_list,
@@ -194,10 +194,10 @@ std::vector<std::vector<std::unique_ptr<ParsedExpression>>> Parser::ParseValuesL
     throw Exception("Expected a single SELECT statement");
   }
   auto &select = (SelectStatement &)*parser.statements_[0];
-  if (select.node->type_ != QueryNodeType::SELECT_NODE) {
+  if (select.node_->type_ != QueryNodeType::SELECT_NODE) {
     throw Exception("Expected a single SELECT node");
   }
-  auto &select_node = (SelectNode &)*select.node;
+  auto &select_node = (SelectNode &)*select.node_;
   if (!select_node.from_table_ || select_node.from_table_->type_ != TableReferenceType::EXPRESSION_LIST) {
     throw Exception("Expected a single VALUES statement");
   }
@@ -213,10 +213,10 @@ vector<ColumnDefinition> Parser::ParseColumnList(const string &column_list, Pars
     throw Exception("Expected a single CREATE statement");
   }
   auto &create = (CreateStatement &)*parser.statements_[0];
-  if (create.info->type_ != CatalogType::TABLE_ENTRY) {
+  if (create.info_->type_ != CatalogType::TABLE_ENTRY) {
     throw Exception("Expected a single CREATE TABLE statement");
   }
-  auto &info = ((CreateTableInfo &)*create.info);
+  auto &info = ((CreateTableInfo &)*create.info_);
   return move(info.columns_);
 }
 

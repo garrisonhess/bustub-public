@@ -4,17 +4,17 @@
 
 namespace bustub {
 
-SelectStatement::SelectStatement(const SelectStatement &other) : SQLStatement(other), node(other.node->Copy()) {}
+SelectStatement::SelectStatement(const SelectStatement &other) : SQLStatement(other), node_(other.node_->Copy()) {}
 
 unique_ptr<SQLStatement> SelectStatement::Copy() const {
   return unique_ptr<SelectStatement>(new SelectStatement(*this));
 }
 
-void SelectStatement::Serialize(Serializer &serializer) const { node->Serialize(serializer); }
+void SelectStatement::Serialize(Serializer &serializer) const { node_->Serialize(serializer); }
 
 unique_ptr<SelectStatement> SelectStatement::Deserialize(Deserializer &source) {
   auto result = std::make_unique<SelectStatement>();
-  result->node = QueryNode::Deserialize(source);
+  result->node_ = QueryNode::Deserialize(source);
   return result;
 }
 
@@ -23,9 +23,9 @@ bool SelectStatement::Equals(const SQLStatement *other_p) const {
     return false;
   }
   auto other = (SelectStatement *)other_p;
-  return node->Equals(other->node.get());
+  return node_->Equals(other->node_.get());
 }
 
-string SelectStatement::ToString() const { return node->ToString(); }
+string SelectStatement::ToString() const { return node_->ToString(); }
 
 }  // namespace bustub

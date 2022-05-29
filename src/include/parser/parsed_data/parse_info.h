@@ -11,7 +11,7 @@
 namespace bustub {
 
 struct ParseInfo {
-  virtual ~ParseInfo() {}
+  virtual ~ParseInfo() = default;
 };
 
 }  // namespace bustub

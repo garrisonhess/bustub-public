@@ -3,8 +3,7 @@
 
 namespace bustub {
 
-PrepareStatement::PrepareStatement()
-    : SQLStatement(StatementType::PREPARE_STATEMENT), statement_(nullptr), name_(INVALID_SCHEMA) {}
+PrepareStatement::PrepareStatement() : SQLStatement(StatementType::PREPARE_STATEMENT), statement_(nullptr) {}
 
 PrepareStatement::PrepareStatement(const PrepareStatement &other)
     : SQLStatement(other), statement_(other.statement_->Copy()), name_(other.name_) {}

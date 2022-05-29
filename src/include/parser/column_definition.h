@@ -21,8 +21,8 @@ using std::unique_ptr;
 //! A column of a table.
 class ColumnDefinition {
  public:
-  ColumnDefinition(string name, Type type);
-  ColumnDefinition(string name, Type type, unique_ptr<ParsedExpression> default_value);
+  ColumnDefinition(string name, const Type &type);
+  ColumnDefinition(string name, const Type &type, unique_ptr<ParsedExpression> default_value);
 
   //! The name of the entry
   string name_;
