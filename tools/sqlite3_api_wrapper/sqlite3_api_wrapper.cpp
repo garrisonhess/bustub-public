@@ -47,7 +47,7 @@ struct sqlite3_stmt {
 
 struct sqlite3 {
   std::unique_ptr<bustub::BusTub> db_;
-  std::unique_ptr<bustub::ClientContext> con_;
+  std::shared_ptr<bustub::ClientContext> con_;
   bustub::string last_error_;
 };
 
@@ -87,8 +87,7 @@ int sqlite3_open_v2(const char *filename, /* Database filename (UTF-8) */
     p_db = new sqlite3();
     bustub::DBConfig config;
     p_db->db_ = std::make_unique<bustub::BusTub>(filename, &config);
-    p_db->con_ = std::make_unique<bustub::ClientContext>(p_db->db_->instance_);
-    printf("initialized DB\n");
+    p_db->con_ = std::make_shared<bustub::ClientContext>(p_db->db_->instance_);
   } catch (std::exception &ex) {
     if (p_db != nullptr) {
       p_db->last_error_ = ex.what();
@@ -871,7 +870,7 @@ int sqlite3_create_module(sqlite3 *db,             /* SQLite connection to regis
                           const sqlite3_module *p, /* Methods for the module */
                           void *pClientData        /* Client data for xCreate/xConnect */
 ) {
-  fprintf(stderr, "sqlite3_create_module: unsupported.\n");
+  // fprintf(stderr, "sqlite3_create_module: unsupported.\n");
   return -1;
 }
 
@@ -879,7 +878,7 @@ int sqlite3_create_function(sqlite3 *db, const char *zFunctionName, int nArg, in
                             void (*xFunc)(sqlite3_context *, int, sqlite3_value **),
                             void (*xStep)(sqlite3_context *, int, sqlite3_value **),
                             void (*xFinal)(sqlite3_context *)) {
-  fprintf(stderr, "sqlite3_create_function: unsupported.\n");
+  // fprintf(stderr, "sqlite3_create_function: unsupported.\n");
   return -1;
 }
 

@@ -26,14 +26,11 @@ unique_ptr<QueryResult> PreparedStatement::Execute() {
   vector<Type> types = {Type(TypeId::INTEGER)};
   vector<string> names = {"column1"};
   unique_ptr<QueryResult> result = std::make_unique<QueryResult>(stmt_type, types, names);
-
   std::vector<Tuple> data = {};
-
   // context_->executor_->Execute(const AbstractPlanNode *plan, std::vector<Tuple> *result_set, Transaction *txn,
   // ExecutorContext *exec_ctx)
 
   context_->executor_->Execute(nullptr, &result->data_, nullptr, nullptr);
-
   result->success_ = true;
 
   vector<Value> temp_values = {Value(TypeId::INTEGER, 42069)};

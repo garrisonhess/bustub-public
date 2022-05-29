@@ -37,7 +37,7 @@ void DatabaseInstance::Initialize(const char *path, DBConfig *config) {
   log_manager_ = make_unique<LogManager>(*this->disk_manager_);
   lock_manager_ = make_unique<LockManager>();
   transaction_manager_ = make_unique<TransactionManager>(*this);
-  LOG_INFO("Initialized DB");
+  LOG_INFO("Initialized DB: %s.", path);
 }
 
 BusTub::BusTub(const string &path, DBConfig *config) : BusTub(path.c_str(), config) {}
@@ -46,12 +46,9 @@ BusTub::BusTub(const char *path, DBConfig *config) : instance_(make_shared<Datab
   if (config == nullptr) {
     config = new DBConfig();
   }
-
   if (path == nullptr) {
     path = "main.db";
   }
-
-  LOG_INFO("Initializing BusTub database: %s.", path);
   instance_->Initialize(path, config);
 }
 
