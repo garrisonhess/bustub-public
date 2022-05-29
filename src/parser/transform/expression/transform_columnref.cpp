@@ -24,7 +24,8 @@
 // 			auto list = static_cast<bustub_libpgquery::PGList *>(head->data.ptr_value);
 // 			// D_ASSERT(list->length == 2);
 // 			auto replace_expression = TransformExpression((bustub_libpgquery::PGNode
-// *)list->head->data.ptr_value); 			auto value = static_cast<bustub_libpgquery::PGValue *>(list->tail->data.ptr_value);
+// *)list->head->data.ptr_value); 			auto value = static_cast<bustub_libpgquery::PGValue
+// *>(list->tail->data.ptr_value);
 // 			// D_ASSERT(value->type == bustub_libpgquery::T_PGString);
 // 			string exclude_entry = value->val.str;
 // 			if (result->replace_list.find(exclude_entry) != result->replace_list.end()) {

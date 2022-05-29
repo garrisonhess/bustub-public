@@ -56,7 +56,8 @@
 // 		}
 // 		child_list_t<Type> children;
 // 		auto key_type = TransformTypeName((bustub_libpgquery::PGTypeName
-// *)type_name->typmods->head->data.ptr_value); 		auto value_type = TransformTypeName((bustub_libpgquery::PGTypeName
+// *)type_name->typmods->head->data.ptr_value); 		auto value_type =
+// TransformTypeName((bustub_libpgquery::PGTypeName
 // *)type_name->typmods->tail->data.ptr_value);
 
 // 		children.push_back({"key", Type::LIST(key_type)});

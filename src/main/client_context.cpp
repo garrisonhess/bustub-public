@@ -2,12 +2,12 @@
 
 #include "buffer/buffer_pool_manager_instance.h"
 #include "common/constants.h"
+#include "common/enums/statement_type.h"
 #include "common/exception.h"
 #include "execution/execution_engine.h"
 #include "main/database.h"
 #include "main/query_result.h"
 #include "parser/parser.h"
-#include "common/enums/statement_type.h"
 
 #include <mutex>
 #include <utility>

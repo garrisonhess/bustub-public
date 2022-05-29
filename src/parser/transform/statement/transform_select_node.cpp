@@ -23,8 +23,8 @@ unique_ptr<QueryNode> Transformer::TransformSelectNode(bustub_libpgquery::PGSele
       // if (stmt->windowClause) {
       // 	for (auto window_ele = stmt->windowClause->head; window_ele != nullptr; window_ele = window_ele->next) {
       // 		auto window_def = reinterpret_cast<bustub_libpgquery::PGWindowDef
-      // *>(window_ele->data.ptr_value); 		D_ASSERT(window_def); 		D_ASSERT(window_def->name); 		auto window_name =
-      // StringUtil::Lower(string(window_def->name));
+      // *>(window_ele->data.ptr_value); 		D_ASSERT(window_def); 		D_ASSERT(window_def->name);
+      // auto window_name = StringUtil::Lower(string(window_def->name));
 
       // 		auto it = window_clauses.find(window_name);
       // 		if (it != window_clauses.end()) {

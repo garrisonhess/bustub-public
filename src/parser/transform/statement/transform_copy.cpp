@@ -22,8 +22,8 @@
 // 			// format specifier: interpret this option
 // 			auto *format_val = (bustub_libpgquery::PGValue *)(def_elem->arg);
 // 			if (!format_val || format_val->type != bustub_libpgquery::T_PGString) {
-// 				throw ParserException("Unsupported parameter type for FORMAT: expected e.g. FORMAT 'csv',
-// 'parquet'");
+// 				throw ParserException("Unsupported parameter type for FORMAT: expected e.g. FORMAT
+// 'csv', 'parquet'");
 // 			}
 // 			info.format = StringUtil::Lower(format_val->val.str);
 // 			continue;

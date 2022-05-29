@@ -149,8 +149,10 @@
 // 				if (!function_list.empty()) {
 // 					expr->children.push_back(move(function_list[0]));
 // 				}
-// 				if (win_fun_type == ExpressionType::WINDOW_LEAD || win_fun_type == ExpressionType::WINDOW_LAG)
-// { 					if (function_list.size() > 1) { 						expr->offset_expr = move(function_list[1]);
+// 				if (win_fun_type == ExpressionType::WINDOW_LEAD || win_fun_type ==
+// ExpressionType::WINDOW_LAG)
+// { 					if (function_list.size() > 1) { 						expr->offset_expr =
+// move(function_list[1]);
 // 					}
 // 					if (function_list.size() > 2) {
 // 						expr->default_expr = move(function_list[2]);
@@ -280,8 +282,8 @@
 // 	}
 
 // 	auto function = make_unique<FunctionExpression>(schema, lowercase_name.c_str(), move(children),
-// move(filter_expr), 	                                                move(order_bys), root->agg_distinct, false, root->export_state); 	function->query_location =
-// root->location;
+// move(filter_expr), 	                                                move(order_bys), root->agg_distinct, false,
+// root->export_state); 	function->query_location = root->location;
 
 // 	return move(function);
 // }

@@ -46,12 +46,12 @@
 // 			}
 // 		}
 // 		if (!pk_columns.empty() && pk_columns.size() != fk_columns.size()) {
-// 			throw ParserException("The number of referencing and referenced columns for foreign keys must be the
-// same");
+// 			throw ParserException("The number of referencing and referenced columns for foreign keys must be
+// the same");
 // 		}
 // 		if (fk_columns.empty()) {
-// 			throw ParserException("The set of referencing and referenced columns for foreign keys must be not
-// empty");
+// 			throw ParserException("The set of referencing and referenced columns for foreign keys must be
+// not empty");
 // 		}
 // 		return make_unique<ForeignKeyConstraint>(pk_columns, fk_columns, move(fk_info));
 // 	}
@@ -82,8 +82,8 @@
 // 	case bustub_libpgquery::PG_CONSTR_COMPRESSION:
 // 		column.compression_type = CompressionTypeFromString(constraint->compression_name);
 // 		if (column.compression_type == CompressionType::COMPRESSION_AUTO) {
-// 			throw ParserException("Unrecognized option for column compression, expected none, uncompressed, rle,
-// " 			                      "dictionary, pfor, bitpacking or fsst");
+// 			throw ParserException("Unrecognized option for column compression, expected none, uncompressed,
+// rle, " 			                      "dictionary, pfor, bitpacking or fsst");
 // 		}
 // 		return nullptr;
 // 	case bustub_libpgquery::PG_CONSTR_FOREIGN:
