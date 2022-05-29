@@ -27,8 +27,7 @@ std::shared_mutex TransactionManager::txn_map_mutex = {};
 
 TransactionManager::TransactionManager(DatabaseInstance &db) : db_(db){};
 
-
-auto TransactionManager::Begin(Transaction *txn, IsolationLevel isolation_level) -> Transaction *{
+auto TransactionManager::Begin(Transaction *txn, IsolationLevel isolation_level) -> Transaction * {
   // Acquire the global transaction latch in shared mode.
   global_txn_latch_.RLock();
 
@@ -117,7 +116,7 @@ void TransactionManager::BlockAllTransactions() { global_txn_latch_.WLock(); }
 
 void TransactionManager::ResumeTransactions() { global_txn_latch_.WUnlock(); }
 
-auto TransactionManager::GetTransaction(txn_id_t txn_id)-> Transaction * {
+auto TransactionManager::GetTransaction(txn_id_t txn_id) -> Transaction * {
   TransactionManager::txn_map_mutex.lock_shared();
   assert(TransactionManager::txn_map.find(txn_id) != TransactionManager::txn_map.end());
   auto *res = TransactionManager::txn_map[txn_id];
