@@ -16,9 +16,6 @@
 #include <utility>
 #include <vector>
 
-#include "execution/plans/delete_plan.h"
-#include "execution/plans/limit_plan.h"
-
 #include "buffer/buffer_pool_manager_instance.h"
 #include "catalog/table_generator.h"
 #include "concurrency/transaction_manager.h"
@@ -28,6 +25,8 @@
 #include "execution/expressions/column_value_expression.h"
 #include "execution/expressions/comparison_expression.h"
 #include "execution/expressions/constant_value_expression.h"
+#include "execution/plans/delete_plan.h"
+#include "execution/plans/limit_plan.h"
 #include "execution/plans/seq_scan_plan.h"
 #include "gtest/gtest.h"
 

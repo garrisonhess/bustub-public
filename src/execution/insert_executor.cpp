@@ -10,9 +10,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <memory>
-
 #include "execution/executors/insert_executor.h"
+
+#include <memory>
 
 namespace bustub {
 
@@ -22,6 +22,6 @@ InsertExecutor::InsertExecutor(ExecutorContext *exec_ctx, const InsertPlanNode *
 
 void InsertExecutor::Init() {}
 
-bool InsertExecutor::Next([[maybe_unused]] Tuple *tuple, RID *rid) { return false; }
+auto InsertExecutor::Next([[maybe_unused]] Tuple *tuple, RID *rid) -> bool { return false; }
 
 }  // namespace bustub

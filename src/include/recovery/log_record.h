@@ -82,7 +82,7 @@ class LogRecord {
       delete_tuple_ = tuple;
     }
     // calculate log record size
-    size_ = HEADER_SIZE + sizeof(RID) + sizeof(int32_t) + tuple.GetLength();
+    size_ = HEADER_SIZE + static_cast<int32_t>(sizeof(RID) + sizeof(int32_t) + tuple.GetLength());
   }
 
   // constructor for UPDATE type
@@ -95,7 +95,8 @@ class LogRecord {
         old_tuple_(old_tuple),
         new_tuple_(new_tuple) {
     // calculate log record size
-    size_ = HEADER_SIZE + sizeof(RID) + old_tuple.GetLength() + new_tuple.GetLength() + 2 * sizeof(int32_t);
+    size_ = HEADER_SIZE +
+            static_cast<int32_t>(sizeof(RID) + old_tuple.GetLength() + new_tuple.GetLength() + 2 * sizeof(int32_t));
   }
 
   // constructor for NEWPAGE type
@@ -112,43 +113,43 @@ class LogRecord {
 
   ~LogRecord() = default;
 
-  inline Tuple &GetDeleteTuple() { return delete_tuple_; }
+  inline auto GetDeleteTuple() -> Tuple & { return delete_tuple_; }
 
-  inline RID &GetDeleteRID() { return delete_rid_; }
+  inline auto GetDeleteRID() -> RID & { return delete_rid_; }
 
-  inline Tuple &GetInsertTuple() { return insert_tuple_; }
+  inline auto GetInsertTuple() -> Tuple & { return insert_tuple_; }
 
-  inline RID &GetInsertRID() { return insert_rid_; }
+  inline auto GetInsertRID() -> RID & { return insert_rid_; }
 
-  inline Tuple &GetOriginalTuple() { return old_tuple_; }
+  inline auto GetOriginalTuple() -> Tuple & { return old_tuple_; }
 
-  inline Tuple &GetUpdateTuple() { return new_tuple_; }
+  inline auto GetUpdateTuple() -> Tuple & { return new_tuple_; }
 
-  inline RID &GetUpdateRID() { return update_rid_; }
+  inline auto GetUpdateRID() -> RID & { return update_rid_; }
 
-  inline page_id_t GetNewPageRecord() { return prev_page_id_; }
+  inline auto GetNewPageRecord() const -> page_id_t { return prev_page_id_; }
 
-  inline int32_t GetSize() { return size_; }
+  inline auto GetSize() const -> int32_t { return size_; }
 
-  inline lsn_t GetLSN() { return lsn_; }
+  inline auto GetLSN() const -> lsn_t { return lsn_; }
 
-  inline txn_id_t GetTxnId() { return txn_id_; }
+  inline auto GetTxnId() const -> txn_id_t { return txn_id_; }
 
-  inline lsn_t GetPrevLSN() { return prev_lsn_; }
+  inline auto GetPrevLSN() const -> lsn_t { return prev_lsn_; }
 
-  inline LogRecordType &GetLogRecordType() { return log_record_type_; }
+  inline auto GetLogRecordType() -> LogRecordType & { return log_record_type_; }
 
   // For debug purpose
-  inline std::string ToString() const {
-    std::ostringstream os;
-    os << "Log["
-       << "size:" << size_ << ", "
-       << "LSN:" << lsn_ << ", "
-       << "transID:" << txn_id_ << ", "
-       << "prevLSN:" << prev_lsn_ << ", "
-       << "LogType:" << static_cast<int>(log_record_type_) << "]";
+  inline auto ToString() const -> std::string {
+    std::ostringstream outs;
+    outs << "Log["
+         << "size:" << size_ << ", "
+         << "LSN:" << lsn_ << ", "
+         << "transID:" << txn_id_ << ", "
+         << "prevLSN:" << prev_lsn_ << ", "
+         << "LogType:" << static_cast<int>(log_record_type_) << "]";
 
-    return os.str();
+    return outs.str();
   }
 
  private:
@@ -176,7 +177,7 @@ class LogRecord {
   // case4: for new page operation
   page_id_t prev_page_id_{INVALID_PAGE_ID};
   page_id_t page_id_{INVALID_PAGE_ID};
-  static const int HEADER_SIZE = 20;
+  static const int32_t HEADER_SIZE = 20;
 };  // namespace bustub
 
 }  // namespace bustub

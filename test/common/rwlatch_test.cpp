@@ -10,10 +10,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "common/rwlatch.h"
+
 #include <thread>  // NOLINT
 #include <vector>
 
-#include "common/rwlatch.h"
 #include "gtest/gtest.h"
 
 namespace bustub {
@@ -26,7 +27,7 @@ class Counter {
     count_ += num;
     mutex_.WUnlock();
   }
-  int Read() {
+  auto Read() -> int {
     int res;
     mutex_.RLock();
     res = count_;

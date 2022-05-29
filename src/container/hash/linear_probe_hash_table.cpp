@@ -10,6 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "container/hash/linear_probe_hash_table.h"
+
 #include <iostream>
 #include <string>
 #include <utility>
@@ -18,7 +20,6 @@
 #include "common/exception.h"
 #include "common/logger.h"
 #include "common/rid.h"
-#include "container/hash/linear_probe_hash_table.h"
 
 namespace bustub {
 
@@ -32,14 +33,14 @@ HASH_TABLE_TYPE::LinearProbeHashTable(const std::string &name, BufferPoolManager
  * SEARCH
  *****************************************************************************/
 template <typename KeyType, typename ValueType, typename KeyComparator>
-bool HASH_TABLE_TYPE::GetValue(Transaction *transaction, const KeyType &key, std::vector<ValueType> *result) {
+auto HASH_TABLE_TYPE::GetValue(Transaction *transaction, const KeyType &key, std::vector<ValueType> *result) -> bool {
   return false;
 }
 /*****************************************************************************
  * INSERTION
  *****************************************************************************/
 template <typename KeyType, typename ValueType, typename KeyComparator>
-bool HASH_TABLE_TYPE::Insert(Transaction *transaction, const KeyType &key, const ValueType &value) {
+auto HASH_TABLE_TYPE::Insert(Transaction *transaction, const KeyType &key, const ValueType &value) -> bool {
   return false;
 }
 
@@ -47,7 +48,7 @@ bool HASH_TABLE_TYPE::Insert(Transaction *transaction, const KeyType &key, const
  * REMOVE
  *****************************************************************************/
 template <typename KeyType, typename ValueType, typename KeyComparator>
-bool HASH_TABLE_TYPE::Remove(Transaction *transaction, const KeyType &key, const ValueType &value) {
+auto HASH_TABLE_TYPE::Remove(Transaction *transaction, const KeyType &key, const ValueType &value) -> bool {
   return false;
 }
 
@@ -61,7 +62,7 @@ void HASH_TABLE_TYPE::Resize(size_t initial_size) {}
  * GETSIZE
  *****************************************************************************/
 template <typename KeyType, typename ValueType, typename KeyComparator>
-size_t HASH_TABLE_TYPE::GetSize() {
+auto HASH_TABLE_TYPE::GetSize() -> size_t {
   return 0;
 }
 
