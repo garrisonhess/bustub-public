@@ -9,7 +9,6 @@ namespace bustub {
 SelectNode::SelectNode() : QueryNode(QueryNodeType::SELECT_NODE) {}
 
 string SelectNode::ToString() const {
-  LOG_INFO("HI FROM SELECT NODE TOSTRING()");
   string result;
   // result = CTEToString();
   result += "SELECT ";

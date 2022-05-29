@@ -43,12 +43,7 @@ void Parser::ParseQuery(const std::string &query) {
 
     // if it succeeded, we transform the Postgres parse tree into a list of
     // SQLStatements
-    LOG_INFO("about to transform parse tree");
     transformer.TransformParseTree(parser.parse_tree, statements_);
-    LOG_INFO("done transforming parse tree");
-    for (auto &&stmt : statements_) {
-      LOG_INFO("parsed statement: %s", stmt->ToString().c_str());
-    }
   }
 
   if (!statements_.empty()) {

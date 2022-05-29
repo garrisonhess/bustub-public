@@ -199,7 +199,7 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
   }
 
   pStmt->current_text_ = nullptr;
-  
+
   if (!pStmt->result_) {
     // no result yet! call Execute()
     pStmt->result_ = pStmt->prepared_->Execute();
@@ -703,7 +703,7 @@ int sqlite3_total_changes(sqlite3 * /*unused*/) {
 // checks if input ends with ;
 int sqlite3_complete(const char *sql) {
   // FIXME
-  fprintf(stderr, "sqlite3_complete: unsupported.\n");
+  // fprintf(stderr, "sqlite3_complete: unsupported.\n");
   return -1;
 }
 
