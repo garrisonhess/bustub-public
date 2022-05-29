@@ -10,12 +10,7 @@ add_subdirectory(recovery)
 add_subdirectory(storage)
 add_subdirectory(type)
 
-# file(GLOB_RECURSE bustub_sources ${PROJECT_SOURCE_DIR}/src/*/*.cpp ${PROJECT_SOURCE_DIR}/src/*/*/*.cpp)
-# add_library(bustub ${bustub_sources})
-message("ALL OBJECT FILES: ${ALL_OBJECT_FILES}")
 add_library(bustub SHARED ${ALL_OBJECT_FILES})
-# target_link_libraries(bustub ${DUCKDB_LINK_LIBS})
-
 
 set(BUSTUB_LIBS
 bustub_buffer 
