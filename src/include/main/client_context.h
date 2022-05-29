@@ -40,9 +40,6 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
   ExecutionEngine *executor_;
 
  public:
-  //! Issue a query, returning a QueryResult.
-  unique_ptr<QueryResult> Query(unique_ptr<SQLStatement> statement);
-
   //! Directly prepare a SQL statement
   unique_ptr<PreparedStatement> Prepare(unique_ptr<SQLStatement> statement);
 
@@ -54,12 +51,6 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
   void Rollback();
 
  private:
-  //! Internally prepare a SQL statement. Caller must hold the context_lock.
-  unique_ptr<PreparedStatement> CreatePreparedStatement(const string &query, unique_ptr<SQLStatement> statement);
-
-  //! Internally execute a prepared SQL statement. Caller must hold the context_lock.
-  unique_ptr<QueryResult> ExecutePreparedStatement(const string &query, PreparedStatement &statement);
-
   unique_ptr<PreparedStatement> PrepareInternal(unique_ptr<SQLStatement> statement);
 
  private:

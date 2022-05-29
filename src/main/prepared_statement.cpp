@@ -3,6 +3,7 @@
 #include "common/exception.h"
 #include "common/macros.h"
 #include "execution/executor_context.h"
+#include "execution/plans/seq_scan_plan.h"
 #include "main/client_context.h"
 
 namespace bustub {
@@ -40,10 +41,8 @@ unique_ptr<QueryResult> PreparedStatement::Execute() {
   Schema schema = Schema(columns);
   Tuple tup2 = Tuple(temp_values, &schema);
   result->data_.push_back(tup2);
-
   LOG_INFO("PreparedStatement Executing");
   return result;
-  // return pending->Execute();
 }
 
 }  // namespace bustub
