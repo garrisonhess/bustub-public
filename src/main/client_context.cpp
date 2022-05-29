@@ -79,7 +79,6 @@ unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLState
   //   throw Exception(result->error_);
   // }
 
-  LOG_DEBUG("about to copy unbound statement");
   unique_ptr<PreparedStatement> result = make_unique<PreparedStatement>(shared_from_this(), statement->query_);
   result->statement_type_ = StatementType::SELECT_STATEMENT;
   result->types_ = {Type(TypeId::INTEGER)};

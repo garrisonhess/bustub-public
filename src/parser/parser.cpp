@@ -51,11 +51,10 @@ void Parser::ParseQuery(const std::string &query) {
     last_statement->stmt_length_ = query.size() - last_statement->stmt_location_;
     for (auto &statement : statements_) {
       statement->query_ = query;
-      LOG_INFO("STATEMENT'S QUERY TEXT IS: %s", statement->query_.c_str());
+      LOG_INFO("parsed query: %s", statement->query_.c_str());
       if (statement->type_ == StatementType::CREATE_STATEMENT) {
         auto &create = (CreateStatement &)*statement;
         create.info->sql_ = query.substr(statement->stmt_location_, statement->stmt_length_);
-        LOG_INFO("CREATE STATEMENT SQL: %s", create.info->sql_.c_str());
       }
     }
   }

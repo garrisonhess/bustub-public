@@ -1,33 +1,16 @@
 #include "parser/transformer.h"
 
 #include "common/logger.h"
-
-// #include "parser/expression/list.h"
-// #include "parser/statement/list.h"
 #include "parser/sql_statement.h"
 #include "parser/statement/select_statement.h"
 #include "parser/tableref/emptytableref.h"
 
 namespace bustub {
 
-// StackChecker::StackChecker(Transformer &transformer_p, uint64_t stack_usage_p)
-//     : transformer_(transformer_p), stack_usage_(stack_usage_p) {
-//   transformer_.stack_depth_ += stack_usage_;
-// }
-
-// StackChecker::~StackChecker() { transformer_.stack_depth_ -= stack_usage_; }
-
-// StackChecker::StackChecker(StackChecker &&other) noexcept
-//     : transformer_(other.transformer_), stack_usage_(other.stack_usage_) {
-//   other.stack_usage_ = 0;
-// }
-
 Transformer::Transformer(Transformer *parent) : parent_(parent) {}
 
 bool Transformer::TransformParseTree(bustub_libpgquery::PGList *tree, vector<unique_ptr<SQLStatement>> &statements) {
-  //   InitializeStackCheck();
   for (auto entry = tree->head; entry != nullptr; entry = entry->next) {
-    LOG_INFO("entry oid value: %d", entry->data.oid_value);
     SetParamCount(0);
     auto stmt = TransformStatement(static_cast<bustub_libpgquery::PGNode *>(entry->data.ptr_value));
     stmt->n_param_ = ParamCount();
@@ -35,23 +18,6 @@ bool Transformer::TransformParseTree(bustub_libpgquery::PGList *tree, vector<uni
   }
   return true;
 }
-
-// void Transformer::InitializeStackCheck() { stack_depth_ = 0; }
-
-// StackChecker Transformer::StackCheck(uint64_t extra_stack) {
-// //   auto node = this;
-// //   while (node->parent_ != nullptr) {
-// //     node = node->parent_;
-// //   }
-// //   // D_ASSERT(node->stack_depth_ != -1);
-// //   if (node->stack_depth_ + extra_stack >= static_cast<uint64_t>(max_expression_depth_)) {
-// //     throw Exception(
-// //         "Max expression depth limit of exceeded. Use \"SET max_expression_depth TO x\" to "
-// //         "increase the maximum expression depth.");
-// //   }
-// //   return StackChecker(*node, extra_stack);
-//   return {};
-// }
 
 unique_ptr<SQLStatement> Transformer::TransformStatement(bustub_libpgquery::PGNode *stmt) {
   auto result = TransformStatementInternal(stmt);
