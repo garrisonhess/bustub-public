@@ -137,7 +137,7 @@ void TimestampType::SerializeTo(const Value &val, char *storage) const {
 // Deserialize a value of the given type from the given storage space.
 auto TimestampType::DeserializeFrom(const char *storage) const -> Value {
   uint64_t val = *reinterpret_cast<const uint64_t *>(storage);
-  return Value(type_id_, val);
+  return {type_id_, val};
 }
 
 // Create a copy of this value
