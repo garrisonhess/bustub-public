@@ -24,6 +24,23 @@ set(BUSTUB_BUILD_SUPPORT_DIR "${CMAKE_SOURCE_DIR}/build_support")
 set(BUSTUB_CLANG_SEARCH_PATH "/usr/local/bin" "/usr/bin" "/usr/local/opt/llvm/bin" "/usr/local/opt/llvm@12/bin"
         "/usr/local/Cellar/llvm/12.0.1/bin")
 
+
+
+function(link_threads LIBRARY)
+  target_link_libraries(${LIBRARY} pthread)
+endfunction()
+
+# function(link_threads LIBRARY)
+# if (CMAKE_VERSION VERSION_LESS "3.1")
+#   target_link_libraries(${LIBRARY} pthread)
+
+# else()
+#   target_link_libraries(${LIBRARY} Threads::Threads)
+# endif()
+# endfunction()
+
+
+
 ######################################################################################################################
 # DEPENDENCIES
 ######################################################################################################################
@@ -101,15 +118,29 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+function(disable_target_warnings NAME)
+  if(MSVC)
+    target_compile_options(${NAME} PRIVATE "/W0")
+  elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
+         OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    target_compile_options(${NAME} PRIVATE "-w")
+  endif()
+endfunction()
+
+
 # Includes.
 set(BUSTUB_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src/include)
 set(BUSTUB_TEST_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/test/include)
 set(BUSTUB_THIRD_PARTY_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/third_party)
 include_directories(${BUSTUB_SRC_INCLUDE_DIR} ${BUSTUB_TEST_INCLUDE_DIR} ${BUSTUB_THIRD_PARTY_INCLUDE_DIR})
 include_directories(BEFORE src) # This is needed for gtest.
+include_directories(third_party/utf8proc/include)
 
 add_subdirectory(src)
 add_subdirectory(test)
+add_subdirectory(third_party)
+add_subdirectory(tools)
+
 ######################################################################################################################
 # MAKE TARGETS
 ######################################################################################################################
@@ -173,4 +204,9 @@ add_custom_target(check-clang-tidy
         -clang-tidy-binary ${CLANG_TIDY_BIN}                              # using our clang-tidy binary
         -p ${CMAKE_BINARY_DIR}                                            # using cmake's generated compile commands
         )
-add_dependencies(check-clang-tidy gtest bustub_shared)                    # needs gtest headers, compile_commands.json
+add_dependencies(check-clang-tidy gtest bustub)                    # needs gtest headers, compile_commands.json
+
+
+
+
+

@@ -44,38 +44,38 @@ class ExecutorTest : public ::testing::Test {
   void SetUp() override {
     ::testing::Test::SetUp();
 
-    // Initialize the database subsystems
-    lock_manager_ = std::make_unique<LockManager>();
-    disk_manager_ = std::make_unique<DiskManager>("executor_test.db");
-    bpm_ = std::make_unique<BufferPoolManagerInstance>(32, disk_manager_.get());
-    txn_mgr_ = std::make_unique<TransactionManager>(lock_manager_.get(), log_manager_.get());
-    catalog_ = std::make_unique<Catalog>(bpm_.get(), lock_manager_.get(), log_manager_.get());
+    // // Initialize the database subsystems
+    // lock_manager_ = std::make_unique<LockManager>();
+    // disk_manager_ = std::make_unique<DiskManager>("executor_test.db");
+    // bpm_ = std::make_unique<BufferPoolManagerInstance>(32, disk_manager_.get());
+    // txn_mgr_ = std::make_unique<TransactionManager>(lock_manager_.get(), log_manager_.get());
+    // catalog_ = std::make_unique<Catalog>(bpm_.get(), lock_manager_.get(), log_manager_.get());
 
-    // Open a transaction for the test
-    txn_ = txn_mgr_->Begin();
+    // // Open a transaction for the test
+    // txn_ = txn_mgr_->Begin();
 
-    // Create an executor context for our executors
-    exec_ctx_ =
-        std::make_unique<ExecutorContext>(txn_, catalog_.get(), bpm_.get(), txn_mgr_.get(), lock_manager_.get());
+    // // Create an executor context for our executors
+    // exec_ctx_ =
+    //     std::make_unique<ExecutorContext>(txn_, catalog_.get(), bpm_.get(), txn_mgr_.get(), lock_manager_.get());
 
-    // Generate test tables
-    TableGenerator gen{exec_ctx_.get()};
-    gen.GenerateTestTables();
+    // // Generate test tables
+    // TableGenerator gen{exec_ctx_.get()};
+    // gen.GenerateTestTables();
 
-    // Construct the executor engine for the test
-    execution_engine_ = std::make_unique<ExecutionEngine>(bpm_.get(), txn_mgr_.get(), catalog_.get());
+    // // Construct the executor engine for the test
+    // execution_engine_ = std::make_unique<ExecutionEngine>(bpm_.get(), txn_mgr_.get(), catalog_.get());
   }
 
   /** Called after every executor test. */
-  void TearDown() override {
-    // Commit our transaction
-    txn_mgr_->Commit(txn_);
+  void TearDown() override{
+      // // Commit our transaction
+      // txn_mgr_->Commit(txn_);
 
-    // Shut down the disk manager and clean up the transaction
-    disk_manager_->ShutDown();
-    remove("executor_test.db");
-    remove("executor_test.log");
-    delete txn_;
+      // // Shut down the disk manager and clean up the transaction
+      // disk_manager_->ShutDown();
+      // remove("executor_test.db");
+      // remove("executor_test.log");
+      // delete txn_;
   };
 
   /** @return The executor context for our test instance. */

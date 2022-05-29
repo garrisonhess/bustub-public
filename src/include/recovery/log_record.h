@@ -15,7 +15,7 @@
 #include <cassert>
 #include <string>
 
-#include "common/config.h"
+#include "main/config.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {
