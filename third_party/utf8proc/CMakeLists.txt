@@ -5,9 +5,3 @@ endif()
 include_directories(include)
 
 add_library(bustub_utf8proc SHARED utf8proc.cpp utf8proc_wrapper.cpp)
-
-
-# install(TARGETS bustub_utf8proc
-#         EXPORT "${DUCKDB_EXPORT_SET}"
-#         LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-#         ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")

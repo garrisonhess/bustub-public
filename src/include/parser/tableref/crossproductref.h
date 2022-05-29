@@ -1,14 +1,14 @@
 // //===----------------------------------------------------------------------===//
 // //                         BusTub
 // //
-// // bustub/parser/tableref/crossproductref.hpp
+// // bustub/parser/tableref/crossproductref.h
 // //
 // //
 // //===----------------------------------------------------------------------===//
 
 // #pragma once
 
-// #include "parser/tableref.hpp"
+// #include "parser/tableref.h"
 
 // namespace bustub {
 // //! Represents a cross product

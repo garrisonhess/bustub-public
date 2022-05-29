@@ -370,7 +370,7 @@ exec_out:
   sqlite3_free(az_vals);
   if (rc != SQLITE_OK && (pzErrMsg != nullptr) && (*pzErrMsg == nullptr)) {
     // error but no error message set
-    *pzErrMsg = Sqlite3Strdup("Unknown error in DuckDB!");
+    *pzErrMsg = Sqlite3Strdup("Unknown error in BusTub!");
   }
   return rc;
 }

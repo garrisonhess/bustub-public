@@ -1,18 +1,16 @@
 // //===----------------------------------------------------------------------===//
 // //                         BusTub
 // //
-// // bustub/parser/tableref/joinref.hpp
+// // bustub/parser/tableref/joinref.h
 // //
 // //
 // //===----------------------------------------------------------------------===//
 
 // #pragma once
 
-// #include "common/enums/join_type.hpp"
-// #include "common/unordered_set.hpp"
-// #include "common/vector.hpp"
-// #include "parser/parsed_expression.hpp"
-// #include "parser/tableref.hpp"
+// #include "common/enums/join_type.h"
+// #include "parser/parsed_expression.h"
+// #include "parser/tableref.h"
 
 // namespace bustub {
 // //! Represents a JOIN between two expressions

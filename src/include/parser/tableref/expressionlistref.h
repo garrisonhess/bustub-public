@@ -1,7 +1,7 @@
 //===----------------------------------------------------------------------===//
 //                         BusTub
 //
-// bustub/parser/tableref/expressionlistref.hpp
+// bustub/parser/tableref/expressionlistref.h
 //
 //
 //===----------------------------------------------------------------------===//

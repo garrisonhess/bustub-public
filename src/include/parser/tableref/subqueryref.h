@@ -1,15 +1,15 @@
 // //===----------------------------------------------------------------------===//
 // //                         BusTub
 // //
-// // bustub/parser/tableref/subqueryref.hpp
+// // bustub/parser/tableref/subqueryref.h
 // //
 // //
 // //===----------------------------------------------------------------------===//
 
 // #pragma once
 
-// #include "parser/statement/select_statement.hpp"
-// #include "parser/tableref.hpp"
+// #include "parser/statement/select_statement.h"
+// #include "parser/tableref.h"
 
 // namespace bustub {
 // //! Represents a subquery
