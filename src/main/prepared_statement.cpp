@@ -54,7 +54,7 @@ unique_ptr<QueryResult> PreparedStatement::Execute(vector<Value> &values, bool a
   unique_ptr<QueryResult> result = std::make_unique<QueryResult>(stmt_type, types, names);
   result->success_ = true;
 
-  vector<Value> temp_values = {Value(TypeId::INTEGER, 128)};
+  vector<Value> temp_values = {Value(TypeId::INTEGER, 42069)};
   Column col = Column("column1", TypeId::INTEGER);
   const std::vector<Column> &columns = {col};
   Schema schema = Schema(columns);
