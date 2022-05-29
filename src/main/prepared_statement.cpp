@@ -2,44 +2,25 @@
 #include "common/exception.h"
 #include "common/macros.h"
 #include "main/client_context.h"
-#include "main/prepared_statement_data.h"
 
 namespace bustub {
 
-PreparedStatement::PreparedStatement(shared_ptr<ClientContext> context, shared_ptr<PreparedStatementData> data_p,
-                                     string query, int64_t n_param)
-    : context_(move(context)), data_(move(data_p)), query_(move(query)), success_(true), n_param_(n_param) {
-  assert(data_ || !success_);
-}
+PreparedStatement::PreparedStatement(shared_ptr<ClientContext> context, string query)
+    : context_(move(context)), query_(move(query)), success_(true) {}
 
 PreparedStatement::PreparedStatement(string error) : context_(nullptr), success_(false), error_(move(error)) {}
 
 PreparedStatement::~PreparedStatement() = default;
 
-int64_t PreparedStatement::ColumnCount() {
-  assert(data_);
-  return data_->types_.size();
-}
+int64_t PreparedStatement::ColumnCount() { return types_.size(); }
 
-StatementType PreparedStatement::GetStatementType() {
-  assert(data_);
-  return data_->statement_type_;
-}
+StatementType PreparedStatement::GetStatementType() { return statement_type_; }
 
-StatementProperties PreparedStatement::GetStatementProperties() {
-  assert(data_);
-  return data_->properties_;
-}
+StatementProperties PreparedStatement::GetStatementProperties() { return properties_; }
 
-const vector<Type> &PreparedStatement::GetTypes() {
-  assert(data_);
-  return data_->types_;
-}
+const vector<Type> &PreparedStatement::GetTypes() { return types_; }
 
-const vector<string> &PreparedStatement::GetNames() {
-  assert(data_);
-  return data_->names_;
-}
+const vector<string> &PreparedStatement::GetNames() { return names_; }
 
 unique_ptr<QueryResult> PreparedStatement::Execute(vector<Value> &values) {
   auto stmt_type = StatementType::SELECT_STATEMENT;
@@ -67,6 +48,5 @@ unique_ptr<QueryResult> PreparedStatement::Execute(vector<Value> &values) {
   return result;
   // return pending->Execute();
 }
-
 
 }  // namespace bustub

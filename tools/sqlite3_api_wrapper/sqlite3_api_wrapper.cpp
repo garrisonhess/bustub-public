@@ -170,10 +170,10 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     stmt->query_string_ = query;
     stmt->prepared_ = move(prepared);
     stmt->current_row_ = -1;
-    for (int64_t i = 0; i < stmt->prepared_->n_param_; i++) {
-      stmt->bound_names_.push_back("$" + std::to_string(i + 1));
-      stmt->bound_values_.emplace_back();
-    }
+    // for (int64_t i = 0; i < stmt->prepared_->n_param_; i++) {
+    //   stmt->bound_names_.push_back("$" + std::to_string(i + 1));
+    //   stmt->bound_values_.emplace_back();
+    // }
 
     // extract the remainder of the query and assign it to the pzTail
     if ((pzTail != nullptr) && set_remainder) {
@@ -507,20 +507,22 @@ const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
 //      sqlite3_bind      //
 ////////////////////////////
 int sqlite3_bind_parameter_count(sqlite3_stmt *stmt) {
-  if (stmt == nullptr) {
-    return 0;
-  }
-  return stmt->prepared_->n_param_;
+  // if (stmt == nullptr) {
+  //   return 0;
+  // }
+  // return stmt->prepared_->n_param_;
+  return 0;
 }
 
 const char *sqlite3_bind_parameter_name(sqlite3_stmt *stmt, int idx) {
   if (stmt == nullptr) {
     return nullptr;
   }
-  if (idx < 1 || idx > static_cast<int>(stmt->prepared_->n_param_)) {
+  if (idx < 1) {
     return nullptr;
   }
-  return stmt->bound_names_[idx - 1].c_str();
+  return nullptr;
+  // return stmt->bound_names_[idx - 1].c_str();
 }
 
 int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) {
@@ -535,30 +537,21 @@ int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) {
   return -1;
 }
 
-int Sqlite3InternalBindValue(sqlite3_stmt *stmt, int idx, const bustub::Value &value) {
-  if ((stmt == nullptr) || !stmt->prepared_ || stmt->result_) {
-    return SQLITE_MISUSE;
-  }
-  if (idx < 1 || idx > static_cast<int>(stmt->prepared_->n_param_)) {
-    return SQLITE_RANGE;
-  }
-  stmt->bound_values_[idx - 1] = value;
-  return SQLITE_OK;
-}
+int Sqlite3InternalBindValue(sqlite3_stmt *stmt, int idx, const bustub::Value &value) { return 0; }
 
 int sqlite3_bind_int(sqlite3_stmt *stmt, int idx, int val) {
   // return sqlite3_internal_bind_value(stmt, idx, Value::INTEGER(val));
-  return -1;
+  return 0;
 }
 
 int sqlite3_bind_int64(sqlite3_stmt *stmt, int idx, sqlite3_int64 val) {
   // return sqlite3_internal_bind_value(stmt, idx, Value::BIGINT(val));
-  return -1;
+  return 0;
 }
 
 int sqlite3_bind_double(sqlite3_stmt *stmt, int idx, double val) {
   // return sqlite3_internal_bind_value(stmt, idx, Value::DOUBLE(val));
-  return -1;
+  return 0;
 }
 
 int sqlite3_bind_null(sqlite3_stmt *stmt, int idx) { return Sqlite3InternalBindValue(stmt, idx, bustub::Value()); }

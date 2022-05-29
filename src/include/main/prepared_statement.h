@@ -11,23 +11,24 @@
 #include <string>
 #include "common/constants.h"
 #include "main/query_result.h"
+#include "parser/sql_statement.h"
 #include "type/statement_type.h"
 #include "type/type.h"
 #include "type/value.h"
 
+#include <unordered_map>
 #include <vector>
 
 namespace bustub {
 class ClientContext;
-class PreparedStatementData;
 using std::vector;
 
 //! A prepared statement
 class PreparedStatement {
  public:
   //! Create a successfully prepared prepared statement object with the given name
-  PreparedStatement(shared_ptr<ClientContext> context, shared_ptr<PreparedStatementData> data, string query,
-                    int64_t n_param);
+  explicit PreparedStatement(shared_ptr<ClientContext> context, string query);
+
   //! Create a prepared statement that was not successfully prepared
   explicit PreparedStatement(string error);
 
@@ -36,9 +37,6 @@ class PreparedStatement {
  public:
   //! The client context this prepared statement belongs to
   shared_ptr<ClientContext> context_;
-
-  //! The prepared statement data
-  shared_ptr<PreparedStatementData> data_;
 
   //! The query that is being prepared
   string query_;
@@ -49,8 +47,25 @@ class PreparedStatement {
   //! The error message (if success = false)
   string error_;
 
-  //! The amount of bound parameters
-  int64_t n_param_;
+  StatementType statement_type_;
+
+  //! The unbound SQL statement that was prepared
+  unique_ptr<SQLStatement> unbound_statement_;
+
+  // //! The fully prepared physical plan of the prepared statement
+  // unique_ptr<PhysicalOperator> plan_;
+
+  //! The map of parameter index to the actual value entry
+  std::unordered_map<int64_t, vector<unique_ptr<Value>>> value_map_;
+
+  //! The result names of the transaction
+  vector<string> names_;
+
+  //! The result types of the transaction
+  vector<Type> types_;
+
+  //! The statement properties
+  StatementProperties properties_;
 
  public:
   //! Returns the number of columns in the result

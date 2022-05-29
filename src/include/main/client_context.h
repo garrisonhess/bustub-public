@@ -22,7 +22,6 @@
 namespace bustub {
 class Catalog;
 class BusTub;
-class PreparedStatementData;
 
 //! The ClientContext holds information relevant to the current client session
 //! during execution
@@ -52,10 +51,10 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
 
  private:
   //! Internally prepare a SQL statement. Caller must hold the context_lock.
-  unique_ptr<PreparedStatementData> CreatePreparedStatement(const string &query, unique_ptr<SQLStatement> statement);
+  unique_ptr<PreparedStatement> CreatePreparedStatement(const string &query, unique_ptr<SQLStatement> statement);
 
   //! Internally execute a prepared SQL statement. Caller must hold the context_lock.
-  unique_ptr<QueryResult> ExecutePreparedStatement(const string &query, PreparedStatementData &statement);
+  unique_ptr<QueryResult> ExecutePreparedStatement(const string &query, PreparedStatement &statement);
 
   unique_ptr<PreparedStatement> PrepareInternal(unique_ptr<SQLStatement> statement);
 

@@ -9,7 +9,6 @@ add_library(bustub_main
             connection_manager.cpp
             connection.cpp
             database.cpp
-            prepared_statement_data.cpp
             prepared_statement.cpp
             query_result.cpp)
 

@@ -5,7 +5,6 @@
 #include "common/exception.h"
 #include "execution/execution_engine.h"
 #include "main/database.h"
-#include "main/prepared_statement_data.h"
 #include "main/query_result.h"
 #include "parser/parser.h"
 #include "type/statement_type.h"
@@ -23,24 +22,24 @@ ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) {
   // transaction_ = TODO;
 }
 
-unique_ptr<PreparedStatementData> ClientContext::CreatePreparedStatement(const string &query,
-                                                                         unique_ptr<SQLStatement> statement) {
-  StatementType statement_type = statement->type_;
-  auto result = make_unique<PreparedStatementData>(statement_type);
+unique_ptr<PreparedStatement> ClientContext::CreatePreparedStatement(const string &query,
+                                                                     unique_ptr<SQLStatement> statement) {
+  unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(), query);
+  result->names_ = {"column1"};
+  result->types_ = {Type(TypeId::INTEGER)};
 
   // Planner planner(*this);
   // planner.CreatePlan(move(statement));
   // assert(planner.plan);
   // auto plan = move(planner.plan);
-  result->names_ = {"column1"};
-  result->types_ = {Type(TypeId::INTEGER)};
+
   // result->value_map_ = move(planner.value_map);
   // result->plan_ = move(physical_plan);
 
   return result;
 }
 
-unique_ptr<QueryResult> ClientContext::ExecutePreparedStatement(const string &query, PreparedStatementData &statement) {
+unique_ptr<QueryResult> ClientContext::ExecutePreparedStatement(const string &query, PreparedStatement &statement) {
   auto result = make_unique<QueryResult>(statement.statement_type_, statement.types_, statement.names_);
 
   while (true) {
@@ -65,7 +64,6 @@ unique_ptr<QueryResult> ClientContext::ExecutePreparedStatement(const string &qu
 }
 
 unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLStatement> statement) {
-  auto n_param = statement->n_param_;
   static int prepare_count = 0;
   // now write the prepared statement data into the catalog
   string prepare_name = "____bustub_internal_prepare_" + std::to_string(prepare_count);
@@ -73,7 +71,6 @@ unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLState
 
   auto statement_query = statement->query_;
   auto unbound_statement = statement->Copy();
-
   // auto prepared = CreatePreparedStatement(query, move(statement));
   // auto result = ExecutePreparedStatement(query, *prepared);
 
@@ -83,19 +80,15 @@ unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLState
   // }
 
   LOG_DEBUG("about to copy unbound statement");
-  shared_ptr<PreparedStatementData> prepared_data = make_shared<PreparedStatementData>(StatementType::SELECT_STATEMENT);
-  prepared_data->unbound_statement_ = move(unbound_statement);
-
-  prepared_data->types_ = {Type(TypeId::INTEGER)};
-  prepared_data->names_ = {"column1"};
+  unique_ptr<PreparedStatement> result = make_unique<PreparedStatement>(shared_from_this(), statement->query_);
+  result->unbound_statement_ = move(unbound_statement);
+  result->statement_type_ = StatementType::SELECT_STATEMENT;
+  result->types_ = {Type(TypeId::INTEGER)};
+  result->names_ = {"column1"};
   LOG_INFO("stmt query: %s", statement_query.c_str());
 
-  auto t1 = shared_from_this();
-
-  auto result_stmt = make_unique<PreparedStatement>(t1, move(prepared_data), move(statement_query), n_param);
-
   //! Create a successfully prepared prepared statement object with the given name
-  return result_stmt;
+  return result;
 }
 
 unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
