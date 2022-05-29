@@ -5,10 +5,10 @@
 #include <random>
 #include <thread>  // NOLINT
 
-#include "main/config.h"
 #include "concurrency/lock_manager.h"
 #include "concurrency/transaction_manager.h"
 #include "gtest/gtest.h"
+#include "main/config.h"
 
 namespace bustub {
 

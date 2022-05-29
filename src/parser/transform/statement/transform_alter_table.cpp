@@ -27,7 +27,8 @@
 // 				for (auto constr = cdef->constraints->head; constr != nullptr; constr = constr->next) {
 // 					auto constraint = TransformConstraint(constr, centry, 0);
 // 					if (constraint) {
-// 						throw ParserException("Adding columns with constraints not yet supported");
+// 						throw ParserException("Adding columns with constraints not yet
+// supported");
 // 					}
 // 				}
 // 			}
@@ -35,8 +36,8 @@
 // 			break;
 // 		}
 // 		case bustub_libpgquery::PG_AT_DropColumn: {
-// 			result->info = make_unique<RemoveColumnInfo>(qname.schema, qname.name, command->name, command->missing_ok);
-// 			break;
+// 			result->info = make_unique<RemoveColumnInfo>(qname.schema, qname.name, command->name,
+// command->missing_ok); 			break;
 // 		}
 // 		case bustub_libpgquery::PG_AT_ColumnDefault: {
 // 			auto expr = TransformExpression(command->def);

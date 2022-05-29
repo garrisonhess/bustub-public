@@ -18,7 +18,6 @@
 #include <utility>
 #include <vector>
 
-#include "main/database.h"
 #include "buffer/buffer_pool_manager_instance.h"
 #include "catalog/table_generator.h"
 #include "concurrency/transaction.h"
@@ -34,6 +33,7 @@
 #include "execution/plans/nested_index_join_plan.h"
 #include "execution/plans/seq_scan_plan.h"
 #include "gtest/gtest.h"
+#include "main/database.h"
 #include "test_util.h"  // NOLINT
 #include "type/value_factory.h"
 
@@ -168,7 +168,8 @@ TEST_F(TransactionTest, DISABLED_SimpleInsertRollbackTest) {
   // // txn1: abort
   // // txn2: SELECT * FROM empty_table2;
   // auto txn1 = GetTxnManager()->Begin();
-  // auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
+  // auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(),
+  // GetLockManager());
   // // Create Values to insert
   // std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
   // std::vector<Value> val2{ValueFactory::GetIntegerValue(201), ValueFactory::GetIntegerValue(21)};
@@ -184,9 +185,8 @@ TEST_F(TransactionTest, DISABLED_SimpleInsertRollbackTest) {
 
   // // Iterate through table make sure that values were not inserted.
   // auto txn2 = GetTxnManager()->Begin();
-  // auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
-  // auto &schema = table_info->schema_;
-  // auto col_a = MakeColumnValueExpression(schema, 0, "colA");
+  // auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(),
+  // GetLockManager()); auto &schema = table_info->schema_; auto col_a = MakeColumnValueExpression(schema, 0, "colA");
   // auto col_b = MakeColumnValueExpression(schema, 0, "colB");
   // auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   // SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
@@ -208,7 +208,8 @@ TEST_F(TransactionTest, DISABLED_DirtyReadsTest) {
   // // txn2: SELECT * FROM empty_table2;
   // // txn1: abort
   // auto txn1 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
-  // auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
+  // auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(),
+  // GetLockManager());
   // // Create Values to insert
   // std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
   // std::vector<Value> val2{ValueFactory::GetIntegerValue(201), ValueFactory::GetIntegerValue(21)};
@@ -222,9 +223,8 @@ TEST_F(TransactionTest, DISABLED_DirtyReadsTest) {
 
   // // Iterate through table to read the tuples.
   // auto txn2 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
-  // auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(), GetLockManager());
-  // auto &schema = table_info->schema_;
-  // auto col_a = MakeColumnValueExpression(schema, 0, "colA");
+  // auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(),
+  // GetLockManager()); auto &schema = table_info->schema_; auto col_a = MakeColumnValueExpression(schema, 0, "colA");
   // auto col_b = MakeColumnValueExpression(schema, 0, "colB");
   // auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   // SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};

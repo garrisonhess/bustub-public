@@ -100,8 +100,8 @@
 // 	if (name->length == 2) {
 // 		// schema + name
 // 		schema = reinterpret_cast<bustub_libpgquery::PGValue *>(name->head->data.ptr_value)->val.str;
-// 		function_name = reinterpret_cast<bustub_libpgquery::PGValue *>(name->head->next->data.ptr_value)->val.str;
-// 	} else {
+// 		function_name = reinterpret_cast<bustub_libpgquery::PGValue
+// *>(name->head->next->data.ptr_value)->val.str; 	} else {
 // 		// unqualified name
 // 		schema = INVALID_SCHEMA;
 // 		function_name = reinterpret_cast<bustub_libpgquery::PGValue *>(name->head->data.ptr_value)->val.str;
@@ -149,26 +149,28 @@
 // 				if (!function_list.empty()) {
 // 					expr->children.push_back(move(function_list[0]));
 // 				}
-// 				if (win_fun_type == ExpressionType::WINDOW_LEAD || win_fun_type == ExpressionType::WINDOW_LAG) {
-// 					if (function_list.size() > 1) {
-// 						expr->offset_expr = move(function_list[1]);
+// 				if (win_fun_type == ExpressionType::WINDOW_LEAD || win_fun_type == ExpressionType::WINDOW_LAG)
+// { 					if (function_list.size() > 1) { 						expr->offset_expr = move(function_list[1]);
 // 					}
 // 					if (function_list.size() > 2) {
 // 						expr->default_expr = move(function_list[2]);
 // 					}
 // 					if (function_list.size() > 3) {
-// 						throw ParserException("Incorrect number of parameters for function %s", lowercase_name);
+// 						throw ParserException("Incorrect number of parameters for function %s",
+// lowercase_name);
 // 					}
 // 				} else if (win_fun_type == ExpressionType::WINDOW_NTH_VALUE) {
 // 					if (function_list.size() > 1) {
 // 						expr->children.push_back(move(function_list[1]));
 // 					}
 // 					if (function_list.size() > 2) {
-// 						throw ParserException("Incorrect number of parameters for function %s", lowercase_name);
+// 						throw ParserException("Incorrect number of parameters for function %s",
+// lowercase_name);
 // 					}
 // 				} else {
 // 					if (function_list.size() > 1) {
-// 						throw ParserException("Incorrect number of parameters for function %s", lowercase_name);
+// 						throw ParserException("Incorrect number of parameters for function %s",
+// lowercase_name);
 // 					}
 // 				}
 // 			}
@@ -277,9 +279,9 @@
 // 		return move(coalesce_op);
 // 	}
 
-// 	auto function = make_unique<FunctionExpression>(schema, lowercase_name.c_str(), move(children), move(filter_expr),
-// 	                                                move(order_bys), root->agg_distinct, false, root->export_state);
-// 	function->query_location = root->location;
+// 	auto function = make_unique<FunctionExpression>(schema, lowercase_name.c_str(), move(children),
+// move(filter_expr), 	                                                move(order_bys), root->agg_distinct, false, root->export_state); 	function->query_location =
+// root->location;
 
 // 	return move(function);
 // }

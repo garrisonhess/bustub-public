@@ -67,7 +67,8 @@ std::string UsageMessage() {
 //   page_id_t page_id;
 //   auto header_page = bpm.NewPage(&page_id);
 //   // create b+ tree
-//   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator, leaf_max_size, internal_max_size);
+//   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm, comparator, leaf_max_size,
+//   internal_max_size);
 //   // create transaction
 //   Transaction *transaction = new Transaction(0);
 //   while (!quit) {
@@ -119,6 +120,5 @@ std::string UsageMessage() {
 //   remove("test.db");
 //   remove("test.log");
 // }
-
 
 }  // namespace bustub

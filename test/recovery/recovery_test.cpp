@@ -13,13 +13,13 @@
 #include <string>
 #include <vector>
 
-#include "main/database.h"
-#include "main/config.h"
 #include "concurrency/lock_manager.h"
 #include "concurrency/transaction_manager.h"
-#include "recovery/log_manager.h"
 #include "gtest/gtest.h"
 #include "logging/common.h"
+#include "main/config.h"
+#include "main/database.h"
+#include "recovery/log_manager.h"
 #include "recovery/log_recovery.h"
 #include "storage/table/table_heap.h"
 #include "storage/table/table_iterator.h"

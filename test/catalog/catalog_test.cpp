@@ -573,7 +573,8 @@ using BigintHashFunctionType = HashFunction<BigintKeyType>;
 //   auto *index = index_info->index_.get();
 
 //   // We should now be able to interect with the index
-//   Tuple tuple{std::vector<Value>{ValueFactory::GetBigIntValue(100), ValueFactory::GetIntegerValue(101)}, &table_schema};
+//   Tuple tuple{std::vector<Value>{ValueFactory::GetBigIntValue(100), ValueFactory::GetIntegerValue(101)},
+//   &table_schema};
 
 //   // Insert an entry
 //   RID rid{};

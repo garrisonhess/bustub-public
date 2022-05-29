@@ -12,8 +12,8 @@
 
 #include <cassert>
 
-#include "storage/table/table_heap.h"
 #include "buffer/buffer_pool_manager_instance.h"
+#include "storage/table/table_heap.h"
 
 namespace bustub {
 

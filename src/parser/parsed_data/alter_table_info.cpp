@@ -51,7 +51,8 @@
 // }
 
 // unique_ptr<AlterInfo> ChangeOwnershipInfo::Copy() const {
-// 	return make_unique_base<AlterInfo, ChangeOwnershipInfo>(entry_catalog_type, schema, name, owner_schema, owner_name);
+// 	return make_unique_base<AlterInfo, ChangeOwnershipInfo>(entry_catalog_type, schema, name, owner_schema,
+// owner_name);
 // }
 
 // void ChangeOwnershipInfo::Serialize(FieldWriter &writer) const {
@@ -202,7 +203,8 @@
 // //===--------------------------------------------------------------------===//
 // ChangeColumnTypeInfo::ChangeColumnTypeInfo(string schema_p, string table_p, string column_name, Type target_type,
 //                                            unique_ptr<ParsedExpression> expression)
-//     : AlterTableInfo(AlterTableType::ALTER_COLUMN_TYPE, move(schema_p), move(table_p)), column_name(move(column_name)),
+//     : AlterTableInfo(AlterTableType::ALTER_COLUMN_TYPE, move(schema_p), move(table_p)),
+//     column_name(move(column_name)),
 //       target_type(move(target_type)), expression(move(expression)) {
 // }
 // ChangeColumnTypeInfo::~ChangeColumnTypeInfo() {
@@ -258,9 +260,10 @@
 // // AlterForeignKeyInfo
 // //===--------------------------------------------------------------------===//
 // AlterForeignKeyInfo::AlterForeignKeyInfo(string schema_p, string table_p, string fk_table, vector<string> pk_columns,
-//                                          vector<string> fk_columns, vector<uint64_t> pk_keys, vector<uint64_t> fk_keys,
-//                                          AlterForeignKeyType type_p)
-//     : AlterTableInfo(AlterTableType::FOREIGN_KEY_CONSTRAINT, move(schema_p), move(table_p)), fk_table(move(fk_table)),
+//                                          vector<string> fk_columns, vector<uint64_t> pk_keys, vector<uint64_t>
+//                                          fk_keys, AlterForeignKeyType type_p)
+//     : AlterTableInfo(AlterTableType::FOREIGN_KEY_CONSTRAINT, move(schema_p), move(table_p)),
+//     fk_table(move(fk_table)),
 //       pk_columns(move(pk_columns)), fk_columns(move(fk_columns)), pk_keys(move(pk_keys)), fk_keys(move(fk_keys)),
 //       type(type_p) {
 // }

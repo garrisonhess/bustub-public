@@ -23,7 +23,7 @@
 #include "storage/table/tuple.h"
 
 namespace bustub {
-  
+
 // // NOLINTNEXTLINE
 // TEST(TupleTest, DISABLED_TableHeapTest) {
 //   // test1: parse create sql statement

@@ -257,8 +257,8 @@ using HashFunctionType = HashFunction<KeyType>;
 //     rids.clear();
 
 //     // Scan the index
-//     const auto index_key = table_tuple.KeyFromTuple(schema, index_info->key_schema_, index_info->index_->GetKeyAttrs());
-//     index_info->index_->ScanKey(index_key, &rids, GetTxn());
+//     const auto index_key = table_tuple.KeyFromTuple(schema, index_info->key_schema_,
+//     index_info->index_->GetKeyAttrs()); index_info->index_->ScanKey(index_key, &rids, GetTxn());
 
 //     Tuple indexed_tuple{};
 //     ASSERT_TRUE(table_info->table_->GetTuple(rids[0], &indexed_tuple, GetTxn()));
@@ -324,7 +324,8 @@ using HashFunctionType = HashFunction<KeyType>;
 //   for (auto i = 0UL; i < result_set.size(); ++i) {
 //     auto &tuple = result_set[i];
 //     ASSERT_EQ(tuple.GetValue(out_schema, out_schema->GetColIdx("colA")).GetAs<int32_t>(), static_cast<int32_t>(i));
-//     ASSERT_EQ(tuple.GetValue(out_schema, out_schema->GetColIdx("colB")).GetAs<int32_t>(), static_cast<int32_t>(i + 1));
+//     ASSERT_EQ(tuple.GetValue(out_schema, out_schema->GetColIdx("colB")).GetAs<int32_t>(), static_cast<int32_t>(i +
+//     1));
 //   }
 // }
 
@@ -343,8 +344,8 @@ using HashFunctionType = HashFunction<KeyType>;
 //   auto key_schema = ParseCreateStatement("a bigint");
 //   ComparatorType comparator{key_schema.get()};
 //   auto *index_info = GetExecutorContext()->GetCatalog()->CreateIndex<KeyType, ValueType, ComparatorType>(
-//       GetTxn(), "index1", "test_1", GetExecutorContext()->GetCatalog()->GetTable("test_1")->schema_, *key_schema, {0},
-//       8, HashFunctionType{});
+//       GetTxn(), "index1", "test_1", GetExecutorContext()->GetCatalog()->GetTable("test_1")->schema_, *key_schema,
+//       {0}, 8, HashFunctionType{});
 
 //   std::vector<Tuple> result_set;
 //   GetExecutionEngine()->Execute(scan_plan1.get(), &result_set, GetTxn(), GetExecutorContext());

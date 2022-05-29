@@ -36,7 +36,7 @@ void DatabaseInstance::Initialize(const char *path, DBConfig *config) {
 
   LOG_INFO("buffer_pool_manager_");
   buffer_pool_manager_ = make_unique<BufferPoolManagerInstance>(*this, config->buffer_pool_frames_);
-  
+
   LOG_INFO("checkpoint_manager_");
   checkpoint_manager_ = make_unique<CheckpointManager>(*this);
 

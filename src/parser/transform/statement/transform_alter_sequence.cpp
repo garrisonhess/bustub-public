@@ -48,13 +48,12 @@
 // 				owner_schema = DEFAULT_SCHEMA;
 // 				owner_name = opt_values[0];
 // 			} else {
-// 				throw InternalException("Wrong argument for %s. Expected either <schema>.<name> or <name>", opt_name);
+// 				throw InternalException("Wrong argument for %s. Expected either <schema>.<name> or <name>",
+// opt_name);
 // 			}
-// 			auto info = make_unique<ChangeOwnershipInfo>(CatalogType::SEQUENCE_ENTRY, sequence_schema, sequence_name,
-// 			                                             owner_schema, owner_name);
-// 			result->info = move(info);
-// 		} else {
-// 			throw NotImplementedException("ALTER SEQUENCE option not supported yet!");
+// 			auto info = make_unique<ChangeOwnershipInfo>(CatalogType::SEQUENCE_ENTRY, sequence_schema,
+// sequence_name, 			                                             owner_schema, owner_name); 			result->info = move(info); 		} else { 			throw NotImplementedException("ALTER
+// SEQUENCE option not supported yet!");
 // 		}
 // 	}
 // 	return result;

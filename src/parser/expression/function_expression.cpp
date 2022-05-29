@@ -80,11 +80,9 @@
 // 		order_copy.reset(static_cast<OrderModifier *>(order_bys->Copy().release()));
 // 	}
 
-// 	auto copy = make_unique<FunctionExpression>(function_name, move(copy_children), move(filter_copy), move(order_copy),
-// 	                                            distinct, is_operator, export_state);
-// 	copy->schema = schema;
-// 	copy->CopyProperties(*this);
-// 	return move(copy);
+// 	auto copy = make_unique<FunctionExpression>(function_name, move(copy_children), move(filter_copy),
+// move(order_copy), 	                                            distinct, is_operator, export_state); 	copy->schema = schema; 	copy->CopyProperties(*this); 	return
+// move(copy);
 // }
 
 // void FunctionExpression::Serialize(FieldWriter &writer) const {
@@ -103,16 +101,13 @@
 // 	auto schema = reader.ReadRequired<string>();
 // 	auto children = reader.ReadRequiredSerializableList<ParsedExpression>();
 // 	auto filter = reader.ReadOptional<ParsedExpression>(nullptr);
-// 	auto order_bys = unique_ptr_cast<ResultModifier, OrderModifier>(reader.ReadRequiredSerializable<ResultModifier>());
-// 	auto distinct = reader.ReadRequired<bool>();
-// 	auto is_operator = reader.ReadRequired<bool>();
-// 	auto export_state = reader.ReadField<bool>(false);
+// 	auto order_bys = unique_ptr_cast<ResultModifier,
+// OrderModifier>(reader.ReadRequiredSerializable<ResultModifier>()); 	auto distinct = reader.ReadRequired<bool>(); 	auto
+// is_operator = reader.ReadRequired<bool>(); 	auto export_state = reader.ReadField<bool>(false);
 
 // 	unique_ptr<FunctionExpression> function;
-// 	function = make_unique<FunctionExpression>(function_name, move(children), move(filter), move(order_bys), distinct,
-// 	                                           is_operator, export_state);
-// 	function->schema = schema;
-// 	return move(function);
+// 	function = make_unique<FunctionExpression>(function_name, move(children), move(filter), move(order_bys),
+// distinct, 	                                           is_operator, export_state); 	function->schema = schema; 	return move(function);
 // }
 
 // void FunctionExpression::Verify() const {

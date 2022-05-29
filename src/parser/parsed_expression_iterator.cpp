@@ -10,7 +10,8 @@
 // namespace bustub {
 
 // void ParsedExpressionIterator::EnumerateChildren(const ParsedExpression &expression,
-//                                                  const std::function<void(const ParsedExpression &child)> &callback) {
+//                                                  const std::function<void(const ParsedExpression &child)> &callback)
+//                                                  {
 // 	EnumerateChildren((ParsedExpression &)expression, [&](unique_ptr<ParsedExpression> &child) {
 // 		D_ASSERT(child);
 // 		callback(*child);

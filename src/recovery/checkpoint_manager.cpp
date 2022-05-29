@@ -16,7 +16,6 @@ namespace bustub {
 
 CheckpointManager::CheckpointManager(DatabaseInstance &db) : db_(db) {}
 
-
 void CheckpointManager::BeginCheckpoint() {
   // Block all the transactions and ensure that both the WAL and all dirty buffer pool pages are persisted to disk,
   // creating a consistent checkpoint. Do NOT allow transactions to resume at the end of this method, resume them

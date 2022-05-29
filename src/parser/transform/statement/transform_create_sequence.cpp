@@ -70,7 +70,8 @@
 // 	info->temporary = !stmt->sequence->relpersistence;
 // 	info->on_conflict = TransformOnConflict(stmt->onconflict);
 // 	if (info->max_value <= info->min_value) {
-// 		throw ParserException("MINVALUE (%lld) must be less than MAXVALUE (%lld)", info->min_value, info->max_value);
+// 		throw ParserException("MINVALUE (%lld) must be less than MAXVALUE (%lld)", info->min_value,
+// info->max_value);
 // 	}
 // 	if (info->start_value < info->min_value) {
 // 		throw ParserException("START value (%lld) cannot be less than MINVALUE (%lld)", info->start_value,

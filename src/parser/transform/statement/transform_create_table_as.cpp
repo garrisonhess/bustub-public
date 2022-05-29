@@ -1,5 +1,5 @@
-#include "parser/statement/create_statement.h"
 #include "parser/parsed_data/create_table_info.h"
+#include "parser/statement/create_statement.h"
 #include "parser/transformer.h"
 
 namespace bustub {
@@ -31,4 +31,4 @@ namespace bustub {
 // 	return result;
 // }
 
-} // namespace bustub
+}  // namespace bustub

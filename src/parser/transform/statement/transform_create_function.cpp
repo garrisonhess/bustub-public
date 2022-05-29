@@ -57,14 +57,15 @@
 // 				if (param->alias.empty()) {
 // 					throw ParserException("Invalid parameter: '%s'", param->ToString());
 // 				}
-// 				if (macro_func->default_parameters.find(param->alias) != macro_func->default_parameters.end()) {
-// 					throw ParserException("Duplicate default parameter: '%s'", param->alias);
+// 				if (macro_func->default_parameters.find(param->alias) != macro_func->default_parameters.end())
+// { 					throw ParserException("Duplicate default parameter: '%s'", param->alias);
 // 				}
 // 				macro_func->default_parameters[param->alias] = move(param);
 // 			} else if (param->GetExpressionClass() == ExpressionClass::COLUMN_REF) {
 // 				// positional parameters
 // 				if (!macro_func->default_parameters.empty()) {
-// 					throw ParserException("Positional parameters cannot come after parameters with a default value!");
+// 					throw ParserException("Positional parameters cannot come after parameters with a default
+// value!");
 // 				}
 // 				macro_func->parameters.push_back(move(param));
 // 			} else {

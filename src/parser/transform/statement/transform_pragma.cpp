@@ -45,12 +45,14 @@
 // 	switch (stmt->kind) {
 // 	case bustub_libpgquery::PG_PRAGMA_TYPE_NOTHING: {
 // 		if (!info.parameters.empty() || !info.named_parameters.empty()) {
-// 			throw InternalException("PRAGMA statement that is not a call or assignment cannot contain parameters");
+// 			throw InternalException("PRAGMA statement that is not a call or assignment cannot contain
+// parameters");
 // 		}
 // 		break;
 // 	case bustub_libpgquery::PG_PRAGMA_TYPE_ASSIGNMENT:
 // 		if (info.parameters.size() != 1) {
-// 			throw InternalException("PRAGMA statement with assignment should contain exactly one parameter");
+// 			throw InternalException("PRAGMA statement with assignment should contain exactly one
+// parameter");
 // 		}
 // 		if (!info.named_parameters.empty()) {
 // 			throw InternalException("PRAGMA statement with assignment cannot have named parameters");

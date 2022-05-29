@@ -40,7 +40,8 @@
 // 	vector<uint64_t> render_widths;
 // 	vector<uint64_t> positions;
 // 	if (Utf8Proc::IsValid(buf, len)) {
-// 		// for unicode awareness, we traverse the graphemes of the current line and keep track of their render widths
+// 		// for unicode awareness, we traverse the graphemes of the current line and keep track of their render
+// widths
 // 		// and of their position in the string
 // 		for (uint64_t cpos = 0; cpos < len;) {
 // 			auto char_render_width = Utf8Proc::RenderWidth(buf, len, cpos);

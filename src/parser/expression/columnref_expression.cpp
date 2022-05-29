@@ -12,7 +12,8 @@
 //                                              : vector<string> {move(table_name), move(column_name)}) {
 // }
 
-// ColumnRefExpression::ColumnRefExpression(string column_name) : ColumnRefExpression(vector<string> {move(column_name)}) {
+// ColumnRefExpression::ColumnRefExpression(string column_name) : ColumnRefExpression(vector<string>
+// {move(column_name)}) {
 // }
 
 // ColumnRefExpression::ColumnRefExpression(vector<string> column_names_p)

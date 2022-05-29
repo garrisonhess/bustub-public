@@ -24,7 +24,8 @@
 // 	case ExpressionType::WINDOW_NTILE:
 // 		break;
 // 	default:
-// 		throw NotImplementedException("Window aggregate type %s not supported", ExpressionTypeToString(type).c_str());
+// 		throw NotImplementedException("Window aggregate type %s not supported",
+// ExpressionTypeToString(type).c_str());
 // 	}
 // }
 

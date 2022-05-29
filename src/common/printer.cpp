@@ -4,13 +4,12 @@
 
 #include <cstdio>
 
-
 namespace bustub {
-	using std::string;
+using std::string;
 
 void Printer::Print(const string &str) {
 #ifndef BUSTUB_DISABLE_PRINT
-	fprintf(stderr, "%s\n", str.c_str());
+  fprintf(stderr, "%s\n", str.c_str());
 #endif
 }
 
@@ -31,5 +30,4 @@ void Printer::Print(const string &str) {
 // #endif
 // }
 
-
-} // namespace bustub
+}  // namespace bustub

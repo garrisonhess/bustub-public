@@ -28,8 +28,9 @@
 // 			subquery_expr->comparison_type = ExpressionType::COMPARE_EQUAL;
 // 		} else {
 // 			auto operator_name =
-// 			    string((reinterpret_cast<bustub_libpgquery::PGValue *>(root->operName->head->data.ptr_value))->val.str);
-// 			subquery_expr->comparison_type = OperatorToExpressionType(operator_name);
+// 			    string((reinterpret_cast<bustub_libpgquery::PGValue
+// *>(root->operName->head->data.ptr_value))->val.str); 			subquery_expr->comparison_type =
+// OperatorToExpressionType(operator_name);
 // 		}
 // 		D_ASSERT(subquery_expr->comparison_type == ExpressionType::COMPARE_EQUAL ||
 // 		         subquery_expr->comparison_type == ExpressionType::COMPARE_NOTEQUAL ||

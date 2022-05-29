@@ -80,7 +80,8 @@
 // 		D_ASSERT(result->right);
 
 // 		if (stmt->op != bustub_libpgquery::PG_SETOP_UNION) {
-// 			throw ParserException("Unsupported setop type for recursive CTE: only UNION or UNION ALL are supported");
+// 			throw ParserException("Unsupported setop type for recursive CTE: only UNION or UNION ALL are
+// supported");
 // 		}
 // 		break;
 // 	}

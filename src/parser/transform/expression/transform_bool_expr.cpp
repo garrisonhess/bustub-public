@@ -14,7 +14,8 @@
 // 			if (!result) {
 // 				result = move(next);
 // 			} else {
-// 				result = make_unique<ConjunctionExpression>(ExpressionType::CONJUNCTION_AND, move(result), move(next));
+// 				result = make_unique<ConjunctionExpression>(ExpressionType::CONJUNCTION_AND, move(result),
+// move(next));
 // 			}
 // 			break;
 // 		}
@@ -22,7 +23,8 @@
 // 			if (!result) {
 // 				result = move(next);
 // 			} else {
-// 				result = make_unique<ConjunctionExpression>(ExpressionType::CONJUNCTION_OR, move(result), move(next));
+// 				result = make_unique<ConjunctionExpression>(ExpressionType::CONJUNCTION_OR, move(result),
+// move(next));
 // 			}
 // 			break;
 // 		}

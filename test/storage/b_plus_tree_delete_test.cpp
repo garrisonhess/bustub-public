@@ -176,5 +176,4 @@ TEST(BPlusTreeTests, DISABLED_DeleteTest2) {
   // remove("test.log");
 }
 
-
 }  // namespace bustub

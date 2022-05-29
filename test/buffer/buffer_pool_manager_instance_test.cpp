@@ -14,9 +14,9 @@
 #include <cstdio>
 #include <random>
 #include <string>
-#include "storage/disk/disk_manager.h"
 #include "buffer/buffer_pool_manager.h"
 #include "gtest/gtest.h"
+#include "storage/disk/disk_manager.h"
 
 namespace bustub {
 
@@ -26,7 +26,7 @@ TEST(BufferPoolManagerInstanceTest, DISABLED_BinaryDataTest) {
   std::random_device r;
   std::default_random_engine rng(r());
   std::uniform_int_distribution<char> uniform_dist(0);
-  
+
   const std::string db_name = "test.db";
   DBConfig config;
   config.buffer_pool_frames_ = 10;

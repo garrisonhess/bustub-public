@@ -60,7 +60,7 @@ bool StarExpression::Equals(const StarExpression *a, const StarExpression *b) {
 }
 
 void StarExpression::Serialize(FieldWriter &writer) const {
-//   auto &serializer = writer.GetSerializer();
+  //   auto &serializer = writer.GetSerializer();
 
   writer.WriteString(relation_name_);
 

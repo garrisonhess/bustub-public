@@ -42,7 +42,8 @@
 // 		throw ParserException("SET needs a single scalar value parameter");
 // 	}
 // 	D_ASSERT(stmt->args->head && stmt->args->head->data.ptr_value);
-// 	D_ASSERT(((bustub_libpgquery::PGNode *)stmt->args->head->data.ptr_value)->type == bustub_libpgquery::T_PGAConst);
+// 	D_ASSERT(((bustub_libpgquery::PGNode *)stmt->args->head->data.ptr_value)->type ==
+// bustub_libpgquery::T_PGAConst);
 
 // 	auto value = TransformValue(((bustub_libpgquery::PGAConst *)stmt->args->head->data.ptr_value)->val)->value;
 

@@ -31,8 +31,8 @@
 // 	return ExpressionType::INVALID;
 // }
 
-// unique_ptr<ParsedExpression> Transformer::TransformUnaryOperator(const string &op, unique_ptr<ParsedExpression> child) {
-// 	const auto schema = DEFAULT_SCHEMA;
+// unique_ptr<ParsedExpression> Transformer::TransformUnaryOperator(const string &op, unique_ptr<ParsedExpression>
+// child) { 	const auto schema = DEFAULT_SCHEMA;
 
 // 	vector<unique_ptr<ParsedExpression>> children;
 // 	children.push_back(move(child));
@@ -43,7 +43,8 @@
 // 	return move(result);
 // }
 
-// unique_ptr<ParsedExpression> Transformer::TransformBinaryOperator(const string &op, unique_ptr<ParsedExpression> left,
+// unique_ptr<ParsedExpression> Transformer::TransformBinaryOperator(const string &op, unique_ptr<ParsedExpression>
+// left,
 //                                                                   unique_ptr<ParsedExpression> right) {
 // 	const auto schema = DEFAULT_SCHEMA;
 
@@ -138,20 +139,19 @@
 // 	case bustub_libpgquery::PG_AEXPR_BETWEEN:
 // 	case bustub_libpgquery::PG_AEXPR_NOT_BETWEEN: {
 // 		auto between_args = reinterpret_cast<bustub_libpgquery::PGList *>(root->rexpr);
-// 		if (between_args->length != 2 || !between_args->head->data.ptr_value || !between_args->tail->data.ptr_value) {
-// 			throw InternalException("(NOT) BETWEEN needs two args");
+// 		if (between_args->length != 2 || !between_args->head->data.ptr_value ||
+// !between_args->tail->data.ptr_value) { 			throw InternalException("(NOT) BETWEEN needs two args");
 // 		}
 
 // 		auto input = TransformExpression(root->lexpr);
 // 		auto between_left =
-// 		    TransformExpression(reinterpret_cast<bustub_libpgquery::PGNode *>(between_args->head->data.ptr_value));
-// 		auto between_right =
-// 		    TransformExpression(reinterpret_cast<bustub_libpgquery::PGNode *>(between_args->tail->data.ptr_value));
+// 		    TransformExpression(reinterpret_cast<bustub_libpgquery::PGNode
+// *>(between_args->head->data.ptr_value)); 		auto between_right =
+// 		    TransformExpression(reinterpret_cast<bustub_libpgquery::PGNode
+// *>(between_args->tail->data.ptr_value));
 
-// 		auto compare_between = make_unique<BetweenExpression>(move(input), move(between_left), move(between_right));
-// 		if (root->kind == bustub_libpgquery::PG_AEXPR_BETWEEN) {
-// 			return move(compare_between);
-// 		} else {
+// 		auto compare_between = make_unique<BetweenExpression>(move(input), move(between_left),
+// move(between_right)); 		if (root->kind == bustub_libpgquery::PG_AEXPR_BETWEEN) { 			return move(compare_between); 		} else {
 // 			return make_unique<OperatorExpression>(ExpressionType::OPERATOR_NOT, move(compare_between));
 // 		}
 // 	}

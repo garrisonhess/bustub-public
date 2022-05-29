@@ -15,8 +15,8 @@
 #include <iostream>
 
 namespace bustub {
-using bustub_libpgquery::PGSimplifiedTokenType;
 using bustub_libpgquery::PGKeywordCategory;
+using bustub_libpgquery::PGSimplifiedTokenType;
 using std::move;
 
 // Parser::Parser(ParserOptions options_p) : options(options_p) {

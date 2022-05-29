@@ -12,21 +12,17 @@
 
 #include <cassert>
 
-#include "buffer/parallel_buffer_pool_manager.h"
-#include "main/database.h"
 #include "buffer/buffer_pool_manager_instance.h"
+#include "buffer/parallel_buffer_pool_manager.h"
 #include "common/logger.h"
+#include "main/database.h"
 #include "storage/table/table_heap.h"
 
 namespace bustub {
 
-TableHeap::TableHeap(DatabaseInstance &db,
-                     page_id_t first_page_id)
-    : db_(db), first_page_id_(first_page_id) {}
+TableHeap::TableHeap(DatabaseInstance &db, page_id_t first_page_id) : db_(db), first_page_id_(first_page_id) {}
 
-TableHeap::TableHeap(DatabaseInstance &db,
-                     Transaction *txn)
-   : db_(db){
+TableHeap::TableHeap(DatabaseInstance &db, Transaction *txn) : db_(db) {
   // Initialize the first table page.
   auto first_page = reinterpret_cast<TablePage *>(db_.GetBufferPoolManager().NewPage(&first_page_id_));
   BUSTUB_ASSERT(first_page != nullptr, "Couldn't create a page for the table heap.");

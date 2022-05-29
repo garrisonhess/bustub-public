@@ -55,8 +55,9 @@
 // 			throw ParserException("Map type needs exactly two entries, key and value type");
 // 		}
 // 		child_list_t<Type> children;
-// 		auto key_type = TransformTypeName((bustub_libpgquery::PGTypeName *)type_name->typmods->head->data.ptr_value);
-// 		auto value_type = TransformTypeName((bustub_libpgquery::PGTypeName *)type_name->typmods->tail->data.ptr_value);
+// 		auto key_type = TransformTypeName((bustub_libpgquery::PGTypeName
+// *)type_name->typmods->head->data.ptr_value); 		auto value_type = TransformTypeName((bustub_libpgquery::PGTypeName
+// *)type_name->typmods->tail->data.ptr_value);
 
 // 		children.push_back({"key", Type::LIST(key_type)});
 // 		children.push_back({"value", Type::LIST(value_type)});
@@ -111,7 +112,8 @@
 // 				scale = 0;
 // 			}
 // 			if (width <= 0 || width > Decimal::MAX_WIDTH_DECIMAL) {
-// 				throw ParserException("Width must be between 1 and %d!", (int)Decimal::MAX_WIDTH_DECIMAL);
+// 				throw ParserException("Width must be between 1 and %d!",
+// (int)Decimal::MAX_WIDTH_DECIMAL);
 // 			}
 // 			if (scale > width) {
 // 				throw ParserException("Scale cannot be bigger than width");

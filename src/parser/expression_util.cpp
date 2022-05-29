@@ -41,7 +41,8 @@
 // 		// if we found it we check the count; if the count is already 0 we return false
 // 		// this happens if e.g. the left side contains "1 AND X", and the right side contains "1 AND 1"
 // 		// "1" is contained in the map, however, the right side contains the expression twice
-// 		// hence we know the children are not identical in this case because the LHS and RHS have a different count for
+// 		// hence we know the children are not identical in this case because the LHS and RHS have a different count
+// for
 // 		// the Constant(1) expression
 // 		if (entry->second == 0) {
 // 			return false;

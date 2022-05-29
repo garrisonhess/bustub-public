@@ -47,8 +47,8 @@
 // 	case bustub_libpgquery::PG_OBJECT_TYPE: {
 // 		auto view_list = (bustub_libpgquery::PGList *)stmt->objects;
 // 		auto target = (bustub_libpgquery::PGTypeName *)(view_list->head->data.ptr_value);
-// 		info.name = (reinterpret_cast<bustub_libpgquery::PGValue *>(target->names->tail->data.ptr_value)->val.str);
-// 		break;
+// 		info.name = (reinterpret_cast<bustub_libpgquery::PGValue
+// *>(target->names->tail->data.ptr_value)->val.str); 		break;
 // 	}
 // 	default: {
 // 		auto view_list = (bustub_libpgquery::PGList *)stmt->objects->head->data.ptr_value;

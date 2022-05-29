@@ -39,8 +39,8 @@
 
 // 		if (index_element->name) {
 // 			// create a column reference expression
-// 			info->expressions.push_back(make_unique<ColumnRefExpression>(index_element->name, stmt->relation->relname));
-// 		} else {
+// 			info->expressions.push_back(make_unique<ColumnRefExpression>(index_element->name,
+// stmt->relation->relname)); 		} else {
 // 			// parse the index expression
 // 			D_ASSERT(index_element->expr);
 // 			info->expressions.push_back(TransformExpression(index_element->expr));

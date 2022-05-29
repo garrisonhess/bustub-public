@@ -13,7 +13,8 @@
 // 		bool is_primary_key = constraint->contype == bustub_libpgquery::PG_CONSTR_PRIMARY;
 // 		vector<string> columns;
 // 		for (auto kc = constraint->keys->head; kc; kc = kc->next) {
-// 			columns.emplace_back(reinterpret_cast<bustub_libpgquery::PGValue *>(kc->data.ptr_value)->val.str);
+// 			columns.emplace_back(reinterpret_cast<bustub_libpgquery::PGValue
+// *>(kc->data.ptr_value)->val.str);
 // 		}
 // 		return make_unique<UniqueConstraint>(columns, is_primary_key);
 // 	}
@@ -35,18 +36,22 @@
 // 		fk_info.table = constraint->pktable->relname;
 // 		vector<string> pk_columns, fk_columns;
 // 		for (auto kc = constraint->fk_attrs->head; kc; kc = kc->next) {
-// 			fk_columns.emplace_back(reinterpret_cast<bustub_libpgquery::PGValue *>(kc->data.ptr_value)->val.str);
+// 			fk_columns.emplace_back(reinterpret_cast<bustub_libpgquery::PGValue
+// *>(kc->data.ptr_value)->val.str);
 // 		}
 // 		if (constraint->pk_attrs) {
 // 			for (auto kc = constraint->pk_attrs->head; kc; kc = kc->next) {
-// 				pk_columns.emplace_back(reinterpret_cast<bustub_libpgquery::PGValue *>(kc->data.ptr_value)->val.str);
+// 				pk_columns.emplace_back(reinterpret_cast<bustub_libpgquery::PGValue
+// *>(kc->data.ptr_value)->val.str);
 // 			}
 // 		}
 // 		if (!pk_columns.empty() && pk_columns.size() != fk_columns.size()) {
-// 			throw ParserException("The number of referencing and referenced columns for foreign keys must be the same");
+// 			throw ParserException("The number of referencing and referenced columns for foreign keys must be the
+// same");
 // 		}
 // 		if (fk_columns.empty()) {
-// 			throw ParserException("The set of referencing and referenced columns for foreign keys must be not empty");
+// 			throw ParserException("The set of referencing and referenced columns for foreign keys must be not
+// empty");
 // 		}
 // 		return make_unique<ForeignKeyConstraint>(pk_columns, fk_columns, move(fk_info));
 // 	}
@@ -55,7 +60,8 @@
 // 	}
 // }
 
-// unique_ptr<Constraint> Transformer::TransformConstraint(bustub_libpgquery::PGListCell *cell, ColumnDefinition &column,
+// unique_ptr<Constraint> Transformer::TransformConstraint(bustub_libpgquery::PGListCell *cell, ColumnDefinition
+// &column,
 //                                                         uint64_t index) {
 // 	auto constraint = reinterpret_cast<bustub_libpgquery::PGConstraint *>(cell->data.ptr_value);
 // 	D_ASSERT(constraint);
@@ -76,8 +82,8 @@
 // 	case bustub_libpgquery::PG_CONSTR_COMPRESSION:
 // 		column.compression_type = CompressionTypeFromString(constraint->compression_name);
 // 		if (column.compression_type == CompressionType::COMPRESSION_AUTO) {
-// 			throw ParserException("Unrecognized option for column compression, expected none, uncompressed, rle, "
-// 			                      "dictionary, pfor, bitpacking or fsst");
+// 			throw ParserException("Unrecognized option for column compression, expected none, uncompressed, rle,
+// " 			                      "dictionary, pfor, bitpacking or fsst");
 // 		}
 // 		return nullptr;
 // 	case bustub_libpgquery::PG_CONSTR_FOREIGN:

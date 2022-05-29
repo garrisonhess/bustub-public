@@ -14,7 +14,8 @@
 // 	} else if (lmethod == "reservoir") {
 // 		return SampleMethod::RESERVOIR_SAMPLE;
 // 	} else {
-// 		throw ParserException("Unrecognized sampling method %s, expected system, bernoulli or reservoir", method);
+// 		throw ParserException("Unrecognized sampling method %s, expected system, bernoulli or reservoir",
+// method);
 // 	}
 // }
 
@@ -31,7 +32,8 @@
 // 		// sample size is given in sample_size: use system sampling
 // 		auto percentage = sample_value.GetValue<double>();
 // 		if (percentage < 0 || percentage > 100) {
-// 			throw ParserException("Sample sample_size %llf out of range, must be between 0 and 100", percentage);
+// 			throw ParserException("Sample sample_size %llf out of range, must be between 0 and 100",
+// percentage);
 // 		}
 // 		result->sample_size = Value::DOUBLE(percentage);
 // 		result->method = SampleMethod::SYSTEM_SAMPLE;
