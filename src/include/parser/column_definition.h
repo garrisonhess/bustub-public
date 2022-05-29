@@ -10,8 +10,8 @@
 
 #include <memory>
 #include <string>
+#include "common/enums/type_id.h"
 #include "parser/parsed_expression.h"
-#include "type/type_id.h"
 #include "type/value.h"
 
 namespace bustub {

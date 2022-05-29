@@ -1,14 +1,6 @@
-//===----------------------------------------------------------------------===//
-//                         BusTub
-//
-// bustub/common/enums/statement_type.h
-//
-//
-//===----------------------------------------------------------------------===//
-
 #pragma once
 
-#include <iostream>
+#include "common/constants.h"
 
 namespace bustub {
 
@@ -40,22 +32,6 @@ enum class StatementType : uint8_t {
   SET_STATEMENT,           // SET statement type
   LOAD_STATEMENT,          // LOAD statement type
   RELATION_STATEMENT
-};
-
-std::string StatementTypeToString(StatementType type);
-
-enum class StatementReturnType : uint8_t {
-  QUERY_RESULT,  // the statement returns a query result (e.g. for display to the user)
-  CHANGED_ROWS,  // the statement returns a single row containing the number of changed rows (e.g. an insert stmt)
-  NOTHING        // the statement returns nothing
-};
-
-//! A struct containing various properties of a SQL statement
-struct StatementProperties {
-  StatementProperties() = default;
-
-  //! What type of data the statement returns
-  StatementReturnType return_type_{StatementReturnType::QUERY_RESULT};
 };
 
 }  // namespace bustub

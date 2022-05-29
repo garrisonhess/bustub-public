@@ -11,6 +11,7 @@
 //===----------------------------------------------------------------------===//
 
 #pragma once
+
 #include <string>
 #include "common/exception.h"
 #include "type/type.h"

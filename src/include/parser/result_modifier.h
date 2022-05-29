@@ -10,8 +10,8 @@
 
 #include <vector>
 
+#include "common/enums/order_type.h"
 #include "parser/parsed_expression.h"
-#include "type/order_type.h"
 
 namespace bustub {
 class FieldWriter;

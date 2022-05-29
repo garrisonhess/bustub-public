@@ -8,8 +8,8 @@
 
 #pragma once
 
+#include "common/enums/statement_type.h"
 #include "storage/table/tuple.h"
-#include "type/statement_type.h"
 #include "type/type.h"
 
 namespace bustub {

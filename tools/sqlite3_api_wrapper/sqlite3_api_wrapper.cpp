@@ -85,10 +85,6 @@ int sqlite3_open_v2(const char *filename, /* Database filename (UTF-8) */
   try {
     p_db = new sqlite3();
     bustub::DBConfig config;
-    // config.access_mode = AccessMode::AUTOMATIC;
-    // if (flags & SQLITE_OPEN_READONLY) {
-    // 	config.access_mode = AccessMode::READ_ONLY;
-    // }
     p_db->db_ = std::make_unique<bustub::BusTub>(filename, &config);
     p_db->con_ = std::make_unique<bustub::Connection>(*p_db->db_);
     printf("initialized DB\n");
@@ -111,7 +107,6 @@ int sqlite3_shutdown(void) { return SQLITE_OK; }
 
 /* In SQLite this function compiles the query into VDBE bytecode,
  * in the implementation it currently executes the query */
-// TODO(xx): prepare the statement instead of executing right away
 int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
                        const char *zSql,      /* SQL statement, UTF-8 encoded */
                        int nByte,             /* Maximum length of zSql in bytes. */
@@ -141,9 +136,6 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     std::vector<std::unique_ptr<bustub::SQLStatement>> statements;
     statements.push_back(move(parser.statements_[0]));
 
-    // PragmaHandler handler(*db->con->context);
-    // handler.HandlePragmaStatements(statements);
-
     // if there are multiple statements here, we are dealing with an import database statement
     // we directly execute all statements besides the final one
     for (uint64_t i = 0; i + 1 < statements.size(); i++) {
@@ -170,31 +162,16 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     stmt->query_string_ = query;
     stmt->prepared_ = move(prepared);
     stmt->current_row_ = -1;
-    // for (int64_t i = 0; i < stmt->prepared_->n_param_; i++) {
-    //   stmt->bound_names_.push_back("$" + std::to_string(i + 1));
-    //   stmt->bound_values_.emplace_back();
-    // }
 
     // extract the remainder of the query and assign it to the pzTail
     if ((pzTail != nullptr) && set_remainder) {
       *pzTail = zSql + next_location + 1;
     }
 
-    auto types = stmt->prepared_->GetTypes();
-    printf("prepared statement number of types: %zu\n", types.size());
-
-    for (auto &t : types) {
-      printf("type ID: %d\n", t.GetTypeId());
-    }
-
-    printf("first prep stmt colname: %s\n", stmt->prepared_->GetNames().at(0).c_str());
-    printf("SQLITE PREPARE V2 returning OK\n");
     *ppStmt = stmt.release();
-
     return SQLITE_OK;
   } catch (std::exception &ex) {
     db->last_error_ = ex.what();
-    printf("SQLITE PREPARE V2 RETURNED ERR: %s\n", db->last_error_.c_str());
     return SQLITE_ERROR;
   }
 }
@@ -222,9 +199,11 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
   }
 
   pStmt->current_text_ = nullptr;
+  
   if (!pStmt->result_) {
     // no result yet! call Execute()
-    pStmt->result_ = pStmt->prepared_->Execute(pStmt->bound_values_);
+    pStmt->result_ = pStmt->prepared_->Execute();
+
     if (!pStmt->result_->success_) {
       printf("execute returned non-success\n");
       // error in execute: clear prepared statement
@@ -232,27 +211,24 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
       pStmt->prepared_ = nullptr;
       return SQLITE_ERROR;
     }
-    // fetch a tuple
-    // pStmt->current_tuple_ = std::move(pStmt->result_->data_[pStmt->current_row_]);
+
+    // TODO(GH): Implement this!
     pStmt->current_tuple_ = pStmt->result_->data_.at(0);
 
-    // TODO(GH): reset if it's not a select statement
-    // if (!sqlite3_display_result(pStmt->prepared_->type)) {
-    //   // only SELECT statements return results
-    //   sqlite3_reset(pStmt);
-    // }
+    if (!Sqlite3DisplayResult(pStmt->prepared_->statement_type_)) {
+      // Not all statements return results.
+      sqlite3_reset(pStmt);
+    }
   }
+
   static int ctr = 0;
   ctr++;
   if ((ctr % 5) == 0) {
     printf("counter mod 5 == 0 so we're done \n");
     return SQLITE_DONE;
   }
-  // if (!pStmt->current_tuple_) {
-  //   printf("no tuple so we're done\n");
-  //   return SQLITE_DONE;
-  // }
 
+  // TODO(GH): Determine when we're done and return SQLITE_DONE.
   pStmt->current_row_++;
   printf("step returned another row \n");
 
@@ -394,9 +370,7 @@ int sqlite3_column_type(sqlite3_stmt *pStmt, int iCol) {
   if ((pStmt == nullptr) || !pStmt->result_) {
     return 0;
   }
-  // if (FlatVector::IsNull(pStmt->current_chunk->data[iCol], pStmt->current_row)) {
-  //   return SQLITE_NULL;
-  // }
+  // TODO(GH): Check for NULL and return SQLITE_NULL.
 
   auto column_type = pStmt->result_->types_[iCol];
   switch (column_type.GetTypeId()) {
@@ -433,15 +407,13 @@ static bool Sqlite3ColumnHasValue(sqlite3_stmt *pStmt, int iCol, bustub::TypeId 
   if (iCol < 0 || iCol >= static_cast<int>(pStmt->result_->types_.size())) {
     return false;
   }
-  // if (FlatVector::IsNull(pStmt->current_chunk->data[iCol], pStmt->current_row)) {
-  //   return false;
-  // }
+  // TODO(GH): Check for NULL and return SQLITE_NULL.
+
   try {
-    // pStmt->types_
     const std::vector<bustub::Column> &columns = {bustub::Column("column1", bustub::TypeId::INTEGER)};
     bustub::Schema result_schema = bustub::Schema(columns);
     val = pStmt->current_tuple_.GetValue(&result_schema, 0).CastAs(target_type);
-    // val = pStmt->current_tuple_->GetValue(&result_schema, 0);
+    // TODO(GH): make this a real implementation
   } catch (...) {
     return false;
   }
@@ -488,6 +460,8 @@ const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
       entry.data_ = std::unique_ptr<char[]>(new char[strlen + 1]);
       // bustub::string x = bustub::Type::ToString(val);
 
+      // TODO(GH): Make this a real implementation.
+
       printf("assigned data\n");
       memcpy(entry.data_.get(), val.ToString().c_str(), strlen + 1);
       printf("memcpy done!\n");
@@ -506,24 +480,9 @@ const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
 ////////////////////////////
 //      sqlite3_bind      //
 ////////////////////////////
-int sqlite3_bind_parameter_count(sqlite3_stmt *stmt) {
-  // if (stmt == nullptr) {
-  //   return 0;
-  // }
-  // return stmt->prepared_->n_param_;
-  return 0;
-}
+int sqlite3_bind_parameter_count(sqlite3_stmt *stmt) { return 0; }
 
-const char *sqlite3_bind_parameter_name(sqlite3_stmt *stmt, int idx) {
-  if (stmt == nullptr) {
-    return nullptr;
-  }
-  if (idx < 1) {
-    return nullptr;
-  }
-  return nullptr;
-  // return stmt->bound_names_[idx - 1].c_str();
-}
+const char *sqlite3_bind_parameter_name(sqlite3_stmt *stmt, int idx) { return nullptr; }
 
 int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) {
   if ((stmt == nullptr) || (zName == nullptr)) {
@@ -707,28 +666,16 @@ const char *sqlite3_errmsg(sqlite3 *db) {
   return db->last_error_.c_str();
 }
 
-void sqlite3_interrupt(sqlite3 *db) {
-  // if (db != nullptr) {
-  //   db->con_->Interrupt();
-  // }
-}
+void sqlite3_interrupt(sqlite3 *db) {}
 
-const char *sqlite3_libversion(void) {
-  // return BusTub::LibraryVersion();
-  static const char *libver = "BusTub version 1.0.1.";
-  return libver;
-}
+const char *sqlite3_libversion(void) { return bustub::BusTub::LibraryVersion(); }
 
-const char *sqlite3_sourceid(void) {
-  static const char *sourceid = "SourceID: 100.";
-  return sourceid;
-  // return BusTub::SourceID();
-}
+const char *sqlite3_sourceid(void) { return bustub::BusTub::SourceID(); }
 
 int sqlite3_reset(sqlite3_stmt *stmt) {
   if (stmt != nullptr) {
     stmt->result_ = nullptr;
-    // stmt->current_tuple_ = nullptr;
+    // TODO(GH): Implement reset. (probably just set the current result to null or something like that.)
   }
   return SQLITE_OK;
 }

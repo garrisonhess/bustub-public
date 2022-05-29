@@ -8,8 +8,8 @@
 
 #pragma once
 
+#include "common/enums/statement_type.h"
 #include "common/exception.h"
-#include "type/statement_type.h"
 
 namespace bustub {
 

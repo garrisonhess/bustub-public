@@ -16,13 +16,11 @@ int64_t PreparedStatement::ColumnCount() { return types_.size(); }
 
 StatementType PreparedStatement::GetStatementType() { return statement_type_; }
 
-StatementProperties PreparedStatement::GetStatementProperties() { return properties_; }
-
 const vector<Type> &PreparedStatement::GetTypes() { return types_; }
 
 const vector<string> &PreparedStatement::GetNames() { return names_; }
 
-unique_ptr<QueryResult> PreparedStatement::Execute(vector<Value> &values) {
+unique_ptr<QueryResult> PreparedStatement::Execute() {
   auto stmt_type = StatementType::SELECT_STATEMENT;
   vector<Type> types = {Type(TypeId::INTEGER)};
   vector<string> names = {"column1"};

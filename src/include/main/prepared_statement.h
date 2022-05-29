@@ -10,9 +10,9 @@
 
 #include <string>
 #include "common/constants.h"
+#include "common/enums/statement_type.h"
 #include "main/query_result.h"
 #include "parser/sql_statement.h"
-#include "type/statement_type.h"
 #include "type/type.h"
 #include "type/value.h"
 
@@ -20,6 +20,7 @@
 #include <vector>
 
 namespace bustub {
+
 class ClientContext;
 using std::vector;
 
@@ -49,23 +50,14 @@ class PreparedStatement {
 
   StatementType statement_type_;
 
-  //! The unbound SQL statement that was prepared
-  unique_ptr<SQLStatement> unbound_statement_;
-
   // //! The fully prepared physical plan of the prepared statement
   // unique_ptr<PhysicalOperator> plan_;
-
-  //! The map of parameter index to the actual value entry
-  std::unordered_map<int64_t, vector<unique_ptr<Value>>> value_map_;
 
   //! The result names of the transaction
   vector<string> names_;
 
   //! The result types of the transaction
   vector<Type> types_;
-
-  //! The statement properties
-  StatementProperties properties_;
 
  public:
   //! Returns the number of columns in the result
@@ -74,9 +66,6 @@ class PreparedStatement {
   //! Returns the statement type of the underlying prepared statement object
   StatementType GetStatementType();
 
-  //! Returns the underlying statement properties
-  StatementProperties GetStatementProperties();
-
   //! Returns the result SQL types of the prepared statement
   const vector<Type> &GetTypes();
 
@@ -84,7 +73,7 @@ class PreparedStatement {
   const vector<string> &GetNames();
 
   //! Execute the prepared statement with the given set of values
-  unique_ptr<QueryResult> Execute(vector<Value> &values);
+  unique_ptr<QueryResult> Execute();
 };
 
 }  // namespace bustub

@@ -7,7 +7,7 @@
 #include "main/database.h"
 #include "main/query_result.h"
 #include "parser/parser.h"
-#include "type/statement_type.h"
+#include "common/enums/statement_type.h"
 
 #include <mutex>
 #include <utility>
@@ -81,7 +81,6 @@ unique_ptr<PreparedStatement> ClientContext::PrepareInternal(unique_ptr<SQLState
 
   LOG_DEBUG("about to copy unbound statement");
   unique_ptr<PreparedStatement> result = make_unique<PreparedStatement>(shared_from_this(), statement->query_);
-  result->unbound_statement_ = move(unbound_statement);
   result->statement_type_ = StatementType::SELECT_STATEMENT;
   result->types_ = {Type(TypeId::INTEGER)};
   result->names_ = {"column1"};
