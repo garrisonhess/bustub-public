@@ -33,7 +33,7 @@ struct sqlite3_stmt {
   //! The result object, if successfully executed
   std::unique_ptr<bustub::QueryResult> result_;
   //! The current chunk that we are iterating over
-  std::unique_ptr<bustub::Tuple> current_tuple_;
+  bustub::Tuple current_tuple_;
   //! The current row into the current chunk that we are iterating over
   int64_t current_row_;
   //! Bound values, used for binding to the prepared statement
@@ -234,7 +234,7 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
     }
     // fetch a tuple
     // pStmt->current_tuple_ = std::move(pStmt->result_->data_[pStmt->current_row_]);
-    pStmt->current_tuple_ = std::move(pStmt->result_->data_.at(0));
+    pStmt->current_tuple_ = pStmt->result_->data_.at(0);
 
     // TODO(GH): reset if it's not a select statement
     // if (!sqlite3_display_result(pStmt->prepared_->type)) {
@@ -248,10 +248,10 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
     printf("counter mod 5 == 0 so we're done \n");
     return SQLITE_DONE;
   }
-  if (!pStmt->current_tuple_) {
-    printf("no tuple so we're done\n");
-    return SQLITE_DONE;
-  }
+  // if (!pStmt->current_tuple_) {
+  //   printf("no tuple so we're done\n");
+  //   return SQLITE_DONE;
+  // }
 
   pStmt->current_row_++;
   printf("step returned another row \n");
@@ -391,7 +391,7 @@ int sqlite3_column_count(sqlite3_stmt *pStmt) {
 int sqlite3_column_type(sqlite3_stmt *pStmt, int iCol) {
   using bustub::TypeId;
 
-  if ((pStmt == nullptr) || !pStmt->result_ || !pStmt->current_tuple_) {
+  if ((pStmt == nullptr) || !pStmt->result_) {
     return 0;
   }
   // if (FlatVector::IsNull(pStmt->current_chunk->data[iCol], pStmt->current_row)) {
@@ -427,7 +427,7 @@ const char *sqlite3_column_name(sqlite3_stmt *pStmt, int N) {
 
 static bool Sqlite3ColumnHasValue(sqlite3_stmt *pStmt, int iCol, bustub::TypeId target_type, bustub::Value &val) {
   printf("in sqlite3 col has val\n");
-  if ((pStmt == nullptr) || !pStmt->result_ || !pStmt->current_tuple_) {
+  if ((pStmt == nullptr) || !pStmt->result_) {
     return false;
   }
   if (iCol < 0 || iCol >= static_cast<int>(pStmt->result_->types_.size())) {
@@ -440,7 +440,7 @@ static bool Sqlite3ColumnHasValue(sqlite3_stmt *pStmt, int iCol, bustub::TypeId 
     // pStmt->types_
     const std::vector<bustub::Column> &columns = {bustub::Column("column1", bustub::TypeId::INTEGER)};
     bustub::Schema result_schema = bustub::Schema(columns);
-    val = pStmt->current_tuple_->GetValue(&result_schema, 0).CastAs(target_type);
+    val = pStmt->current_tuple_.GetValue(&result_schema, 0).CastAs(target_type);
     // val = pStmt->current_tuple_->GetValue(&result_schema, 0);
   } catch (...) {
     return false;
@@ -735,7 +735,7 @@ const char *sqlite3_sourceid(void) {
 int sqlite3_reset(sqlite3_stmt *stmt) {
   if (stmt != nullptr) {
     stmt->result_ = nullptr;
-    stmt->current_tuple_ = nullptr;
+    // stmt->current_tuple_ = nullptr;
   }
   return SQLITE_OK;
 }

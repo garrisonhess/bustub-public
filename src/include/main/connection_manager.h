@@ -19,7 +19,7 @@ class Connection;
 
 class ConnectionManager {
  public:
-  ~ConnectionManager();
+  ~ConnectionManager() = default;
 
   void AddConnection(Connection *conn);
   void RemoveConnection(Connection *conn);

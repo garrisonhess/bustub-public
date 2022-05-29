@@ -5,22 +5,13 @@
 
 namespace bustub {
 
-ConnectionManager::~ConnectionManager() {
-  std::lock_guard<std::mutex> lock(connections_lock_);
-  for (auto &conn : connections_) {
-    conn->context_->Invalidate();
-  }
-}
-
 void ConnectionManager::AddConnection(Connection *conn) {
-  // D_ASSERT(conn);
-  std::lock_guard<std::mutex> lock(connections_lock_);
+  assert(conn);
   connections_.insert(conn);
 }
 
 void ConnectionManager::RemoveConnection(Connection *conn) {
-  // D_ASSERT(conn);
-  std::lock_guard<std::mutex> lock(connections_lock_);
+  assert(conn);
   connections_.erase(conn);
 }
 

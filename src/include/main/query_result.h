@@ -44,7 +44,7 @@ class QueryResult {
   //! The names of the result
   vector<string> names_;
 
-  vector<unique_ptr<Tuple>> data_;
+  vector<Tuple> data_;
   int curr_idx_;
   bool success_;
   string error_;

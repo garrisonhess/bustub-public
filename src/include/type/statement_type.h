@@ -54,15 +54,6 @@ enum class StatementReturnType : uint8_t {
 struct StatementProperties {
   StatementProperties() = default;
 
-  //! Whether or not the statement is a read-only statement, or whether it can result in changes to the database
-  bool read_only_{true};
-  //! Whether or not the statement requires a valid transaction. Almost all statements require this, with the
-  //! exception of
-  bool requires_valid_transaction_{true};
-  //! Whether or not the result can be streamed to the client
-  bool allow_stream_result_{false};
-  //! Whether or not all parameters have successfully had their types determined
-  bool bound_all_parameters_{true};
   //! What type of data the statement returns
   StatementReturnType return_type_{StatementReturnType::QUERY_RESULT};
 };
