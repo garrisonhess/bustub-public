@@ -2,6 +2,7 @@
 
 #include "common/exception.h"
 #include "common/macros.h"
+#include "execution/executor_context.h"
 #include "main/client_context.h"
 
 namespace bustub {
@@ -27,10 +28,10 @@ unique_ptr<QueryResult> PreparedStatement::Execute() {
   vector<string> names = {"column1"};
   unique_ptr<QueryResult> result = std::make_unique<QueryResult>(stmt_type, types, names);
   std::vector<Tuple> data = {};
-  // context_->executor_->Execute(const AbstractPlanNode *plan, std::vector<Tuple> *result_set, Transaction *txn,
-  // ExecutorContext *exec_ctx)
-
-  context_->executor_->Execute(nullptr, &result->data_, nullptr, nullptr);
+  // const AbstractPlanNode *plan = nullptr;
+  // Transaction * txn = nullptr;
+  // ExecutorContext * exec_ctx = nullptr;
+  // context_->executor_->Execute(plan, &result->data_, txn, exec_ctx);
   result->success_ = true;
 
   vector<Value> temp_values = {Value(TypeId::INTEGER, 42069)};
