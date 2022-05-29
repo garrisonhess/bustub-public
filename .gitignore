@@ -263,3 +263,6 @@ docs/dev
 
 # Clangd cache index
 .cache
+
+# Override autotools rule.
+!src/include/main/config.h

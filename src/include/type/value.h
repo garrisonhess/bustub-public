@@ -16,7 +16,7 @@
 #include <string>
 #include <utility>
 
-#include "type/limits.h"
+#include "common/limits.h"
 #include "type/type.h"
 
 namespace bustub {

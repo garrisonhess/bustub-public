@@ -20,10 +20,15 @@
 
 namespace bustub {
 
+class DatabaseInstance;
+
 std::unordered_map<txn_id_t, Transaction *> TransactionManager::txn_map = {};
 std::shared_mutex TransactionManager::txn_map_mutex = {};
 
-auto TransactionManager::Begin(Transaction *txn, IsolationLevel isolation_level) -> Transaction * {
+TransactionManager::TransactionManager(DatabaseInstance &db) : db_(db){};
+
+
+auto TransactionManager::Begin(Transaction *txn, IsolationLevel isolation_level) -> Transaction *{
   // Acquire the global transaction latch in shared mode.
   global_txn_latch_.RLock();
 
@@ -111,5 +116,27 @@ void TransactionManager::Abort(Transaction *txn) {
 void TransactionManager::BlockAllTransactions() { global_txn_latch_.WLock(); }
 
 void TransactionManager::ResumeTransactions() { global_txn_latch_.WUnlock(); }
+
+auto TransactionManager::GetTransaction(txn_id_t txn_id)-> Transaction * {
+  TransactionManager::txn_map_mutex.lock_shared();
+  assert(TransactionManager::txn_map.find(txn_id) != TransactionManager::txn_map.end());
+  auto *res = TransactionManager::txn_map[txn_id];
+  assert(res != nullptr);
+  TransactionManager::txn_map_mutex.unlock_shared();
+  return res;
+}
+
+void TransactionManager::ReleaseLocks(Transaction *txn) {
+  std::unordered_set<RID> lock_set;
+  for (auto item : *txn->GetExclusiveLockSet()) {
+    lock_set.emplace(item);
+  }
+  for (auto item : *txn->GetSharedLockSet()) {
+    lock_set.emplace(item);
+  }
+  for (auto locked_rid : lock_set) {
+    db_.GetLockManager().Unlock(txn, locked_rid);
+  }
+}
 
 }  // namespace bustub

@@ -19,8 +19,8 @@
 #include <thread>  // NOLINT
 #include <unordered_set>
 
-#include "common/config.h"
 #include "common/logger.h"
+#include "main/config.h"
 #include "storage/page/page.h"
 #include "storage/table/tuple.h"
 

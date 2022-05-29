@@ -13,6 +13,7 @@
 #pragma once
 
 #include "buffer/buffer_pool_manager.h"
+#include "main/database.h"
 #include "recovery/log_manager.h"
 #include "storage/page/table_page.h"
 #include "storage/table/table_iterator.h"
@@ -37,8 +38,7 @@ class TableHeap {
    * @param log_manager the log manager
    * @param first_page_id the id of the first page
    */
-  TableHeap(BufferPoolManager *buffer_pool_manager, LockManager *lock_manager, LogManager *log_manager,
-            page_id_t first_page_id);
+  TableHeap(DatabaseInstance &db, page_id_t first_page_id);
 
   /**
    * Create a table heap with a transaction. (create table)
@@ -47,8 +47,7 @@ class TableHeap {
    * @param log_manager the log manager
    * @param txn the creating transaction
    */
-  TableHeap(BufferPoolManager *buffer_pool_manager, LockManager *lock_manager, LogManager *log_manager,
-            Transaction *txn);
+  TableHeap(DatabaseInstance &db, Transaction *txn);
 
   /**
    * Insert a tuple into the table. If the tuple is too large (>= page_size), return false.
@@ -109,9 +108,7 @@ class TableHeap {
   inline auto GetFirstPageId() const -> page_id_t { return first_page_id_; }
 
  private:
-  BufferPoolManager *buffer_pool_manager_;
-  LockManager *lock_manager_;
-  LogManager *log_manager_;
+  DatabaseInstance &db_;
   page_id_t first_page_id_{};
 };
 

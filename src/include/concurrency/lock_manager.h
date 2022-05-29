@@ -21,12 +21,12 @@
 #include <utility>
 #include <vector>
 
-#include "common/config.h"
 #include "common/rid.h"
 #include "concurrency/transaction.h"
+#include "main/config.h"
 
 namespace bustub {
-
+class DatabaseInstance;
 class TransactionManager;
 
 /**
@@ -103,6 +103,8 @@ class LockManager {
    * @return true if the unlock is successful, false otherwise
    */
   auto Unlock(Transaction *txn, const RID &rid) -> bool;
+
+  static LockManager &Get(DatabaseInstance &db);
 
  private:
   std::mutex latch_;

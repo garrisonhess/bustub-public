@@ -18,9 +18,11 @@
 #include <mutex>   // NOLINT
 #include <string>
 
-#include "common/config.h"
+#include "main/config.h"
+#include "main/database.h"
 
 namespace bustub {
+class DatabaseInstance;
 
 /**
  * DiskManager takes care of the allocation and deallocation of pages within a database. It performs the reading and
@@ -30,9 +32,9 @@ class DiskManager {
  public:
   /**
    * Creates a new disk manager that writes to the specified database file.
-   * @param db_file the file name of the database file to write to
+   * @param path the file name of the database file to write to
    */
-  explicit DiskManager(const std::string &db_file);
+  explicit DiskManager(const std::string &path);
 
   ~DiskManager() = default;
 
@@ -88,6 +90,8 @@ class DiskManager {
 
   /** Checks if the non-blocking flush future was set. */
   inline auto HasFlushLogFuture() -> bool { return flush_log_f_ != nullptr; }
+
+  static DiskManager &Get(DatabaseInstance &db);
 
  private:
   auto GetFileSize(const std::string &file_name) -> int;

@@ -30,8 +30,8 @@ static char *buffer_used;
  * Constructor: open/create a single database file & log file
  * @input db_file: database file name
  */
-DiskManager::DiskManager(const std::string &db_file)
-    : file_name_(db_file), num_flushes_(0), num_writes_(0), flush_log_(false), flush_log_f_(nullptr) {
+DiskManager::DiskManager(const std::string &path)
+    : file_name_(path), num_flushes_(0), num_writes_(0), flush_log_(false), flush_log_f_(nullptr) {
   std::string::size_type n = file_name_.rfind('.');
   if (n == std::string::npos) {
     LOG_DEBUG("wrong file format");
@@ -54,15 +54,15 @@ DiskManager::DiskManager(const std::string &db_file)
   }
 
   std::scoped_lock scoped_db_io_latch(db_io_latch_);
-  db_io_.open(db_file, std::ios::binary | std::ios::in | std::ios::out);
+  db_io_.open(path, std::ios::binary | std::ios::in | std::ios::out);
   // directory or file does not exist
   if (!db_io_.is_open()) {
     db_io_.clear();
     // create a new file
-    db_io_.open(db_file, std::ios::binary | std::ios::trunc | std::ios::out);
+    db_io_.open(path, std::ios::binary | std::ios::trunc | std::ios::out);
     db_io_.close();
     // reopen with original mode
-    db_io_.open(db_file, std::ios::binary | std::ios::in | std::ios::out);
+    db_io_.open(path, std::ios::binary | std::ios::in | std::ios::out);
     if (!db_io_.is_open()) {
       throw Exception("can't open db file");
     }

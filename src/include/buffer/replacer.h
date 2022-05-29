@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "common/config.h"
+#include "main/config.h"
 
 namespace bustub {
 
