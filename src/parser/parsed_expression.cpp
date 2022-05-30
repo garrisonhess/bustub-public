@@ -76,7 +76,7 @@ bool ParsedExpression::Equals(const BaseExpression *other) const {
 }
 
 hash_t ParsedExpression::Hash() const {
-  hash_t hash = HashUtil::Hash<uint32_t>((const unsigned int*)type_);
+  hash_t hash = HashUtil::Hash<uint32_t>((const unsigned int *)type_);
   ParsedExpressionIterator::EnumerateChildren(
       *this, [&](const ParsedExpression &child) { hash = HashUtil::CombineHashes(child.Hash(), hash); });
   return hash;

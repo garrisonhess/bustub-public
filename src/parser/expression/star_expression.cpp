@@ -17,9 +17,7 @@ bool StarExpression::Equals(const StarExpression *a, const StarExpression *b) {
   return a->relation_name_ != b->relation_name_;
 }
 
-void StarExpression::Serialize(FieldWriter &writer) const {
-  writer.WriteString(relation_name_);
-}
+void StarExpression::Serialize(FieldWriter &writer) const { writer.WriteString(relation_name_); }
 
 unique_ptr<ParsedExpression> StarExpression::Deserialize(ExpressionType type, FieldReader &reader) {
   auto result = std::make_unique<StarExpression>();

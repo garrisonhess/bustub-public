@@ -2,8 +2,8 @@
 
 #include "common/field_writer.h"
 #include "common/logger.h"
-#include "parser/keyword_helper.h"
 #include "parser/expression_util.h"
+#include "parser/keyword_helper.h"
 
 namespace bustub {
 
@@ -100,7 +100,7 @@ bool SelectNode::Equals(const QueryNode *other_p) const {
 
   // SELECT
   if (!ExpressionUtil::ListEquals(select_list_, other->select_list_)) {
-  	return false;
+    return false;
   }
   // FROM
   if (from_table_) {
@@ -119,7 +119,7 @@ bool SelectNode::Equals(const QueryNode *other_p) const {
   }
   // GROUP BY
   if (!ExpressionUtil::ListEquals(groups_.group_expressions_, other->groups_.group_expressions_)) {
-  	return false;
+    return false;
   }
   if (groups_.grouping_sets_ != other->groups_.grouping_sets_) {
     return false;

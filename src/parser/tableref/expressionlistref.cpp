@@ -68,8 +68,8 @@ void ExpressionListRef::Serialize(FieldWriter &writer) const {
   writer.WriteRegularSerializableList<Type>(expected_types_);
   auto &serializer = writer.GetSerializer();
   writer.WriteField<uint32_t>(values_.size());
-  for (const auto & value : values_) {
-  	serializer.WriteList(value);
+  for (const auto &value : values_) {
+    serializer.WriteList(value);
   }
 }
 
@@ -81,9 +81,9 @@ unique_ptr<TableRef> ExpressionListRef::Deserialize(FieldReader &reader) {
   uint64_t value_list_size = reader.ReadRequired<uint32_t>();
   auto &source = reader.GetSource();
   for (uint64_t i = 0; i < value_list_size; i++) {
-  	vector<unique_ptr<ParsedExpression>> value_list;
-  	source.ReadList<ParsedExpression>(value_list);
-  	result->values_.push_back(move(value_list));
+    vector<unique_ptr<ParsedExpression>> value_list;
+    source.ReadList<ParsedExpression>(value_list);
+    result->values_.push_back(move(value_list));
   }
   return result;
 }
