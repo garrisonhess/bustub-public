@@ -15,7 +15,7 @@ namespace bustub {
 
 class LogicalCreateIndex : public LogicalOperator {
  public:
-  LogicalCreateIndex(TableCatalogEntry &table, vector<column_t> column_ids, vector<unique_ptr<Expression>> expressions,
+  LogicalCreateIndex(TableCatalogEntry &table, vector<uint64_t> column_ids, vector<unique_ptr<Expression>> expressions,
                      unique_ptr<CreateIndexInfo> info)
       : LogicalOperator(LogicalOperatorType::LOGICAL_CREATE_INDEX),
         table(table),
@@ -30,7 +30,7 @@ class LogicalCreateIndex : public LogicalOperator {
   //! The table to create the index for
   TableCatalogEntry &table;
   //! Column IDs needed for index creation
-  vector<column_t> column_ids;
+  vector<uint64_t> column_ids;
   // Info for index creation
   unique_ptr<CreateIndexInfo> info;
   //! Unbound expressions to be used in the optimizer

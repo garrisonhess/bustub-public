@@ -41,7 +41,7 @@ unique_ptr<LogicalOperator> Binder::VisitQueryNode(BoundQueryNode &node, unique_
         break;
       }
       default:
-        throw BinderException("Unimplemented modifier type!");
+        throw Exception("Unimplemented modifier type!");
     }
   }
   return root;

@@ -108,6 +108,8 @@ class Type {
   // Access the raw varlen data stored from the tuple storage
   virtual auto GetData(char *storage) -> char *;
 
+  virtual auto Hash() const -> uint32_t;
+
  protected:
   // The actual type ID
   TypeId type_id_;

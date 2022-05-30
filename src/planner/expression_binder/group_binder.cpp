@@ -19,7 +19,7 @@ GroupBinder::GroupBinder(Binder &binder, ClientContext &context, SelectNode &nod
 BindResult GroupBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {
   auto &expr = **expr_ptr;
   if (root_expression && depth == 0) {
-    switch (expr.expression_class) {
+    switch (expr.expression_class_) {
       case ExpressionClass::COLUMN_REF:
         return BindColumnRef((ColumnRefExpression &)expr);
       case ExpressionClass::CONSTANT:
@@ -28,7 +28,7 @@ BindResult GroupBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, u
         break;
     }
   }
-  switch (expr.expression_class) {
+  switch (expr.expression_class_) {
     case ExpressionClass::DEFAULT:
       return BindResult("GROUP BY clause cannot contain DEFAULT clause");
     case ExpressionClass::WINDOW:
@@ -49,17 +49,17 @@ BindResult GroupBinder::BindSelectRef(uint64_t entry) {
     // (the constant grouping will be optimized out later)
     return BindResult(make_unique<BoundConstantExpression>(Value::INTEGER(42)));
   }
-  if (entry >= node.select_list.size()) {
-    throw BinderException("GROUP BY term out of range - should be between 1 and %d", (int)node.select_list.size());
+  if (entry >= node.select_list_.size()) {
+    throw Exception("GROUP BY term out of range - should be between 1 and X");
   }
   // we replace the root expression, also replace the unbound expression
-  unbound_expression = node.select_list[entry]->Copy();
+  unbound_expression = node.select_list_[entry]->Copy();
   // move the expression that this refers to here and bind it
-  auto select_entry = move(node.select_list[entry]);
+  auto select_entry = move(node.select_list_[entry]);
   auto binding = Bind(select_entry, nullptr, false);
   // now replace the original expression in the select list with a reference to this group
-  group_alias_map[to_string(entry)] = bind_index;
-  node.select_list[entry] = make_unique<ColumnRefExpression>(to_string(entry));
+  group_alias_map[std::to_string(entry)] = bind_index;
+  node.select_list_[entry] = make_unique<ColumnRefExpression>(std::to_string(entry));
   // insert into the set of used aliases
   used_aliases.insert(entry);
   return BindResult(move(binding));
@@ -67,12 +67,12 @@ BindResult GroupBinder::BindSelectRef(uint64_t entry) {
 
 BindResult GroupBinder::BindConstant(ConstantExpression &constant) {
   // constant as root expression
-  if (!constant.value.type().IsIntegral()) {
+  if (!constant.value_.type().IsIntegral()) {
     // non-integral expression, we just leave the constant here.
     return ExpressionBinder::BindExpression(constant, 0);
   }
   // INTEGER constant: we use the integer as an index into the select list (e.g. GROUP BY 1)
-  auto index = (uint64_t)constant.value.GetValue<int64_t>();
+  auto index = (uint64_t)constant.value_.GetValue<int64_t>();
   return BindSelectRef(index - 1);
 }
 
@@ -91,7 +91,7 @@ BindResult GroupBinder::BindColumnRef(ColumnRefExpression &colref) {
     }
     // failed to bind the column and the node is the root expression with depth = 0
     // check if refers to an alias in the select clause
-    auto alias_name = colref.column_names[0];
+    auto alias_name = colref.column_names_[0];
     auto entry = alias_map.find(alias_name);
     if (entry == alias_map.end()) {
       // no matching alias found

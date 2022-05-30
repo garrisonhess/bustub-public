@@ -7,7 +7,7 @@
 namespace bustub {
 
 Expression::Expression(ExpressionType type, ExpressionClass expression_class, Type return_type)
-    : BaseExpression(type, expression_class), return_type(move(return_type)) {}
+    : BaseExpression(type, expression_class), return_type_(return_type) {}
 
 Expression::~Expression() {}
 
@@ -44,9 +44,9 @@ bool Expression::HasSideEffects() const {
 }
 
 bool Expression::PropagatesNullValues() const {
-  if (type == ExpressionType::OPERATOR_IS_NULL || type == ExpressionType::OPERATOR_IS_NOT_NULL ||
-      type == ExpressionType::COMPARE_NOT_DISTINCT_FROM || type == ExpressionType::COMPARE_DISTINCT_FROM ||
-      type == ExpressionType::CONJUNCTION_OR || type == ExpressionType::CONJUNCTION_AND) {
+  if (type_ == ExpressionType::OPERATOR_IS_NULL || type_ == ExpressionType::OPERATOR_IS_NOT_NULL ||
+      type_ == ExpressionType::COMPARE_NOT_DISTINCT_FROM || type_ == ExpressionType::COMPARE_DISTINCT_FROM ||
+      type_ == ExpressionType::CONJUNCTION_OR || type_ == ExpressionType::CONJUNCTION_AND) {
     return false;
   }
   bool propagate_null_values = true;
@@ -81,10 +81,10 @@ bool Expression::HasSubquery() const {
 }
 
 hash_t Expression::Hash() const {
-  hash_t hash = bustub::Hash<uint32_t>((uint32_t)type);
-  hash = CombineHash(hash, return_type.Hash());
-  ExpressionIterator::EnumerateChildren(*this,
-                                        [&](const Expression &child) { hash = CombineHash(child.Hash(), hash); });
+  hash_t hash = HashUtil::Hash<uint32_t>((const unsigned int *)type_);
+  hash = HashUtil::CombineHashes(hash, return_type_.Hash());
+  ExpressionIterator::EnumerateChildren(
+      *this, [&](const Expression &child) { hash = HashUtil::CombineHashes(child.Hash(), hash); });
   return hash;
 }
 

@@ -45,7 +45,7 @@ struct CorrelatedColumnInfo {
   uint64_t depth;
 
   explicit CorrelatedColumnInfo(BoundColumnRefExpression &expr)
-      : binding(expr.binding), type(expr.return_type), name(expr.GetName()), depth(expr.depth) {}
+      : binding(expr.binding), type(expr.return_type_), name(expr.GetName()), depth(expr.depth) {}
 
   bool operator==(const CorrelatedColumnInfo &rhs) const { return binding == rhs.binding; }
 };
@@ -66,38 +66,21 @@ class Binder : public std::enable_shared_from_this<Binder> {
 
   //! The client context
   ClientContext &context;
-  //! A mapping of names to common table expressions
-  case_insensitive_map_t<CommonTableExpressionInfo *> CTE_bindings;
-  //! The CTEs that have already been bound
-  unordered_set<CommonTableExpressionInfo *> bound_ctes;
   //! The bind context
   BindContext bind_context;
-  //! The set of correlated columns bound by this binder (FIXME: this should probably be an unordered_set and not a
-  //! vector)
-  vector<CorrelatedColumnInfo> correlated_columns;
   //! The set of parameter expressions bound by this binder
   vector<BoundParameterExpression *> *parameters;
   //! The types of the prepared statement parameters, if any
   vector<Type> *parameter_types;
-  //! Statement properties
-  StatementProperties properties;
   //! The alias for the currently processing subquery, if it exists
   string alias;
-  //! Macro parameter bindings (if any)
-  MacroBinding *macro_binding = nullptr;
 
  public:
   BoundStatement Bind(SQLStatement &statement);
   BoundStatement Bind(QueryNode &node);
 
-  unique_ptr<BoundCreateTableInfo> BindCreateTableInfo(unique_ptr<CreateInfo> info);
-  void BindCreateViewInfo(CreateViewInfo &base);
-  SchemaCatalogEntry *BindSchema(CreateInfo &info);
-  SchemaCatalogEntry *BindCreateFunctionInfo(CreateInfo &info);
-
-  //! Check usage, and cast named parameters to their types
-  static void BindNamedParameters(named_parameter_type_map_t &types, named_parameter_map_t &values,
-                                  QueryErrorContext &error_context, string &func_name);
+  // SchemaCatalogEntry *BindSchema(CreateInfo &info);
+  // SchemaCatalogEntry *BindCreateFunctionInfo(CreateInfo &info);
 
   unique_ptr<BoundTableRef> Bind(TableRef &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundTableRef &ref);
@@ -129,20 +112,6 @@ class Binder : public std::enable_shared_from_this<Binder> {
 
   string FormatError(ParsedExpression &expr_context, const string &message);
   string FormatError(TableRef &ref_context, const string &message);
-
-  string FormatErrorRecursive(uint64_t query_location, const string &message, vector<ExceptionFormatValue> &values);
-  template <class T, typename... Args>
-  string FormatErrorRecursive(uint64_t query_location, const string &msg, vector<ExceptionFormatValue> &values, T param,
-                              Args... params) {
-    values.push_back(ExceptionFormatValue::CreateFormatValue<T>(param));
-    return FormatErrorRecursive(query_location, msg, values, params...);
-  }
-
-  template <typename... Args>
-  string FormatError(uint64_t query_location, const string &msg, Args... params) {
-    vector<ExceptionFormatValue> values;
-    return FormatErrorRecursive(query_location, msg, values, params...);
-  }
 
   static void BindType(ClientContext &context, Type &type, const string &schema = "");
 
@@ -192,32 +161,14 @@ class Binder : public std::enable_shared_from_this<Binder> {
 
   BoundStatement Bind(SelectStatement &stmt);
   BoundStatement Bind(InsertStatement &stmt);
-  BoundStatement Bind(CopyStatement &stmt);
   BoundStatement Bind(DeleteStatement &stmt);
   BoundStatement Bind(UpdateStatement &stmt);
   BoundStatement Bind(CreateStatement &stmt);
-  BoundStatement Bind(DropStatement &stmt);
-  BoundStatement Bind(AlterStatement &stmt);
-  BoundStatement Bind(TransactionStatement &stmt);
-  BoundStatement Bind(PragmaStatement &stmt);
-  BoundStatement Bind(ExplainStatement &stmt);
-  BoundStatement Bind(VacuumStatement &stmt);
-  BoundStatement Bind(RelationStatement &stmt);
-  BoundStatement Bind(ShowStatement &stmt);
-  BoundStatement Bind(CallStatement &stmt);
-  BoundStatement Bind(ExportStatement &stmt);
-  BoundStatement Bind(SetStatement &stmt);
-  BoundStatement Bind(LoadStatement &stmt);
   BoundStatement BindReturning(vector<unique_ptr<ParsedExpression>> returning_list, TableCatalogEntry *table,
                                uint64_t update_table_index, unique_ptr<LogicalOperator> child_operator,
                                BoundStatement result);
 
-  unique_ptr<QueryNode> BindTableMacro(FunctionExpression &function, TableMacroCatalogEntry *macro_func,
-                                       uint64_t depth);
-
   unique_ptr<BoundQueryNode> BindNode(SelectNode &node);
-  unique_ptr<BoundQueryNode> BindNode(SetOperationNode &node);
-  unique_ptr<BoundQueryNode> BindNode(RecursiveCTENode &node);
   unique_ptr<BoundQueryNode> BindNode(QueryNode &node);
 
   unique_ptr<LogicalOperator> VisitQueryNode(BoundQueryNode &node, unique_ptr<LogicalOperator> root);
@@ -227,10 +178,8 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unique_ptr<LogicalOperator> CreatePlan(BoundQueryNode &node);
 
   unique_ptr<BoundTableRef> Bind(BaseTableRef &ref);
-  unique_ptr<BoundTableRef> Bind(CrossProductRef &ref);
   unique_ptr<BoundTableRef> Bind(JoinRef &ref);
   unique_ptr<BoundTableRef> Bind(SubqueryRef &ref, CommonTableExpressionInfo *cte = nullptr);
-  unique_ptr<BoundTableRef> Bind(TableFunctionRef &ref);
   unique_ptr<BoundTableRef> Bind(EmptyTableRef &ref);
   unique_ptr<BoundTableRef> Bind(ExpressionListRef &ref);
 
@@ -243,15 +192,10 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unique_ptr<LogicalOperator> CreatePlan(BoundExpressionListRef &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundCTERef &ref);
 
-  BoundStatement BindCopyTo(CopyStatement &stmt);
-  BoundStatement BindCopyFrom(CopyStatement &stmt);
-
   void BindModifiers(OrderBinder &order_binder, QueryNode &statement, BoundQueryNode &result);
   void BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_types, uint64_t projection_index);
 
-  BoundStatement BindSummarize(ShowStatement &stmt);
   unique_ptr<BoundResultModifier> BindLimit(OrderBinder &order_binder, LimitModifier &limit_mod);
-  unique_ptr<BoundResultModifier> BindLimitPercent(OrderBinder &order_binder, LimitPercentModifier &limit_mod);
   unique_ptr<Expression> BindOrderExpression(OrderBinder &order_binder, unique_ptr<ParsedExpression> expr);
 
   unique_ptr<LogicalOperator> PlanFilter(unique_ptr<Expression> condition, unique_ptr<LogicalOperator> root);

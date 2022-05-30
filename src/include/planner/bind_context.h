@@ -54,8 +54,6 @@ class BindContext {
   //! Binds a column expression to the base table. Returns the bound expression
   //! or throws an exception if the column could not be bound.
   BindResult BindColumn(ColumnRefExpression &colref, uint64_t depth);
-  string BindColumn(PositionalReferenceExpression &ref, string &table_name, string &column_name);
-  BindResult BindColumn(PositionalReferenceExpression &ref, uint64_t depth);
 
   unique_ptr<ParsedExpression> CreateColumnReference(const string &table_name, const string &column_name);
   unique_ptr<ParsedExpression> CreateColumnReference(const string &schema_name, const string &table_name,

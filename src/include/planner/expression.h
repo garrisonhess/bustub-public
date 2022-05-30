@@ -19,7 +19,7 @@ class Expression : public BaseExpression {
   ~Expression() override;
 
   //! The return type of the expression
-  Type return_type;
+  Type return_type_;
 
  public:
   bool IsAggregate() const override;
@@ -37,7 +37,7 @@ class Expression : public BaseExpression {
     if (!BaseExpression::Equals(other)) {
       return false;
     }
-    return return_type == ((Expression *)other)->return_type;
+    return return_type_.GetTypeId() == ((Expression *)other)->return_type_.GetTypeId();
   }
 
   static bool Equals(Expression *left, Expression *right) {
@@ -50,10 +50,10 @@ class Expression : public BaseExpression {
   //! Copy base Expression properties from another expression to this one,
   //! used in Copy method
   void CopyProperties(Expression &other) {
-    type = other.type;
-    expression_class = other.expression_class;
-    alias = other.alias;
-    return_type = other.return_type;
+    type_ = other.type_;
+    expression_class_ = other.expression_class_;
+    alias_ = other.alias_;
+    return_type_ = other.return_type_;
   }
 };
 

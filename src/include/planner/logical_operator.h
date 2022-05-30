@@ -38,8 +38,6 @@ class LogicalOperator {
   vector<unique_ptr<Expression>> expressions;
   //! The types returned by this logical operator. Set by calling LogicalOperator::ResolveTypes.
   vector<Type> types;
-  //! Estimated Cardinality
-  uint64_t estimated_cardinality = 0;
 
  public:
   virtual vector<ColumnBinding> GetColumnBindings() { return {ColumnBinding(0, 0)}; }
@@ -58,15 +56,6 @@ class LogicalOperator {
   virtual void Verify();
 
   void AddChild(unique_ptr<LogicalOperator> child) { children.push_back(move(child)); }
-
-  virtual uint64_t EstimateCardinality(ClientContext &context) {
-    // simple estimator, just take the max of the children
-    uint64_t max_cardinality = 0;
-    for (auto &child : children) {
-      max_cardinality = MaxValue(child->EstimateCardinality(context), max_cardinality);
-    }
-    return max_cardinality;
-  }
 
  protected:
   //! Resolve types for this specific operator

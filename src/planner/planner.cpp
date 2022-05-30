@@ -46,7 +46,7 @@ void Planner::CreatePlan(SQLStatement &statement) {
       value_map[expr->parameter_nr] = vector<unique_ptr<Value>>();
     } else if (entry->second.back()->type() != value->type()) {
       // used before, but types are inconsistent
-      throw BinderException("Inconsistent types found for parameter with index %llu", expr->parameter_nr);
+      throw Exception("Inconsistent types found for parameter with index %llu", expr->parameter_nr);
     }
     value_map[expr->parameter_nr].push_back(move(value));
   }
@@ -75,7 +75,7 @@ void Planner::PlanExecute(unique_ptr<SQLStatement> statement) {
 
   auto entry = client_data.prepared_statements.find(stmt.name);
   if (entry == client_data.prepared_statements.end()) {
-    throw BinderException("Prepared statement \"%s\" does not exist", stmt.name);
+    throw Exception("Prepared statement \"%s\" does not exist", stmt.name);
   }
 
   // check if we need to rebind the prepared statement
@@ -101,7 +101,7 @@ void Planner::PlanExecute(unique_ptr<SQLStatement> statement) {
     }
     prepared = PrepareSQLStatement(entry->second->unbound_statement->Copy());
     if (all_bound && prepared->types != entry->second->types) {
-      throw BinderException("Rebinding statement \"%s\" after catalog change resulted in change of types", stmt.name);
+      throw Exception("Rebinding statement \"%s\" after catalog change resulted in change of types", stmt.name);
     }
     assert(prepared->properties.bound_all_parameters);
     rebound = true;

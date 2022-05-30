@@ -14,7 +14,7 @@ namespace bustub {
 
 class BoundDefaultExpression : public Expression {
  public:
-  explicit BoundDefaultExpression(Type type = Type())
+  explicit BoundDefaultExpression(Type type = Type(TypeId::INVALID))
       : Expression(ExpressionType::VALUE_DEFAULT, ExpressionClass::BOUND_DEFAULT, type) {}
 
  public:
@@ -23,6 +23,6 @@ class BoundDefaultExpression : public Expression {
 
   string ToString() const override { return "DEFAULT"; }
 
-  unique_ptr<Expression> Copy() override { return make_unique<BoundDefaultExpression>(return_type); }
+  unique_ptr<Expression> Copy() override { return make_unique<BoundDefaultExpression>(return_type_); }
 };
 }  // namespace bustub

@@ -2,7 +2,7 @@
 
 namespace bustub {
 
-BoundResultModifier::BoundResultModifier(ResultModifierType type) : type(type) {}
+BoundResultModifier::BoundResultModifier(ResultModifierType type) : type_(type) {}
 
 BoundResultModifier::~BoundResultModifier() {}
 

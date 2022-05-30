@@ -56,7 +56,7 @@ unique_ptr<BoundResultModifier> Binder::BindLimit(OrderBinder &order_binder, Lim
     if (!result->limit) {
       result->limit_val = val.GetValue<int64_t>();
       if (result->limit_val < 0) {
-        throw BinderException("LIMIT cannot be negative");
+        throw Exception("LIMIT cannot be negative");
       }
     }
   }
@@ -66,7 +66,7 @@ unique_ptr<BoundResultModifier> Binder::BindLimit(OrderBinder &order_binder, Lim
     if (!result->offset) {
       result->offset_val = val.GetValue<int64_t>();
       if (result->offset_val < 0) {
-        throw BinderException("OFFSET cannot be negative");
+        throw Exception("OFFSET cannot be negative");
       }
     }
   }
@@ -193,7 +193,7 @@ void Binder::BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_t
             assert(expr->type == ExpressionType::BOUND_COLUMN_REF);
             auto &bound_colref = (BoundColumnRefExpression &)*expr;
             if (bound_colref.binding.column_index == INVALID_INDEX) {
-              throw BinderException("Ambiguous name in DISTINCT ON!");
+              throw Exception("Ambiguous name in DISTINCT ON!");
             }
             assert(bound_colref.binding.column_index < sql_types.size());
             bound_colref.return_type = sql_types[bound_colref.binding.column_index];
@@ -228,7 +228,7 @@ void Binder::BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_t
           assert(expr->type == ExpressionType::BOUND_COLUMN_REF);
           auto &bound_colref = (BoundColumnRefExpression &)*expr;
           if (bound_colref.binding.column_index == INVALID_INDEX) {
-            throw BinderException("Ambiguous name in ORDER BY!");
+            throw Exception("Ambiguous name in ORDER BY!");
           }
           assert(bound_colref.binding.column_index < sql_types.size());
           auto sql_type = sql_types[bound_colref.binding.column_index];
@@ -271,7 +271,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
     }
   }
   if (new_select_list.empty()) {
-    throw BinderException("SELECT list is empty after resolving * expressions!");
+    throw Exception("SELECT list is empty after resolving * expressions!");
   }
   statement.select_list = move(new_select_list);
 
@@ -355,7 +355,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
     auto expr = select_binder.Bind(statement.select_list[i], &result_type);
     if (statement.aggregate_handling == AggregateHandling::FORCE_AGGREGATES && select_binder.HasBoundColumns()) {
       if (select_binder.BoundAggregates()) {
-        throw BinderException("Cannot mix aggregates with non-aggregated columns!");
+        throw Exception("Cannot mix aggregates with non-aggregated columns!");
       }
       // we are forcing aggregates, and the node has columns bound
       // this entry becomes a group
@@ -382,14 +382,11 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
   if (!result->groups.group_expressions.empty() || !result->aggregates.empty() || statement.having ||
       !result->groups.grouping_sets.empty()) {
     if (statement.aggregate_handling == AggregateHandling::NO_AGGREGATES_ALLOWED) {
-      throw BinderException("Aggregates cannot be present in a Project relation!");
+      throw Exception("Aggregates cannot be present in a Project relation!");
     } else if (statement.aggregate_handling == AggregateHandling::STANDARD_HANDLING) {
       if (select_binder.HasBoundColumns()) {
         auto &bound_columns = select_binder.GetBoundColumns();
-        throw BinderException(
-            FormatError(bound_columns[0].query_location,
-                        "column \"%s\" must appear in the GROUP BY clause or be used in an aggregate function",
-                        bound_columns[0].name));
+        throw Exception("column X must appear in the GROUP BY clause or be used in an aggregate function");
       }
     }
   }
@@ -397,7 +394,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
   // QUALIFY clause requires at least one window function to be specified in at least one of the SELECT column list or
   // the filter predicate of the QUALIFY clause
   if (statement.qualify && result->windows.empty()) {
-    throw BinderException("at least one window function must appear in the SELECT column or QUALIFY clause");
+    throw Exception("at least one window function must appear in the SELECT column or QUALIFY clause");
   }
 
   // now that the SELECT list is bound, we set the types of DISTINCT/ORDER BY expressions

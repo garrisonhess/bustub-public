@@ -29,8 +29,6 @@ class ScalarMacroCatalogEntry;
 class CatalogEntry;
 class SimpleFunction;
 
-struct MacroBinding;
-
 struct BoundColumnReferenceInfo {
   string name;
   uint64_t query_location;
@@ -49,14 +47,12 @@ struct BindResult {
 
 class ExpressionBinder {
  public:
-  ExpressionBinder(Binder &binder, ClientContext &context, bool replace_binder = false);
+  ExpressionBinder(Binder &binder, ClientContext &context, bool replace_binder);
   virtual ~ExpressionBinder();
 
   //! The target type that should result from the binder. If the result is not of this type, a cast to this type will
   //! be added. Defaults to INVALID.
   Type target_type;
-
-  MacroBinding *macro_binding;
 
  public:
   unique_ptr<Expression> Bind(unique_ptr<ParsedExpression> &expr, Type *result_type = nullptr,
@@ -79,26 +75,14 @@ class ExpressionBinder {
   void QualifyColumnNames(unique_ptr<ParsedExpression> &expr);
   static void QualifyColumnNames(Binder &binder, unique_ptr<ParsedExpression> &expr);
 
-  static unique_ptr<Expression> PushCollation(ClientContext &context, unique_ptr<Expression> source,
-                                              const string &collation, bool equality_only = false);
-  static void TestCollation(ClientContext &context, const string &collation);
-
-  bool BindCorrelatedColumns(unique_ptr<ParsedExpression> &expr);
-
   void BindChild(unique_ptr<ParsedExpression> &expr, uint64_t depth, string &error);
-  static void ExtractCorrelatedExpressions(Binder &binder, Expression &expr);
 
-  static bool ContainsNullType(const Type &type);
-  static Type ExchangeNullType(const Type &type);
   static bool ContainsType(const Type &type, TypeId target);
   static Type ExchangeType(const Type &type, TypeId target, Type new_type);
 
   //! Bind the given expresion. Unlike Bind(), this does *not* mute the given ParsedExpression.
   //! Exposed to be used from sub-binders that aren't subclasses of ExpressionBinder.
-  virtual BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth,
-                                    bool root_expression = false);
-
-  void ReplaceMacroParametersRecursive(unique_ptr<ParsedExpression> &expr);
+  virtual BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression);
 
  protected:
   BindResult BindExpression(ColumnRefExpression &expr, uint64_t depth);

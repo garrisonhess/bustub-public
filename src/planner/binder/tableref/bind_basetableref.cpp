@@ -20,8 +20,7 @@ unique_ptr<BoundTableRef> Binder::Bind(BaseTableRef &ref) {
     auto ctebinding = bind_context.GetCTEBinding(ref.table_name);
     if (!ctebinding) {
       if (CTEIsAlreadyBound(cte)) {
-        throw BinderException("Circular reference to CTE \"%s\", use WITH RECURSIVE to use recursive CTEs",
-                              ref.table_name);
+        throw Exception("Circular reference to CTE \"%s\", use WITH RECURSIVE to use recursive CTEs", ref.table_name);
       }
       // Move CTE to subquery and bind recursively
       SubqueryRef subquery(unique_ptr_cast<SQLStatement, SelectStatement>(cte->query->Copy()));
@@ -130,7 +129,7 @@ unique_ptr<BoundTableRef> Binder::Bind(BaseTableRef &ref) {
       // verify that the types and names match up with the expected types and names
       auto &bound_subquery = (BoundSubqueryRef &)*bound_child;
       if (bound_subquery.subquery->types != view_catalog_entry->types) {
-        throw BinderException("Contents of view were altered: types don't match!");
+        throw Exception("Contents of view were altered: types don't match!");
       }
       bind_context.AddSubquery(bound_subquery.subquery->GetRootIndex(), subquery.alias, subquery,
                                *bound_subquery.subquery);

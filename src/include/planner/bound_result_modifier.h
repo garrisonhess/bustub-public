@@ -42,7 +42,7 @@ class BoundLimitModifier : public BoundResultModifier {
   BoundLimitModifier();
 
   //! LIMIT
-  int64_t limit_val = NumericLimits<int64_t>::Maximum();
+  int64_t limit_val = BUSTUB_INT64_MAX;
   //! OFFSET
   int64_t offset_val = 0;
   //! Expression in case limit is not constant

@@ -37,11 +37,11 @@ struct Binding {
   //! Column names of the subquery
   vector<string> names;
   //! Name -> index for the names
-  case_insensitive_map_t<column_t> name_map;
+  case_insensitive_map_t<uint64_t> name_map;
 
  public:
-  bool TryGetBindingIndex(const string &column_name, column_t &column_index);
-  column_t GetBindingIndex(const string &column_name);
+  bool TryGetBindingIndex(const string &column_name, uint64_t &column_index);
+  uint64_t GetBindingIndex(const string &column_name);
   bool HasMatchingBinding(const string &column_name);
   virtual string ColumnNotFoundError(const string &column_name) const;
   virtual BindResult Bind(ColumnRefExpression &colref, uint64_t depth);

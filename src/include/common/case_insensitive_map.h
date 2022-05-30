@@ -13,7 +13,10 @@
 #include <unordered_set>
 #include "common/string_util.h"
 
-namespace duckdb {
+namespace bustub {
+using std::string;
+using std::unordered_map;
+using std::unordered_set;
 
 struct CaseInsensitiveStringHashFunction {
   uint64_t operator()(const string &str) const {
@@ -32,4 +35,4 @@ using case_insensitive_map_t =
 
 using case_insensitive_set_t = unordered_set<string, CaseInsensitiveStringHashFunction, CaseInsensitiveStringEquality>;
 
-}  // namespace duckdb
+}  // namespace bustub

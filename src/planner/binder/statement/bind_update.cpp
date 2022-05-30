@@ -17,7 +17,7 @@
 namespace bustub {
 
 static void BindExtraColumns(TableCatalogEntry &table, LogicalGet &get, LogicalProjection &proj, LogicalUpdate &update,
-                             unordered_set<column_t> &bound_columns) {
+                             unordered_set<uint64_t> &bound_columns) {
   if (bound_columns.size() <= 1) {
     return;
   }
@@ -108,7 +108,7 @@ static void BindUpdateConstraints(TableCatalogEntry &table, LogicalGet &get, Log
   if (update.update_is_del_and_insert || update.return_chunk) {
     // the update updates a column required by an index or requires returning the updated rows,
     // push projections for all columns
-    unordered_set<column_t> all_columns;
+    unordered_set<uint64_t> all_columns;
     for (uint64_t i = 0; i < table.storage->column_definitions.size(); i++) {
       all_columns.insert(i);
     }
@@ -124,7 +124,7 @@ BoundStatement Binder::Bind(UpdateStatement &stmt) {
   // visit the table reference
   auto bound_table = Bind(*stmt.table);
   if (bound_table->type != TableReferenceType::BASE_TABLE) {
-    throw BinderException("Can only update base table!");
+    throw Exception("Can only update base table!");
   }
   auto &table_binding = (BoundBaseTableRef &)*bound_table;
   auto table = table_binding.table;
@@ -173,11 +173,11 @@ BoundStatement Binder::Bind(UpdateStatement &stmt) {
     auto &colname = stmt.columns[i];
     auto &expr = stmt.expressions[i];
     if (!table->ColumnExists(colname)) {
-      throw BinderException("Referenced update column %s not found in table!", colname);
+      throw Exception("Referenced update column %s not found in table!", colname);
     }
     auto &column = table->GetColumn(colname);
     if (std::find(update->columns.begin(), update->columns.end(), column.oid) != update->columns.end()) {
-      throw BinderException("Multiple assignments to same column \"%s\"", colname);
+      throw Exception("Multiple assignments to same column \"%s\"", colname);
     }
     update->columns.push_back(column.oid);
 

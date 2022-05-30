@@ -25,7 +25,7 @@ struct BoundCreateTableInfo {
   //! The base CreateInfo object
   unique_ptr<CreateInfo> base;
   //! The map of column names -> column index, used during binding
-  case_insensitive_map_t<column_t> name_map;
+  case_insensitive_map_t<uint64_t> name_map;
   //! Bound default values
   vector<unique_ptr<Expression>> bound_defaults;
   //! Dependents of the table (in e.g. default values)

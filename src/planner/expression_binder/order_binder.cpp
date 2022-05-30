@@ -61,7 +61,7 @@ unique_ptr<Expression> OrderBinder::Bind(unique_ptr<ParsedExpression> expr) {
       // INTEGER constant: we use the integer as an index into the select list (e.g. ORDER BY 1)
       auto index = (uint64_t)constant.value.GetValue<int64_t>();
       if (index < 1 || index > max_count) {
-        throw BinderException("ORDER term out of range - should be between 1 and %lld", (uint64_t)max_count);
+        throw Exception("ORDER term out of range - should be between 1 and %lld", (uint64_t)max_count);
       }
       return CreateProjectionReference(*expr, index - 1);
     }
@@ -97,7 +97,7 @@ unique_ptr<Expression> OrderBinder::Bind(unique_ptr<ParsedExpression> expr) {
   auto entry = projection_map.find(expr.get());
   if (entry != projection_map.end()) {
     if (entry->second == INVALID_INDEX) {
-      throw BinderException("Ambiguous reference to column");
+      throw Exception("Ambiguous reference to column");
     }
     // there is a matching entry in the projection list
     // just point to that entry
@@ -105,7 +105,7 @@ unique_ptr<Expression> OrderBinder::Bind(unique_ptr<ParsedExpression> expr) {
   }
   if (!extra_list) {
     // no extra list specified: we cannot push an extra ORDER BY clause
-    throw BinderException(
+    throw Exception(
         "Could not ORDER BY column \"%s\": add the expression/function to every SELECT, or move "
         "the UNION into a FROM clause.",
         expr->ToString());

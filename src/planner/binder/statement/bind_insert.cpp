@@ -20,7 +20,7 @@ static void CheckInsertColumnCountMismatch(int64_t expected_columns, int64_t res
                                                       : "Column name/value mismatch for insert on %s: "
                                                         "expected %lld columns but %lld values were supplied",
                                     tname, expected_columns, result_columns);
-    throw BinderException(msg);
+    throw Exception(msg);
   }
 }
 
@@ -48,10 +48,10 @@ BoundStatement Binder::Bind(InsertStatement &stmt) {
       column_name_map[stmt.columns[i]] = i;
       auto entry = table->name_map.find(stmt.columns[i]);
       if (entry == table->name_map.end()) {
-        throw BinderException("Column %s not found in table %s", stmt.columns[i], table->name);
+        throw Exception("Column %s not found in table %s", stmt.columns[i], table->name);
       }
       if (entry->second == COLUMN_IDENTIFIER_ROW_ID) {
-        throw BinderException("Cannot explicitly insert values into rowid column");
+        throw Exception("Cannot explicitly insert values into rowid column");
       }
       insert->expected_types.push_back(table->columns[entry->second].type);
       named_column_map.push_back(entry->second);
