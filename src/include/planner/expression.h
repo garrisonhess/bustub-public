@@ -12,8 +12,6 @@
 #include "type/type.h"
 
 namespace bustub {
-class BaseStatistics;
-
 //!  The Expression class represents a bound Expression with a return type
 class Expression : public BaseExpression {
  public:
@@ -22,8 +20,6 @@ class Expression : public BaseExpression {
 
   //! The return type of the expression
   Type return_type;
-  //! Expression statistics (if any) - ONLY USED FOR VERIFICATION
-  unique_ptr<BaseStatistics> verification_stats;
 
  public:
   bool IsAggregate() const override;

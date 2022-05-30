@@ -3,7 +3,6 @@
 #include "common/exception.h"
 #include "common/types/hash.h"
 #include "planner/expression_iterator.h"
-#include "storage/statistics/base_statistics.h"
 
 namespace bustub {
 

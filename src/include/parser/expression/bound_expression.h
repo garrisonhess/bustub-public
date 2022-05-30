@@ -35,13 +35,9 @@ class BoundExpression : public ParsedExpression {
   bool Equals(const BaseExpression *other) const override { return false; }
   hash_t Hash() const override { return 0; }
 
-  unique_ptr<ParsedExpression> Copy() const override {
-    throw SerializationException("Cannot copy or serialize bound expression");
-  }
+  unique_ptr<ParsedExpression> Copy() const override { throw Exception("Cannot copy or serialize bound expression"); }
 
-  void Serialize(FieldWriter &writer) const override {
-    throw SerializationException("Cannot copy or serialize bound expression");
-  }
+  void Serialize(FieldWriter &writer) const override { throw Exception("Cannot copy or serialize bound expression"); }
 };
 
 }  // namespace bustub

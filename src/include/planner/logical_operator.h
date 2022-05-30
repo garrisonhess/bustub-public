@@ -11,6 +11,7 @@
 #include "catalog/catalog.h"
 #include "common/common.h"
 #include "common/enums/logical_operator_type.h"
+#include "main/client_context.h"
 #include "planner/column_binding.h"
 #include "planner/expression.h"
 #include "planner/logical_operator_visitor.h"

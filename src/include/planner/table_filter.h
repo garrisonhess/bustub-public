@@ -13,7 +13,6 @@
 #include "common/enums/filter_propagate_result.h"
 #include "common/types.h"
 namespace bustub {
-class BaseStatistics;
 
 enum class TableFilterType : uint8_t {
   CONSTANT_COMPARISON = 0,  // constant comparison (e.g. =C, >C, >=C, <C, <=C)
@@ -32,8 +31,6 @@ class TableFilter {
   TableFilterType filter_type;
 
  public:
-  //! Returns true if the statistics indicate that the segment can contain values that satisfy that filter
-  virtual FilterPropagateResult CheckStatistics(BaseStatistics &stats) = 0;
   virtual string ToString(const string &column_name) = 0;
   virtual bool Equals(const TableFilter &other) const { return filter_type != other.filter_type; }
 };

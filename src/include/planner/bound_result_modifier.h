@@ -12,7 +12,6 @@
 #include "parser/result_modifier.h"
 #include "planner/bound_statement.h"
 #include "planner/expression.h"
-#include "storage/statistics/base_statistics.h"
 
 namespace bustub {
 
@@ -22,19 +21,16 @@ class BoundResultModifier {
   explicit BoundResultModifier(ResultModifierType type);
   virtual ~BoundResultModifier();
 
-  ResultModifierType type;
+  ResultModifierType type_;
 };
 
 struct BoundOrderByNode {
  public:
   BoundOrderByNode(OrderType type, OrderByNullType null_order, unique_ptr<Expression> expression);
-  BoundOrderByNode(OrderType type, OrderByNullType null_order, unique_ptr<Expression> expression,
-                   unique_ptr<BaseStatistics> stats);
 
   OrderType type;
   OrderByNullType null_order;
   unique_ptr<Expression> expression;
-  unique_ptr<BaseStatistics> stats;
 
  public:
   BoundOrderByNode Copy() const;

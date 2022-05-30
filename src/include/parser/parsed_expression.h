@@ -54,7 +54,7 @@ class ParsedExpression : public BaseExpression {
   //! Serializes an Expression to a stand-alone binary blob
   virtual void Serialize(FieldWriter &writer) const = 0;
 
-  //! Deserializes a blob back into an Expression [CAN THROW: SerializationException]
+  //! Deserializes a blob back into an Expression [CAN THROW: Exception]
   static unique_ptr<ParsedExpression> Deserialize(Deserializer &source);
 
  protected:

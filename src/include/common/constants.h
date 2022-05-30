@@ -14,6 +14,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 namespace bustub {
@@ -34,10 +35,12 @@ static constexpr int BUCKET_SIZE = 50;                                        //
 
 //! inline std directives that we use frequently
 using std::make_shared;
+using std::make_unique;
 using std::move;
 using std::shared_ptr;
 using std::string;
 using std::unique_ptr;
+using std::unordered_set;
 using std::vector;
 
 using frame_id_t = int32_t;    // frame id type

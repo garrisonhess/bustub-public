@@ -29,8 +29,6 @@ class BoundWindowExpression : public Expression {
   vector<unique_ptr<Expression>> children;
   //! The set of expressions to partition by
   vector<unique_ptr<Expression>> partitions;
-  //! Statistics belonging to the partitions expressions
-  vector<unique_ptr<BaseStatistics>> partitions_stats;
   //! The set of ordering clauses
   vector<BoundOrderByNode> orders;
   //! True to ignore NULL values

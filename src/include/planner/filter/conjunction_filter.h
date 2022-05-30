@@ -22,7 +22,6 @@ class ConjunctionFilter : public TableFilter {
   vector<unique_ptr<TableFilter>> child_filters;
 
  public:
-  virtual FilterPropagateResult CheckStatistics(BaseStatistics &stats) = 0;
   virtual string ToString(const string &column_name) = 0;
 
   virtual bool Equals(const TableFilter &other) const { return TableFilter::Equals(other); }
@@ -33,7 +32,6 @@ class ConjunctionOrFilter : public ConjunctionFilter {
   ConjunctionOrFilter();
 
  public:
-  FilterPropagateResult CheckStatistics(BaseStatistics &stats) override;
   string ToString(const string &column_name) override;
   bool Equals(const TableFilter &other) const override;
 };
@@ -43,7 +41,6 @@ class ConjunctionAndFilter : public ConjunctionFilter {
   ConjunctionAndFilter();
 
  public:
-  FilterPropagateResult CheckStatistics(BaseStatistics &stats) override;
   string ToString(const string &column_name) override;
   bool Equals(const TableFilter &other) const override;
 };

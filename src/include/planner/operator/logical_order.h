@@ -10,7 +10,6 @@
 
 #include "planner/bound_query_node.h"
 #include "planner/logical_operator.h"
-#include "storage/statistics/base_statistics.h"
 
 namespace bustub {
 

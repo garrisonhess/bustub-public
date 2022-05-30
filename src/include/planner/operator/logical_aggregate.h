@@ -11,7 +11,6 @@
 #include "parser/group_by_node.h"
 #include "planner/column_binding.h"
 #include "planner/logical_operator.h"
-#include "storage/statistics/base_statistics.h"
 
 namespace bustub {
 
@@ -33,8 +32,6 @@ class LogicalAggregate : public LogicalOperator {
   vector<GroupingSet> grouping_sets;
   //! The list of grouping function calls (optional)
   vector<vector<uint64_t>> grouping_functions;
-  //! Group statistics (optional)
-  vector<unique_ptr<BaseStatistics>> group_stats;
 
  public:
   string ParamsToString() const override;

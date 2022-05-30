@@ -8,16 +8,9 @@ BoundResultModifier::~BoundResultModifier() {}
 
 BoundOrderByNode::BoundOrderByNode(OrderType type, OrderByNullType null_order, unique_ptr<Expression> expression)
     : type(type), null_order(null_order), expression(move(expression)) {}
-BoundOrderByNode::BoundOrderByNode(OrderType type, OrderByNullType null_order, unique_ptr<Expression> expression,
-                                   unique_ptr<BaseStatistics> stats)
-    : type(type), null_order(null_order), expression(move(expression)), stats(move(stats)) {}
 
 BoundOrderByNode BoundOrderByNode::Copy() const {
-  if (stats) {
-    return BoundOrderByNode(type, null_order, expression->Copy(), stats->Copy());
-  } else {
     return BoundOrderByNode(type, null_order, expression->Copy());
-  }
 }
 
 string BoundOrderByNode::ToString() const {
@@ -51,8 +44,5 @@ BoundLimitModifier::BoundLimitModifier() : BoundResultModifier(ResultModifierTyp
 BoundOrderModifier::BoundOrderModifier() : BoundResultModifier(ResultModifierType::ORDER_MODIFIER) {}
 
 BoundDistinctModifier::BoundDistinctModifier() : BoundResultModifier(ResultModifierType::DISTINCT_MODIFIER) {}
-
-BoundLimitPercentModifier::BoundLimitPercentModifier()
-    : BoundResultModifier(ResultModifierType::LIMIT_PERCENT_MODIFIER) {}
 
 }  // namespace bustub

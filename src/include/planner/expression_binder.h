@@ -101,29 +101,10 @@ class ExpressionBinder {
   void ReplaceMacroParametersRecursive(unique_ptr<ParsedExpression> &expr);
 
  protected:
-  BindResult BindExpression(BetweenExpression &expr, uint64_t depth);
-  BindResult BindExpression(CaseExpression &expr, uint64_t depth);
-  BindResult BindExpression(CollateExpression &expr, uint64_t depth);
-  BindResult BindExpression(CastExpression &expr, uint64_t depth);
   BindResult BindExpression(ColumnRefExpression &expr, uint64_t depth);
-  BindResult BindExpression(ComparisonExpression &expr, uint64_t depth);
-  BindResult BindExpression(ConjunctionExpression &expr, uint64_t depth);
   BindResult BindExpression(ConstantExpression &expr, uint64_t depth);
-  BindResult BindExpression(FunctionExpression &expr, uint64_t depth, unique_ptr<ParsedExpression> *expr_ptr);
-  BindResult BindExpression(LambdaExpression &expr, uint64_t depth);
-  BindResult BindExpression(OperatorExpression &expr, uint64_t depth);
-  BindResult BindExpression(ParameterExpression &expr, uint64_t depth);
-  BindResult BindExpression(PositionalReferenceExpression &ref, uint64_t depth);
-  BindResult BindExpression(SubqueryExpression &expr, uint64_t depth);
 
  protected:
-  virtual BindResult BindGroupingFunction(OperatorExpression &op, uint64_t depth);
-  virtual BindResult BindFunction(FunctionExpression &expr, ScalarFunctionCatalogEntry *function, uint64_t depth);
-  virtual BindResult BindAggregate(FunctionExpression &expr, AggregateFunctionCatalogEntry *function, uint64_t depth);
-  virtual BindResult BindUnnest(FunctionExpression &expr, uint64_t depth);
-  virtual BindResult BindMacro(FunctionExpression &expr, ScalarMacroCatalogEntry *macro, uint64_t depth,
-                               unique_ptr<ParsedExpression> *expr_ptr);
-
   virtual string UnsupportedAggregateMessage();
   virtual string UnsupportedUnnestMessage();
 
