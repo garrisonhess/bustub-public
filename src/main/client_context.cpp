@@ -13,13 +13,8 @@
 #include <utility>
 
 namespace bustub {
-using std::lock_guard;
-using std::make_unique;
-using std::mutex;
 
-ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) {
-  db_ = std::move(database);
-}
+ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) { db_ = std::move(database); }
 
 unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
   try {
@@ -28,11 +23,11 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     prepare_count_++;
     auto statement_query = statement->query_;
     auto unbound_statement = statement->Copy();
-    unique_ptr<PreparedStatement> result = make_unique<PreparedStatement>(shared_from_this(), statement->query_);
+    unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(), statement->query_);
     result->statement_type_ = StatementType::SELECT_STATEMENT;
     result->types_ = {Type(TypeId::INTEGER)};
     result->names_ = {"column1"};
-    LOG_INFO("stmt query: %s", statement_query.c_str());
+    LOG_INFO("prepared statement query: %s", statement_query.c_str());
     return result;
 
   } catch (Exception &ex) {

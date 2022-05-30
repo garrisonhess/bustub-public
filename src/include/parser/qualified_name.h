@@ -14,8 +14,6 @@
 #include "common/constants.h"
 #include "common/exception.h"
 
-// #include "parser/keyword_helper.h"
-
 namespace bustub {
 using std::string;
 using std::vector;

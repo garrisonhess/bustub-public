@@ -41,8 +41,6 @@ class LoadStatement;
 //===--------------------------------------------------------------------===//
 class QueryNode;
 class SelectNode;
-class SetOperationNode;
-class RecursiveCTENode;
 
 //===--------------------------------------------------------------------===//
 // Expressions
@@ -68,16 +66,6 @@ class SubqueryExpression;
 class WindowExpression;
 
 //===--------------------------------------------------------------------===//
-// Constraints
-//===--------------------------------------------------------------------===//
-class Constraint;
-
-class NotNullConstraint;
-class CheckConstraint;
-class UniqueConstraint;
-class ForeignKeyConstraint;
-
-//===--------------------------------------------------------------------===//
 // TableRefs
 //===--------------------------------------------------------------------===//
 class TableRef;
@@ -89,10 +77,5 @@ class SubqueryRef;
 class TableFunctionRef;
 class EmptyTableRef;
 class ExpressionListRef;
-
-//===--------------------------------------------------------------------===//
-// Other
-//===--------------------------------------------------------------------===//
-struct SampleOptions;
 
 }  // namespace bustub

@@ -15,8 +15,6 @@
 #include "common/enums/tableref_type.h"
 #include "common/field_writer.h"
 
-// #include "parser/parsed_data/sample_options.h"
-
 namespace bustub {
 using std::string;
 using std::unique_ptr;

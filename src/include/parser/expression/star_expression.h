@@ -22,10 +22,6 @@ class StarExpression : public ParsedExpression {
 
   //! The relation name in case of tbl.*, or empty if this is a normal *
   string relation_name_;
-  //   //! List of columns to exclude from the STAR expression
-  //   case_insensitive_set_t exclude_list;
-  //   //! List of columns to replace with another expression
-  //   case_insensitive_map_t<unique_ptr<ParsedExpression>> replace_list;
 
  public:
   string ToString() const override;

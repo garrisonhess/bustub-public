@@ -8,8 +8,10 @@
 
 #pragma once
 
-#include "parser/parsed_data/create_info.h"
+#include <vector>
+#include "parser/column_definition.h"
 #include "parser/sql_statement.h"
+#include "parser/statement/select_statement.h"
 
 namespace bustub {
 
@@ -17,7 +19,20 @@ class CreateStatement : public SQLStatement {
  public:
   CreateStatement();
 
-  unique_ptr<CreateInfo> info_;
+  //! Table name to insert to
+  string table_;
+
+  //! CREATE TABLE from QUERY
+  unique_ptr<SelectStatement> query_;
+
+  //! List of columns of the table
+  std::vector<ColumnDefinition> columns_;
+
+  //! The schema name of the entry
+  string schema_;
+
+  //! The SQL string of the CREATE statement
+  string sql_;
 
  protected:
   CreateStatement(const CreateStatement &other);

@@ -11,9 +11,6 @@
 #include "parser/parsed_expression.h"
 #include "parser/result_modifier.h"
 
-// #include "common/serializer.h"
-// #include "parser/common_table_expression_info.h"
-
 #include <cstdint>
 #include <string>
 #include <vector>

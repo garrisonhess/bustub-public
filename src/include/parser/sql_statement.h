@@ -25,8 +25,6 @@ class SQLStatement {
   int32_t stmt_location_;
   //! The statement length within the query string
   int32_t stmt_length_;
-  //! The number of prepared statement parameters (if any)
-  int32_t n_param_;
   //! The query text that corresponds to this SQL statement
   std::string query_;
 

@@ -1,29 +1,21 @@
 #include "parser/parser.h"
 
-#include "parser/transformer.h"
+#include <iostream>
 
+#include "common/logger.h"
+#include "parser/query_node/select_node.h"
 #include "parser/statement/create_statement.h"
 #include "parser/statement/select_statement.h"
 #include "parser/statement/update_statement.h"
-
-#include "parser/parsed_data/create_table_info.h"
-#include "parser/query_node/select_node.h"
 #include "parser/tableref/expressionlistref.h"
-
-#include "common/logger.h"
-
-#include <iostream>
+#include "parser/transformer.h"
 
 namespace bustub {
 using bustub_libpgquery::PGKeywordCategory;
 using bustub_libpgquery::PGSimplifiedTokenType;
 using std::move;
 
-// Parser::Parser(ParserOptions options_p) : options(options_p) {
-// }
-
 void Parser::ParseQuery(const std::string &query) {
-  // Transformer transformer(options.max_expression_depth);
   Transformer transformer(nullptr);
   {
     // PostgresParser::SetPreserveIdentifierCase(options.preserve_identifier_case);
@@ -31,12 +23,11 @@ void Parser::ParseQuery(const std::string &query) {
     parser.Parse(query);
     if (!parser.success) {
       LOG_INFO("Query failed to parse!");
-      // throw Exception("Query failed to parse!");
+      throw Exception("Query failed to parse!");
       return;
     }
 
     if (parser.parse_tree == nullptr) {
-      // empty statement
       LOG_INFO("parser received empty statement");
       return;
     }
@@ -54,7 +45,7 @@ void Parser::ParseQuery(const std::string &query) {
       LOG_INFO("parsed query: %s", statement->query_.c_str());
       if (statement->type_ == StatementType::CREATE_STATEMENT) {
         auto &create = (CreateStatement &)*statement;
-        create.info_->sql_ = query.substr(statement->stmt_location_, statement->stmt_length_);
+        create.sql_ = query.substr(statement->stmt_location_, statement->stmt_length_);
       }
     }
   }
@@ -213,11 +204,7 @@ vector<ColumnDefinition> Parser::ParseColumnList(const string &column_list, Pars
     throw Exception("Expected a single CREATE statement");
   }
   auto &create = (CreateStatement &)*parser.statements_[0];
-  if (create.info_->type_ != CatalogType::TABLE_ENTRY) {
-    throw Exception("Expected a single CREATE TABLE statement");
-  }
-  auto &info = ((CreateTableInfo &)*create.info_);
-  return move(info.columns_);
+  return move(create.columns_);
 }
 
 }  // namespace bustub

@@ -19,17 +19,17 @@ class InsertStatement : public SQLStatement {
   InsertStatement();
 
   //! The select statement to insert from
-  unique_ptr<SelectStatement> select_statement;
+  unique_ptr<SelectStatement> select_statement_;
   //! Column names to insert into
-  vector<string> columns;
+  vector<string> columns_;
 
   //! Table name to insert to
-  string table;
+  string table_;
   //! Schema name to insert to
-  string schema;
+  string schema_;
 
   //! keep track of optional returningList if statement contains a RETURNING keyword
-  vector<unique_ptr<ParsedExpression>> returning_list;
+  vector<unique_ptr<ParsedExpression>> returning_list_;
 
  protected:
   InsertStatement(const InsertStatement &other);
