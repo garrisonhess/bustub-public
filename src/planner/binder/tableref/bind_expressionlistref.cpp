@@ -8,17 +8,16 @@ namespace bustub {
 
 unique_ptr<BoundTableRef> Binder::Bind(ExpressionListRef &expr) {
   auto result = make_unique<BoundExpressionListRef>();
-  result->types = expr.expected_types;
-  result->names = expr.expected_names;
+  result->types = expr.expected_types_;
+  result->names = expr.expected_names_;
   // bind value list
   InsertBinder binder(*this, context);
   binder.target_type = Type(TypeId::INVALID);
-  for (uint64_t list_idx = 0; list_idx < expr.values.size(); list_idx++) {
-    auto &expression_list = expr.values[list_idx];
-    if (result->names.empty()) {
+  for (auto & expression_list : expr.values_) {
+     if (result->names.empty()) {
       // no names provided, generate them
       for (uint64_t val_idx = 0; val_idx < expression_list.size(); val_idx++) {
-        result->names.push_back("col" + to_string(val_idx));
+        result->names.push_back("col" +std::to_string(val_idx));
       }
     }
 
@@ -33,29 +32,28 @@ unique_ptr<BoundTableRef> Binder::Bind(ExpressionListRef &expr) {
     }
     result->values.push_back(move(list));
   }
-  if (result->types.empty() && !expr.values.empty()) {
+  if (result->types.empty() && !expr.values_.empty()) {
     // there are no types specified
     // we have to figure out the result types
     // for each column, we iterate over all of the expressions and select the max logical type
     // we initialize all types to SQLNULL
-    result->types.resize(expr.values[0].size(), Type::SQLNULL);
+    result->types.resize(expr.values_[0].size(), Type::SQLNULL);
     // now loop over the lists and select the max logical type
     for (uint64_t list_idx = 0; list_idx < result->values.size(); list_idx++) {
       auto &list = result->values[list_idx];
       for (uint64_t val_idx = 0; val_idx < list.size(); val_idx++) {
-        result->types[val_idx] = Type::MaxType(result->types[val_idx], list[val_idx]->return_type);
+        result->types[val_idx] = Type::MaxType(result->types[val_idx], list[val_idx]->return_type_);
       }
     }
     // finally do another loop over the expressions and add casts where required
-    for (uint64_t list_idx = 0; list_idx < result->values.size(); list_idx++) {
-      auto &list = result->values[list_idx];
-      for (uint64_t val_idx = 0; val_idx < list.size(); val_idx++) {
+    for (auto & list : result->values) {
+       for (uint64_t val_idx = 0; val_idx < list.size(); val_idx++) {
         list[val_idx] = BoundCastExpression::AddCastToType(move(list[val_idx]), result->types[val_idx]);
       }
     }
   }
   result->bind_index = GenerateTableIndex();
-  bind_context.AddGenericBinding(result->bind_index, expr.alias, result->names, result->types);
+  bind_context.AddGenericBinding(result->bind_index, expr.alias_, result->names, result->types);
   return move(result);
 }
 
