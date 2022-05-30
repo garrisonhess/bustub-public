@@ -36,7 +36,7 @@ static Type ResolveWindowExpressionType(ExpressionType window_type, const vector
       param_count = 2;
       break;
     default:
-      throw InternalException("Unrecognized window expression type " + ExpressionTypeToString(window_type));
+      throw Exception("Unrecognized window expression type " + ExpressionTypeToString(window_type));
   }
   if (child_types.size() != param_count) {
     throw BinderException("%s needs %d parameter%s, got %d", ExpressionTypeToString(window_type), param_count,
@@ -58,7 +58,7 @@ static Type ResolveWindowExpressionType(ExpressionType window_type, const vector
     case ExpressionType::WINDOW_LAG:
       return child_types[0];
     default:
-      throw InternalException("Unrecognized window expression type " + ExpressionTypeToString(window_type));
+      throw Exception("Unrecognized window expression type " + ExpressionTypeToString(window_type));
   }
 }
 
@@ -74,8 +74,8 @@ static unique_ptr<Expression> GetExpression(unique_ptr<ParsedExpression> &expr) 
   if (!expr) {
     return nullptr;
   }
-  D_ASSERT(expr.get());
-  D_ASSERT(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
+  assert(expr.get());
+  assert(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
   return move(((BoundExpression &)*expr).expr);
 }
 
@@ -83,8 +83,8 @@ static unique_ptr<Expression> CastWindowExpression(unique_ptr<ParsedExpression> 
   if (!expr) {
     return nullptr;
   }
-  D_ASSERT(expr.get());
-  D_ASSERT(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
+  assert(expr.get());
+  assert(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
 
   auto &bound = (BoundExpression &)*expr;
   bound.expr = BoundCastExpression::AddCastToType(move(bound.expr), type);
@@ -96,13 +96,13 @@ static Type BindRangeExpression(ClientContext &context, const string &name, uniq
                                 unique_ptr<ParsedExpression> &order_expr) {
   vector<unique_ptr<Expression>> children;
 
-  D_ASSERT(order_expr.get());
-  D_ASSERT(order_expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
+  assert(order_expr.get());
+  assert(order_expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
   auto &bound_order = (BoundExpression &)*order_expr;
   children.emplace_back(bound_order.expr->Copy());
 
-  D_ASSERT(expr.get());
-  D_ASSERT(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
+  assert(expr.get());
+  assert(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
   auto &bound = (BoundExpression &)*expr;
   children.emplace_back(move(bound.expr));
 
@@ -158,8 +158,8 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
   vector<Type> types;
   vector<unique_ptr<Expression>> children;
   for (auto &child : window.children) {
-    D_ASSERT(child.get());
-    D_ASSERT(child->expression_class == ExpressionClass::BOUND_EXPRESSION);
+    assert(child.get());
+    assert(child->expression_class == ExpressionClass::BOUND_EXPRESSION);
     auto &bound = (BoundExpression &)*child;
     // Add casts for positional arguments
     const auto argno = children.size();
@@ -189,7 +189,7 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
     //  Look up the aggregate function in the catalog
     auto func = (AggregateFunctionCatalogEntry *)Catalog::GetCatalog(context).GetEntry<AggregateFunctionCatalogEntry>(
         context, window.schema, window.function_name, false, error_context);
-    D_ASSERT(func->type == CatalogType::AGGREGATE_FUNCTION_ENTRY);
+    assert(func->type == CatalogType::AGGREGATE_FUNCTION_ENTRY);
 
     // bind the aggregate
     string error;
@@ -224,12 +224,12 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
   auto range_sense = OrderType::INVALID;
   Type start_type = Type::BIGINT;
   if (window.start == WindowBoundary::EXPR_PRECEDING_RANGE) {
-    D_ASSERT(window.orders.size() == 1);
+    assert(window.orders.size() == 1);
     range_sense = ResolveOrderType(config, window.orders[0].type);
     const auto name = (range_sense == OrderType::ASCENDING) ? "-" : "+";
     start_type = BindRangeExpression(context, name, window.start_expr, window.orders[0].expression);
   } else if (window.start == WindowBoundary::EXPR_FOLLOWING_RANGE) {
-    D_ASSERT(window.orders.size() == 1);
+    assert(window.orders.size() == 1);
     range_sense = ResolveOrderType(config, window.orders[0].type);
     const auto name = (range_sense == OrderType::ASCENDING) ? "+" : "-";
     start_type = BindRangeExpression(context, name, window.start_expr, window.orders[0].expression);
@@ -237,12 +237,12 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
 
   Type end_type = Type::BIGINT;
   if (window.end == WindowBoundary::EXPR_PRECEDING_RANGE) {
-    D_ASSERT(window.orders.size() == 1);
+    assert(window.orders.size() == 1);
     range_sense = ResolveOrderType(config, window.orders[0].type);
     const auto name = (range_sense == OrderType::ASCENDING) ? "-" : "+";
     end_type = BindRangeExpression(context, name, window.end_expr, window.orders[0].expression);
   } else if (window.end == WindowBoundary::EXPR_FOLLOWING_RANGE) {
-    D_ASSERT(window.orders.size() == 1);
+    assert(window.orders.size() == 1);
     range_sense = ResolveOrderType(config, window.orders[0].type);
     const auto name = (range_sense == OrderType::ASCENDING) ? "+" : "-";
     end_type = BindRangeExpression(context, name, window.end_expr, window.orders[0].expression);
@@ -250,11 +250,11 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
 
   // Cast ORDER and boundary expressions to the same type
   if (range_sense != OrderType::INVALID) {
-    D_ASSERT(window.orders.size() == 1);
+    assert(window.orders.size() == 1);
 
     auto &order_expr = window.orders[0].expression;
-    D_ASSERT(order_expr.get());
-    D_ASSERT(order_expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
+    assert(order_expr.get());
+    assert(order_expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
     auto &bound_order = (BoundExpression &)*order_expr;
     auto order_type = bound_order.expr->return_type;
     if (window.start_expr) {

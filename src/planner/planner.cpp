@@ -111,7 +111,7 @@ void Planner::PlanExecute(unique_ptr<SQLStatement> statement) {
     if (all_bound && prepared->types != entry->second->types) {
       throw BinderException("Rebinding statement \"%s\" after catalog change resulted in change of types", stmt.name);
     }
-    D_ASSERT(prepared->properties.bound_all_parameters);
+    assert(prepared->properties.bound_all_parameters);
     rebound = true;
   }
   // add casts to the prepared statement parameters as required
@@ -156,7 +156,7 @@ void Planner::PlanPrepare(unique_ptr<SQLStatement> statement) {
 }
 
 void Planner::CreatePlan(unique_ptr<SQLStatement> statement) {
-  D_ASSERT(statement);
+  assert(statement);
   switch (statement->type) {
     case StatementType::SELECT_STATEMENT:
     case StatementType::INSERT_STATEMENT:

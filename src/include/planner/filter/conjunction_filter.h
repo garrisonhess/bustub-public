@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "common/vector.h"
 #include "planner/table_filter.h"
 
 namespace bustub {

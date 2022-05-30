@@ -8,7 +8,7 @@
 namespace bustub {
 
 unique_ptr<LogicalOperator> Binder::VisitQueryNode(BoundQueryNode &node, unique_ptr<LogicalOperator> root) {
-  D_ASSERT(root);
+  assert(root);
   for (auto &mod : node.modifiers) {
     switch (mod->type) {
       case ResultModifierType::DISTINCT_MODIFIER: {

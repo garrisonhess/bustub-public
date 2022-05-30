@@ -24,9 +24,9 @@ unique_ptr<Expression> RewriteCorrelatedExpressions::VisitReplace(BoundColumnRef
   // replace with the entry referring to the duplicate eliminated scan
   // if this assertion occurs it generally means the correlated expressions were not propagated correctly
   // through different binders
-  D_ASSERT(expr.depth == 1);
+  assert(expr.depth == 1);
   auto entry = correlated_map.find(expr.binding);
-  D_ASSERT(entry != correlated_map.end());
+  assert(entry != correlated_map.end());
 
   expr.binding = ColumnBinding(base_binding.table_index, base_binding.column_index + entry->second);
   expr.depth = 0;
@@ -82,7 +82,7 @@ void RewriteCorrelatedExpressions::RewriteCorrelatedRecursive::RewriteCorrelated
     }
   } else if (child.type == ExpressionType::SUBQUERY) {
     // we encountered another subquery: rewrite recursively
-    D_ASSERT(child.GetExpressionClass() == ExpressionClass::BOUND_SUBQUERY);
+    assert(child.GetExpressionClass() == ExpressionClass::BOUND_SUBQUERY);
     auto &bound_subquery = (BoundSubqueryExpression &)child;
     RewriteCorrelatedRecursive rewrite(bound_subquery, base_binding, correlated_map);
     rewrite.RewriteCorrelatedSubquery(bound_subquery);

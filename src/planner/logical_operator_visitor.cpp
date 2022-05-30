@@ -162,7 +162,7 @@ void LogicalOperatorVisitor::VisitExpression(unique_ptr<Expression> *expression)
       result = VisitReplace((BoundUnnestExpression &)expr, expression);
       break;
     default:
-      throw InternalException("Unrecognized expression type in logical operator visitor");
+      throw Exception("Unrecognized expression type in logical operator visitor");
   }
   if (result) {
     *expression = move(result);

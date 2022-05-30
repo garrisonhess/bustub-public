@@ -21,7 +21,7 @@
 
 // unique_ptr<CreateStatement> Transformer::TransformCreateIndex(bustub_libpgquery::PGNode *node) {
 // 	auto stmt = reinterpret_cast<bustub_libpgquery::PGIndexStmt *>(node);
-// 	D_ASSERT(stmt);
+// 	assert(stmt);
 // 	auto result = make_unique<CreateStatement>();
 // 	auto info = make_unique<CreateIndexInfo>();
 
@@ -42,7 +42,7 @@
 // 			info->expressions.push_back(make_unique<ColumnRefExpression>(index_element->name,
 // stmt->relation->relname)); 		} else {
 // 			// parse the index expression
-// 			D_ASSERT(index_element->expr);
+// 			assert(index_element->expr);
 // 			info->expressions.push_back(TransformExpression(index_element->expr));
 // 		}
 // 	}

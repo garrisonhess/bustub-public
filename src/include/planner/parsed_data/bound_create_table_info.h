@@ -19,7 +19,7 @@ namespace bustub {
 class CatalogEntry;
 
 struct BoundCreateTableInfo {
-  explicit BoundCreateTableInfo(unique_ptr<CreateInfo> base_p) : base(move(base_p)) { D_ASSERT(base); }
+  explicit BoundCreateTableInfo(unique_ptr<CreateInfo> base_p) : base(move(base_p)) { assert(base); }
 
   //! The schema to create the table in
   SchemaCatalogEntry *schema;
@@ -41,7 +41,7 @@ struct BoundCreateTableInfo {
   unique_ptr<LogicalOperator> query;
 
   CreateTableInfo &Base() {
-    D_ASSERT(base);
+    assert(base);
     return (CreateTableInfo &)*base;
   }
 };

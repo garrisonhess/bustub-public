@@ -29,11 +29,11 @@ JoinSide JoinSide::GetJoinSide(uint64_t table_binding, unordered_set<uint64_t> &
                                unordered_set<uint64_t> &right_bindings) {
   if (left_bindings.find(table_binding) != left_bindings.end()) {
     // column references table on left side
-    D_ASSERT(right_bindings.find(table_binding) == right_bindings.end());
+    assert(right_bindings.find(table_binding) == right_bindings.end());
     return JoinSide::LEFT;
   } else {
     // column references table on right side
-    D_ASSERT(right_bindings.find(table_binding) != right_bindings.end());
+    assert(right_bindings.find(table_binding) != right_bindings.end());
     return JoinSide::RIGHT;
   }
 }
@@ -47,9 +47,9 @@ JoinSide JoinSide::GetJoinSide(Expression &expression, unordered_set<uint64_t> &
     }
     return GetJoinSide(colref.binding.table_index, left_bindings, right_bindings);
   }
-  D_ASSERT(expression.type != ExpressionType::BOUND_REF);
+  assert(expression.type != ExpressionType::BOUND_REF);
   if (expression.type == ExpressionType::SUBQUERY) {
-    D_ASSERT(expression.GetExpressionClass() == ExpressionClass::BOUND_SUBQUERY);
+    assert(expression.GetExpressionClass() == ExpressionClass::BOUND_SUBQUERY);
     auto &subquery = (BoundSubqueryExpression &)expression;
     JoinSide side = JoinSide::NONE;
     if (subquery.child) {

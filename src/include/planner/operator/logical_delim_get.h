@@ -17,7 +17,7 @@ class LogicalDelimGet : public LogicalOperator {
  public:
   LogicalDelimGet(uint64_t table_index, vector<Type> types)
       : LogicalOperator(LogicalOperatorType::LOGICAL_DELIM_GET), table_index(table_index) {
-    D_ASSERT(types.size() > 0);
+    assert(types.size() > 0);
     chunk_types = types;
   }
 

@@ -9,7 +9,7 @@
 // unique_ptr<ConstantExpression> Transformer::TransformValue(bustub_libpgquery::PGValue val) {
 // 	switch (val.type) {
 // 	case bustub_libpgquery::T_PGInteger:
-// 		D_ASSERT(val.val.ival <= NumericLimits<int32_t>::Maximum());
+// 		assert(val.val.ival <= NumericLimits<int32_t>::Maximum());
 // 		return std::make_unique<ConstantExpression>(Value::INTEGER((int32_t)val.val.ival));
 // 	case bustub_libpgquery::T_PGBitString: // FIXME: this should actually convert to BLOB
 // 	case bustub_libpgquery::T_PGString:

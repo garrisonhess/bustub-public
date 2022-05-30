@@ -22,13 +22,13 @@ class BoundForeignKeyConstraint : public BoundConstraint {
         pk_key_set(move(pk_key_set_p)),
         fk_key_set(move(fk_key_set_p)) {
 #ifdef DEBUG
-    D_ASSERT(info.pk_keys.size() == pk_key_set.size());
+    assert(info.pk_keys.size() == pk_key_set.size());
     for (auto &key : info.pk_keys) {
-      D_ASSERT(pk_key_set.find(key) != pk_key_set.end());
+      assert(pk_key_set.find(key) != pk_key_set.end());
     }
-    D_ASSERT(info.fk_keys.size() == fk_key_set.size());
+    assert(info.fk_keys.size() == fk_key_set.size());
     for (auto &key : info.fk_keys) {
-      D_ASSERT(fk_key_set.find(key) != fk_key_set.end());
+      assert(fk_key_set.find(key) != fk_key_set.end());
     }
 #endif
   }

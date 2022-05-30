@@ -37,7 +37,7 @@ unique_ptr<ParsedExpression> ExpressionBinder::QualifyColumnName(const string &c
   // no table name: find a binding that contains this
   if (binder.macro_binding != nullptr && binder.macro_binding->HasMatchingBinding(column_name)) {
     // priority to macro parameter bindings TODO: throw a warning when this name conflicts
-    D_ASSERT(!binder.macro_binding->alias.empty());
+    assert(!binder.macro_binding->alias.empty());
     return make_unique<ColumnRefExpression>(column_name, binder.macro_binding->alias);
   } else {
     string table_name = binder.bind_context.GetMatchingBinding(column_name);
@@ -99,7 +99,7 @@ unique_ptr<ParsedExpression> ExpressionBinder::CreateStructExtract(unique_ptr<Pa
 }
 
 unique_ptr<ParsedExpression> ExpressionBinder::CreateStructPack(ColumnRefExpression &colref) {
-  D_ASSERT(colref.column_names.size() <= 2);
+  assert(colref.column_names.size() <= 2);
   string error_message;
   auto &table_name = colref.column_names.back();
   auto binding = binder.bind_context.GetBinding(table_name, error_message);
@@ -221,7 +221,7 @@ BindResult ExpressionBinder::BindExpression(ColumnRefExpression &colref_p, uint6
     return BindExpression(&expr, depth);
   }
   auto &colref = (ColumnRefExpression &)*expr;
-  D_ASSERT(colref.column_names.size() == 2 || colref.column_names.size() == 3);
+  assert(colref.column_names.size() == 2 || colref.column_names.size() == 3);
   auto &table_name = colref.column_names.size() == 3 ? colref.column_names[1] : colref.column_names[0];
   // individual column reference
   // resolve to either a base table or a subquery expression

@@ -30,7 +30,7 @@ unique_ptr<Expression> Binder::BindOrderExpression(OrderBinder &order_binder, un
     // remove the expression from the DISTINCT ON list
     return nullptr;
   }
-  D_ASSERT(bound_expr->type == ExpressionType::BOUND_COLUMN_REF);
+  assert(bound_expr->type == ExpressionType::BOUND_COLUMN_REF);
   return bound_expr;
 }
 
@@ -125,11 +125,11 @@ void Binder::BindModifiers(OrderBinder &order_binder, QueryNode &statement, Boun
         auto &order = (OrderModifier &)*mod;
         auto bound_order = make_unique<BoundOrderModifier>();
         auto &config = DBConfig::GetConfig(context);
-        D_ASSERT(!order.orders.empty());
+        assert(!order.orders.empty());
         if (order.orders[0].expression->type == ExpressionType::STAR) {
           // ORDER BY ALL
           // replace the order list with the maximum order by count
-          D_ASSERT(order.orders.size() == 1);
+          assert(order.orders.size() == 1);
           auto order_type = order.orders[0].type;
           auto null_order = order.orders[0].null_order;
 
@@ -194,12 +194,12 @@ void Binder::BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_t
         } else {
           // DISTINCT with target list: set types
           for (auto &expr : distinct.target_distincts) {
-            D_ASSERT(expr->type == ExpressionType::BOUND_COLUMN_REF);
+            assert(expr->type == ExpressionType::BOUND_COLUMN_REF);
             auto &bound_colref = (BoundColumnRefExpression &)*expr;
             if (bound_colref.binding.column_index == DConstants::INVALID_INDEX) {
               throw BinderException("Ambiguous name in DISTINCT ON!");
             }
-            D_ASSERT(bound_colref.binding.column_index < sql_types.size());
+            assert(bound_colref.binding.column_index < sql_types.size());
             bound_colref.return_type = sql_types[bound_colref.binding.column_index];
           }
         }
@@ -229,12 +229,12 @@ void Binder::BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_t
         auto &order = (BoundOrderModifier &)*bound_mod;
         for (auto &order_node : order.orders) {
           auto &expr = order_node.expression;
-          D_ASSERT(expr->type == ExpressionType::BOUND_COLUMN_REF);
+          assert(expr->type == ExpressionType::BOUND_COLUMN_REF);
           auto &bound_colref = (BoundColumnRefExpression &)*expr;
           if (bound_colref.binding.column_index == DConstants::INVALID_INDEX) {
             throw BinderException("Ambiguous name in ORDER BY!");
           }
-          D_ASSERT(bound_colref.binding.column_index < sql_types.size());
+          assert(bound_colref.binding.column_index < sql_types.size());
           auto sql_type = sql_types[bound_colref.binding.column_index];
           bound_colref.return_type = sql_types[bound_colref.binding.column_index];
           if (sql_type.id() == TypeId::VARCHAR) {
@@ -331,7 +331,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
       // bind the groups
       Type group_type;
       auto bound_expr = group_binder.Bind(group_expressions[i], &group_type);
-      D_ASSERT(bound_expr->return_type.id() != TypeId::INVALID);
+      assert(bound_expr->return_type.id() != TypeId::INVALID);
 
       // push a potential collation, if necessary
       bound_expr =

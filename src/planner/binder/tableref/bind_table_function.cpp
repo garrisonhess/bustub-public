@@ -110,7 +110,7 @@ unique_ptr<BoundTableRef> Binder::Bind(TableFunctionRef &ref) {
   QueryErrorContext error_context(root_statement, ref.query_location);
   auto bind_index = GenerateTableIndex();
 
-  D_ASSERT(ref.function->type == ExpressionType::FUNCTION);
+  assert(ref.function->type == ExpressionType::FUNCTION);
   auto fexpr = (FunctionExpression *)ref.function.get();
 
   TableFunctionCatalogEntry *function = nullptr;
@@ -126,7 +126,7 @@ unique_ptr<BoundTableRef> Binder::Bind(TableFunctionRef &ref) {
   } else if (func_catalog->type == CatalogType::TABLE_MACRO_ENTRY) {
     auto macro_func = (TableMacroCatalogEntry *)func_catalog;
     auto query_node = BindTableMacro(*fexpr, macro_func, 0);
-    D_ASSERT(query_node);
+    assert(query_node);
 
     auto binder = Binder::CreateBinder(context, this);
     binder->can_contain_nulls = true;
@@ -192,12 +192,12 @@ unique_ptr<BoundTableRef> Binder::Bind(TableFunctionRef &ref) {
     bind_data = table_function.bind(context, bind_input, return_types, return_names);
   }
   if (return_types.size() != return_names.size()) {
-    throw InternalException(
+    throw Exception(
         "Failed to bind \"%s\": Table function return_types and return_names must be of the same size",
         table_function.name);
   }
   if (return_types.empty()) {
-    throw InternalException("Failed to bind \"%s\": Table function must return at least one column",
+    throw Exception("Failed to bind \"%s\": Table function must return at least one column",
                             table_function.name);
   }
   // overwrite the names with any supplied aliases

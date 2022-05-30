@@ -19,9 +19,9 @@ unique_ptr<LogicalOperator> Binder::PlanFilter(unique_ptr<Expression> condition,
 
 unique_ptr<LogicalOperator> Binder::CreatePlan(BoundSelectNode &statement) {
   unique_ptr<LogicalOperator> root;
-  D_ASSERT(statement.from_table);
+  assert(statement.from_table);
   root = CreatePlan(*statement.from_table);
-  D_ASSERT(root);
+  assert(root);
 
   // plan the sample clause
   if (statement.sample_options) {
@@ -75,7 +75,7 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundSelectNode &statement) {
     for (auto &expr : win->expressions) {
       PlanSubqueries(&expr, &root);
     }
-    D_ASSERT(!win->expressions.empty());
+    assert(!win->expressions.empty());
     win->AddChild(move(root));
     root = move(win);
   }
@@ -95,7 +95,7 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundSelectNode &statement) {
     for (auto &expr : unnest->expressions) {
       PlanSubqueries(&expr, &root);
     }
-    D_ASSERT(!unnest->expressions.empty());
+    assert(!unnest->expressions.empty());
     unnest->AddChild(move(root));
     root = move(unnest);
   }
@@ -115,7 +115,7 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundSelectNode &statement) {
 
   // add a prune node if necessary
   if (statement.need_prune) {
-    D_ASSERT(root);
+    assert(root);
     vector<unique_ptr<Expression>> prune_expressions;
     for (uint64_t i = 0; i < statement.column_count; i++) {
       prune_expressions.push_back(make_unique<BoundColumnRefExpression>(projection.expressions[i]->return_type,

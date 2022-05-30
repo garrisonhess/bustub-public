@@ -91,12 +91,12 @@ UsingColumnSet *BindContext::GetUsingBinding(const string &column_name) {
   for (auto &using_set : *using_bindings) {
     return using_set;
   }
-  throw InternalException("Using binding found but no entries");
+  throw Exception("Using binding found but no entries");
 }
 
 UsingColumnSet *BindContext::GetUsingBinding(const string &column_name, const string &binding_name) {
   if (binding_name.empty()) {
-    throw InternalException("GetUsingBinding: expected non-empty binding_name");
+    throw Exception("GetUsingBinding: expected non-empty binding_name");
   }
   unordered_set<UsingColumnSet *> *using_bindings;
   if (!FindUsingBinding(column_name, &using_bindings)) {
@@ -117,7 +117,7 @@ void BindContext::RemoveUsingBinding(const string &column_name, UsingColumnSet *
   }
   auto entry = using_columns.find(column_name);
   if (entry == using_columns.end()) {
-    throw InternalException("Attempting to remove using binding that is not there");
+    throw Exception("Attempting to remove using binding that is not there");
   }
   auto &bindings = entry->second;
   if (bindings.find(set) != bindings.end()) {
@@ -138,11 +138,11 @@ string BindContext::GetActualColumnName(const string &binding_name, const string
   string error;
   auto binding = GetBinding(binding_name, error);
   if (!binding) {
-    throw InternalException("No binding with name \"%s\"", binding_name);
+    throw Exception("No binding with name \"%s\"", binding_name);
   }
   uint64_t binding_index;
   if (!binding->TryGetBindingIndex(column_name, binding_index)) {  // LCOV_EXCL_START
-    throw InternalException("Binding with name \"%s\" does not have a column named \"%s\"", binding_name, column_name);
+    throw Exception("Binding with name \"%s\" does not have a column named \"%s\"", binding_name, column_name);
   }  // LCOV_EXCL_STOP
   return binding->names[binding_index];
 }
@@ -212,7 +212,7 @@ Binding *BindContext::GetBinding(const string &name, string &out_error) {
 
 BindResult BindContext::BindColumn(ColumnRefExpression &colref, uint64_t depth) {
   if (!colref.IsQualified()) {
-    throw InternalException("Could not bind alias \"%s\"!", colref.GetColumnName());
+    throw Exception("Could not bind alias \"%s\"!", colref.GetColumnName());
   }
 
   string error;
@@ -435,7 +435,7 @@ void BindContext::AddContext(BindContext other) {
 #ifdef DEBUG
       for (auto &other_alias : using_columns[entry.first]) {
         for (auto &col : alias->bindings) {
-          D_ASSERT(other_alias->bindings.find(col) == other_alias->bindings.end());
+          assert(other_alias->bindings.find(col) == other_alias->bindings.end());
         }
       }
 #endif

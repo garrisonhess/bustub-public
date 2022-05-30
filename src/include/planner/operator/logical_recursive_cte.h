@@ -17,7 +17,7 @@ class LogicalRecursiveCTE : public LogicalOperator {
   LogicalRecursiveCTE(uint64_t table_index, uint64_t column_count, bool union_all, unique_ptr<LogicalOperator> top,
                       unique_ptr<LogicalOperator> bottom, LogicalOperatorType type)
       : LogicalOperator(type), union_all(union_all), table_index(table_index), column_count(column_count) {
-    D_ASSERT(type == LogicalOperatorType::LOGICAL_RECURSIVE_CTE);
+    assert(type == LogicalOperatorType::LOGICAL_RECURSIVE_CTE);
     children.push_back(move(top));
     children.push_back(move(bottom));
   }

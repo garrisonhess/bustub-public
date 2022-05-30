@@ -124,7 +124,7 @@ void ExpressionIterator::EnumerateChildren(Expression &expr,
       // these node types have no children
       break;
     default:
-      throw InternalException("ExpressionIterator used on unbound expression");
+      throw Exception("ExpressionIterator used on unbound expression");
   }
 }
 

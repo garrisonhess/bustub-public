@@ -98,7 +98,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(QueryNode &node) {
       result = BindNode((RecursiveCTENode &)node);
       break;
     default:
-      D_ASSERT(node.type == QueryNodeType::SET_OPERATION_NODE);
+      assert(node.type == QueryNodeType::SET_OPERATION_NODE);
       result = BindNode((SetOperationNode &)node);
       break;
   }
@@ -126,7 +126,7 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundQueryNode &node) {
     case QueryNodeType::RECURSIVE_CTE_NODE:
       return CreatePlan((BoundRecursiveCTENode &)node);
     default:
-      throw InternalException("Unsupported bound query node type");
+      throw Exception("Unsupported bound query node type");
   }
 }
 
@@ -155,7 +155,7 @@ unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
       result = Bind((ExpressionListRef &)ref);
       break;
     default:
-      throw InternalException("Unknown table ref type");
+      throw Exception("Unknown table ref type");
   }
   result->sample = move(ref.sample);
   return result;
@@ -189,7 +189,7 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundTableRef &ref) {
       root = CreatePlan((BoundCTERef &)ref);
       break;
     default:
-      throw InternalException("Unsupported bound table ref type type");
+      throw Exception("Unsupported bound table ref type type");
   }
   // plan the sample clause
   if (ref.sample) {
@@ -199,11 +199,11 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundTableRef &ref) {
 }
 
 void Binder::AddCTE(const string &name, CommonTableExpressionInfo *info) {
-  D_ASSERT(info);
-  D_ASSERT(!name.empty());
+  assert(info);
+  assert(!name.empty());
   auto entry = CTE_bindings.find(name);
   if (entry != CTE_bindings.end()) {
-    throw InternalException("Duplicate CTE \"%s\" in query!", name);
+    throw Exception("Duplicate CTE \"%s\" in query!", name);
   }
   CTE_bindings[name] = info;
 }
@@ -253,12 +253,12 @@ uint64_t Binder::GenerateTableIndex() {
 void Binder::PushExpressionBinder(ExpressionBinder *binder) { GetActiveBinders().push_back(binder); }
 
 void Binder::PopExpressionBinder() {
-  D_ASSERT(HasActiveBinder());
+  assert(HasActiveBinder());
   GetActiveBinders().pop_back();
 }
 
 void Binder::SetActiveBinder(ExpressionBinder *binder) {
-  D_ASSERT(HasActiveBinder());
+  assert(HasActiveBinder());
   GetActiveBinders().back() = binder;
 }
 
@@ -414,7 +414,7 @@ BoundStatement Binder::BindReturning(vector<unique_ptr<ParsedExpression>> return
 
   auto projection = make_unique<LogicalProjection>(GenerateTableIndex(), move(projection_expressions));
   projection->AddChild(move(child_operator));
-  D_ASSERT(result.types.size() == result.names.size());
+  assert(result.types.size() == result.names.size());
   result.plan = move(projection);
   properties.allow_stream_result = true;
   properties.return_type = StatementReturnType::QUERY_RESULT;

@@ -50,7 +50,7 @@ SchemaCatalogEntry *Binder::BindSchema(CreateInfo &info) {
   }
   // fetch the schema in which we want to create the object
   auto schema_obj = Catalog::GetCatalog(context).GetSchema(context, info.schema);
-  D_ASSERT(schema_obj->type == CatalogType::SCHEMA_ENTRY);
+  assert(schema_obj->type == CatalogType::SCHEMA_ENTRY);
   info.schema = schema_obj->name;
   return schema_obj;
 }
@@ -258,14 +258,14 @@ BoundStatement Binder::Bind(CreateStatement &stmt) {
         if (fk.info.type != ForeignKeyType::FK_TYPE_FOREIGN_KEY_TABLE) {
           continue;
         }
-        D_ASSERT(fk.info.pk_keys.empty());
+        assert(fk.info.pk_keys.empty());
         if (create_info.table == fk.info.table) {
           fk.info.type = ForeignKeyType::FK_TYPE_SELF_REFERENCE_TABLE;
           FindMatchingPrimaryKeyColumns(create_info.constraints, fk);
         } else {
           // have to resolve referenced table
           auto pk_table_entry_ptr = catalog.GetEntry<TableCatalogEntry>(context, fk.info.schema, fk.info.table);
-          D_ASSERT(fk.info.pk_keys.empty());
+          assert(fk.info.pk_keys.empty());
           FindMatchingPrimaryKeyColumns(pk_table_entry_ptr->constraints, fk);
           for (auto &keyname : fk.pk_columns) {
             auto entry = pk_table_entry_ptr->name_map.find(keyname);

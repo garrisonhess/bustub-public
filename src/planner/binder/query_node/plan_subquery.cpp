@@ -16,7 +16,7 @@ namespace bustub {
 static unique_ptr<Expression> PlanUncorrelatedSubquery(Binder &binder, BoundSubqueryExpression &expr,
                                                        unique_ptr<LogicalOperator> &root,
                                                        unique_ptr<LogicalOperator> plan) {
-  D_ASSERT(!expr.IsCorrelated());
+  assert(!expr.IsCorrelated());
   switch (expr.subquery_type) {
     case SubqueryType::EXISTS: {
       // uncorrelated EXISTS
@@ -65,7 +65,7 @@ static unique_ptr<Expression> PlanUncorrelatedSubquery(Binder &binder, BoundSubq
       // uncorrelated scalar, we want to return the first entry
       // figure out the table index of the bound table of the entry which we want to return
       auto bindings = plan->GetColumnBindings();
-      D_ASSERT(bindings.size() == 1);
+      assert(bindings.size() == 1);
       uint64_t table_idx = bindings[0].table_index;
 
       // in the uncorrelated case we are only interested in the first result of the query
@@ -91,7 +91,7 @@ static unique_ptr<Expression> PlanUncorrelatedSubquery(Binder &binder, BoundSubq
       // in the uncorrelated case, we add the value to the main query through a cross product
       // FIXME: should use something else besides cross product as we always add only one scalar constant and cross
       // product is not optimized for this.
-      D_ASSERT(root);
+      assert(root);
       auto cross_product = make_unique<LogicalCrossProduct>();
       cross_product->AddChild(move(root));
       cross_product->AddChild(move(plan));
@@ -102,7 +102,7 @@ static unique_ptr<Expression> PlanUncorrelatedSubquery(Binder &binder, BoundSubq
       return make_unique<BoundColumnRefExpression>(expr.GetName(), expr.return_type, ColumnBinding(aggr_index, 0));
     }
     default: {
-      D_ASSERT(expr.subquery_type == SubqueryType::ANY);
+      assert(expr.subquery_type == SubqueryType::ANY);
       // we generate a MARK join that results in either (TRUE, FALSE or NULL)
       // subquery has NULL values -> result is (TRUE or NULL)
       // subquery has no NULL values -> result is (TRUE, FALSE or NULL [if input is NULL])
@@ -157,7 +157,7 @@ static unique_ptr<Expression> PlanCorrelatedSubquery(Binder &binder, BoundSubque
                                                      unique_ptr<LogicalOperator> &root,
                                                      unique_ptr<LogicalOperator> plan) {
   auto &correlated_columns = expr.binder->correlated_columns;
-  D_ASSERT(expr.IsCorrelated());
+  assert(expr.IsCorrelated());
   // correlated subquery
   // for a more in-depth explanation of this code, read the paper "Unnesting Arbitrary Subqueries"
   // we handle three types of correlated subqueries: Scalar, EXISTS and ANY
@@ -224,7 +224,7 @@ static unique_ptr<Expression> PlanCorrelatedSubquery(Binder &binder, BoundSubque
       return make_unique<BoundColumnRefExpression>(expr.GetName(), expr.return_type, ColumnBinding(mark_index, 0));
     }
     default: {
-      D_ASSERT(expr.subquery_type == SubqueryType::ANY);
+      assert(expr.subquery_type == SubqueryType::ANY);
       // correlated ANY query
       // this query is similar to the correlated SCALAR query
       // however, in this case we push a correlated MARK join
@@ -287,13 +287,13 @@ class RecursiveSubqueryPlanner : public LogicalOperatorVisitor {
 };
 
 unique_ptr<Expression> Binder::PlanSubquery(BoundSubqueryExpression &expr, unique_ptr<LogicalOperator> &root) {
-  D_ASSERT(root);
+  assert(root);
   // first we translate the QueryNode of the subquery into a logical plan
   // note that we do not plan nested subqueries yet
   auto sub_binder = Binder::CreateBinder(context);
   sub_binder->plan_subquery = false;
   auto subquery_root = sub_binder->CreatePlan(*expr.subquery);
-  D_ASSERT(subquery_root);
+  assert(subquery_root);
 
   // now we actually flatten the subquery
   auto plan = move(subquery_root);

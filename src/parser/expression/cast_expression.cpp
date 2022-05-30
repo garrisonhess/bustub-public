@@ -8,7 +8,7 @@
 // CastExpression::CastExpression(Type target, unique_ptr<ParsedExpression> child, bool try_cast_p)
 //     : ParsedExpression(ExpressionType::OPERATOR_CAST, ExpressionClass::CAST), cast_type(move(target)),
 //       try_cast(try_cast_p) {
-// 	D_ASSERT(child);
+// 	assert(child);
 // 	this->child = move(child);
 // }
 

@@ -40,8 +40,8 @@
 // }
 
 // void Transformer::TransformWindowDef(bustub_libpgquery::PGWindowDef *window_spec, WindowExpression *expr) {
-// 	D_ASSERT(window_spec);
-// 	D_ASSERT(expr);
+// 	assert(window_spec);
+// 	assert(expr);
 
 // 	// next: partitioning/ordering expressions
 // 	if (window_spec->partitionClause) {
@@ -51,8 +51,8 @@
 // }
 
 // void Transformer::TransformWindowFrame(bustub_libpgquery::PGWindowDef *window_spec, WindowExpression *expr) {
-// 	D_ASSERT(window_spec);
-// 	D_ASSERT(expr);
+// 	assert(window_spec);
+// 	assert(expr);
 
 // 	// finally: specifics of bounds
 // 	expr->start_expr = TransformExpression(window_spec->startOffset);
@@ -60,7 +60,7 @@
 
 // 	if ((window_spec->frameOptions & FRAMEOPTION_END_UNBOUNDED_PRECEDING) ||
 // 	    (window_spec->frameOptions & FRAMEOPTION_START_UNBOUNDED_FOLLOWING)) {
-// 		throw InternalException(
+// 		throw Exception(
 // 		    "Window frames starting with unbounded following or ending in unbounded preceding make no sense");
 // 	}
 
@@ -85,12 +85,12 @@
 // 		expr->end = rangeMode ? WindowBoundary::CURRENT_ROW_RANGE : WindowBoundary::CURRENT_ROW_ROWS;
 // 	}
 
-// 	D_ASSERT(expr->start != WindowBoundary::INVALID && expr->end != WindowBoundary::INVALID);
+// 	assert(expr->start != WindowBoundary::INVALID && expr->end != WindowBoundary::INVALID);
 // 	if (((window_spec->frameOptions & (FRAMEOPTION_START_VALUE_PRECEDING | FRAMEOPTION_START_VALUE_FOLLOWING)) &&
 // 	     !expr->start_expr) ||
 // 	    ((window_spec->frameOptions & (FRAMEOPTION_END_VALUE_PRECEDING | FRAMEOPTION_END_VALUE_FOLLOWING)) &&
 // 	     !expr->end_expr)) {
-// 		throw InternalException("Failed to transform window boundary expression");
+// 		throw Exception("Failed to transform window boundary expression");
 // 	}
 // }
 
@@ -127,7 +127,7 @@
 
 // 		const auto win_fun_type = WindowToExpressionType(lowercase_name);
 // 		if (win_fun_type == ExpressionType::INVALID) {
-// 			throw InternalException("Unknown/unsupported window function");
+// 			throw Exception("Unknown/unsupported window function");
 // 		}
 
 // 		if (win_fun_type == ExpressionType::WINDOW_AGGREGATE && root->agg_ignore_nulls) {
@@ -184,7 +184,7 @@
 // 				throw ParserException("window \"%s\" does not exist", window_spec->name);
 // 			}
 // 			window_spec = it->second;
-// 			D_ASSERT(window_spec);
+// 			assert(window_spec);
 // 		}
 // 		auto window_ref = window_spec;
 // 		if (window_ref->refname) {
@@ -193,7 +193,7 @@
 // 				throw ParserException("window \"%s\" does not exist", window_spec->refname);
 // 			}
 // 			window_ref = it->second;
-// 			D_ASSERT(window_ref);
+// 			assert(window_ref);
 // 		}
 // 		TransformWindowDef(window_ref, expr.get());
 // 		TransformWindowFrame(window_spec, expr.get());
@@ -321,12 +321,12 @@
 // 	case bustub_libpgquery::PG_SVFOP_CURRENT_SCHEMA:
 // 		return "current_schema";
 // 	default:
-// 		throw InternalException("Could not find named SQL value function specification " + to_string((int)op));
+// 		throw Exception("Could not find named SQL value function specification " + to_string((int)op));
 // 	}
 // }
 
 // unique_ptr<ParsedExpression> Transformer::TransformSQLValueFunction(bustub_libpgquery::PGSQLValueFunction *node) {
-// 	D_ASSERT(node);
+// 	assert(node);
 // 	vector<unique_ptr<ParsedExpression>> children;
 // 	auto fname = SQLValueOpToString(node->op);
 // 	return make_unique<FunctionExpression>(DEFAULT_SCHEMA, fname, move(children));

@@ -6,7 +6,7 @@
 // namespace bustub {
 
 // unique_ptr<ParsedExpression> Transformer::TransformCase(bustub_libpgquery::PGCaseExpr *root) {
-// 	D_ASSERT(root);
+// 	assert(root);
 
 // 	auto case_node = make_unique<CaseExpression>();
 // 	for (auto cell = root->args->head; cell != nullptr; cell = cell->next) {

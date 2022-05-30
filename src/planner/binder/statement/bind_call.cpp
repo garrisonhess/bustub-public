@@ -15,7 +15,7 @@ BoundStatement Binder::Bind(CallStatement &stmt) {
   auto bound_func = Bind(ref);
   auto &bound_table_func = (BoundTableFunction &)*bound_func;
   auto &get = (LogicalGet &)*bound_table_func.get;
-  D_ASSERT(get.returned_types.size() > 0);
+  assert(get.returned_types.size() > 0);
   for (uint64_t i = 0; i < get.returned_types.size(); i++) {
     get.column_ids.push_back(i);
   }

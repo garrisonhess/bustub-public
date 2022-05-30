@@ -21,7 +21,7 @@ void ExpressionBinder::ReplaceMacroParametersRecursive(unique_ptr<ParsedExpressi
         bind_macro_parameter = macro_binding->HasMatchingBinding(colref.GetColumnName());
       }
       if (bind_macro_parameter) {
-        D_ASSERT(macro_binding->HasMatchingBinding(colref.GetColumnName()));
+        assert(macro_binding->HasMatchingBinding(colref.GetColumnName()));
         expr = macro_binding->ParamToArg(colref);
       }
       return;

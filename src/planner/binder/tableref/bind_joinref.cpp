@@ -169,7 +169,7 @@ unique_ptr<BoundTableRef> Binder::Bind(JoinRef &ref) {
     }
   } else if (!ref.using_columns.empty()) {
     // USING columns
-    D_ASSERT(!result->condition);
+    assert(!result->condition);
     extra_using_columns = ref.using_columns;
   }
   if (!extra_using_columns.empty()) {
@@ -233,7 +233,7 @@ unique_ptr<BoundTableRef> Binder::Bind(JoinRef &ref) {
     WhereBinder binder(*this, context);
     result->condition = binder.Bind(ref.condition);
   }
-  D_ASSERT(result->condition);
+  assert(result->condition);
   return move(result);
 }
 

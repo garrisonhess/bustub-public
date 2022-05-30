@@ -26,7 +26,7 @@ unique_ptr<BoundTableRef> Binder::Bind(ExpressionListRef &expr) {
     vector<unique_ptr<Expression>> list;
     for (uint64_t val_idx = 0; val_idx < expression_list.size(); val_idx++) {
       if (!result->types.empty()) {
-        D_ASSERT(result->types.size() == expression_list.size());
+        assert(result->types.size() == expression_list.size());
         binder.target_type = result->types[val_idx];
       }
       auto expr = binder.Bind(expression_list[val_idx]);

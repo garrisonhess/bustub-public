@@ -76,7 +76,7 @@
 // }
 
 // unique_ptr<ParsedExpression> Transformer::TransformAExpr(bustub_libpgquery::PGAExpr *root) {
-// 	D_ASSERT(root);
+// 	assert(root);
 // 	auto name = string((reinterpret_cast<bustub_libpgquery::PGValue *>(root->name->head->data.ptr_value))->val.str);
 
 // 	switch (root->kind) {
@@ -140,7 +140,7 @@
 // 	case bustub_libpgquery::PG_AEXPR_NOT_BETWEEN: {
 // 		auto between_args = reinterpret_cast<bustub_libpgquery::PGList *>(root->rexpr);
 // 		if (between_args->length != 2 || !between_args->head->data.ptr_value ||
-// !between_args->tail->data.ptr_value) { 			throw InternalException("(NOT) BETWEEN needs two args");
+// !between_args->tail->data.ptr_value) { 			throw Exception("(NOT) BETWEEN needs two args");
 // 		}
 
 // 		auto input = TransformExpression(root->lexpr);
@@ -165,8 +165,8 @@
 // 		children.push_back(move(left_expr));
 
 // 		auto &similar_func = reinterpret_cast<FunctionExpression &>(*right_expr);
-// 		D_ASSERT(similar_func.function_name == "similar_escape");
-// 		D_ASSERT(similar_func.children.size() == 2);
+// 		assert(similar_func.function_name == "similar_escape");
+// 		assert(similar_func.children.size() == 2);
 // 		if (similar_func.children[1]->type != ExpressionType::VALUE_CONSTANT) {
 // 			throw NotImplementedException("Custom escape in SIMILAR TO");
 // 		}

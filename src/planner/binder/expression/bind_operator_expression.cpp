@@ -9,14 +9,14 @@ namespace bustub {
 
 static Type ResolveNotType(OperatorExpression &op, vector<BoundExpression *> &children) {
   // NOT expression, cast child to BOOLEAN
-  D_ASSERT(children.size() == 1);
+  assert(children.size() == 1);
   children[0]->expr = BoundCastExpression::AddCastToType(move(children[0]->expr), Type::BOOLEAN);
   return Type(TypeId::BOOLEAN);
 }
 
 static Type ResolveInType(OperatorExpression &op, vector<BoundExpression *> &children) {
   if (children.empty()) {
-    throw InternalException("IN requires at least a single child node");
+    throw Exception("IN requires at least a single child node");
   }
   // get the maximum type from the children
   Type max_type = children[0]->expr->return_type;
@@ -48,7 +48,7 @@ static Type ResolveOperatorType(OperatorExpression &op, vector<BoundExpression *
     case ExpressionType::OPERATOR_NOT:
       return ResolveNotType(op, children);
     default:
-      throw InternalException("Unrecognized expression type for ResolveOperatorType");
+      throw Exception("Unrecognized expression type for ResolveOperatorType");
   }
 }
 
@@ -72,7 +72,7 @@ BindResult ExpressionBinder::BindExpression(OperatorExpression &op, uint64_t dep
   string function_name;
   switch (op.type) {
     case ExpressionType::ARRAY_EXTRACT: {
-      D_ASSERT(op.children[0]->expression_class == ExpressionClass::BOUND_EXPRESSION);
+      assert(op.children[0]->expression_class == ExpressionClass::BOUND_EXPRESSION);
       auto &b_exp = (BoundExpression &)*op.children[0];
       if (b_exp.expr->return_type.id() == TypeId::MAP) {
         function_name = "map_extract";
@@ -85,9 +85,9 @@ BindResult ExpressionBinder::BindExpression(OperatorExpression &op, uint64_t dep
       function_name = "array_slice";
       break;
     case ExpressionType::STRUCT_EXTRACT: {
-      D_ASSERT(op.children.size() == 2);
-      D_ASSERT(op.children[0]->expression_class == ExpressionClass::BOUND_EXPRESSION);
-      D_ASSERT(op.children[1]->expression_class == ExpressionClass::BOUND_EXPRESSION);
+      assert(op.children.size() == 2);
+      assert(op.children[0]->expression_class == ExpressionClass::BOUND_EXPRESSION);
+      assert(op.children[1]->expression_class == ExpressionClass::BOUND_EXPRESSION);
       auto &extract_exp = (BoundExpression &)*op.children[0];
       auto &name_exp = (BoundExpression &)*op.children[1];
       if (extract_exp.expr->return_type.id() != TypeId::STRUCT &&
@@ -115,7 +115,7 @@ BindResult ExpressionBinder::BindExpression(OperatorExpression &op, uint64_t dep
 
   vector<BoundExpression *> children;
   for (uint64_t i = 0; i < op.children.size(); i++) {
-    D_ASSERT(op.children[i]->expression_class == ExpressionClass::BOUND_EXPRESSION);
+    assert(op.children[i]->expression_class == ExpressionClass::BOUND_EXPRESSION);
     children.push_back((BoundExpression *)op.children[i].get());
   }
   // now resolve the types

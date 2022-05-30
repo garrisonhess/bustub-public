@@ -18,7 +18,7 @@ class LogicalCTERef : public LogicalOperator {
  public:
   LogicalCTERef(uint64_t table_index, uint64_t cte_index, vector<Type> types, vector<string> colnames)
       : LogicalOperator(LogicalOperatorType::LOGICAL_CTE_REF), table_index(table_index), cte_index(cte_index) {
-    D_ASSERT(types.size() > 0);
+    assert(types.size() > 0);
     chunk_types = types;
     bound_columns = colnames;
   }

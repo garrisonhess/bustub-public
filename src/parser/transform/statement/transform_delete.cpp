@@ -6,7 +6,7 @@
 
 // unique_ptr<DeleteStatement> Transformer::TransformDelete(bustub_libpgquery::PGNode *node) {
 // 	auto stmt = reinterpret_cast<bustub_libpgquery::PGDeleteStmt *>(node);
-// 	D_ASSERT(stmt);
+// 	assert(stmt);
 // 	auto result = make_unique<DeleteStatement>();
 
 // 	result->condition = TransformExpression(stmt->whereClause);

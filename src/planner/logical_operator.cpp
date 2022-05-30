@@ -32,7 +32,7 @@ void LogicalOperator::ResolveOperatorTypes() {
   }
   // now resolve the types for this operator
   ResolveTypes();
-  D_ASSERT(types.size() == GetColumnBindings().size());
+  assert(types.size() == GetColumnBindings().size());
 }
 
 vector<ColumnBinding> LogicalOperator::GenerateColumnBindings(uint64_t table_idx, uint64_t column_count) {
@@ -85,23 +85,23 @@ void LogicalOperator::Verify() {
     auto original_hash = expressions[expr_idx]->Hash();
     auto copy_hash = copy->Hash();
     // copy should be identical to original
-    D_ASSERT(expressions[expr_idx]->ToString() == copy->ToString());
-    D_ASSERT(original_hash == copy_hash);
-    D_ASSERT(Expression::Equals(expressions[expr_idx].get(), copy.get()));
+    assert(expressions[expr_idx]->ToString() == copy->ToString());
+    assert(original_hash == copy_hash);
+    assert(Expression::Equals(expressions[expr_idx].get(), copy.get()));
 
-    D_ASSERT(!Expression::Equals(expressions[expr_idx].get(), nullptr));
+    assert(!Expression::Equals(expressions[expr_idx].get(), nullptr));
     for (uint64_t other_idx = 0; other_idx < expr_idx; other_idx++) {
       // comparison with other expressions
       auto other_hash = expressions[other_idx]->Hash();
       bool expr_equal = Expression::Equals(expressions[expr_idx].get(), expressions[other_idx].get());
       if (original_hash != other_hash) {
         // if the hashes are not equal the expressions should not be equal either
-        D_ASSERT(!expr_equal);
+        assert(!expr_equal);
       }
     }
-    D_ASSERT(!str.empty());
+    assert(!str.empty());
   }
-  D_ASSERT(!ToString().empty());
+  assert(!ToString().empty());
   for (auto &child : children) {
     child->Verify();
   }

@@ -21,9 +21,9 @@ class BoundUniqueConstraint : public BoundConstraint {
         key_set(move(key_set)),
         is_primary_key(is_primary_key) {
 #ifdef DEBUG
-    D_ASSERT(keys.size() == key_set.size());
+    assert(keys.size() == key_set.size());
     for (auto &key : keys) {
-      D_ASSERT(key_set.find(key) != key_set.end());
+      assert(key_set.find(key) != key_set.end());
     }
 #endif
   }

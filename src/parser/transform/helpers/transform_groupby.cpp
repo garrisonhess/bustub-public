@@ -122,7 +122,7 @@
 // 			break;
 // 		}
 // 		default:
-// 			throw InternalException("Unsupported GROUPING SET type %d", grouping_set->kind);
+// 			throw Exception("Unsupported GROUPING SET type %d", grouping_set->kind);
 // 		}
 // 	} else {
 // 		vector<uint64_t> indexes;

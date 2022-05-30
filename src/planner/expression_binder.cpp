@@ -172,7 +172,7 @@ unique_ptr<Expression> ExpressionBinder::Bind(unique_ptr<ParsedExpression> &expr
     auto bound_expr = (BoundExpression *)expr.get();
     ExtractCorrelatedExpressions(binder, *bound_expr->expr);
   }
-  D_ASSERT(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
+  assert(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
   auto bound_expr = (BoundExpression *)expr.get();
   unique_ptr<Expression> result = move(bound_expr->expr);
   if (target_type.id() != TypeId::INVALID) {
@@ -210,7 +210,7 @@ string ExpressionBinder::Bind(unique_ptr<ParsedExpression> *expr, uint64_t depth
     // successfully bound: replace the node with a BoundExpression
     *expr = make_unique<BoundExpression>(move(result.expression));
     auto be = (BoundExpression *)expr->get();
-    D_ASSERT(be);
+    assert(be);
     be->alias = alias;
     if (!alias.empty()) {
       be->expr->alias = alias;

@@ -166,7 +166,7 @@ BoundStatement Binder::Bind(UpdateStatement &stmt) {
     root = move(filter);
   }
 
-  D_ASSERT(stmt.columns.size() == stmt.expressions.size());
+  assert(stmt.columns.size() == stmt.expressions.size());
 
   auto proj_index = GenerateTableIndex();
   vector<unique_ptr<Expression>> projection_expressions;

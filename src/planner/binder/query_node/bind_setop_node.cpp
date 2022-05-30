@@ -20,7 +20,7 @@ static void GatherAliases(BoundQueryNode &node, case_insensitive_map_t<uint64_t>
     GatherAliases(*setop.right, aliases, expressions);
   } else {
     // query node
-    D_ASSERT(node.type == QueryNodeType::SELECT_NODE);
+    assert(node.type == QueryNodeType::SELECT_NODE);
     auto &select = (BoundSelectNode &)node;
     // fill the alias lists
     for (uint64_t i = 0; i < select.names.size(); i++) {
@@ -63,8 +63,8 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SetOperationNode &statement) {
 
   // first recursively visit the set operations
   // both the left and right sides have an independent BindContext and Binder
-  D_ASSERT(statement.left);
-  D_ASSERT(statement.right);
+  assert(statement.left);
+  assert(statement.right);
 
   result->setop_index = GenerateTableIndex();
 

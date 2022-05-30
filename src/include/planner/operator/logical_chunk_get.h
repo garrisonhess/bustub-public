@@ -20,7 +20,7 @@ class LogicalChunkGet : public LogicalOperator {
       : LogicalOperator(LogicalOperatorType::LOGICAL_CHUNK_GET),
         table_index(table_index),
         collection(move(collection)) {
-    D_ASSERT(types.size() > 0);
+    assert(types.size() > 0);
     chunk_types = types;
   }
 

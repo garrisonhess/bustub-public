@@ -31,7 +31,7 @@ BoundStatement Binder::Bind(InsertStatement &stmt) {
   result.types = {Type::BIGINT};
 
   auto table = Catalog::GetCatalog(context).GetEntry<TableCatalogEntry>(context, stmt.schema, stmt.table);
-  D_ASSERT(table);
+  assert(table);
   if (!table->temporary) {
     // inserting into a non-temporary table: alters underlying database
     properties.read_only = false;
@@ -90,14 +90,14 @@ BoundStatement Binder::Bind(InsertStatement &stmt) {
     expr_list.expected_types.resize(expected_columns);
     expr_list.expected_names.resize(expected_columns);
 
-    D_ASSERT(expr_list.values.size() > 0);
+    assert(expr_list.values.size() > 0);
     CheckInsertColumnCountMismatch(expected_columns, expr_list.values[0].size(), !stmt.columns.empty(),
                                    table->name.c_str());
 
     // VALUES list!
     for (uint64_t col_idx = 0; col_idx < expected_columns; col_idx++) {
       uint64_t table_col_idx = stmt.columns.empty() ? col_idx : named_column_map[col_idx];
-      D_ASSERT(table_col_idx < table->columns.size());
+      assert(table_col_idx < table->columns.size());
 
       // set the expected types as the types for the INSERT statement
       auto &column = table->columns[table_col_idx];
@@ -138,7 +138,7 @@ BoundStatement Binder::Bind(InsertStatement &stmt) {
     return BindReturning(move(stmt.returning_list), table, insert_table_index, move(index_as_logicaloperator),
                          move(result));
   } else {
-    D_ASSERT(result.types.size() == result.names.size());
+    assert(result.types.size() == result.names.size());
     result.plan = move(insert);
     properties.allow_stream_result = false;
     properties.return_type = StatementReturnType::CHANGED_ROWS;

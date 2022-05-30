@@ -9,7 +9,6 @@
 #pragma once
 
 #include "common/common.h"
-#include "common/vector.h"
 #include "parser/statement/pragma_statement.h"
 
 namespace bustub {

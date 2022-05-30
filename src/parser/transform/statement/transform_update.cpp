@@ -5,7 +5,7 @@
 
 // unique_ptr<UpdateStatement> Transformer::TransformUpdate(bustub_libpgquery::PGNode *node) {
 // 	auto stmt = reinterpret_cast<bustub_libpgquery::PGUpdateStmt *>(node);
-// 	D_ASSERT(stmt);
+// 	assert(stmt);
 
 // 	auto result = make_unique<UpdateStatement>();
 

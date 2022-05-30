@@ -9,9 +9,9 @@ namespace bustub {
 
 unique_ptr<LogicalOperator> Binder::CastLogicalOperatorToTypes(vector<Type> &source_types, vector<Type> &target_types,
                                                                unique_ptr<LogicalOperator> op) {
-  D_ASSERT(op);
+  assert(op);
   // first check if we even need to cast
-  D_ASSERT(source_types.size() == target_types.size());
+  assert(source_types.size() == target_types.size());
   if (source_types == target_types) {
     // source and target types are equal: don't need to cast
     return op;
@@ -20,7 +20,7 @@ unique_ptr<LogicalOperator> Binder::CastLogicalOperatorToTypes(vector<Type> &sou
   auto node = op.get();
   if (node->type == LogicalOperatorType::LOGICAL_PROJECTION) {
     // "node" is a projection; we can just do the casts in there
-    D_ASSERT(node->expressions.size() == source_types.size());
+    assert(node->expressions.size() == source_types.size());
     // add the casts to the selection list
     for (uint64_t i = 0; i < target_types.size(); i++) {
       if (source_types[i] != target_types[i]) {
@@ -37,7 +37,7 @@ unique_ptr<LogicalOperator> Binder::CastLogicalOperatorToTypes(vector<Type> &sou
 
     // fetch the set of column bindings
     auto setop_columns = op->GetColumnBindings();
-    D_ASSERT(setop_columns.size() == source_types.size());
+    assert(setop_columns.size() == source_types.size());
 
     // now generate the expression list
     vector<unique_ptr<Expression>> select_list;
@@ -80,7 +80,7 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundSetOperationNode &node) {
       logical_type = LogicalOperatorType::LOGICAL_EXCEPT;
       break;
     default:
-      D_ASSERT(node.setop_type == SetOperationType::INTERSECT);
+      assert(node.setop_type == SetOperationType::INTERSECT);
       logical_type = LogicalOperatorType::LOGICAL_INTERSECT;
       break;
   }

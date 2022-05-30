@@ -11,7 +11,7 @@
 // 	if (star->except_list != nullptr) {
 // 		for (auto head = star->except_list->head; head != nullptr; head = head->next) {
 // 			auto value = static_cast<bustub_libpgquery::PGValue *>(head->data.ptr_value);
-// 			// D_ASSERT(value->type == bustub_libpgquery::T_PGString);
+// 			// assert(value->type == bustub_libpgquery::T_PGString);
 // 			string exclude_entry = value->val.str;
 // 			if (result->exclude_list.find(exclude_entry) != result->exclude_list.end()) {
 // 				throw Exception("Duplicate entry \"%s\" in EXCLUDE list", exclude_entry);
@@ -22,11 +22,11 @@
 // 	if (star->replace_list != nullptr) {
 // 		for (auto head = star->replace_list->head; head != nullptr; head = head->next) {
 // 			auto list = static_cast<bustub_libpgquery::PGList *>(head->data.ptr_value);
-// 			// D_ASSERT(list->length == 2);
+// 			// assert(list->length == 2);
 // 			auto replace_expression = TransformExpression((bustub_libpgquery::PGNode
 // *)list->head->data.ptr_value); 			auto value = static_cast<bustub_libpgquery::PGValue
 // *>(list->tail->data.ptr_value);
-// 			// D_ASSERT(value->type == bustub_libpgquery::T_PGString);
+// 			// assert(value->type == bustub_libpgquery::T_PGString);
 // 			string exclude_entry = value->val.str;
 // 			if (result->replace_list.find(exclude_entry) != result->replace_list.end()) {
 // 				throw Exception("Duplicate entry \"%s\" in REPLACE list", exclude_entry);

@@ -53,8 +53,8 @@ uint64_t SelectBinder::TryBindGroup(ParsedExpression &expr, uint64_t depth) {
   }
 #ifdef DEBUG
   for (auto entry : info.map) {
-    D_ASSERT(!entry.first->Equals(&expr));
-    D_ASSERT(!expr.Equals(entry.first));
+    assert(!entry.first->Equals(&expr));
+    assert(!expr.Equals(entry.first));
   }
 #endif
   return DConstants::INVALID_INDEX;
@@ -62,7 +62,7 @@ uint64_t SelectBinder::TryBindGroup(ParsedExpression &expr, uint64_t depth) {
 
 BindResult SelectBinder::BindGroupingFunction(OperatorExpression &op, uint64_t depth) {
   if (op.children.empty()) {
-    throw InternalException("GROUPING requires at least one child");
+    throw Exception("GROUPING requires at least one child");
   }
   if (node.groups.group_expressions.empty()) {
     return BindResult(binder.FormatError(op, "GROUPING statement cannot be used without groups"));

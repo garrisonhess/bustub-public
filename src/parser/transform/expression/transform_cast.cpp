@@ -7,7 +7,7 @@
 // namespace bustub {
 
 // unique_ptr<ParsedExpression> Transformer::TransformTypeCast(bustub_libpgquery::PGTypeCast *root) {
-// 	D_ASSERT(root);
+// 	assert(root);
 
 // 	// get the type to cast to
 // 	auto type_name = root->typeName;

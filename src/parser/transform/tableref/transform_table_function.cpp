@@ -18,7 +18,7 @@
 // 		throw NotImplementedException("Need exactly one function");
 // 	}
 // 	auto function_sublist = (bustub_libpgquery::PGList *)root->functions->head->data.ptr_value;
-// 	// D_ASSERT(function_sublist->length == 2);
+// 	// assert(function_sublist->length == 2);
 // 	auto call_tree = (bustub_libpgquery::PGNode *)function_sublist->head->data.ptr_value;
 // 	auto coldef = function_sublist->head->next->data.ptr_value;
 

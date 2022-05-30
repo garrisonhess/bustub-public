@@ -56,7 +56,7 @@ BindResult ExpressionBinder::BindFunction(FunctionExpression &function, ScalarFu
   vector<unique_ptr<Expression>> children;
   for (uint64_t i = 0; i < function.children.size(); i++) {
     auto &child = (BoundExpression &)*function.children[i];
-    D_ASSERT(child.expr);
+    assert(child.expr);
     children.push_back(move(child.expr));
   }
   unique_ptr<Expression> result =

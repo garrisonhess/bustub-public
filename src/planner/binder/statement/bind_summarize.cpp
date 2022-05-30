@@ -73,7 +73,7 @@ BoundStatement Binder::BindSummarize(ShowStatement &stmt) {
   // we bind the plan once in a child-node to figure out the column names and column types
   auto child_binder = Binder::CreateBinder(context);
   auto plan = child_binder->Bind(*stmt.info->query);
-  D_ASSERT(plan.types.size() == plan.names.size());
+  assert(plan.types.size() == plan.names.size());
   vector<unique_ptr<ParsedExpression>> name_children;
   vector<unique_ptr<ParsedExpression>> type_children;
   vector<unique_ptr<ParsedExpression>> min_children;

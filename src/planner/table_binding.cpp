@@ -14,10 +14,10 @@ namespace bustub {
 
 Binding::Binding(const string &alias, vector<Type> coltypes, vector<string> colnames, uint64_t index)
     : alias(alias), index(index), types(move(coltypes)), names(move(colnames)) {
-  D_ASSERT(types.size() == names.size());
+  assert(types.size() == names.size());
   for (uint64_t i = 0; i < names.size(); i++) {
     auto &name = names[i];
-    D_ASSERT(!name.empty());
+    assert(!name.empty());
     if (name_map.find(name) != name_map.end()) {
       throw BinderException("table \"%s\" has duplicate column name \"%s\"", alias, name);
     }
@@ -37,7 +37,7 @@ bool Binding::TryGetBindingIndex(const string &column_name, column_t &result) {
 column_t Binding::GetBindingIndex(const string &column_name) {
   column_t result;
   if (!TryGetBindingIndex(column_name, result)) {
-    throw InternalException("Binding index for column \"%s\" not found", column_name);
+    throw Exception("Binding index for column \"%s\" not found", column_name);
   }
   return result;
 }
@@ -128,7 +128,7 @@ MacroBinding::MacroBinding(vector<Type> types_p, vector<string> names_p, string 
 BindResult MacroBinding::Bind(ColumnRefExpression &colref, uint64_t depth) {
   column_t column_index;
   if (!TryGetBindingIndex(colref.GetColumnName(), column_index)) {
-    throw InternalException("Column %s not found in macro", colref.GetColumnName());
+    throw Exception("Column %s not found in macro", colref.GetColumnName());
   }
   ColumnBinding binding;
   binding.table_index = index;
@@ -141,7 +141,7 @@ BindResult MacroBinding::Bind(ColumnRefExpression &colref, uint64_t depth) {
 unique_ptr<ParsedExpression> MacroBinding::ParamToArg(ColumnRefExpression &colref) {
   column_t column_index;
   if (!TryGetBindingIndex(colref.GetColumnName(), column_index)) {
-    throw InternalException("Column %s not found in macro", colref.GetColumnName());
+    throw Exception("Column %s not found in macro", colref.GetColumnName());
   }
   auto arg = arguments[column_index]->Copy();
   arg->alias = colref.alias;

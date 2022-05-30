@@ -5,12 +5,12 @@
 // namespace bustub {
 
 // unique_ptr<ParsedExpression> Transformer::TransformSubquery(bustub_libpgquery::PGSubLink *root) {
-// 	D_ASSERT(root);
+// 	assert(root);
 // 	auto subquery_expr = make_unique<SubqueryExpression>();
 
 // 	subquery_expr->subquery = TransformSelect(root->subselect);
-// 	D_ASSERT(subquery_expr->subquery);
-// 	D_ASSERT(subquery_expr->subquery->node->GetSelectList().size() > 0);
+// 	assert(subquery_expr->subquery);
+// 	assert(subquery_expr->subquery->node->GetSelectList().size() > 0);
 
 // 	switch (root->subLinkType) {
 // 	case bustub_libpgquery::PG_EXISTS_SUBLINK: {
@@ -32,7 +32,7 @@
 // *>(root->operName->head->data.ptr_value))->val.str); 			subquery_expr->comparison_type =
 // OperatorToExpressionType(operator_name);
 // 		}
-// 		D_ASSERT(subquery_expr->comparison_type == ExpressionType::COMPARE_EQUAL ||
+// 		assert(subquery_expr->comparison_type == ExpressionType::COMPARE_EQUAL ||
 // 		         subquery_expr->comparison_type == ExpressionType::COMPARE_NOTEQUAL ||
 // 		         subquery_expr->comparison_type == ExpressionType::COMPARE_GREATERTHAN ||
 // 		         subquery_expr->comparison_type == ExpressionType::COMPARE_GREATERTHANOREQUALTO ||

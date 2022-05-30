@@ -44,7 +44,7 @@
 // 		// usingClause is a list of strings
 // 		for (auto node = root->usingClause->head; node != nullptr; node = node->next) {
 // 			auto target = reinterpret_cast<bustub_libpgquery::PGNode *>(node->data.ptr_value);
-// 			D_ASSERT(target->type == bustub_libpgquery::T_PGString);
+// 			assert(target->type == bustub_libpgquery::T_PGString);
 // 			auto column_name = string(reinterpret_cast<bustub_libpgquery::PGValue *>(target)->val.str);
 // 			result->using_columns.push_back(column_name);
 // 		}

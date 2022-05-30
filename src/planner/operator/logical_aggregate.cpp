@@ -11,7 +11,7 @@ LogicalAggregate::LogicalAggregate(uint64_t group_index, uint64_t aggregate_inde
       groupings_index(DConstants::INVALID_INDEX) {}
 
 void LogicalAggregate::ResolveTypes() {
-  D_ASSERT(groupings_index != DConstants::INVALID_INDEX || grouping_functions.empty());
+  assert(groupings_index != DConstants::INVALID_INDEX || grouping_functions.empty());
   for (auto &expr : groups) {
     types.push_back(expr->return_type);
   }
@@ -25,7 +25,7 @@ void LogicalAggregate::ResolveTypes() {
 }
 
 vector<ColumnBinding> LogicalAggregate::GetColumnBindings() {
-  D_ASSERT(groupings_index != DConstants::INVALID_INDEX || grouping_functions.empty());
+  assert(groupings_index != DConstants::INVALID_INDEX || grouping_functions.empty());
   vector<ColumnBinding> result;
   for (uint64_t i = 0; i < groups.size(); i++) {
     result.emplace_back(group_index, i);

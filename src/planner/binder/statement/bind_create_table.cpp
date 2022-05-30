@@ -68,7 +68,7 @@ static void BindConstraints(Binder &binder, BoundCreateTableInfo &info) {
         vector<uint64_t> keys;
         unordered_set<uint64_t> key_set;
         if (unique.index != DConstants::INVALID_INDEX) {
-          D_ASSERT(unique.index < base.columns.size());
+          assert(unique.index < base.columns.size());
           // unique constraint is given by single index
           unique.columns.push_back(base.columns[unique.index].name);
           keys.push_back(unique.index);
@@ -76,7 +76,7 @@ static void BindConstraints(Binder &binder, BoundCreateTableInfo &info) {
         } else {
           // unique constraint is given by list of names
           // have to resolve names
-          D_ASSERT(!unique.columns.empty());
+          assert(!unique.columns.empty());
           for (auto &keyname : unique.columns) {
             auto entry = info.name_map.find(keyname);
             if (entry == info.name_map.end()) {
@@ -107,7 +107,7 @@ static void BindConstraints(Binder &binder, BoundCreateTableInfo &info) {
       }
       case ConstraintType::FOREIGN_KEY: {
         auto &fk = (ForeignKeyConstraint &)*cond;
-        D_ASSERT((fk.info.type == ForeignKeyType::FK_TYPE_FOREIGN_KEY_TABLE && !fk.info.pk_keys.empty()) ||
+        assert((fk.info.type == ForeignKeyType::FK_TYPE_FOREIGN_KEY_TABLE && !fk.info.pk_keys.empty()) ||
                  (fk.info.type == ForeignKeyType::FK_TYPE_PRIMARY_KEY_TABLE && !fk.info.pk_keys.empty()) ||
                  fk.info.type == ForeignKeyType::FK_TYPE_SELF_REFERENCE_TABLE);
         if (fk.info.type == ForeignKeyType::FK_TYPE_SELF_REFERENCE_TABLE && fk.info.pk_keys.empty()) {
@@ -182,7 +182,7 @@ unique_ptr<BoundCreateTableInfo> Binder::BindCreateTableInfo(unique_ptr<CreateIn
     // construct the set of columns based on the names and types of the query
     auto &names = query_obj.names;
     auto &sql_types = query_obj.types;
-    D_ASSERT(names.size() == sql_types.size());
+    assert(names.size() == sql_types.size());
     for (uint64_t i = 0; i < names.size(); i++) {
       base.columns.emplace_back(names[i], sql_types[i]);
     }

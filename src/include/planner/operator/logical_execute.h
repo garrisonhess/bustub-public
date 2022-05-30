@@ -17,7 +17,7 @@ class LogicalExecute : public LogicalOperator {
  public:
   explicit LogicalExecute(shared_ptr<PreparedStatementData> prepared_p)
       : LogicalOperator(LogicalOperatorType::LOGICAL_EXECUTE), prepared(move(prepared_p)) {
-    D_ASSERT(prepared);
+    assert(prepared);
     types = prepared->types;
   }
 

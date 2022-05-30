@@ -21,19 +21,19 @@ class BoundSubqueryNode : public QueryNode {
   unique_ptr<SelectStatement> subquery;
 
   const vector<unique_ptr<ParsedExpression>> &GetSelectList() const override {
-    throw InternalException("Cannot get select list of bound subquery node");
+    throw Exception("Cannot get select list of bound subquery node");
   }
 
-  string ToString() const override { throw InternalException("Cannot ToString bound subquery node"); }
-  unique_ptr<QueryNode> Copy() const override { throw InternalException("Cannot copy bound subquery node"); }
+  string ToString() const override { throw Exception("Cannot ToString bound subquery node"); }
+  unique_ptr<QueryNode> Copy() const override { throw Exception("Cannot copy bound subquery node"); }
   void Serialize(FieldWriter &writer) const override {
-    throw InternalException("Cannot serialize bound subquery node");
+    throw Exception("Cannot serialize bound subquery node");
   }
 };
 
 BindResult ExpressionBinder::BindExpression(SubqueryExpression &expr, uint64_t depth) {
   if (expr.subquery->node->type != QueryNodeType::BOUND_SUBQUERY_NODE) {
-    D_ASSERT(depth == 0);
+    assert(depth == 0);
     // first bind the actual subquery in a new binder
     auto subquery_binder = Binder::CreateBinder(context, &binder);
     subquery_binder->can_contain_nulls = true;
@@ -65,7 +65,7 @@ BindResult ExpressionBinder::BindExpression(SubqueryExpression &expr, uint64_t d
     }
   }
   // both binding the child and binding the subquery was successful
-  D_ASSERT(expr.subquery->node->type == QueryNodeType::BOUND_SUBQUERY_NODE);
+  assert(expr.subquery->node->type == QueryNodeType::BOUND_SUBQUERY_NODE);
   auto bound_subquery = (BoundSubqueryNode *)expr.subquery->node.get();
   auto child = (BoundExpression *)expr.child.get();
   auto subquery_binder = move(bound_subquery->subquery_binder);
@@ -79,7 +79,7 @@ BindResult ExpressionBinder::BindExpression(SubqueryExpression &expr, uint64_t d
   if (expr.subquery_type == SubqueryType::ANY) {
     // ANY comparison
     // cast child and subquery child to equivalent types
-    D_ASSERT(bound_node->types.size() == 1);
+    assert(bound_node->types.size() == 1);
     auto compare_type = Type::MaxType(child->expr->return_type, bound_node->types[0]);
     child->expr = BoundCastExpression::AddCastToType(move(child->expr), compare_type);
     result->child_type = bound_node->types[0];

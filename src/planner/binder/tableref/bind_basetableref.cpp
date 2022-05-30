@@ -132,7 +132,7 @@ unique_ptr<BoundTableRef> Binder::Bind(BaseTableRef &ref) {
       view_binder->AddBoundView(view_catalog_entry);
       auto bound_child = view_binder->Bind(subquery);
 
-      D_ASSERT(bound_child->type == TableReferenceType::SUBQUERY);
+      assert(bound_child->type == TableReferenceType::SUBQUERY);
       // verify that the types and names match up with the expected types and names
       auto &bound_subquery = (BoundSubqueryRef &)*bound_child;
       if (bound_subquery.subquery->types != view_catalog_entry->types) {
@@ -143,7 +143,7 @@ unique_ptr<BoundTableRef> Binder::Bind(BaseTableRef &ref) {
       return bound_child;
     }
     default:
-      throw InternalException("Catalog entry type");
+      throw Exception("Catalog entry type");
   }
 }
 }  // namespace bustub

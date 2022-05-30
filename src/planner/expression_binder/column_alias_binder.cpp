@@ -21,7 +21,7 @@ BindResult ColumnAliasBinder::BindAlias(ExpressionBinder &enclosing_binder, Colu
   }
 
   // found an alias: bind the alias expression
-  D_ASSERT(!in_alias);
+  assert(!in_alias);
   auto expression = node.original_expressions[alias_entry->second]->Copy();
   in_alias = true;
   auto result = enclosing_binder.BindExpression(&expression, depth, root_expression);
