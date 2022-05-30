@@ -67,7 +67,7 @@ static void BindConstraints(Binder &binder, BoundCreateTableInfo &info) {
         // have to resolve columns of the unique constraint
         vector<uint64_t> keys;
         unordered_set<uint64_t> key_set;
-        if (unique.index != DConstants::INVALID_INDEX) {
+        if (unique.index != INVALID_INDEX) {
           assert(unique.index < base.columns.size());
           // unique constraint is given by single index
           unique.columns.push_back(base.columns[unique.index].name);

@@ -14,6 +14,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -24,6 +25,7 @@ namespace bustub {
 #define TEMP_SCHEMA "temp"
 #define INVALID_SCHEMA ""
 
+static constexpr const uint64_t INVALID_INDEX = -1;
 static constexpr int INVALID_PAGE_ID = -1;                                    // invalid page id
 static constexpr int INVALID_TXN_ID = -1;                                     // invalid transaction id
 static constexpr int INVALID_LSN = -1;                                        // invalid log sequence number
@@ -40,6 +42,7 @@ using std::move;
 using std::shared_ptr;
 using std::string;
 using std::unique_ptr;
+using std::unordered_map;
 using std::unordered_set;
 using std::vector;
 

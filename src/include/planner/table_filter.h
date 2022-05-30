@@ -9,6 +9,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include "common/common.h"
 #include "common/enums/filter_propagate_result.h"
 #include "type/type.h"

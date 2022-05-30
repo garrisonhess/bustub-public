@@ -1,8 +1,6 @@
 #include "planner/joinside.h"
 
 #include "planner/expression/bound_columnref_expression.h"
-#include "planner/expression/bound_comparison_expression.h"
-#include "planner/expression/bound_subquery_expression.h"
 #include "planner/expression_iterator.h"
 
 namespace bustub {

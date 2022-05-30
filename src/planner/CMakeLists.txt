@@ -3,7 +3,6 @@ add_subdirectory(binder)
 add_subdirectory(expression_binder)
 add_subdirectory(filter)
 add_subdirectory(operator)
-add_subdirectory(subquery)
 
 add_library(
   bustub_planner
@@ -18,7 +17,6 @@ add_library(
   binder.cpp
   bind_context.cpp
   planner.cpp
-  pragma_handler.cpp
   logical_operator_visitor.cpp
   table_filter.cpp)
 set(ALL_OBJECT_FILES

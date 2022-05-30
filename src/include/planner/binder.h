@@ -234,13 +234,6 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unique_ptr<BoundTableRef> Bind(EmptyTableRef &ref);
   unique_ptr<BoundTableRef> Bind(ExpressionListRef &ref);
 
-  bool BindTableFunctionParameters(TableFunctionCatalogEntry &table_function,
-                                   vector<unique_ptr<ParsedExpression>> &expressions, vector<Type> &arguments,
-                                   vector<Value> &parameters, named_parameter_map_t &named_parameters,
-                                   unique_ptr<BoundSubqueryRef> &subquery, string &error);
-  bool BindTableInTableOutFunction(vector<unique_ptr<ParsedExpression>> &expressions,
-                                   unique_ptr<BoundSubqueryRef> &subquery, string &error);
-
   unique_ptr<LogicalOperator> CreatePlan(BoundBaseTableRef &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundCrossProductRef &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundJoinRef &ref);

@@ -2,13 +2,9 @@
 
 #include "common/string_util.h"
 #include "parser/expression/columnref_expression.h"
-#include "parser/expression/operator_expression.h"
-#include "parser/expression/window_expression.h"
 #include "parser/parsed_expression_iterator.h"
 #include "planner/binder.h"
 #include "planner/expression/bound_columnref_expression.h"
-#include "planner/expression/bound_window_expression.h"
-#include "planner/expression_binder/aggregate_binder.h"
 #include "planner/query_node/bound_select_node.h"
 
 namespace bustub {
@@ -20,7 +16,7 @@ BindResult SelectBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, 
   auto &expr = **expr_ptr;
   // check if the expression binds to one of the groups
   auto group_index = TryBindGroup(expr, depth);
-  if (group_index != DConstants::INVALID_INDEX) {
+  if (group_index != INVALID_INDEX) {
     return BindGroup(expr, depth, group_index);
   }
   switch (expr.expression_class) {
@@ -57,7 +53,7 @@ uint64_t SelectBinder::TryBindGroup(ParsedExpression &expr, uint64_t depth) {
     assert(!expr.Equals(entry.first));
   }
 #endif
-  return DConstants::INVALID_INDEX;
+  return INVALID_INDEX;
 }
 
 BindResult SelectBinder::BindGroupingFunction(OperatorExpression &op, uint64_t depth) {
@@ -75,7 +71,7 @@ BindResult SelectBinder::BindGroupingFunction(OperatorExpression &op, uint64_t d
   for (auto &child : op.children) {
     ExpressionBinder::QualifyColumnNames(binder, child);
     auto idx = TryBindGroup(*child, depth);
-    if (idx == DConstants::INVALID_INDEX) {
+    if (idx == INVALID_INDEX) {
       return BindResult(binder.FormatError(
           op, StringUtil::Format("GROUPING child \"%s\" must be a grouping column", child->GetName())));
     }

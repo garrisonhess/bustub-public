@@ -11,12 +11,11 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "catalog/catalog.h"
-#include "catalog/catalog_entry/table_catalog_entry.h"
-#include "catalog/catalog_entry/table_function_catalog_entry.h"
+// #include "catalog/catalog_entry/table_catalog_entry.h"
+// #include "catalog/catalog_entry/table_function_catalog_entry.h"
 #include "common/case_insensitive_map.h"
 #include "parser/expression/columnref_expression.h"
 #include "parser/parsed_expression.h"
-#include "parser/qualified_name_set.h"
 #include "planner/expression.h"
 #include "planner/expression_binder.h"
 #include "planner/table_binding.h"
@@ -80,10 +79,7 @@ class BindContext {
   //! Adds a call to a table function with the given alias to the BindContext.
   void AddTableFunction(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types,
                         LogicalGet &get);
-  //! Adds a subquery with a given alias to the BindContext.
-  void AddSubquery(uint64_t index, const string &alias, SubqueryRef &ref, BoundQueryNode &subquery);
-  //! Adds a subquery with a given alias to the BindContext.
-  void AddSubquery(uint64_t index, const string &alias, TableFunctionRef &ref, BoundQueryNode &subquery);
+
   //! Adds a base table with the given alias to the BindContext.
   void AddGenericBinding(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types);
 

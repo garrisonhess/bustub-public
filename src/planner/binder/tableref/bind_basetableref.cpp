@@ -1,4 +1,4 @@
-#include "catalog/catalog_entry/view_catalog_entry.h"
+// #include "catalog/catalog_entry/view_catalog_entry.h"
 #include "common/string_util.h"
 #include "function/table/table_scan.h"
 #include "main/config.h"
@@ -6,11 +6,9 @@
 #include "parser/statement/select_statement.h"
 #include "parser/tableref/basetableref.h"
 #include "parser/tableref/subqueryref.h"
-#include "parser/tableref/table_function_ref.h"
 #include "planner/binder.h"
 #include "planner/operator/logical_get.h"
 #include "planner/tableref/bound_basetableref.h"
-#include "planner/tableref/bound_cteref.h"
 #include "planner/tableref/bound_dummytableref.h"
 #include "planner/tableref/bound_subqueryref.h"
 

@@ -1,7 +1,7 @@
 #include "catalog/catalog.h"
-#include "catalog/catalog_entry/schema_catalog_entry.h"
-#include "catalog/catalog_entry/type_catalog_entry.h"
-#include "catalog/catalog_search_path.h"
+// #include "catalog/catalog_entry/schema_catalog_entry.h"
+// #include "catalog/catalog_entry/type_catalog_entry.h"
+// #include "catalog/catalog_search_path.h"
 #include "function/scalar_macro_function.h"
 #include "main/client_context.h"
 #include "main/client_data.h"
@@ -162,7 +162,7 @@ static void FindMatchingPrimaryKeyColumns(vector<unique_ptr<Constraint>> &constr
       continue;
     }
     uint64_t column_count;
-    if (unique.index != DConstants::INVALID_INDEX) {
+    if (unique.index != INVALID_INDEX) {
       fk.info.pk_keys.push_back(unique.index);
       column_count = 1;
     } else {

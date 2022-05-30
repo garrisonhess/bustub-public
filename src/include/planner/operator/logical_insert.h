@@ -19,7 +19,7 @@ class LogicalInsert : public LogicalOperator {
       : LogicalOperator(LogicalOperatorType::LOGICAL_INSERT), table(table), table_index(0), return_chunk(false) {}
 
   vector<vector<unique_ptr<Expression>>> insert_values;
-  //! The insertion map ([table_index -> index in result, or DConstants::INVALID_INDEX if not specified])
+  //! The insertion map ([table_index -> index in result, or INVALID_INDEX if not specified])
   vector<uint64_t> column_index_map;
   //! The expected types for the INSERT statement (obtained from the column types)
   vector<Type> expected_types;

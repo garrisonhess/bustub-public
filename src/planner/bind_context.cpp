@@ -1,13 +1,9 @@
 #include "planner/bind_context.h"
 
 #include "parser/expression/columnref_expression.h"
-#include "parser/expression/positional_reference_expression.h"
-#include "parser/tableref/subqueryref.h"
-#include "parser/tableref/table_function_ref.h"
 #include "planner/bound_query_node.h"
 #include "planner/expression/bound_columnref_expression.h"
 
-#include "parser/expression/operator_expression.h"
 #include "parser/expression/star_expression.h"
 
 #include "common/pair.h"
@@ -394,15 +390,6 @@ vector<string> BindContext::AliasColumnNames(const string &table_name, const vec
   return result;
 }
 
-void BindContext::AddSubquery(uint64_t index, const string &alias, SubqueryRef &ref, BoundQueryNode &subquery) {
-  auto names = AliasColumnNames(alias, subquery.names, ref.column_name_alias);
-  AddGenericBinding(index, alias, names, subquery.types);
-}
-
-void BindContext::AddSubquery(uint64_t index, const string &alias, TableFunctionRef &ref, BoundQueryNode &subquery) {
-  auto names = AliasColumnNames(alias, subquery.names, ref.column_name_alias);
-  AddGenericBinding(index, alias, names, subquery.types);
-}
 
 void BindContext::AddGenericBinding(uint64_t index, const string &alias, const vector<string> &names,
                                     const vector<Type> &types) {
