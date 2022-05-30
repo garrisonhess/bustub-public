@@ -2,7 +2,7 @@
 
 #include "common/field_writer.h"
 #include "common/printer.h"
-#include "parser/tableref/list.h"
+// #include "parser/tableref/list.h"
 // #include "common/to_string.h"
 
 namespace bustub {

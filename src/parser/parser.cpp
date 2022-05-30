@@ -18,7 +18,6 @@ using std::move;
 void Parser::ParseQuery(const std::string &query) {
   Transformer transformer(nullptr);
   {
-    // PostgresParser::SetPreserveIdentifierCase(options.preserve_identifier_case);
     PostgresParser parser;
     parser.Parse(query);
     if (!parser.success) {
@@ -115,8 +114,7 @@ std::vector<ParserKeyword> Parser::KeywordList() {
   return result;
 }
 
-std::vector<std::unique_ptr<ParsedExpression>> Parser::ParseExpressionList(const std::string &select_list,
-                                                                           ParserOptions options) {
+std::vector<std::unique_ptr<ParsedExpression>> Parser::ParseExpressionList(const std::string &select_list) {
   // construct a mock query prefixed with SELECT
   std::string mock_query = "SELECT " + select_list;
   // parse the query
@@ -134,7 +132,7 @@ std::vector<std::unique_ptr<ParsedExpression>> Parser::ParseExpressionList(const
   return move(select_node.select_list_);
 }
 
-std::vector<OrderByNode> Parser::ParseOrderList(const std::string &select_list, ParserOptions options) {
+std::vector<OrderByNode> Parser::ParseOrderList(const std::string &select_list) {
   // construct a mock query
   std::string mock_query = "SELECT * FROM tbl ORDER BY " + select_list;
   // parse the query
@@ -158,7 +156,7 @@ std::vector<OrderByNode> Parser::ParseOrderList(const std::string &select_list, 
 }
 
 void Parser::ParseUpdateList(const std::string &update_list, std::vector<std::string> &update_columns,
-                             std::vector<std::unique_ptr<ParsedExpression>> &expressions, ParserOptions options) {
+                             std::vector<std::unique_ptr<ParsedExpression>> &expressions) {
   // construct a mock query
   std::string mock_query = "UPDATE tbl SET " + update_list;
   // parse the query
@@ -173,30 +171,29 @@ void Parser::ParseUpdateList(const std::string &update_list, std::vector<std::st
   expressions = move(update.expressions_);
 }
 
-std::vector<std::vector<std::unique_ptr<ParsedExpression>>> Parser::ParseValuesList(const std::string &value_list,
-                                                                                    ParserOptions options) {
-  // construct a mock query
-  std::string mock_query = "VALUES " + value_list;
-  // parse the query
-  Parser parser;
-  parser.ParseQuery(mock_query);
-  // check the statements
-  if (parser.statements_.size() != 1 || parser.statements_[0]->type_ != StatementType::SELECT_STATEMENT) {
-    throw Exception("Expected a single SELECT statement");
-  }
-  auto &select = (SelectStatement &)*parser.statements_[0];
-  if (select.node_->type_ != QueryNodeType::SELECT_NODE) {
-    throw Exception("Expected a single SELECT node");
-  }
-  auto &select_node = (SelectNode &)*select.node_;
-  if (!select_node.from_table_ || select_node.from_table_->type_ != TableReferenceType::EXPRESSION_LIST) {
-    throw Exception("Expected a single VALUES statement");
-  }
-  auto &values_list = (ExpressionListRef &)*select_node.from_table_;
-  return move(values_list.values_);
-}
+// std::vector<std::vector<std::unique_ptr<ParsedExpression>>> Parser::ParseValuesList(const std::string &value_list) {
+//   // construct a mock query
+//   std::string mock_query = "VALUES " + value_list;
+//   // parse the query
+//   Parser parser;
+//   parser.ParseQuery(mock_query);
+//   // check the statements
+//   if (parser.statements_.size() != 1 || parser.statements_[0]->type_ != StatementType::SELECT_STATEMENT) {
+//     throw Exception("Expected a single SELECT statement");
+//   }
+//   auto &select = (SelectStatement &)*parser.statements_[0];
+//   if (select.node_->type_ != QueryNodeType::SELECT_NODE) {
+//     throw Exception("Expected a single SELECT node");
+//   }
+//   auto &select_node = (SelectNode &)*select.node_;
+//   if (!select_node.from_table_ || select_node.from_table_->type_ != TableReferenceType::EXPRESSION_LIST) {
+//     throw Exception("Expected a single VALUES statement");
+//   }
+//   auto &values_list = (ExpressionListRef &)*select_node.from_table_;
+//   return move(values_list.values_);
+// }
 
-vector<ColumnDefinition> Parser::ParseColumnList(const string &column_list, ParserOptions options) {
+vector<ColumnDefinition> Parser::ParseColumnList(const string &column_list) {
   string mock_query = "CREATE TABLE blabla (" + column_list + ")";
   Parser parser;
   parser.ParseQuery(mock_query);

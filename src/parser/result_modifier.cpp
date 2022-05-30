@@ -182,41 +182,4 @@ unique_ptr<ResultModifier> OrderModifier::Deserialize(FieldReader &reader) {
   return mod;
 }
 
-bool LimitPercentModifier::Equals(const ResultModifier *other_p) const {
-  if (!ResultModifier::Equals(other_p)) {
-    return false;
-  }
-  auto &other = (LimitPercentModifier &)*other_p;
-  if (!BaseExpression::Equals(limit_.get(), other.limit_.get())) {
-    return false;
-  }
-  if (!BaseExpression::Equals(offset_.get(), other.offset_.get())) {
-    return false;
-  }
-  return true;
-}
-
-unique_ptr<ResultModifier> LimitPercentModifier::Copy() const {
-  auto copy = std::make_unique<LimitPercentModifier>();
-  if (limit_) {
-    copy->limit_ = limit_->Copy();
-  }
-  if (offset_) {
-    copy->offset_ = offset_->Copy();
-  }
-  return copy;
-}
-
-void LimitPercentModifier::Serialize(FieldWriter &writer) const {
-  writer.WriteOptional(limit_);
-  writer.WriteOptional(offset_);
-}
-
-unique_ptr<ResultModifier> LimitPercentModifier::Deserialize(FieldReader &reader) {
-  auto mod = std::make_unique<LimitPercentModifier>();
-  // mod->limit_ = reader.ReadOptional<ParsedExpression>(nullptr);
-  // mod->offset_ = reader.ReadOptional<ParsedExpression>(nullptr);
-  return mod;
-}
-
 }  // namespace bustub

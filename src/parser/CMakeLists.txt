@@ -15,7 +15,6 @@ add_library(
   expression_util.cpp
   keyword_helper.cpp
   parsed_expression.cpp
-  parsed_expression_iterator.cpp
   parser.cpp
   query_error_context.cpp
   query_node.cpp

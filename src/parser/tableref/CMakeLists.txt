@@ -2,7 +2,6 @@ add_library(
   bustub_parser_tableref
   OBJECT
   basetableref.cpp
-  crossproductref.cpp
   emptytableref.cpp
   expressionlistref.cpp
   joinref.cpp
