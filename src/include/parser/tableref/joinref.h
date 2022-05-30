@@ -16,20 +16,20 @@ namespace bustub {
 //! Represents a JOIN between two expressions
 class JoinRef : public TableRef {
  public:
-  JoinRef() : TableRef(TableReferenceType::JOIN), is_natural(false) {}
+  JoinRef() : TableRef(TableReferenceType::JOIN), is_natural_(false) {}
 
   //! The left hand side of the join
-  unique_ptr<TableRef> left;
+  unique_ptr<TableRef> left_;
   //! The right hand side of the join
-  unique_ptr<TableRef> right;
+  unique_ptr<TableRef> right_;
   //! The join condition
-  unique_ptr<ParsedExpression> condition;
+  unique_ptr<ParsedExpression> condition_;
   //! The join type
-  JoinType type;
+  JoinType type_;
   //! Natural join
-  bool is_natural;
+  bool is_natural_;
   //! The set of USING columns (if any)
-  vector<string> using_columns;
+  vector<string> using_columns_;
 
  public:
   string ToString() const override;
@@ -38,8 +38,8 @@ class JoinRef : public TableRef {
   unique_ptr<TableRef> Copy() override;
 
   //! Serializes a blob into a JoinRef
-  void Serialize(FieldWriter &serializer) const override;
+  void Serialize(FieldWriter &writer) const override;
   //! Deserializes a blob back into a JoinRef
-  static unique_ptr<TableRef> Deserialize(FieldReader &source);
+  static unique_ptr<TableRef> Deserialize(FieldReader &reader);
 };
 }  // namespace bustub

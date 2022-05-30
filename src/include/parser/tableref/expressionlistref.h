@@ -33,8 +33,8 @@ class ExpressionListRef : public TableRef {
   unique_ptr<TableRef> Copy() override;
 
   //! Serializes a blob into a ExpressionListRef
-  void Serialize(FieldWriter &serializer) const override;
+  void Serialize(FieldWriter &writer) const override;
   //! Deserializes a blob back into a ExpressionListRef
-  static unique_ptr<TableRef> Deserialize(FieldReader &source);
+  static unique_ptr<TableRef> Deserialize(FieldReader &reader);
 };
 }  // namespace bustub

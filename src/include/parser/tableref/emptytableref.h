@@ -23,8 +23,8 @@ class EmptyTableRef : public TableRef {
   unique_ptr<TableRef> Copy() override;
 
   //! Serializes a blob into a DummyTableRef
-  void Serialize(FieldWriter &serializer) const override;
+  void Serialize(FieldWriter &writer) const override;
   //! Deserializes a blob back into a DummyTableRef
-  static unique_ptr<TableRef> Deserialize(FieldReader &source);
+  static unique_ptr<TableRef> Deserialize(FieldReader &reader);
 };
 }  // namespace bustub

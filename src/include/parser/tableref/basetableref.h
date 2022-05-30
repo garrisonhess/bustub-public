@@ -35,8 +35,8 @@ class BaseTableRef : public TableRef {
   unique_ptr<TableRef> Copy() override;
 
   //! Serializes a blob into a BaseTableRef
-  void Serialize(FieldWriter &serializer) const override;
+  void Serialize(FieldWriter &writer) const override;
   //! Deserializes a blob back into a BaseTableRef
-  static unique_ptr<TableRef> Deserialize(FieldReader &source);
+  static unique_ptr<TableRef> Deserialize(FieldReader &reader);
 };
 }  // namespace bustub
