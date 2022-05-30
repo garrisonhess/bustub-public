@@ -137,64 +137,58 @@ bool SelectNode::Equals(const QueryNode *other_p) const {
 
 unique_ptr<QueryNode> SelectNode::Copy() const {
   auto result = std::make_unique<SelectNode>();
-  // for (auto &child : select_list) {
-  // 	result->select_list.push_back(child->Copy());
-  // }
-  // result->from_table = from_table ? from_table->Copy() : nullptr;
-  // result->where_clause = where_clause ? where_clause->Copy() : nullptr;
-  // // groups
-  // for (auto &group : groups.group_expressions) {
-  // 	result->groups.group_expressions.push_back(group->Copy());
-  // }
-  // result->groups.grouping_sets = groups.grouping_sets;
-  // result->aggregate_handling = aggregate_handling;
-  // result->having = having ? having->Copy() : nullptr;
-  // result->qualify = qualify ? qualify->Copy() : nullptr;
-  // result->sample = sample ? sample->Copy() : nullptr;
-  // this->CopyProperties(*result);
+  for (auto &child : select_list_) {
+  	result->select_list_.push_back(child->Copy());
+  }
+  result->from_table_ = from_table_ ? from_table_->Copy() : nullptr;
+  result->where_clause_ = where_clause_ ? where_clause_->Copy() : nullptr;
+  // groups
+  for (auto &group : groups_.group_expressions_) {
+  	result->groups_.group_expressions_.push_back(group->Copy());
+  }
+  result->groups_.grouping_sets_ = groups_.grouping_sets_;
+  result->having_ = having_ ? having_->Copy() : nullptr;
+  result->qualify_ = qualify_ ? qualify_->Copy() : nullptr;
+  this->CopyProperties(*result);
   return result;
 }
 
 void SelectNode::Serialize(FieldWriter &writer) const {
-  // writer.WriteSerializableList(select_list);
-  // writer.WriteOptional(from_table);
-  // writer.WriteOptional(where_clause);
-  // writer.WriteSerializableList(groups.group_expressions);
-  // writer.WriteField<uint32_t>(groups.grouping_sets.size());
-  // auto &serializer = writer.GetSerializer();
-  // for (auto &grouping_set : groups.grouping_sets) {
-  // 	serializer.Write<uint64_t>(grouping_set.size());
-  // 	for (auto &idx : grouping_set) {
-  // 		serializer.Write<uint64_t>(idx);
-  // 	}
-  // }
-  // writer.WriteField<AggregateHandling>(aggregate_handling);
-  // writer.WriteOptional(having);
-  // writer.WriteOptional(sample);
-  // writer.WriteOptional(qualify);
+  writer.WriteSerializableList(select_list_);
+  writer.WriteOptional(from_table_);
+  writer.WriteOptional(where_clause_);
+  writer.WriteSerializableList(groups_.group_expressions_);
+  writer.WriteField<uint32_t>(groups_.grouping_sets_.size());
+  auto &serializer = writer.GetSerializer();
+  for (auto &grouping_set : groups_.grouping_sets_) {
+  	serializer.Write<uint64_t>(grouping_set.size());
+  	for (auto &idx : grouping_set) {
+  		serializer.Write<uint64_t>(idx);
+  	}
+  }
+  writer.WriteOptional(having_);
+  writer.WriteOptional(qualify_);
 }
 
 unique_ptr<QueryNode> SelectNode::Deserialize(FieldReader &reader) {
   auto result = std::make_unique<SelectNode>();
-  // result->select_list = reader.ReadRequiredSerializableList<ParsedExpression>();
-  // result->from_table = reader.ReadOptional<TableRef>(nullptr);
-  // result->where_clause = reader.ReadOptional<ParsedExpression>(nullptr);
-  // result->groups.group_expressions = reader.ReadRequiredSerializableList<ParsedExpression>();
+  result->select_list_ = reader.ReadRequiredSerializableList<ParsedExpression>();
+  result->from_table_ = reader.ReadOptional<TableRef>(nullptr);
+  result->where_clause_ = reader.ReadOptional<ParsedExpression>(nullptr);
+  result->groups_.group_expressions_ = reader.ReadRequiredSerializableList<ParsedExpression>();
 
-  // auto grouping_set_count = reader.ReadRequired<uint32_t>();
-  // auto &source = reader.GetSource();
-  // for (uint64_t set_idx = 0; set_idx < grouping_set_count; set_idx++) {
-  // 	auto set_entries = source.Read<uint64_t>();
-  // 	GroupingSet grouping_set;
-  // 	for (uint64_t i = 0; i < set_entries; i++) {
-  // 		grouping_set.insert(source.Read<uint64_t>());
-  // 	}
-  // 	result->groups.grouping_sets.push_back(grouping_set);
-  // }
-  // result->aggregate_handling = reader.ReadRequired<AggregateHandling>();
-  // result->having = reader.ReadOptional<ParsedExpression>(nullptr);
-  // result->sample = reader.ReadOptional<SampleOptions>(nullptr);
-  // result->qualify = reader.ReadOptional<ParsedExpression>(nullptr);
+  auto grouping_set_count = reader.ReadRequired<uint32_t>();
+  auto &source = reader.GetSource();
+  for (uint64_t set_idx = 0; set_idx < grouping_set_count; set_idx++) {
+  	auto set_entries = source.Read<uint64_t>();
+  	GroupingSet grouping_set;
+  	for (uint64_t i = 0; i < set_entries; i++) {
+  		grouping_set.insert(source.Read<uint64_t>());
+  	}
+  	result->groups_.grouping_sets_.push_back(grouping_set);
+  }
+  result->having_ = reader.ReadOptional<ParsedExpression>(nullptr);
+  result->qualify_ = reader.ReadOptional<ParsedExpression>(nullptr);
   return result;
 }
 

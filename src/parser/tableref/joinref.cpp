@@ -76,7 +76,7 @@ unique_ptr<TableRef> JoinRef::Deserialize(FieldReader &reader) {
   auto result = std::make_unique<JoinRef>();
   result->left_ = reader.ReadRequiredSerializable<TableRef>();
   result->right_ = reader.ReadRequiredSerializable<TableRef>();
-  // result->condition_ = reader.ReadOptional<ParsedExpression>(nullptr);
+  result->condition_ = reader.ReadOptional<ParsedExpression>(nullptr);
   result->type_ = reader.ReadRequired<JoinType>();
   result->is_natural_ = reader.ReadRequired<bool>();
   result->using_columns_ = reader.ReadRequiredList<string>();
