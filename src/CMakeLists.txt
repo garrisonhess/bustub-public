@@ -15,7 +15,6 @@ add_library(bustub SHARED ${ALL_OBJECT_FILES})
 set(BUSTUB_LIBS
     bustub_buffer 
     bustub_catalog 
-    bustub_common_util 
     bustub_common 
     bustub_concurrency 
     bustub_execution 
