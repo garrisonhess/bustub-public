@@ -26,14 +26,7 @@ struct PGList;
 #include <string>
 
 namespace bustub {
-using std::string;
-using std::unique_ptr;
 using std::vector;
-
-struct ParserOptions {
-  bool preserve_identifier_case_ = true;
-  int32_t max_expression_depth_ = 1000;
-};
 
 //! The parser is responsible for parsing the query and converting it into a set
 //! of parsed statements. The parsed statements can then be converted into a
@@ -62,26 +55,20 @@ class Parser {
   static vector<ParserKeyword> KeywordList();
 
   //! Parses a list of expressions (i.e. the list found in a SELECT clause)
-  static vector<unique_ptr<ParsedExpression>> ParseExpressionList(const string &select_list,
-                                                                  ParserOptions options = ParserOptions());
+  static vector<unique_ptr<ParsedExpression>> ParseExpressionList(const string &select_list);
 
   //! Parses a list as found in an ORDER BY expression (i.e. including optional ASCENDING/DESCENDING modifiers)
-  static vector<OrderByNode> ParseOrderList(const string &select_list, ParserOptions options = ParserOptions());
-
-  //! Parses an update list (i.e. the list found in the SET clause of an UPDATE statement)
-  static void ParseUpdateList(const string &update_list, vector<string> &update_columns,
-                              vector<unique_ptr<ParsedExpression>> &expressions,
-                              ParserOptions options = ParserOptions());
+  static vector<OrderByNode> ParseOrderList(const string &select_list);
 
   //! Parses a VALUES list (i.e. the list of expressions after a VALUES clause)
-  static vector<vector<unique_ptr<ParsedExpression>>> ParseValuesList(const string &value_list,
-                                                                      ParserOptions options = ParserOptions());
+  static vector<vector<unique_ptr<ParsedExpression>>> ParseValuesList(const string &value_list);
 
   //! Parses a column list (i.e. as found in a CREATE TABLE statement)
-  static vector<ColumnDefinition> ParseColumnList(const string &column_list, ParserOptions options = ParserOptions());
+  static vector<ColumnDefinition> ParseColumnList(const string &column_list);
 
  private:
-  ParserOptions options_;
+  bool preserve_identifier_case_ = true;
+  int32_t max_expression_depth_ = 1000;
 };
 
 }  // namespace bustub

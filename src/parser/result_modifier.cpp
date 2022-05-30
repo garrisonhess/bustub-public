@@ -33,9 +33,6 @@ unique_ptr<ResultModifier> ResultModifier::Deserialize(Deserializer &source) {
     case ResultModifierType::DISTINCT_MODIFIER:
       result = DistinctModifier::Deserialize(reader);
       break;
-    case ResultModifierType::LIMIT_PERCENT_MODIFIER:
-      result = LimitPercentModifier::Deserialize(reader);
-      break;
     default:
       throw Exception("Unrecognized ResultModifierType for Deserialization");
   }

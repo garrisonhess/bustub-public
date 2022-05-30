@@ -15,19 +15,13 @@
 #include "common/enums/type_id.h"
 #include "nodes/parsenodes.hpp"
 #include "parser/group_by_node.h"
-#include "parser/qualified_name.h"
 #include "parser/tokens.h"
 #include "pg_definitions.hpp"
 #include "type/expression_type.h"
 
 namespace bustub {
-using std::vector;
-
 class ColumnDefinition;
 struct OrderByNode;
-struct CopyInfo;
-struct CommonTableExpressionInfo;
-struct GroupingExpressionMap;
 
 //! The transformer class is responsible for transforming the internal Postgres
 //! parser representation into the BusTub representation
@@ -45,8 +39,10 @@ class Transformer {
  private:
   //! Transforms a Postgres statement into a single SQL statement
   unique_ptr<SQLStatement> TransformStatement(bustub_libpgquery::PGNode *stmt);
+
   //! Transforms a Postgres statement into a single SQL statement
   unique_ptr<SQLStatement> TransformStatementInternal(bustub_libpgquery::PGNode *stmt);
+
   //===--------------------------------------------------------------------===//
   // Statement transformation
   //===--------------------------------------------------------------------===//
@@ -55,14 +51,17 @@ class Transformer {
 
   //! Transform a Postgres bustub_libpgquery::T_PGCreateStmt node into a CreateStatement
   unique_ptr<CreateStatement> TransformCreateTable(bustub_libpgquery::PGNode *node);
-  // //! Transform a Postgres bustub_libpgquery::T_PGIndexStmt node into CreateStatement
-  // unique_ptr<CreateStatement> TransformCreateIndex(bustub_libpgquery::PGNode *node);
+
+  //! Transform a Postgres bustub_libpgquery::T_PGIndexStmt node into CreateStatement
+  unique_ptr<CreateStatement> TransformCreateIndex(bustub_libpgquery::PGNode *node);
+
   //! Transform a Postgres bustub_libpgquery::T_PGInsertStmt node into a InsertStatement
   unique_ptr<InsertStatement> TransformInsert(bustub_libpgquery::PGNode *node);
-  // unique_ptr<DeleteStatement> TransformDelete(bustub_libpgquery::PGNode *node);
-  // //! Transform a Postgres bustub_libpgquery::T_PGUpdateStmt node into a UpdateStatement
-  // unique_ptr<UpdateStatement> TransformUpdate(bustub_libpgquery::PGNode *node);
-  // //! Transform a Postgres bustub_libpgquery::T_PGPragmaStmt node into a PragmaStatement
+
+  unique_ptr<DeleteStatement> TransformDelete(bustub_libpgquery::PGNode *node);
+
+  //! Transform a Postgres bustub_libpgquery::T_PGUpdateStmt node into a UpdateStatement
+  unique_ptr<UpdateStatement> TransformUpdate(bustub_libpgquery::PGNode *node);
 
   //===--------------------------------------------------------------------===//
   // Query Node Transform

@@ -21,7 +21,6 @@ enum ResultModifierType : uint8_t {
   LIMIT_MODIFIER = 1,
   ORDER_MODIFIER = 2,
   DISTINCT_MODIFIER = 3,
-  LIMIT_PERCENT_MODIFIER = 4
 };
 
 //! A ResultModifier
@@ -100,22 +99,6 @@ class DistinctModifier : public ResultModifier {
 
   //! list of distinct on targets (if any)
   std::vector<std::unique_ptr<ParsedExpression>> distinct_on_targets_;
-
- public:
-  bool Equals(const ResultModifier *other) const override;
-  std::unique_ptr<ResultModifier> Copy() const override;
-  void Serialize(FieldWriter &writer) const override;
-  static std::unique_ptr<ResultModifier> Deserialize(FieldReader &reader);
-};
-
-class LimitPercentModifier : public ResultModifier {
- public:
-  LimitPercentModifier() : ResultModifier(ResultModifierType::LIMIT_PERCENT_MODIFIER) {}
-
-  //! LIMIT %
-  std::unique_ptr<ParsedExpression> limit_;
-  //! OFFSET
-  std::unique_ptr<ParsedExpression> offset_;
 
  public:
   bool Equals(const ResultModifier *other) const override;

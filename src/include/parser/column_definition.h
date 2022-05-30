@@ -16,7 +16,6 @@
 
 namespace bustub {
 using std::string;
-using std::unique_ptr;
 
 //! A column of a table.
 class ColumnDefinition {

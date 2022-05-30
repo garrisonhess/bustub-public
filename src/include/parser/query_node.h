@@ -37,9 +37,6 @@ class QueryNode {
   //! The set of result modifiers associated with this query node
   vector<unique_ptr<ResultModifier>> modifiers_;
 
-  //   //! CTEs (used by SelectNode and SetOperationNode)
-  //   unordered_map<string, unique_ptr<CommonTableExpressionInfo>> cte_map_;
-
   virtual const vector<unique_ptr<ParsedExpression>> &GetSelectList() const = 0;
 
  public:
