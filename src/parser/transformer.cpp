@@ -3,6 +3,7 @@
 #include "common/logger.h"
 #include "parser/sql_statement.h"
 #include "parser/statement/create_statement.h"
+#include "parser/statement/insert_statement.h"
 #include "parser/statement/select_statement.h"
 #include "parser/tableref/emptytableref.h"
 
@@ -41,8 +42,8 @@ unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgque
       return tmp;
     }
     case bustub_libpgquery::T_PGInsertStmt: {
-      auto tmp1 = TransformInsert(stmt);
-      return tmp1;
+      auto tmp2 = TransformInsert(stmt);
+      return tmp2;
     }
     case bustub_libpgquery::T_PGCreateSchemaStmt:
       // return TransformCreateSchema(stmt);
