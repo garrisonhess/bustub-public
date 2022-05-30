@@ -13,6 +13,8 @@
 #pragma once
 
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace bustub {
 
@@ -36,6 +38,7 @@ using std::move;
 using std::shared_ptr;
 using std::string;
 using std::unique_ptr;
+using std::vector;
 
 using frame_id_t = int32_t;    // frame id type
 using page_id_t = int32_t;     // page id type

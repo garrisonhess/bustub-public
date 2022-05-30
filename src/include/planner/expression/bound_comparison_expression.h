@@ -27,6 +27,6 @@ class BoundComparisonExpression : public Expression {
   unique_ptr<Expression> Copy() override;
 
  public:
-  static LogicalType BindComparison(LogicalType left_type, LogicalType right_type);
+  static Type BindComparison(Type left_type, Type right_type);
 };
 }  // namespace bustub

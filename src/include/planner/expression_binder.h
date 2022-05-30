@@ -53,12 +53,12 @@ class ExpressionBinder {
 
   //! The target type that should result from the binder. If the result is not of this type, a cast to this type will
   //! be added. Defaults to INVALID.
-  LogicalType target_type;
+  Type target_type;
 
   MacroBinding *macro_binding;
 
  public:
-  unique_ptr<Expression> Bind(unique_ptr<ParsedExpression> &expr, LogicalType *result_type = nullptr,
+  unique_ptr<Expression> Bind(unique_ptr<ParsedExpression> &expr, Type *result_type = nullptr,
                               bool root_expression = true);
 
   //! Returns whether or not any columns have been bound by the expression binder
@@ -87,10 +87,10 @@ class ExpressionBinder {
   void BindChild(unique_ptr<ParsedExpression> &expr, uint64_t depth, string &error);
   static void ExtractCorrelatedExpressions(Binder &binder, Expression &expr);
 
-  static bool ContainsNullType(const LogicalType &type);
-  static LogicalType ExchangeNullType(const LogicalType &type);
-  static bool ContainsType(const LogicalType &type, LogicalTypeId target);
-  static LogicalType ExchangeType(const LogicalType &type, LogicalTypeId target, LogicalType new_type);
+  static bool ContainsNullType(const Type &type);
+  static Type ExchangeNullType(const Type &type);
+  static bool ContainsType(const Type &type, TypeId target);
+  static Type ExchangeType(const Type &type, TypeId target, Type new_type);
 
   //! Bind the given expresion. Unlike Bind(), this does *not* mute the given ParsedExpression.
   //! Exposed to be used from sub-binders that aren't subclasses of ExpressionBinder.

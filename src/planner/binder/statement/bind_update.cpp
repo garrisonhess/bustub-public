@@ -52,13 +52,13 @@ static void BindExtraColumns(TableCatalogEntry &table, LogicalGet &get, LogicalP
   }
 }
 
-static bool TypeSupportsRegularUpdate(const LogicalType &type) {
+static bool TypeSupportsRegularUpdate(const Type &type) {
   switch (type.id()) {
-    case LogicalTypeId::LIST:
-    case LogicalTypeId::MAP:
+    case TypeId::LIST:
+    case TypeId::MAP:
       // lists and maps don't support updates directly
       return false;
-    case LogicalTypeId::STRUCT: {
+    case TypeId::STRUCT: {
       auto &child_types = StructType::GetChildTypes(type);
       for (auto &entry : child_types) {
         if (!TypeSupportsRegularUpdate(entry.second)) {
@@ -205,8 +205,8 @@ BoundStatement Binder::Bind(UpdateStatement &stmt) {
   BindUpdateConstraints(*table, *get, *proj, *update);
 
   // finally add the row id column to the projection list
-  proj->expressions.push_back(make_unique<BoundColumnRefExpression>(
-      LogicalType::ROW_TYPE, ColumnBinding(get->table_index, get->column_ids.size())));
+  proj->expressions.push_back(
+      make_unique<BoundColumnRefExpression>(Type::ROW_TYPE, ColumnBinding(get->table_index, get->column_ids.size())));
   get->column_ids.push_back(COLUMN_IDENTIFIER_ROW_ID);
 
   // set the projection as child of the update node and finalize the result
@@ -223,7 +223,7 @@ BoundStatement Binder::Bind(UpdateStatement &stmt) {
   } else {
     update->table_index = 0;
     result.names = {"Count"};
-    result.types = {LogicalType::BIGINT};
+    result.types = {Type::BIGINT};
     result.plan = move(update);
     properties.allow_stream_result = false;
     properties.return_type = StatementReturnType::CHANGED_ROWS;

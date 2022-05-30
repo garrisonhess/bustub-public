@@ -23,7 +23,7 @@ static unique_ptr<ParsedExpression> SummarizeCreateAggregate(const string &aggre
   vector<unique_ptr<ParsedExpression>> children;
   children.push_back(make_unique<ColumnRefExpression>(move(column_name)));
   auto aggregate_function = make_unique<FunctionExpression>(aggregate, move(children));
-  auto cast_function = make_unique<CastExpression>(LogicalType::VARCHAR, move(aggregate_function));
+  auto cast_function = make_unique<CastExpression>(Type::VARCHAR, move(aggregate_function));
   return move(cast_function);
 }
 
@@ -33,7 +33,7 @@ static unique_ptr<ParsedExpression> SummarizeCreateAggregate(const string &aggre
   children.push_back(make_unique<ColumnRefExpression>(move(column_name)));
   children.push_back(make_unique<ConstantExpression>(modifier));
   auto aggregate_function = make_unique<FunctionExpression>(aggregate, move(children));
-  auto cast_function = make_unique<CastExpression>(LogicalType::VARCHAR, move(aggregate_function));
+  auto cast_function = make_unique<CastExpression>(Type::VARCHAR, move(aggregate_function));
   return move(cast_function);
 }
 
@@ -53,8 +53,8 @@ static unique_ptr<ParsedExpression> SummarizeCreateBinaryFunction(const string &
 }
 
 static unique_ptr<ParsedExpression> SummarizeCreateNullPercentage(string column_name) {
-  auto count_star = make_unique<CastExpression>(LogicalType::DOUBLE, SummarizeCreateCountStar());
-  auto count = make_unique<CastExpression>(LogicalType::DOUBLE, SummarizeCreateAggregate("count", move(column_name)));
+  auto count_star = make_unique<CastExpression>(Type::DOUBLE, SummarizeCreateCountStar());
+  auto count = make_unique<CastExpression>(Type::DOUBLE, SummarizeCreateAggregate("count", move(column_name)));
   auto null_percentage = SummarizeCreateBinaryFunction("/", move(count), move(count_star));
   auto negate_x =
       SummarizeCreateBinaryFunction("-", make_unique<ConstantExpression>(Value::DOUBLE(1)), move(null_percentage));

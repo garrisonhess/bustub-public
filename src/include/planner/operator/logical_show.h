@@ -18,13 +18,12 @@ class LogicalShow : public LogicalOperator {
     children.push_back(move(plan));
   }
 
-  vector<LogicalType> types_select;
+  vector<Type> types_select;
   vector<string> aliases;
 
  protected:
   void ResolveTypes() override {
-    types = {LogicalType::VARCHAR, LogicalType::VARCHAR, LogicalType::VARCHAR,
-             LogicalType::VARCHAR, LogicalType::VARCHAR, LogicalType::VARCHAR};
+    types = {Type::VARCHAR, Type::VARCHAR, Type::VARCHAR, Type::VARCHAR, Type::VARCHAR, Type::VARCHAR};
   }
   vector<ColumnBinding> GetColumnBindings() override {
     return {ColumnBinding(0, 0), ColumnBinding(0, 1), ColumnBinding(0, 2),

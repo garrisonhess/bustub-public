@@ -83,7 +83,7 @@ BindResult SelectBinder::BindGroupingFunction(OperatorExpression &op, uint64_t d
   }
   auto col_idx = node.grouping_functions.size();
   node.grouping_functions.push_back(move(group_indexes));
-  return BindResult(make_unique<BoundColumnRefExpression>(op.GetName(), LogicalType::BIGINT,
+  return BindResult(make_unique<BoundColumnRefExpression>(op.GetName(), Type::BIGINT,
                                                           ColumnBinding(node.groupings_index, col_idx), depth));
 }
 

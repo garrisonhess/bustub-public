@@ -210,7 +210,7 @@ unique_ptr<ParsedExpression> ExpressionBinder::QualifyColumnName(ColumnRefExpres
 
 BindResult ExpressionBinder::BindExpression(ColumnRefExpression &colref_p, uint64_t depth) {
   if (binder.GetBindingMode() == BindingMode::EXTRACT_NAMES) {
-    return BindResult(make_unique<BoundConstantExpression>(Value(LogicalType::SQLNULL)));
+    return BindResult(make_unique<BoundConstantExpression>(Value(Type::SQLNULL)));
   }
   string error_message;
   auto expr = QualifyColumnName(colref_p, error_message);

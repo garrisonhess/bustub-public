@@ -106,7 +106,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SetOperationNode &statement) {
 
   // figure out the types of the setop result by picking the max of both
   for (uint64_t i = 0; i < result->left->types.size(); i++) {
-    auto result_type = LogicalType::MaxLogicalType(result->left->types[i], result->right->types[i]);
+    auto result_type = Type::MaxType(result->left->types[i], result->right->types[i]);
     if (!can_contain_nulls) {
       if (ExpressionBinder::ContainsNullType(result_type)) {
         result_type = ExpressionBinder::ExchangeNullType(result_type);

@@ -30,7 +30,7 @@ BindResult SelectBinder::BindUnnest(FunctionExpression &function, uint64_t depth
   auto &child = (BoundExpression &)*function.children[0];
   auto &child_type = child.expr->return_type;
 
-  if (child_type.id() != LogicalTypeId::LIST && child_type.id() != LogicalTypeId::SQLNULL) {
+  if (child_type.id() != TypeId::LIST && child_type.id() != TypeId::SQLNULL) {
     return BindResult(binder.FormatError(function, "Unnest() can only be applied to lists and NULL"));
   }
 
@@ -38,8 +38,8 @@ BindResult SelectBinder::BindUnnest(FunctionExpression &function, uint64_t depth
     throw BinderException(binder.FormatError(function, "Unnest() for correlated expressions is not supported yet"));
   }
 
-  auto return_type = LogicalType(LogicalTypeId::SQLNULL);
-  if (child_type.id() == LogicalTypeId::LIST) {
+  auto return_type = Type(TypeId::SQLNULL);
+  if (child_type.id() == TypeId::LIST) {
     return_type = ListType::GetChildType(child_type);
   }
 

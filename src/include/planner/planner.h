@@ -26,9 +26,9 @@ class Planner {
 
   unique_ptr<LogicalOperator> plan;
   vector<string> names;
-  vector<LogicalType> types;
+  vector<Type> types;
   unordered_map<uint64_t, vector<unique_ptr<Value>>> value_map;
-  vector<LogicalType> parameter_types;
+  vector<Type> parameter_types;
 
   shared_ptr<Binder> binder;
   ClientContext &context;

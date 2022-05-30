@@ -8,8 +8,8 @@
 
 #pragma once
 
+#include <unordered_set>
 #include "common/constants.h"
-#include "common/unordered_set.h"
 #include "planner/joinside.h"
 #include "planner/operator/logical_join.h"
 
@@ -24,7 +24,7 @@ class LogicalComparisonJoin : public LogicalJoin {
   //! The conditions of the join
   vector<JoinCondition> conditions;
   //! Used for duplicate-eliminated joins
-  vector<LogicalType> delim_types;
+  vector<Type> delim_types;
 
  public:
   string ParamsToString() const override;

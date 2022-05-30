@@ -7,7 +7,7 @@
 namespace bustub {
 
 AlterBinder::AlterBinder(Binder &binder, ClientContext &context, TableCatalogEntry &table,
-                         vector<column_t> &bound_columns, LogicalType target_type)
+                         vector<column_t> &bound_columns, Type target_type)
     : ExpressionBinder(binder, context), table(table), bound_columns(bound_columns) {
   this->target_type = move(target_type);
 }

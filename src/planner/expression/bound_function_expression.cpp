@@ -6,7 +6,7 @@
 
 namespace bustub {
 
-BoundFunctionExpression::BoundFunctionExpression(LogicalType return_type, ScalarFunction bound_function,
+BoundFunctionExpression::BoundFunctionExpression(Type return_type, ScalarFunction bound_function,
                                                  vector<unique_ptr<Expression>> arguments,
                                                  unique_ptr<FunctionData> bind_info, bool is_operator)
     : Expression(ExpressionType::BOUND_FUNCTION, ExpressionClass::BOUND_FUNCTION, move(return_type)),

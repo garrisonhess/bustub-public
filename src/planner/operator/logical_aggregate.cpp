@@ -20,7 +20,7 @@ void LogicalAggregate::ResolveTypes() {
     types.push_back(expr->return_type);
   }
   for (uint64_t i = 0; i < grouping_functions.size(); i++) {
-    types.emplace_back(LogicalType::BIGINT);
+    types.emplace_back(Type::BIGINT);
   }
 }
 

@@ -35,7 +35,7 @@ unique_ptr<Expression> Binder::BindOrderExpression(OrderBinder &order_binder, un
 }
 
 unique_ptr<Expression> Binder::BindDelimiter(ClientContext &context, OrderBinder &order_binder,
-                                             unique_ptr<ParsedExpression> delimiter, const LogicalType &type,
+                                             unique_ptr<ParsedExpression> delimiter, const Type &type,
                                              Value &delimiter_value) {
   auto new_binder = Binder::CreateBinder(context, this, true);
   if (delimiter->HasSubquery()) {
@@ -56,7 +56,7 @@ unique_ptr<BoundResultModifier> Binder::BindLimit(OrderBinder &order_binder, Lim
   auto result = make_unique<BoundLimitModifier>();
   if (limit_mod.limit) {
     Value val;
-    result->limit = BindDelimiter(context, order_binder, move(limit_mod.limit), LogicalType::BIGINT, val);
+    result->limit = BindDelimiter(context, order_binder, move(limit_mod.limit), Type::BIGINT, val);
     if (!result->limit) {
       result->limit_val = val.GetValue<int64_t>();
       if (result->limit_val < 0) {
@@ -66,7 +66,7 @@ unique_ptr<BoundResultModifier> Binder::BindLimit(OrderBinder &order_binder, Lim
   }
   if (limit_mod.offset) {
     Value val;
-    result->offset = BindDelimiter(context, order_binder, move(limit_mod.offset), LogicalType::BIGINT, val);
+    result->offset = BindDelimiter(context, order_binder, move(limit_mod.offset), Type::BIGINT, val);
     if (!result->offset) {
       result->offset_val = val.GetValue<int64_t>();
       if (result->offset_val < 0) {
@@ -81,7 +81,7 @@ unique_ptr<BoundResultModifier> Binder::BindLimitPercent(OrderBinder &order_bind
   auto result = make_unique<BoundLimitPercentModifier>();
   if (limit_mod.limit) {
     Value val;
-    result->limit = BindDelimiter(context, order_binder, move(limit_mod.limit), LogicalType::DOUBLE, val);
+    result->limit = BindDelimiter(context, order_binder, move(limit_mod.limit), Type::DOUBLE, val);
     if (!result->limit) {
       result->limit_percent = val.GetValue<double>();
       if (result->limit_percent < 0.0) {
@@ -91,7 +91,7 @@ unique_ptr<BoundResultModifier> Binder::BindLimitPercent(OrderBinder &order_bind
   }
   if (limit_mod.offset) {
     Value val;
-    result->offset = BindDelimiter(context, order_binder, move(limit_mod.offset), LogicalType::BIGINT, val);
+    result->offset = BindDelimiter(context, order_binder, move(limit_mod.offset), Type::BIGINT, val);
     if (!result->offset) {
       result->offset_val = val.GetValue<int64_t>();
     }
@@ -169,8 +169,7 @@ void Binder::BindModifiers(OrderBinder &order_binder, QueryNode &statement, Boun
   }
 }
 
-static void AssignReturnType(unique_ptr<Expression> &expr, const vector<LogicalType> &sql_types,
-                             uint64_t projection_index) {
+static void AssignReturnType(unique_ptr<Expression> &expr, const vector<Type> &sql_types, uint64_t projection_index) {
   if (!expr) {
     return;
   }
@@ -181,8 +180,7 @@ static void AssignReturnType(unique_ptr<Expression> &expr, const vector<LogicalT
   bound_colref.return_type = sql_types[bound_colref.binding.column_index];
 }
 
-void Binder::BindModifierTypes(BoundQueryNode &result, const vector<LogicalType> &sql_types,
-                               uint64_t projection_index) {
+void Binder::BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_types, uint64_t projection_index) {
   for (auto &bound_mod : result.modifiers) {
     switch (bound_mod->type) {
       case ResultModifierType::DISTINCT_MODIFIER: {
@@ -208,7 +206,7 @@ void Binder::BindModifierTypes(BoundQueryNode &result, const vector<LogicalType>
         for (auto &target_distinct : distinct.target_distincts) {
           auto &bound_colref = (BoundColumnRefExpression &)*target_distinct;
           auto sql_type = sql_types[bound_colref.binding.column_index];
-          if (sql_type.id() == LogicalTypeId::VARCHAR) {
+          if (sql_type.id() == TypeId::VARCHAR) {
             target_distinct = ExpressionBinder::PushCollation(context, move(target_distinct),
                                                               StringType::GetCollation(sql_type), true);
           }
@@ -239,7 +237,7 @@ void Binder::BindModifierTypes(BoundQueryNode &result, const vector<LogicalType>
           D_ASSERT(bound_colref.binding.column_index < sql_types.size());
           auto sql_type = sql_types[bound_colref.binding.column_index];
           bound_colref.return_type = sql_types[bound_colref.binding.column_index];
-          if (sql_type.id() == LogicalTypeId::VARCHAR) {
+          if (sql_type.id() == TypeId::VARCHAR) {
             order_node.expression = ExpressionBinder::PushCollation(context, move(order_node.expression),
                                                                     StringType::GetCollation(sql_type));
           }
@@ -331,9 +329,9 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
       group_binder.bind_index = i;
 
       // bind the groups
-      LogicalType group_type;
+      Type group_type;
       auto bound_expr = group_binder.Bind(group_expressions[i], &group_type);
-      D_ASSERT(bound_expr->return_type.id() != LogicalTypeId::INVALID);
+      D_ASSERT(bound_expr->return_type.id() != TypeId::INVALID);
 
       // push a potential collation, if necessary
       bound_expr =
@@ -367,9 +365,9 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 
   // after that, we bind to the SELECT list
   SelectBinder select_binder(*this, context, *result, info);
-  vector<LogicalType> internal_sql_types;
+  vector<Type> internal_sql_types;
   for (uint64_t i = 0; i < statement.select_list.size(); i++) {
-    LogicalType result_type;
+    Type result_type;
     auto expr = select_binder.Bind(statement.select_list[i], &result_type);
     if (statement.aggregate_handling == AggregateHandling::FORCE_AGGREGATES && select_binder.HasBoundColumns()) {
       if (select_binder.BoundAggregates()) {

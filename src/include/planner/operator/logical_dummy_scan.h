@@ -28,7 +28,7 @@ class LogicalDummyScan : public LogicalOperator {
  protected:
   void ResolveTypes() override {
     if (types.size() == 0) {
-      types.emplace_back(LogicalType::INTEGER);
+      types.emplace_back(Type::INTEGER);
     }
   }
 };

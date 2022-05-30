@@ -5,8 +5,7 @@
 namespace bustub {
 
 BoundParameterExpression::BoundParameterExpression(uint64_t parameter_nr)
-    : Expression(ExpressionType::VALUE_PARAMETER, ExpressionClass::BOUND_PARAMETER,
-                 LogicalType(LogicalTypeId::UNKNOWN)),
+    : Expression(ExpressionType::VALUE_PARAMETER, ExpressionClass::BOUND_PARAMETER, Type(TypeId::UNKNOWN)),
       parameter_nr(parameter_nr),
       value(nullptr) {}
 

@@ -59,8 +59,7 @@ static unique_ptr<Expression> PlanUncorrelatedSubquery(Binder &binder, BoundSubq
 
       // we replace the original subquery with a ColumnRefExpression referring to the result of the projection (either
       // TRUE or FALSE)
-      return make_unique<BoundColumnRefExpression>(expr.GetName(), LogicalType::BOOLEAN,
-                                                   ColumnBinding(projection_index, 0));
+      return make_unique<BoundColumnRefExpression>(expr.GetName(), Type::BOOLEAN, ColumnBinding(projection_index, 0));
     }
     case SubqueryType::SCALAR: {
       // uncorrelated scalar, we want to return the first entry

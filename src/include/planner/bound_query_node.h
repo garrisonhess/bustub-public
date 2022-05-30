@@ -28,7 +28,7 @@ class BoundQueryNode {
   //! The names returned by this QueryNode.
   vector<string> names;
   //! The types returned by this QueryNode.
-  vector<LogicalType> types;
+  vector<Type> types;
 
  public:
   virtual uint64_t GetRootIndex() = 0;

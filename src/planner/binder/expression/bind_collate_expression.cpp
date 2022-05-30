@@ -10,10 +10,10 @@ BindResult ExpressionBinder::BindExpression(CollateExpression &expr, uint64_t de
     return BindResult(error);
   }
   auto &child = (BoundExpression &)*expr.child;
-  if (child.expr->return_type.id() != LogicalTypeId::VARCHAR) {
+  if (child.expr->return_type.id() != TypeId::VARCHAR) {
     throw BinderException("collations are only supported for type varchar");
   }
-  child.expr->return_type = LogicalType::VARCHAR_COLLATION(expr.collation);
+  child.expr->return_type = Type::VARCHAR_COLLATION(expr.collation);
   return BindResult(move(child.expr));
 }
 

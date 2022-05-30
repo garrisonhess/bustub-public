@@ -25,7 +25,7 @@ class LogicalSet : public LogicalOperator {
   SetScope scope;
 
  protected:
-  void ResolveTypes() override { types.emplace_back(LogicalType::BOOLEAN); }
+  void ResolveTypes() override { types.emplace_back(Type::BOOLEAN); }
 };
 
 }  // namespace bustub

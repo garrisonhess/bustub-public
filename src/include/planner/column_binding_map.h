@@ -9,8 +9,8 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include "common/types/hash.h"
-#include "common/unordered_set.h"
 #include "planner/column_binding.h"
 
 namespace bustub {

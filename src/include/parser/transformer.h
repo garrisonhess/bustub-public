@@ -13,10 +13,10 @@
 #include <vector>
 
 #include "common/enums/type_id.h"
-#include "nodes/parsenodes.h"
+#include "nodes/parsenodes.hpp"
 #include "parser/group_by_node.h"
 #include "parser/tokens.h"
-#include "pg_definitions.h"
+#include "pg_definitions.hpp"
 #include "type/expression_type.h"
 
 namespace bustub {

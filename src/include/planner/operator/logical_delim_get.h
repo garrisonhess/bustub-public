@@ -15,7 +15,7 @@ namespace bustub {
 //! LogicalDelimGet represents a duplicate eliminated scan belonging to a DelimJoin
 class LogicalDelimGet : public LogicalOperator {
  public:
-  LogicalDelimGet(uint64_t table_index, vector<LogicalType> types)
+  LogicalDelimGet(uint64_t table_index, vector<Type> types)
       : LogicalOperator(LogicalOperatorType::LOGICAL_DELIM_GET), table_index(table_index) {
     D_ASSERT(types.size() > 0);
     chunk_types = types;
@@ -24,7 +24,7 @@ class LogicalDelimGet : public LogicalOperator {
   //! The table index in the current bind context
   uint64_t table_index;
   //! The types of the chunk
-  vector<LogicalType> chunk_types;
+  vector<Type> chunk_types;
 
  public:
   vector<ColumnBinding> GetColumnBindings() override { return GenerateColumnBindings(table_index, chunk_types.size()); }

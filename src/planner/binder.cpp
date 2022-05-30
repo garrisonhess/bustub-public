@@ -377,7 +377,7 @@ string Binder::FormatErrorRecursive(uint64_t query_location, const string &messa
 BoundStatement Binder::BindReturning(vector<unique_ptr<ParsedExpression>> returning_list, TableCatalogEntry *table,
                                      uint64_t update_table_index, unique_ptr<LogicalOperator> child_operator,
                                      BoundStatement result) {
-  vector<LogicalType> types;
+  vector<Type> types;
   vector<std::string> names;
 
   auto binder = Binder::CreateBinder(context);
@@ -391,7 +391,7 @@ BoundStatement Binder::BindReturning(vector<unique_ptr<ParsedExpression>> return
   ReturningBinder returning_binder(*binder, context);
 
   vector<unique_ptr<Expression>> projection_expressions;
-  LogicalType result_type;
+  Type result_type;
   for (auto &returning_expr : returning_list) {
     auto expr_type = returning_expr->GetExpressionType();
     if (expr_type == ExpressionType::STAR) {

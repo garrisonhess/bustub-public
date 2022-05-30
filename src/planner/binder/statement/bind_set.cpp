@@ -7,7 +7,7 @@ namespace bustub {
 
 BoundStatement Binder::Bind(SetStatement &stmt) {
   BoundStatement result;
-  result.types = {LogicalType::BOOLEAN};
+  result.types = {Type::BOOLEAN};
   result.names = {"Success"};
 
   result.plan = make_unique<LogicalSet>(stmt.name, stmt.value, stmt.scope);

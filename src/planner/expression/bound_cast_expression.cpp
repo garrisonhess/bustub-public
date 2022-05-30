@@ -4,12 +4,12 @@
 
 namespace bustub {
 
-BoundCastExpression::BoundCastExpression(unique_ptr<Expression> child_p, LogicalType target_type_p, bool try_cast_p)
+BoundCastExpression::BoundCastExpression(unique_ptr<Expression> child_p, Type target_type_p, bool try_cast_p)
     : Expression(ExpressionType::OPERATOR_CAST, ExpressionClass::BOUND_CAST, move(target_type_p)),
       child(move(child_p)),
       try_cast(try_cast_p) {}
 
-unique_ptr<Expression> BoundCastExpression::AddCastToType(unique_ptr<Expression> expr, const LogicalType &target_type,
+unique_ptr<Expression> BoundCastExpression::AddCastToType(unique_ptr<Expression> expr, const Type &target_type,
                                                           bool try_cast) {
   D_ASSERT(expr);
   if (expr->expression_class == ExpressionClass::BOUND_PARAMETER) {
@@ -20,10 +20,10 @@ unique_ptr<Expression> BoundCastExpression::AddCastToType(unique_ptr<Expression>
     def.return_type = target_type;
   } else if (expr->return_type != target_type) {
     auto &expr_type = expr->return_type;
-    if (target_type.id() == LogicalTypeId::LIST && expr_type.id() == LogicalTypeId::LIST) {
+    if (target_type.id() == TypeId::LIST && expr_type.id() == TypeId::LIST) {
       auto &target_list = ListType::GetChildType(target_type);
       auto &expr_list = ListType::GetChildType(expr_type);
-      if (target_list.id() == LogicalTypeId::ANY || expr_list == target_list) {
+      if (target_list.id() == TypeId::ANY || expr_list == target_list) {
         return expr;
       }
     }
@@ -32,17 +32,17 @@ unique_ptr<Expression> BoundCastExpression::AddCastToType(unique_ptr<Expression>
   return expr;
 }
 
-bool BoundCastExpression::CastIsInvertible(const LogicalType &source_type, const LogicalType &target_type) {
-  if (source_type.id() == LogicalTypeId::BOOLEAN || target_type.id() == LogicalTypeId::BOOLEAN) {
+bool BoundCastExpression::CastIsInvertible(const Type &source_type, const Type &target_type) {
+  if (source_type.id() == TypeId::BOOLEAN || target_type.id() == TypeId::BOOLEAN) {
     return false;
   }
-  if (source_type.id() == LogicalTypeId::FLOAT || target_type.id() == LogicalTypeId::FLOAT) {
+  if (source_type.id() == TypeId::FLOAT || target_type.id() == TypeId::FLOAT) {
     return false;
   }
-  if (source_type.id() == LogicalTypeId::DOUBLE || target_type.id() == LogicalTypeId::DOUBLE) {
+  if (source_type.id() == TypeId::DOUBLE || target_type.id() == TypeId::DOUBLE) {
     return false;
   }
-  if (source_type.id() == LogicalTypeId::DECIMAL || target_type.id() == LogicalTypeId::DECIMAL) {
+  if (source_type.id() == TypeId::DECIMAL || target_type.id() == TypeId::DECIMAL) {
     uint8_t source_width, target_width;
     uint8_t source_scale, target_scale;
     // cast to or from decimal
@@ -58,41 +58,41 @@ bool BoundCastExpression::CastIsInvertible(const LogicalType &source_type, const
     }
     return true;
   }
-  if (source_type.id() == LogicalTypeId::TIMESTAMP || source_type.id() == LogicalTypeId::TIMESTAMP_TZ) {
+  if (source_type.id() == TypeId::TIMESTAMP || source_type.id() == TypeId::TIMESTAMP_TZ) {
     switch (target_type.id()) {
-      case LogicalTypeId::DATE:
-      case LogicalTypeId::TIME:
-      case LogicalTypeId::TIME_TZ:
+      case TypeId::DATE:
+      case TypeId::TIME:
+      case TypeId::TIME_TZ:
         return false;
       default:
         break;
     }
   }
-  if (source_type.id() == LogicalTypeId::VARCHAR) {
+  if (source_type.id() == TypeId::VARCHAR) {
     switch (target_type.id()) {
-      case LogicalTypeId::DATE:
-      case LogicalTypeId::TIME:
-      case LogicalTypeId::TIMESTAMP:
-      case LogicalTypeId::TIMESTAMP_NS:
-      case LogicalTypeId::TIMESTAMP_MS:
-      case LogicalTypeId::TIMESTAMP_SEC:
-      case LogicalTypeId::TIME_TZ:
-      case LogicalTypeId::TIMESTAMP_TZ:
+      case TypeId::DATE:
+      case TypeId::TIME:
+      case TypeId::TIMESTAMP:
+      case TypeId::TIMESTAMP_NS:
+      case TypeId::TIMESTAMP_MS:
+      case TypeId::TIMESTAMP_SEC:
+      case TypeId::TIME_TZ:
+      case TypeId::TIMESTAMP_TZ:
         return true;
       default:
         return false;
     }
   }
-  if (target_type.id() == LogicalTypeId::VARCHAR) {
+  if (target_type.id() == TypeId::VARCHAR) {
     switch (source_type.id()) {
-      case LogicalTypeId::DATE:
-      case LogicalTypeId::TIME:
-      case LogicalTypeId::TIMESTAMP:
-      case LogicalTypeId::TIMESTAMP_NS:
-      case LogicalTypeId::TIMESTAMP_MS:
-      case LogicalTypeId::TIMESTAMP_SEC:
-      case LogicalTypeId::TIME_TZ:
-      case LogicalTypeId::TIMESTAMP_TZ:
+      case TypeId::DATE:
+      case TypeId::TIME:
+      case TypeId::TIMESTAMP:
+      case TypeId::TIMESTAMP_NS:
+      case TypeId::TIMESTAMP_MS:
+      case TypeId::TIMESTAMP_SEC:
+      case TypeId::TIME_TZ:
+      case TypeId::TIMESTAMP_TZ:
         return true;
       default:
         return false;

@@ -3,7 +3,7 @@
 
 namespace bustub {
 
-BoundCaseExpression::BoundCaseExpression(LogicalType type)
+BoundCaseExpression::BoundCaseExpression(Type type)
     : Expression(ExpressionType::CASE_EXPR, ExpressionClass::BOUND_CASE, move(type)) {}
 
 BoundCaseExpression::BoundCaseExpression(unique_ptr<Expression> when_expr, unique_ptr<Expression> then_expr,

@@ -23,7 +23,7 @@ static void InvertPercentileFractions(unique_ptr<ParsedExpression> &fractions) {
   }
 
   Value value = ExpressionExecutor::EvaluateScalar(*bound.expr);
-  if (value.type().id() == LogicalTypeId::LIST) {
+  if (value.type().id() == TypeId::LIST) {
     vector<Value> values;
     for (const auto &element_val : ListValue::GetChildren(value)) {
       values.push_back(Value::DOUBLE(1 - element_val.GetValue<double>()));
@@ -126,8 +126,8 @@ BindResult SelectBinder::BindAggregate(FunctionExpression &aggr, AggregateFuncti
   }
   // all children bound successfully
   // extract the children and types
-  vector<LogicalType> types;
-  vector<LogicalType> arguments;
+  vector<Type> types;
+  vector<Type> arguments;
   vector<unique_ptr<Expression>> children;
 
   if (ordered_set_agg) {

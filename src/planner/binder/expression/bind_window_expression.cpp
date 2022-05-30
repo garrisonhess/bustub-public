@@ -15,7 +15,7 @@
 
 namespace bustub {
 
-static LogicalType ResolveWindowExpressionType(ExpressionType window_type, const vector<LogicalType> &child_types) {
+static Type ResolveWindowExpressionType(ExpressionType window_type, const vector<Type> &child_types) {
   uint64_t param_count;
   switch (window_type) {
     case ExpressionType::WINDOW_RANK:
@@ -45,12 +45,12 @@ static LogicalType ResolveWindowExpressionType(ExpressionType window_type, const
   switch (window_type) {
     case ExpressionType::WINDOW_PERCENT_RANK:
     case ExpressionType::WINDOW_CUME_DIST:
-      return LogicalType(LogicalTypeId::DOUBLE);
+      return Type(TypeId::DOUBLE);
     case ExpressionType::WINDOW_ROW_NUMBER:
     case ExpressionType::WINDOW_RANK:
     case ExpressionType::WINDOW_RANK_DENSE:
     case ExpressionType::WINDOW_NTILE:
-      return LogicalType::BIGINT;
+      return Type::BIGINT;
     case ExpressionType::WINDOW_NTH_VALUE:
     case ExpressionType::WINDOW_FIRST_VALUE:
     case ExpressionType::WINDOW_LAST_VALUE:
@@ -79,7 +79,7 @@ static unique_ptr<Expression> GetExpression(unique_ptr<ParsedExpression> &expr) 
   return move(((BoundExpression &)*expr).expr);
 }
 
-static unique_ptr<Expression> CastWindowExpression(unique_ptr<ParsedExpression> &expr, const LogicalType &type) {
+static unique_ptr<Expression> CastWindowExpression(unique_ptr<ParsedExpression> &expr, const Type &type) {
   if (!expr) {
     return nullptr;
   }
@@ -92,8 +92,8 @@ static unique_ptr<Expression> CastWindowExpression(unique_ptr<ParsedExpression> 
   return move(bound.expr);
 }
 
-static LogicalType BindRangeExpression(ClientContext &context, const string &name, unique_ptr<ParsedExpression> &expr,
-                                       unique_ptr<ParsedExpression> &order_expr) {
+static Type BindRangeExpression(ClientContext &context, const string &name, unique_ptr<ParsedExpression> &expr,
+                                unique_ptr<ParsedExpression> &order_expr) {
   vector<unique_ptr<Expression>> children;
 
   D_ASSERT(order_expr.get());
@@ -155,7 +155,7 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
     return BindResult(error);
   }
   // successfully bound all children: create bound window function
-  vector<LogicalType> types;
+  vector<Type> types;
   vector<unique_ptr<Expression>> children;
   for (auto &child : window.children) {
     D_ASSERT(child.get());
@@ -167,13 +167,13 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
       case ExpressionType::WINDOW_NTILE:
         // ntile(bigint)
         if (argno == 0) {
-          bound.expr = BoundCastExpression::AddCastToType(move(bound.expr), LogicalType::BIGINT);
+          bound.expr = BoundCastExpression::AddCastToType(move(bound.expr), Type::BIGINT);
         }
         break;
       case ExpressionType::WINDOW_NTH_VALUE:
         // nth_value(<expr>, index)
         if (argno == 1) {
-          bound.expr = BoundCastExpression::AddCastToType(move(bound.expr), LogicalType::BIGINT);
+          bound.expr = BoundCastExpression::AddCastToType(move(bound.expr), Type::BIGINT);
         }
       default:
         break;
@@ -182,7 +182,7 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
     children.push_back(move(bound.expr));
   }
   //  Determine the function type.
-  LogicalType sql_type;
+  Type sql_type;
   unique_ptr<AggregateFunction> aggregate;
   unique_ptr<FunctionData> bind_info;
   if (window.type == ExpressionType::WINDOW_AGGREGATE) {
@@ -222,7 +222,7 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
   // for ORDER BY DESC.
   auto &config = DBConfig::GetConfig(context);
   auto range_sense = OrderType::INVALID;
-  LogicalType start_type = LogicalType::BIGINT;
+  Type start_type = Type::BIGINT;
   if (window.start == WindowBoundary::EXPR_PRECEDING_RANGE) {
     D_ASSERT(window.orders.size() == 1);
     range_sense = ResolveOrderType(config, window.orders[0].type);
@@ -235,7 +235,7 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
     start_type = BindRangeExpression(context, name, window.start_expr, window.orders[0].expression);
   }
 
-  LogicalType end_type = LogicalType::BIGINT;
+  Type end_type = Type::BIGINT;
   if (window.end == WindowBoundary::EXPR_PRECEDING_RANGE) {
     D_ASSERT(window.orders.size() == 1);
     range_sense = ResolveOrderType(config, window.orders[0].type);
@@ -258,10 +258,10 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
     auto &bound_order = (BoundExpression &)*order_expr;
     auto order_type = bound_order.expr->return_type;
     if (window.start_expr) {
-      order_type = LogicalType::MaxLogicalType(order_type, start_type);
+      order_type = Type::MaxType(order_type, start_type);
     }
     if (window.end_expr) {
-      order_type = LogicalType::MaxLogicalType(order_type, end_type);
+      order_type = Type::MaxType(order_type, end_type);
     }
 
     // Cast all three to match
@@ -278,7 +278,7 @@ BindResult SelectBinder::BindWindow(WindowExpression &window, uint64_t depth) {
 
   result->start_expr = CastWindowExpression(window.start_expr, start_type);
   result->end_expr = CastWindowExpression(window.end_expr, end_type);
-  result->offset_expr = CastWindowExpression(window.offset_expr, LogicalType::BIGINT);
+  result->offset_expr = CastWindowExpression(window.offset_expr, Type::BIGINT);
   result->default_expr = CastWindowExpression(window.default_expr, result->return_type);
   result->start = window.start;
   result->end = window.end;

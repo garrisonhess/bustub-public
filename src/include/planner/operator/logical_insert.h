@@ -22,7 +22,7 @@ class LogicalInsert : public LogicalOperator {
   //! The insertion map ([table_index -> index in result, or DConstants::INVALID_INDEX if not specified])
   vector<uint64_t> column_index_map;
   //! The expected types for the INSERT statement (obtained from the column types)
-  vector<LogicalType> expected_types;
+  vector<Type> expected_types;
   //! The base table to insert into
   TableCatalogEntry *table;
   uint64_t table_index;
@@ -43,7 +43,7 @@ class LogicalInsert : public LogicalOperator {
     if (return_chunk) {
       types = table->GetTypes();
     } else {
-      types.emplace_back(LogicalType::BIGINT);
+      types.emplace_back(Type::BIGINT);
     }
   }
 };

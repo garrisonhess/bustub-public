@@ -16,7 +16,7 @@ namespace bustub {
 //! LogicalChunkGet represents a scan operation from a ChunkCollection
 class LogicalCTERef : public LogicalOperator {
  public:
-  LogicalCTERef(uint64_t table_index, uint64_t cte_index, vector<LogicalType> types, vector<string> colnames)
+  LogicalCTERef(uint64_t table_index, uint64_t cte_index, vector<Type> types, vector<string> colnames)
       : LogicalOperator(LogicalOperatorType::LOGICAL_CTE_REF), table_index(table_index), cte_index(cte_index) {
     D_ASSERT(types.size() > 0);
     chunk_types = types;
@@ -29,7 +29,7 @@ class LogicalCTERef : public LogicalOperator {
   //! CTE index
   uint64_t cte_index;
   //! The types of the chunk
-  vector<LogicalType> chunk_types;
+  vector<Type> chunk_types;
 
  public:
   vector<ColumnBinding> GetColumnBindings() override { return GenerateColumnBindings(table_index, chunk_types.size()); }

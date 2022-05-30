@@ -18,7 +18,7 @@ namespace bustub {
 class LogicalGet : public LogicalOperator {
  public:
   LogicalGet(uint64_t table_index, TableFunction function, unique_ptr<FunctionData> bind_data,
-             vector<LogicalType> returned_types, vector<string> returned_names);
+             vector<Type> returned_types, vector<string> returned_names);
 
   //! The table index in the current bind context
   uint64_t table_index;
@@ -27,7 +27,7 @@ class LogicalGet : public LogicalOperator {
   //! The bind data of the function
   unique_ptr<FunctionData> bind_data;
   //! The types of ALL columns that can be returned by the table function
-  vector<LogicalType> returned_types;
+  vector<Type> returned_types;
   //! The names of ALL columns that can be returned by the table function
   vector<string> names;
   //! Bound column IDs

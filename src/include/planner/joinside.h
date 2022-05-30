@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "common/unordered_set.h"
+#include <unordered_set>
 #include "planner/expression.h"
 
 namespace bustub {

@@ -33,7 +33,7 @@ BindResult ExpressionBinder::BindExpression(BetweenExpression &expr, uint64_t de
   input.expr = BoundCastExpression::AddCastToType(move(input.expr), input_type);
   lower.expr = BoundCastExpression::AddCastToType(move(lower.expr), input_type);
   upper.expr = BoundCastExpression::AddCastToType(move(upper.expr), input_type);
-  if (input_type.id() == LogicalTypeId::VARCHAR) {
+  if (input_type.id() == TypeId::VARCHAR) {
     // handle collation
     auto collation = StringType::GetCollation(input_type);
     input.expr = PushCollation(context, move(input.expr), collation, false);

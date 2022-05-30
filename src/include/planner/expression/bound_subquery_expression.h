@@ -17,7 +17,7 @@ namespace bustub {
 
 class BoundSubqueryExpression : public Expression {
  public:
-  explicit BoundSubqueryExpression(LogicalType return_type);
+  explicit BoundSubqueryExpression(Type return_type);
 
   bool IsCorrelated() { return binder->correlated_columns.size() > 0; }
 
@@ -31,11 +31,11 @@ class BoundSubqueryExpression : public Expression {
   unique_ptr<Expression> child;
   //! The comparison type of the child expression with the subquery (in case of ANY, ALL operators)
   ExpressionType comparison_type;
-  //! The LogicalType of the subquery result. Only used for ANY expressions.
-  LogicalType child_type;
-  //! The target LogicalType of the subquery result (i.e. to which type it should be casted, if child_type <>
+  //! The Type of the subquery result. Only used for ANY expressions.
+  Type child_type;
+  //! The target Type of the subquery result (i.e. to which type it should be casted, if child_type <>
   //! child_target). Only used for ANY expressions.
-  LogicalType child_target;
+  Type child_target;
 
  public:
   bool HasSubquery() const override { return true; }

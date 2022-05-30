@@ -48,7 +48,7 @@ BindResult ExpressionBinder::BindFunction(FunctionExpression &function, ScalarFu
     return BindResult(error);
   }
   if (binder.GetBindingMode() == BindingMode::EXTRACT_NAMES) {
-    return BindResult(make_unique<BoundConstantExpression>(Value(LogicalType::SQLNULL)));
+    return BindResult(make_unique<BoundConstantExpression>(Value(Type::SQLNULL)));
   }
 
   // all children bound successfully

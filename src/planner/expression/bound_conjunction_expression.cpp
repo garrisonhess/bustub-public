@@ -5,7 +5,7 @@
 namespace bustub {
 
 BoundConjunctionExpression::BoundConjunctionExpression(ExpressionType type)
-    : Expression(type, ExpressionClass::BOUND_CONJUNCTION, LogicalType::BOOLEAN) {}
+    : Expression(type, ExpressionClass::BOUND_CONJUNCTION, Type::BOOLEAN) {}
 
 BoundConjunctionExpression::BoundConjunctionExpression(ExpressionType type, unique_ptr<Expression> left,
                                                        unique_ptr<Expression> right)

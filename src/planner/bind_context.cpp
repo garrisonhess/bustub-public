@@ -356,12 +356,12 @@ void BindContext::AddBinding(const string &alias, unique_ptr<Binding> binding) {
 }
 
 void BindContext::AddBaseTable(uint64_t index, const string &alias, const vector<string> &names,
-                               const vector<LogicalType> &types, LogicalGet &get) {
+                               const vector<Type> &types, LogicalGet &get) {
   AddBinding(alias, make_unique<TableBinding>(alias, types, names, get, index, true));
 }
 
 void BindContext::AddTableFunction(uint64_t index, const string &alias, const vector<string> &names,
-                                   const vector<LogicalType> &types, LogicalGet &get) {
+                                   const vector<Type> &types, LogicalGet &get) {
   AddBinding(alias, make_unique<TableBinding>(alias, types, names, get, index));
 }
 
@@ -405,12 +405,12 @@ void BindContext::AddSubquery(uint64_t index, const string &alias, TableFunction
 }
 
 void BindContext::AddGenericBinding(uint64_t index, const string &alias, const vector<string> &names,
-                                    const vector<LogicalType> &types) {
+                                    const vector<Type> &types) {
   AddBinding(alias, make_unique<Binding>(alias, types, names, index));
 }
 
 void BindContext::AddCTEBinding(uint64_t index, const string &alias, const vector<string> &names,
-                                const vector<LogicalType> &types) {
+                                const vector<Type> &types) {
   auto binding = make_shared<Binding>(alias, types, names, index);
 
   if (cte_bindings.find(alias) != cte_bindings.end()) {

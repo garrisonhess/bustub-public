@@ -14,7 +14,7 @@ namespace bustub {
 
 class BoundDefaultExpression : public Expression {
  public:
-  explicit BoundDefaultExpression(LogicalType type = LogicalType())
+  explicit BoundDefaultExpression(Type type = Type())
       : Expression(ExpressionType::VALUE_DEFAULT, ExpressionClass::BOUND_DEFAULT, type) {}
 
  public:

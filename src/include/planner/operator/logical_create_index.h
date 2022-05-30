@@ -37,6 +37,6 @@ class LogicalCreateIndex : public LogicalOperator {
   vector<unique_ptr<Expression>> unbound_expressions;
 
  protected:
-  void ResolveTypes() override { types.emplace_back(LogicalType::BIGINT); }
+  void ResolveTypes() override { types.emplace_back(Type::BIGINT); }
 };
 }  // namespace bustub

@@ -19,7 +19,7 @@ struct BoundCaseCheck {
 
 class BoundCaseExpression : public Expression {
  public:
-  BoundCaseExpression(LogicalType type);
+  BoundCaseExpression(Type type);
   BoundCaseExpression(unique_ptr<Expression> when_expr, unique_ptr<Expression> then_expr,
                       unique_ptr<Expression> else_expr);
 

@@ -14,7 +14,7 @@ namespace bustub {
 
 class BoundOperatorExpression : public Expression {
  public:
-  BoundOperatorExpression(ExpressionType type, LogicalType return_type);
+  BoundOperatorExpression(ExpressionType type, Type return_type);
 
   vector<unique_ptr<Expression>> children;
 

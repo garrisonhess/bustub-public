@@ -19,7 +19,7 @@ class LogicalEmptyResult : public LogicalOperator {
   explicit LogicalEmptyResult(unique_ptr<LogicalOperator> op);
 
   //! The set of return types of the empty result
-  vector<LogicalType> return_types;
+  vector<Type> return_types;
   //! The columns that would be bound at this location (if the subtree was not optimized away)
   vector<ColumnBinding> bindings;
 

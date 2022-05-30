@@ -21,7 +21,7 @@ BindResult ExpressionBinder::BindExpression(CaseExpression &expr, uint64_t depth
   auto return_type = ((BoundExpression &)*expr.else_expr).expr->return_type;
   for (auto &check : expr.case_checks) {
     auto &then_expr = (BoundExpression &)*check.then_expr;
-    return_type = LogicalType::MaxLogicalType(return_type, then_expr.expr->return_type);
+    return_type = Type::MaxType(return_type, then_expr.expr->return_type);
   }
 
   // bind all the individual components of the CASE statement
@@ -31,7 +31,7 @@ BindResult ExpressionBinder::BindExpression(CaseExpression &expr, uint64_t depth
     auto &when_expr = (BoundExpression &)*check.when_expr;
     auto &then_expr = (BoundExpression &)*check.then_expr;
     BoundCaseCheck result_check;
-    result_check.when_expr = BoundCastExpression::AddCastToType(move(when_expr.expr), LogicalType::BOOLEAN);
+    result_check.when_expr = BoundCastExpression::AddCastToType(move(when_expr.expr), Type::BOOLEAN);
     result_check.then_expr = BoundCastExpression::AddCastToType(move(then_expr.expr), return_type);
     result->case_checks.push_back(move(result_check));
   }

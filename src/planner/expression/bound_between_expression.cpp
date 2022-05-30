@@ -5,7 +5,7 @@ namespace bustub {
 
 BoundBetweenExpression::BoundBetweenExpression(unique_ptr<Expression> input, unique_ptr<Expression> lower,
                                                unique_ptr<Expression> upper, bool lower_inclusive, bool upper_inclusive)
-    : Expression(ExpressionType::COMPARE_BETWEEN, ExpressionClass::BOUND_BETWEEN, LogicalType::BOOLEAN),
+    : Expression(ExpressionType::COMPARE_BETWEEN, ExpressionClass::BOUND_BETWEEN, Type::BOOLEAN),
       input(move(input)),
       lower(move(lower)),
       upper(move(upper)),

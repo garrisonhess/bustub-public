@@ -112,13 +112,13 @@ void ExpressionBinder::ExtractCorrelatedExpressions(Binder &binder, Expression &
   ExpressionIterator::EnumerateChildren(expr, [&](Expression &child) { ExtractCorrelatedExpressions(binder, child); });
 }
 
-bool ExpressionBinder::ContainsType(const LogicalType &type, LogicalTypeId target) {
+bool ExpressionBinder::ContainsType(const Type &type, TypeId target) {
   if (type.id() == target) {
     return true;
   }
   switch (type.id()) {
-    case LogicalTypeId::STRUCT:
-    case LogicalTypeId::MAP: {
+    case TypeId::STRUCT:
+    case TypeId::MAP: {
       auto child_count = StructType::GetChildCount(type);
       for (uint64_t i = 0; i < child_count; i++) {
         if (ContainsType(StructType::GetChildType(type, i), target)) {
@@ -127,42 +127,39 @@ bool ExpressionBinder::ContainsType(const LogicalType &type, LogicalTypeId targe
       }
       return false;
     }
-    case LogicalTypeId::LIST:
+    case TypeId::LIST:
       return ContainsType(ListType::GetChildType(type), target);
     default:
       return false;
   }
 }
 
-LogicalType ExpressionBinder::ExchangeType(const LogicalType &type, LogicalTypeId target, LogicalType new_type) {
+Type ExpressionBinder::ExchangeType(const Type &type, TypeId target, Type new_type) {
   if (type.id() == target) {
     return new_type;
   }
   switch (type.id()) {
-    case LogicalTypeId::STRUCT:
-    case LogicalTypeId::MAP: {
+    case TypeId::STRUCT:
+    case TypeId::MAP: {
       // we make a copy of the child types of the struct here
       auto child_types = StructType::GetChildTypes(type);
       for (auto &child_type : child_types) {
         child_type.second = ExchangeType(child_type.second, target, new_type);
       }
-      return type.id() == LogicalTypeId::MAP ? LogicalType::MAP(move(child_types))
-                                             : LogicalType::STRUCT(move(child_types));
+      return type.id() == TypeId::MAP ? Type::MAP(move(child_types)) : Type::STRUCT(move(child_types));
     }
-    case LogicalTypeId::LIST:
-      return LogicalType::LIST(ExchangeType(ListType::GetChildType(type), target, new_type));
+    case TypeId::LIST:
+      return Type::LIST(ExchangeType(ListType::GetChildType(type), target, new_type));
     default:
       return type;
   }
 }
 
-bool ExpressionBinder::ContainsNullType(const LogicalType &type) { return ContainsType(type, LogicalTypeId::SQLNULL); }
+bool ExpressionBinder::ContainsNullType(const Type &type) { return ContainsType(type, TypeId::SQLNULL); }
 
-LogicalType ExpressionBinder::ExchangeNullType(const LogicalType &type) {
-  return ExchangeType(type, LogicalTypeId::SQLNULL, LogicalType::INTEGER);
-}
+Type ExpressionBinder::ExchangeNullType(const Type &type) { return ExchangeType(type, TypeId::SQLNULL, Type::INTEGER); }
 
-unique_ptr<Expression> ExpressionBinder::Bind(unique_ptr<ParsedExpression> &expr, LogicalType *result_type,
+unique_ptr<Expression> ExpressionBinder::Bind(unique_ptr<ParsedExpression> &expr, Type *result_type,
                                               bool root_expression) {
   // bind the main expression
   auto error_msg = Bind(&expr, 0, root_expression);
@@ -178,7 +175,7 @@ unique_ptr<Expression> ExpressionBinder::Bind(unique_ptr<ParsedExpression> &expr
   D_ASSERT(expr->expression_class == ExpressionClass::BOUND_EXPRESSION);
   auto bound_expr = (BoundExpression *)expr.get();
   unique_ptr<Expression> result = move(bound_expr->expr);
-  if (target_type.id() != LogicalTypeId::INVALID) {
+  if (target_type.id() != TypeId::INVALID) {
     // the binder has a specific target type: add a cast to that type
     result = BoundCastExpression::AddCastToType(move(result), target_type);
   } else {

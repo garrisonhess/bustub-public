@@ -27,7 +27,7 @@ BoundStatement Binder::BindCopyTo(CopyStatement &stmt) {
     throw PermissionException("COPY TO is disabled by configuration");
   }
   BoundStatement result;
-  result.types = {LogicalType::BIGINT};
+  result.types = {Type::BIGINT};
   result.names = {"Count"};
 
   // bind the select statement
@@ -43,7 +43,7 @@ BoundStatement Binder::BindCopyTo(CopyStatement &stmt) {
   for (auto &option : stmt.info->options) {
     auto loption = StringUtil::Lower(option.first);
     if (loption == "use_tmp_file") {
-      use_tmp_file = option.second[0].CastAs(LogicalType::BOOLEAN).GetValue<bool>();
+      use_tmp_file = option.second[0].CastAs(Type::BOOLEAN).GetValue<bool>();
       stmt.info->options.erase(option.first);
       break;
     }
@@ -68,7 +68,7 @@ BoundStatement Binder::BindCopyFrom(CopyStatement &stmt) {
     throw PermissionException("COPY FROM is disabled by configuration");
   }
   BoundStatement result;
-  result.types = {LogicalType::BIGINT};
+  result.types = {Type::BIGINT};
   result.names = {"Count"};
 
   D_ASSERT(!stmt.info->table.empty());

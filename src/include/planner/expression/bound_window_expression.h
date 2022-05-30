@@ -18,7 +18,7 @@ class AggregateFunction;
 
 class BoundWindowExpression : public Expression {
  public:
-  BoundWindowExpression(ExpressionType type, LogicalType return_type, unique_ptr<AggregateFunction> aggregate,
+  BoundWindowExpression(ExpressionType type, Type return_type, unique_ptr<AggregateFunction> aggregate,
                         unique_ptr<FunctionData> bind_info);
 
   //! The bound aggregate function

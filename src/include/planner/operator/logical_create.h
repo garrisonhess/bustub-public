@@ -23,6 +23,6 @@ class LogicalCreate : public LogicalOperator {
   unique_ptr<CreateInfo> info;
 
  protected:
-  void ResolveTypes() override { types.emplace_back(LogicalType::BIGINT); }
+  void ResolveTypes() override { types.emplace_back(Type::BIGINT); }
 };
 }  // namespace bustub

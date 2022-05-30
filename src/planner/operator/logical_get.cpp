@@ -9,7 +9,7 @@
 namespace bustub {
 
 LogicalGet::LogicalGet(uint64_t table_index, TableFunction function, unique_ptr<FunctionData> bind_data,
-                       vector<LogicalType> returned_types, vector<string> returned_names)
+                       vector<Type> returned_types, vector<string> returned_names)
     : LogicalOperator(LogicalOperatorType::LOGICAL_GET),
       table_index(table_index),
       function(move(function)),
@@ -54,7 +54,7 @@ void LogicalGet::ResolveTypes() {
   }
   for (auto &index : column_ids) {
     if (index == COLUMN_IDENTIFIER_ROW_ID) {
-      types.emplace_back(LogicalType::ROW_TYPE);
+      types.emplace_back(Type::ROW_TYPE);
     } else {
       types.push_back(returned_types[index]);
     }

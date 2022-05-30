@@ -5,7 +5,7 @@
 
 namespace bustub {
 
-BoundOperatorExpression::BoundOperatorExpression(ExpressionType type, LogicalType return_type)
+BoundOperatorExpression::BoundOperatorExpression(ExpressionType type, Type return_type)
     : Expression(type, ExpressionClass::BOUND_OPERATOR, move(return_type)) {}
 
 string BoundOperatorExpression::ToString() const {

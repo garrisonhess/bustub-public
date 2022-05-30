@@ -20,7 +20,7 @@ class BoundCTERef : public BoundTableRef {
   //! The set of columns bound to this base table reference
   vector<string> bound_columns;
   //! The types of the values list
-  vector<LogicalType> types;
+  vector<Type> types;
   //! The index in the bind context
   uint64_t bind_index;
   //! The index of the cte

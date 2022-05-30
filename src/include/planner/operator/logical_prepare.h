@@ -9,7 +9,7 @@
 #pragma once
 
 #include <unordered_map>
-#include "common/unordered_set.h"
+#include <unordered_set>
 #include "main/prepared_statement_data.h"
 #include "planner/logical_operator.h"
 
@@ -28,6 +28,6 @@ class LogicalPrepare : public LogicalOperator {
   shared_ptr<PreparedStatementData> prepared;
 
  protected:
-  void ResolveTypes() override { types.emplace_back(LogicalType::BOOLEAN); }
+  void ResolveTypes() override { types.emplace_back(Type::BOOLEAN); }
 };
 }  // namespace bustub

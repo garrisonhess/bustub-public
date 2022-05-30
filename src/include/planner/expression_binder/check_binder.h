@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "common/unordered_set.h"
+#include <unordered_set>
 #include "parser/column_definition.h"
 #include "planner/expression_binder.h"
 

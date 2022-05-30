@@ -7,7 +7,7 @@ namespace bustub {
 
 BoundStatement Binder::Bind(LoadStatement &stmt) {
   BoundStatement result;
-  result.types = {LogicalType::BOOLEAN};
+  result.types = {Type::BOOLEAN};
   result.names = {"Success"};
 
   result.plan = make_unique<LogicalSimple>(LogicalOperatorType::LOGICAL_LOAD, move(stmt.info));

@@ -9,11 +9,11 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include "catalog/catalog.h"
 #include "catalog/catalog_entry/table_catalog_entry.h"
 #include "catalog/catalog_entry/table_function_catalog_entry.h"
 #include "common/case_insensitive_map.h"
-#include "common/unordered_set.h"
 #include "parser/expression/columnref_expression.h"
 #include "parser/parsed_expression.h"
 #include "parser/qualified_name_set.h"
@@ -75,23 +75,21 @@ class BindContext {
   const vector<std::pair<string, Binding *>> &GetBindingsList() { return bindings_list; }
 
   //! Adds a base table with the given alias to the BindContext.
-  void AddBaseTable(uint64_t index, const string &alias, const vector<string> &names, const vector<LogicalType> &types,
+  void AddBaseTable(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types,
                     LogicalGet &get);
   //! Adds a call to a table function with the given alias to the BindContext.
-  void AddTableFunction(uint64_t index, const string &alias, const vector<string> &names,
-                        const vector<LogicalType> &types, LogicalGet &get);
+  void AddTableFunction(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types,
+                        LogicalGet &get);
   //! Adds a subquery with a given alias to the BindContext.
   void AddSubquery(uint64_t index, const string &alias, SubqueryRef &ref, BoundQueryNode &subquery);
   //! Adds a subquery with a given alias to the BindContext.
   void AddSubquery(uint64_t index, const string &alias, TableFunctionRef &ref, BoundQueryNode &subquery);
   //! Adds a base table with the given alias to the BindContext.
-  void AddGenericBinding(uint64_t index, const string &alias, const vector<string> &names,
-                         const vector<LogicalType> &types);
+  void AddGenericBinding(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types);
 
   //! Adds a base table with the given alias to the CTE BindContext.
   //! We need this to correctly bind recursive CTEs with multiple references.
-  void AddCTEBinding(uint64_t index, const string &alias, const vector<string> &names,
-                     const vector<LogicalType> &types);
+  void AddCTEBinding(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types);
 
   //! Add an implicit join condition (e.g. USING (x))
   void AddUsingBinding(const string &column_name, UsingColumnSet *set);

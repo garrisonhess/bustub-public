@@ -5,7 +5,7 @@ namespace bustub {
 
 WhereBinder::WhereBinder(Binder &binder, ClientContext &context, ColumnAliasBinder *column_alias_binder)
     : ExpressionBinder(binder, context), column_alias_binder(column_alias_binder) {
-  target_type = LogicalType(LogicalTypeId::BOOLEAN);
+  target_type = Type(TypeId::BOOLEAN);
 }
 
 BindResult WhereBinder::BindColumnRef(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {

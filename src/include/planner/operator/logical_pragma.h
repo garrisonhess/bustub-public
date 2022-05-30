@@ -26,6 +26,6 @@ class LogicalPragma : public LogicalOperator {
   PragmaInfo info;
 
  protected:
-  void ResolveTypes() override { types.emplace_back(LogicalType::BOOLEAN); }
+  void ResolveTypes() override { types.emplace_back(Type::BOOLEAN); }
 };
 }  // namespace bustub

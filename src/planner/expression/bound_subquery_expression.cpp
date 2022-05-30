@@ -4,7 +4,7 @@
 
 namespace bustub {
 
-BoundSubqueryExpression::BoundSubqueryExpression(LogicalType return_type)
+BoundSubqueryExpression::BoundSubqueryExpression(Type return_type)
     : Expression(ExpressionType::SUBQUERY, ExpressionClass::BOUND_SUBQUERY, move(return_type)) {}
 
 string BoundSubqueryExpression::ToString() const { return "SUBQUERY"; }

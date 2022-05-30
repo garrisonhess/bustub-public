@@ -15,8 +15,8 @@ namespace bustub {
 //! A BoundReferenceExpression represents a physical index into a DataChunk
 class BoundReferenceExpression : public Expression {
  public:
-  BoundReferenceExpression(string alias, LogicalType type, uint64_t index);
-  BoundReferenceExpression(LogicalType type, uint64_t index);
+  BoundReferenceExpression(string alias, Type type, uint64_t index);
+  BoundReferenceExpression(Type type, uint64_t index);
 
   //! Index used to access data in the chunks
   uint64_t index;

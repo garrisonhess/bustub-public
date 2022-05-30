@@ -92,7 +92,7 @@ BoundStatement Binder::Bind(ExportStatement &stmt) {
     throw PermissionException("COPY TO is disabled through configuration");
   }
   BoundStatement result;
-  result.types = {LogicalType::BOOLEAN};
+  result.types = {Type::BOOLEAN};
   result.names = {"Success"};
 
   // lookup the format in the catalog

@@ -24,6 +24,6 @@ class LogicalCreateTable : public LogicalOperator {
   unique_ptr<BoundCreateTableInfo> info;
 
  protected:
-  void ResolveTypes() override { types.emplace_back(LogicalType::BIGINT); }
+  void ResolveTypes() override { types.emplace_back(Type::BIGINT); }
 };
 }  // namespace bustub

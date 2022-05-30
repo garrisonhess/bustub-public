@@ -8,8 +8,8 @@
 
 #pragma once
 
+#include <unordered_set>
 #include "common/enums/join_type.h"
-#include "common/unordered_set.h"
 #include "planner/logical_operator.h"
 #include "storage/statistics/base_statistics.h"
 

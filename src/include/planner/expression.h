@@ -17,11 +17,11 @@ class BaseStatistics;
 //!  The Expression class represents a bound Expression with a return type
 class Expression : public BaseExpression {
  public:
-  Expression(ExpressionType type, ExpressionClass expression_class, LogicalType return_type);
+  Expression(ExpressionType type, ExpressionClass expression_class, Type return_type);
   ~Expression() override;
 
   //! The return type of the expression
-  LogicalType return_type;
+  Type return_type;
   //! Expression statistics (if any) - ONLY USED FOR VERIFICATION
   unique_ptr<BaseStatistics> verification_stats;
 

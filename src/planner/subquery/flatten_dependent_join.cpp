@@ -174,7 +174,7 @@ unique_ptr<LogicalOperator> FlattenDependentJoins::PushDownDependentJoinInternal
         for (uint64_t i = 0; i < aggr.expressions.size(); i++) {
           D_ASSERT(aggr.expressions[i]->GetExpressionClass() == ExpressionClass::BOUND_AGGREGATE);
           auto bound = (BoundAggregateExpression *)&*aggr.expressions[i];
-          vector<LogicalType> arguments;
+          vector<Type> arguments;
           if (bound->function == CountFun::GetFunction() || bound->function == CountStarFun::GetFunction()) {
             // have to replace this ColumnBinding with the CASE expression
             replacement_map[ColumnBinding(aggr.aggregate_index, i)] = i;

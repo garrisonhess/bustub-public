@@ -7,7 +7,7 @@ namespace bustub {
 unique_ptr<LogicalOperator> Binder::CreatePlan(BoundCTERef &ref) {
   auto index = ref.bind_index;
 
-  vector<LogicalType> types;
+  vector<Type> types;
   for (auto &type : ref.types) {
     types.push_back(type);
   }

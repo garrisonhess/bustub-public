@@ -11,7 +11,7 @@ namespace bustub {
 HavingBinder::HavingBinder(Binder &binder, ClientContext &context, BoundSelectNode &node, BoundGroupInformation &info,
                            case_insensitive_map_t<uint64_t> &alias_map)
     : SelectBinder(binder, context, node, info), column_alias_binder(node, alias_map) {
-  target_type = LogicalType(LogicalTypeId::BOOLEAN);
+  target_type = Type(TypeId::BOOLEAN);
 }
 
 BindResult HavingBinder::BindColumnRef(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {

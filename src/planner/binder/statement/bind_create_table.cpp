@@ -199,8 +199,8 @@ unique_ptr<BoundCreateTableInfo> Binder::BindCreateTableInfo(unique_ptr<CreateIn
   // bind collations to detect any unsupported collation errors
   for (auto &column : base.columns) {
     ExpressionBinder::TestCollation(context, StringType::GetCollation(column.type));
-    BindLogicalType(context, column.type);
-    if (column.type.id() == LogicalTypeId::ENUM) {
+    BindType(context, column.type);
+    if (column.type.id() == TypeId::ENUM) {
       // We add a catalog dependency
       auto enum_dependency = EnumType::GetCatalog(column.type);
       if (enum_dependency) {

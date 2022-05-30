@@ -12,7 +12,7 @@
 
 namespace bustub {
 
-Binding::Binding(const string &alias, vector<LogicalType> coltypes, vector<string> colnames, uint64_t index)
+Binding::Binding(const string &alias, vector<Type> coltypes, vector<string> colnames, uint64_t index)
     : alias(alias), index(index), types(move(coltypes)), names(move(colnames)) {
   D_ASSERT(types.size() == names.size());
   for (uint64_t i = 0; i < names.size(); i++) {
@@ -59,7 +59,7 @@ BindResult Binding::Bind(ColumnRefExpression &colref, uint64_t depth) {
   ColumnBinding binding;
   binding.table_index = index;
   binding.column_index = column_index;
-  LogicalType sql_type = types[column_index];
+  Type sql_type = types[column_index];
   if (colref.alias.empty()) {
     colref.alias = names[column_index];
   }
@@ -68,7 +68,7 @@ BindResult Binding::Bind(ColumnRefExpression &colref, uint64_t depth) {
 
 TableCatalogEntry *Binding::GetTableEntry() { return nullptr; }
 
-TableBinding::TableBinding(const string &alias, vector<LogicalType> types_p, vector<string> names_p, LogicalGet &get,
+TableBinding::TableBinding(const string &alias, vector<Type> types_p, vector<string> names_p, LogicalGet &get,
                            uint64_t index, bool add_row_id)
     : Binding(alias, move(types_p), move(names_p), index), get(get) {
   if (add_row_id) {
@@ -85,10 +85,10 @@ BindResult TableBinding::Bind(ColumnRefExpression &colref, uint64_t depth) {
     return BindResult(ColumnNotFoundError(column_name));
   }
   // fetch the type of the column
-  LogicalType col_type;
+  Type col_type;
   if (column_index == COLUMN_IDENTIFIER_ROW_ID) {
     // row id: BIGINT type
-    col_type = LogicalType::BIGINT;
+    col_type = Type::BIGINT;
   } else {
     // normal column: fetch type from base column
     col_type = types[column_index];
@@ -122,7 +122,7 @@ string TableBinding::ColumnNotFoundError(const string &column_name) const {
   return StringUtil::Format("Table \"%s\" does not have a column named \"%s\"", alias, column_name);
 }
 
-MacroBinding::MacroBinding(vector<LogicalType> types_p, vector<string> names_p, string macro_name_p)
+MacroBinding::MacroBinding(vector<Type> types_p, vector<string> names_p, string macro_name_p)
     : Binding(MacroBinding::MACRO_NAME, move(types_p), move(names_p), -1), macro_name(move(macro_name_p)) {}
 
 BindResult MacroBinding::Bind(ColumnRefExpression &colref, uint64_t depth) {

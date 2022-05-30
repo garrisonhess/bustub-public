@@ -6,11 +6,11 @@
 
 namespace bustub {
 
-BoundReferenceExpression::BoundReferenceExpression(string alias, LogicalType type, uint64_t index)
+BoundReferenceExpression::BoundReferenceExpression(string alias, Type type, uint64_t index)
     : Expression(ExpressionType::BOUND_REF, ExpressionClass::BOUND_REF, move(type)), index(index) {
   this->alias = move(alias);
 }
-BoundReferenceExpression::BoundReferenceExpression(LogicalType type, uint64_t index)
+BoundReferenceExpression::BoundReferenceExpression(Type type, uint64_t index)
     : BoundReferenceExpression(string(), move(type), index) {}
 
 string BoundReferenceExpression::ToString() const {

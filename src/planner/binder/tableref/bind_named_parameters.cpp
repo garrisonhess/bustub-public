@@ -25,7 +25,7 @@ void Binder::BindNamedParameters(named_parameter_type_map_t &types, named_parame
       throw BinderException(error_context.FormatError("Invalid named parameter \"%s\" for function %s\n%s", kv.first,
                                                       func_name, error_msg));
     }
-    if (entry->second.id() != LogicalTypeId::ANY) {
+    if (entry->second.id() != TypeId::ANY) {
       kv.second = kv.second.CastAs(entry->second);
     }
   }

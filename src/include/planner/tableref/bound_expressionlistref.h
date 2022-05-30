@@ -22,7 +22,7 @@ class BoundExpressionListRef : public BoundTableRef {
   //! The generated names of the values list
   vector<string> names;
   //! The types of the values list
-  vector<LogicalType> types;
+  vector<Type> types;
   //! The index in the bind context
   uint64_t bind_index;
 };

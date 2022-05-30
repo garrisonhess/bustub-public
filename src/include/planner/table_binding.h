@@ -26,14 +26,14 @@ class BoundTableFunction;
 
 //! A Binding represents a binding to a table, table-producing function or subquery with a specified table index.
 struct Binding {
-  Binding(const string &alias, vector<LogicalType> types, vector<string> names, uint64_t index);
+  Binding(const string &alias, vector<Type> types, vector<string> names, uint64_t index);
   virtual ~Binding() = default;
 
   //! The alias of the binding
   string alias;
   //! The table index of the binding
   uint64_t index;
-  vector<LogicalType> types;
+  vector<Type> types;
   //! Column names of the subquery
   vector<string> names;
   //! Name -> index for the names
@@ -51,7 +51,7 @@ struct Binding {
 //! TableBinding is exactly like the Binding, except it keeps track of which columns were bound in the linked LogicalGet
 //! node for projection pushdown purposes.
 struct TableBinding : public Binding {
-  TableBinding(const string &alias, vector<LogicalType> types, vector<string> names, LogicalGet &get, uint64_t index,
+  TableBinding(const string &alias, vector<Type> types, vector<string> names, LogicalGet &get, uint64_t index,
                bool add_row_id = false);
 
   //! the underlying LogicalGet
@@ -69,7 +69,7 @@ struct MacroBinding : public Binding {
   static constexpr const char *MACRO_NAME = "0_macro_parameters";
 
  public:
-  MacroBinding(vector<LogicalType> types_p, vector<string> names_p, string macro_name);
+  MacroBinding(vector<Type> types_p, vector<string> names_p, string macro_name);
 
   //! Arguments
   vector<unique_ptr<ParsedExpression>> arguments;

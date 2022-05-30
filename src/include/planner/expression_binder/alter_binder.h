@@ -18,7 +18,7 @@ class TableCatalogEntry;
 class AlterBinder : public ExpressionBinder {
  public:
   AlterBinder(Binder &binder, ClientContext &context, TableCatalogEntry &table, vector<column_t> &bound_columns,
-              LogicalType target_type);
+              Type target_type);
 
   TableCatalogEntry &table;
   vector<column_t> &bound_columns;

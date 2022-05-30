@@ -5,15 +5,14 @@
 
 namespace bustub {
 
-BoundColumnRefExpression::BoundColumnRefExpression(string alias_p, LogicalType type, ColumnBinding binding,
-                                                   uint64_t depth)
+BoundColumnRefExpression::BoundColumnRefExpression(string alias_p, Type type, ColumnBinding binding, uint64_t depth)
     : Expression(ExpressionType::BOUND_COLUMN_REF, ExpressionClass::BOUND_COLUMN_REF, move(type)),
       binding(binding),
       depth(depth) {
   this->alias = move(alias_p);
 }
 
-BoundColumnRefExpression::BoundColumnRefExpression(LogicalType type, ColumnBinding binding, uint64_t depth)
+BoundColumnRefExpression::BoundColumnRefExpression(Type type, ColumnBinding binding, uint64_t depth)
     : BoundColumnRefExpression(string(), move(type), binding, depth) {}
 
 unique_ptr<Expression> BoundColumnRefExpression::Copy() {

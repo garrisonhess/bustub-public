@@ -15,8 +15,7 @@ namespace bustub {
 //! LogicalExpressionGet represents a scan operation over a set of to-be-executed expressions
 class LogicalExpressionGet : public LogicalOperator {
  public:
-  LogicalExpressionGet(uint64_t table_index, vector<LogicalType> types,
-                       vector<vector<unique_ptr<Expression>>> expressions)
+  LogicalExpressionGet(uint64_t table_index, vector<Type> types, vector<vector<unique_ptr<Expression>>> expressions)
       : LogicalOperator(LogicalOperatorType::LOGICAL_EXPRESSION_GET),
         table_index(table_index),
         expr_types(types),
@@ -25,7 +24,7 @@ class LogicalExpressionGet : public LogicalOperator {
   //! The table index in the current bind context
   uint64_t table_index;
   //! The types of the expressions
-  vector<LogicalType> expr_types;
+  vector<Type> expr_types;
   //! The set of expressions
   vector<vector<unique_ptr<Expression>>> expressions;
 

@@ -21,7 +21,7 @@ namespace bustub {
 
 static bool IsTableInTableOutFunction(TableFunctionCatalogEntry &table_function) {
   return table_function.functions.size() == 1 && table_function.functions[0].arguments.size() == 1 &&
-         table_function.functions[0].arguments[0].id() == LogicalTypeId::TABLE;
+         table_function.functions[0].arguments[0].id() == TypeId::TABLE;
 }
 
 bool Binder::BindTableInTableOutFunction(vector<unique_ptr<ParsedExpression>> &expressions,
@@ -45,13 +45,12 @@ bool Binder::BindTableInTableOutFunction(vector<unique_ptr<ParsedExpression>> &e
 }
 
 bool Binder::BindTableFunctionParameters(TableFunctionCatalogEntry &table_function,
-                                         vector<unique_ptr<ParsedExpression>> &expressions,
-                                         vector<LogicalType> &arguments, vector<Value> &parameters,
-                                         named_parameter_map_t &named_parameters,
+                                         vector<unique_ptr<ParsedExpression>> &expressions, vector<Type> &arguments,
+                                         vector<Value> &parameters, named_parameter_map_t &named_parameters,
                                          unique_ptr<BoundSubqueryRef> &subquery, string &error) {
   if (IsTableInTableOutFunction(table_function)) {
     // special case binding for table-in table-out function
-    arguments.emplace_back(LogicalTypeId::TABLE);
+    arguments.emplace_back(TypeId::TABLE);
     return BindTableInTableOutFunction(expressions, subquery, error);
   }
   bool seen_subquery = false;
@@ -80,12 +79,12 @@ bool Binder::BindTableFunctionParameters(TableFunctionCatalogEntry &table_functi
       auto node = binder->BindNode(*se.subquery->node);
       subquery = make_unique<BoundSubqueryRef>(move(binder), move(node));
       seen_subquery = true;
-      arguments.emplace_back(LogicalTypeId::TABLE);
+      arguments.emplace_back(TypeId::TABLE);
       continue;
     }
 
     ConstantBinder binder(*this, context, "TABLE FUNCTION parameter");
-    LogicalType sql_type;
+    Type sql_type;
     auto expr = binder.Bind(child, &sql_type);
     if (!expr->IsFoldable()) {
       error = "Table function requires a constant parameter";
@@ -147,7 +146,7 @@ unique_ptr<BoundTableRef> Binder::Bind(TableFunctionRef &ref) {
   }
 
   // evaluate the input parameters to the function
-  vector<LogicalType> arguments;
+  vector<Type> arguments;
   vector<Value> parameters;
   named_parameter_map_t named_parameters;
   unique_ptr<BoundSubqueryRef> subquery;
@@ -169,14 +168,13 @@ unique_ptr<BoundTableRef> Binder::Bind(TableFunctionRef &ref) {
 
   // cast the parameters to the type of the function
   for (uint64_t i = 0; i < arguments.size(); i++) {
-    if (table_function.arguments[i] != LogicalType::ANY && table_function.arguments[i] != LogicalType::TABLE &&
-        table_function.arguments[i] != LogicalType::POINTER &&
-        table_function.arguments[i].id() != LogicalTypeId::LIST) {
+    if (table_function.arguments[i] != Type::ANY && table_function.arguments[i] != Type::TABLE &&
+        table_function.arguments[i] != Type::POINTER && table_function.arguments[i].id() != TypeId::LIST) {
       parameters[i] = parameters[i].CastAs(table_function.arguments[i]);
     }
   }
 
-  vector<LogicalType> input_table_types;
+  vector<Type> input_table_types;
   vector<string> input_table_names;
 
   if (subquery) {
@@ -186,7 +184,7 @@ unique_ptr<BoundTableRef> Binder::Bind(TableFunctionRef &ref) {
 
   // perform the binding
   unique_ptr<FunctionData> bind_data;
-  vector<LogicalType> return_types;
+  vector<Type> return_types;
   vector<string> return_names;
   if (table_function.bind) {
     TableFunctionBindInput bind_input(parameters, named_parameters, input_table_types, input_table_names,

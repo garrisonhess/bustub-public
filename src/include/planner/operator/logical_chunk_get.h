@@ -16,7 +16,7 @@ namespace bustub {
 //! LogicalChunkGet represents a scan operation from a ChunkCollection
 class LogicalChunkGet : public LogicalOperator {
  public:
-  LogicalChunkGet(uint64_t table_index, vector<LogicalType> types, unique_ptr<ChunkCollection> collection)
+  LogicalChunkGet(uint64_t table_index, vector<Type> types, unique_ptr<ChunkCollection> collection)
       : LogicalOperator(LogicalOperatorType::LOGICAL_CHUNK_GET),
         table_index(table_index),
         collection(move(collection)) {
@@ -27,7 +27,7 @@ class LogicalChunkGet : public LogicalOperator {
   //! The table index in the current bind context
   uint64_t table_index;
   //! The types of the chunk
-  vector<LogicalType> chunk_types;
+  vector<Type> chunk_types;
   //! The chunk collection to scan
   unique_ptr<ChunkCollection> collection;
 

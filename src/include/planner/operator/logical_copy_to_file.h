@@ -25,6 +25,6 @@ class LogicalCopyToFile : public LogicalOperator {
   bool is_file_and_exists;
 
  protected:
-  void ResolveTypes() override { types.emplace_back(LogicalType::BIGINT); }
+  void ResolveTypes() override { types.emplace_back(Type::BIGINT); }
 };
 }  // namespace bustub

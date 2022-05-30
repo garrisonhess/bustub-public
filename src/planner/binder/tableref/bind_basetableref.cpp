@@ -85,7 +85,7 @@ unique_ptr<BoundTableRef> Binder::Bind(BaseTableRef &ref) {
       // add a bind context entry
       auto table_index = GenerateTableIndex();
       auto alias = ref.alias.empty() ? table_name : ref.alias;
-      vector<LogicalType> types{LogicalType::INTEGER};
+      vector<Type> types{Type::INTEGER};
       vector<string> names{"__dummy_col" + to_string(table_index)};
       bind_context.AddGenericBinding(table_index, alias, names, types);
       return make_unique_base<BoundTableRef, BoundEmptyTableRef>(table_index);
@@ -103,7 +103,7 @@ unique_ptr<BoundTableRef> Binder::Bind(BaseTableRef &ref) {
       auto scan_function = TableScanFunction::GetFunction();
       auto bind_data = make_unique<TableScanBindData>(table);
       auto alias = ref.alias.empty() ? ref.table_name : ref.alias;
-      vector<LogicalType> table_types;
+      vector<Type> table_types;
       vector<string> table_names;
       for (auto &col : table->columns) {
         table_types.push_back(col.type);

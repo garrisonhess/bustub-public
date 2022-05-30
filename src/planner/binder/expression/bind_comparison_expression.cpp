@@ -62,12 +62,12 @@ void ExpressionBinder::TestCollation(ClientContext &context, const string &colla
   PushCollation(context, make_unique<BoundConstantExpression>(Value("")), collation);
 }
 
-LogicalType BoundComparisonExpression::BindComparison(LogicalType left_type, LogicalType right_type) {
-  auto result_type = LogicalType::MaxLogicalType(left_type, right_type);
+Type BoundComparisonExpression::BindComparison(Type left_type, Type right_type) {
+  auto result_type = Type::MaxType(left_type, right_type);
   switch (result_type.id()) {
-    case LogicalTypeId::DECIMAL: {
+    case TypeId::DECIMAL: {
       // result is a decimal: we need the maximum width and the maximum scale over width
-      vector<LogicalType> argument_types = {left_type, right_type};
+      vector<Type> argument_types = {left_type, right_type};
       uint8_t max_width = 0, max_scale = 0, max_width_over_scale = 0;
       for (uint64_t i = 0; i < argument_types.size(); i++) {
         uint8_t width, scale;
@@ -84,13 +84,13 @@ LogicalType BoundComparisonExpression::BindComparison(LogicalType left_type, Log
         // target width does not fit in decimal: truncate the scale (if possible) to try and make it fit
         max_width = Decimal::MAX_WIDTH_DECIMAL;
       }
-      return LogicalType::DECIMAL(max_width, max_scale);
+      return Type::DECIMAL(max_width, max_scale);
     }
-    case LogicalTypeId::VARCHAR:
+    case TypeId::VARCHAR:
       // for comparison with strings, we prefer to bind to the numeric types
-      if (left_type.IsNumeric() || left_type.id() == LogicalTypeId::BOOLEAN) {
+      if (left_type.IsNumeric() || left_type.id() == TypeId::BOOLEAN) {
         return left_type;
-      } else if (right_type.IsNumeric() || right_type.id() == LogicalTypeId::BOOLEAN) {
+      } else if (right_type.IsNumeric() || right_type.id() == TypeId::BOOLEAN) {
         return right_type;
       } else {
         // else: check if collations are compatible
@@ -123,10 +123,10 @@ BindResult ExpressionBinder::BindExpression(ComparisonExpression &expr, uint64_t
   // now obtain the result type of the input types
   auto input_type = BoundComparisonExpression::BindComparison(left_sql_type, right_sql_type);
   // add casts (if necessary)
-  left.expr = BoundCastExpression::AddCastToType(move(left.expr), input_type, input_type.id() == LogicalTypeId::ENUM);
-  right.expr = BoundCastExpression::AddCastToType(move(right.expr), input_type, input_type.id() == LogicalTypeId::ENUM);
+  left.expr = BoundCastExpression::AddCastToType(move(left.expr), input_type, input_type.id() == TypeId::ENUM);
+  right.expr = BoundCastExpression::AddCastToType(move(right.expr), input_type, input_type.id() == TypeId::ENUM);
 
-  if (input_type.id() == LogicalTypeId::VARCHAR) {
+  if (input_type.id() == TypeId::VARCHAR) {
     // handle collation
     auto collation = StringType::GetCollation(input_type);
     left.expr = PushCollation(context, move(left.expr), collation, expr.type == ExpressionType::COMPARE_EQUAL);

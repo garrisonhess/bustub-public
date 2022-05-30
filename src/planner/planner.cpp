@@ -41,7 +41,7 @@ void Planner::CreatePlan(SQLStatement &statement) {
   // set up a map of parameter number -> value entries
   for (auto &expr : bound_parameters) {
     // check if the type of the parameter could be resolved
-    if (expr->return_type.id() == LogicalTypeId::INVALID || expr->return_type.id() == LogicalTypeId::UNKNOWN) {
+    if (expr->return_type.id() == TypeId::INVALID || expr->return_type.id() == TypeId::UNKNOWN) {
       properties.bound_all_parameters = false;
       continue;
     }
@@ -151,7 +151,7 @@ void Planner::PlanPrepare(unique_ptr<SQLStatement> statement) {
   properties.bound_all_parameters = true;
   properties.return_type = StatementReturnType::NOTHING;
   this->names = {"Success"};
-  this->types = {LogicalType::BOOLEAN};
+  this->types = {Type::BOOLEAN};
   this->plan = move(prepare);
 }
 

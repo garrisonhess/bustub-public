@@ -15,7 +15,7 @@ namespace bustub {
 //! Represents a function call that has been bound to a base function
 class BoundUnnestExpression : public Expression {
  public:
-  explicit BoundUnnestExpression(LogicalType return_type);
+  explicit BoundUnnestExpression(Type return_type);
 
   unique_ptr<Expression> child;
 

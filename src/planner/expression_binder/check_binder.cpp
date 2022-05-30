@@ -8,7 +8,7 @@ namespace bustub {
 CheckBinder::CheckBinder(Binder &binder, ClientContext &context, string table_p, vector<ColumnDefinition> &columns,
                          unordered_set<column_t> &bound_columns)
     : ExpressionBinder(binder, context), table(move(table_p)), columns(columns), bound_columns(bound_columns) {
-  target_type = LogicalType::INTEGER;
+  target_type = Type::INTEGER;
 }
 
 BindResult CheckBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {

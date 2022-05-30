@@ -5,7 +5,7 @@
 
 namespace bustub {
 
-BoundUnnestExpression::BoundUnnestExpression(LogicalType return_type)
+BoundUnnestExpression::BoundUnnestExpression(Type return_type)
     : Expression(ExpressionType::BOUND_UNNEST, ExpressionClass::BOUND_UNNEST, move(return_type)) {}
 
 bool BoundUnnestExpression::IsFoldable() const { return false; }

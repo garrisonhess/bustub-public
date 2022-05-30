@@ -70,10 +70,9 @@ BindResult ExpressionBinder::BindExpression(SubqueryExpression &expr, uint64_t d
   auto child = (BoundExpression *)expr.child.get();
   auto subquery_binder = move(bound_subquery->subquery_binder);
   auto bound_node = move(bound_subquery->bound_node);
-  LogicalType return_type =
-      expr.subquery_type == SubqueryType::SCALAR ? bound_node->types[0] : LogicalType(LogicalTypeId::BOOLEAN);
-  if (return_type.id() == LogicalTypeId::UNKNOWN) {
-    return_type = LogicalType::SQLNULL;
+  Type return_type = expr.subquery_type == SubqueryType::SCALAR ? bound_node->types[0] : Type(TypeId::BOOLEAN);
+  if (return_type.id() == TypeId::UNKNOWN) {
+    return_type = Type::SQLNULL;
   }
 
   auto result = make_unique<BoundSubqueryExpression>(return_type);
@@ -81,7 +80,7 @@ BindResult ExpressionBinder::BindExpression(SubqueryExpression &expr, uint64_t d
     // ANY comparison
     // cast child and subquery child to equivalent types
     D_ASSERT(bound_node->types.size() == 1);
-    auto compare_type = LogicalType::MaxLogicalType(child->expr->return_type, bound_node->types[0]);
+    auto compare_type = Type::MaxType(child->expr->return_type, bound_node->types[0]);
     child->expr = BoundCastExpression::AddCastToType(move(child->expr), compare_type);
     result->child_type = bound_node->types[0];
     result->child_target = compare_type;

@@ -40,7 +40,7 @@ enum class BindingMode : uint8_t { STANDARD_BINDING, EXTRACT_NAMES };
 
 struct CorrelatedColumnInfo {
   ColumnBinding binding;
-  LogicalType type;
+  Type type;
   string name;
   uint64_t depth;
 
@@ -78,7 +78,7 @@ class Binder : public std::enable_shared_from_this<Binder> {
   //! The set of parameter expressions bound by this binder
   vector<BoundParameterExpression *> *parameters;
   //! The types of the prepared statement parameters, if any
-  vector<LogicalType> *parameter_types;
+  vector<Type> *parameter_types;
   //! Statement properties
   StatementProperties properties;
   //! The alias for the currently processing subquery, if it exists
@@ -144,7 +144,7 @@ class Binder : public std::enable_shared_from_this<Binder> {
     return FormatErrorRecursive(query_location, msg, values, params...);
   }
 
-  static void BindLogicalType(ClientContext &context, LogicalType &type, const string &schema = "");
+  static void BindType(ClientContext &context, Type &type, const string &schema = "");
 
   bool HasMatchingBinding(const string &table_name, const string &column_name, string &error_message);
   bool HasMatchingBinding(const string &schema_name, const string &table_name, const string &column_name,
@@ -184,7 +184,7 @@ class Binder : public std::enable_shared_from_this<Binder> {
   void BindDefaultValues(vector<ColumnDefinition> &columns, vector<unique_ptr<Expression>> &bound_defaults);
   //! Bind a limit value (LIMIT or OFFSET)
   unique_ptr<Expression> BindDelimiter(ClientContext &context, OrderBinder &order_binder,
-                                       unique_ptr<ParsedExpression> delimiter, const LogicalType &type,
+                                       unique_ptr<ParsedExpression> delimiter, const Type &type,
                                        Value &delimiter_value);
 
   //! Move correlated expressions from the child binder to this binder
@@ -235,7 +235,7 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unique_ptr<BoundTableRef> Bind(ExpressionListRef &ref);
 
   bool BindTableFunctionParameters(TableFunctionCatalogEntry &table_function,
-                                   vector<unique_ptr<ParsedExpression>> &expressions, vector<LogicalType> &arguments,
+                                   vector<unique_ptr<ParsedExpression>> &expressions, vector<Type> &arguments,
                                    vector<Value> &parameters, named_parameter_map_t &named_parameters,
                                    unique_ptr<BoundSubqueryRef> &subquery, string &error);
   bool BindTableInTableOutFunction(vector<unique_ptr<ParsedExpression>> &expressions,
@@ -254,7 +254,7 @@ class Binder : public std::enable_shared_from_this<Binder> {
   BoundStatement BindCopyFrom(CopyStatement &stmt);
 
   void BindModifiers(OrderBinder &order_binder, QueryNode &statement, BoundQueryNode &result);
-  void BindModifierTypes(BoundQueryNode &result, const vector<LogicalType> &sql_types, uint64_t projection_index);
+  void BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_types, uint64_t projection_index);
 
   BoundStatement BindSummarize(ShowStatement &stmt);
   unique_ptr<BoundResultModifier> BindLimit(OrderBinder &order_binder, LimitModifier &limit_mod);
@@ -266,8 +266,7 @@ class Binder : public std::enable_shared_from_this<Binder> {
   void PlanSubqueries(unique_ptr<Expression> *expr, unique_ptr<LogicalOperator> *root);
   unique_ptr<Expression> PlanSubquery(BoundSubqueryExpression &expr, unique_ptr<LogicalOperator> &root);
 
-  unique_ptr<LogicalOperator> CastLogicalOperatorToTypes(vector<LogicalType> &source_types,
-                                                         vector<LogicalType> &target_types,
+  unique_ptr<LogicalOperator> CastLogicalOperatorToTypes(vector<Type> &source_types, vector<Type> &target_types,
                                                          unique_ptr<LogicalOperator> op);
 
   string FindBinding(const string &using_column, const string &join_side);

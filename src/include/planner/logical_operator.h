@@ -10,7 +10,7 @@
 
 #include "catalog/catalog.h"
 #include "common/common.h"
-// #include "common/enums/logical_operator_type.h"
+#include "common/enums/logical_operator_type.h"
 #include "planner/column_binding.h"
 #include "planner/expression.h"
 #include "planner/logical_operator_visitor.h"
@@ -36,14 +36,14 @@ class LogicalOperator {
   //! The set of expressions contained within the operator, if any
   vector<unique_ptr<Expression>> expressions;
   //! The types returned by this logical operator. Set by calling LogicalOperator::ResolveTypes.
-  vector<LogicalType> types;
+  vector<Type> types;
   //! Estimated Cardinality
   uint64_t estimated_cardinality = 0;
 
  public:
   virtual vector<ColumnBinding> GetColumnBindings() { return {ColumnBinding(0, 0)}; }
   static vector<ColumnBinding> GenerateColumnBindings(uint64_t table_idx, uint64_t column_count);
-  static vector<LogicalType> MapTypes(const vector<LogicalType> &types, const vector<uint64_t> &projection_map);
+  static vector<Type> MapTypes(const vector<Type> &types, const vector<uint64_t> &projection_map);
   static vector<ColumnBinding> MapBindings(const vector<ColumnBinding> &types, const vector<uint64_t> &projection_map);
 
   //! Resolve the types of the logical operator and its children

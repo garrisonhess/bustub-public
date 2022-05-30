@@ -27,7 +27,7 @@ class LogicalExport : public LogicalOperator {
   BoundExportData exported_tables;
 
  protected:
-  void ResolveTypes() override { types.emplace_back(LogicalType::BOOLEAN); }
+  void ResolveTypes() override { types.emplace_back(Type::BOOLEAN); }
 };
 
 }  // namespace bustub

@@ -35,17 +35,17 @@ unique_ptr<QueryNode> Binder::BindTableMacro(FunctionExpression &function, Table
   }
 
   // create a MacroBinding to bind this macro's parameters to its arguments
-  vector<LogicalType> types;
+  vector<Type> types;
   vector<string> names;
   // positional parameters
   for (uint64_t i = 0; i < macro_def.parameters.size(); i++) {
-    types.emplace_back(LogicalType::SQLNULL);
+    types.emplace_back(Type::SQLNULL);
     auto &param = (ColumnRefExpression &)*macro_def.parameters[i];
     names.push_back(param.GetColumnName());
   }
   // default parameters
   for (auto it = macro_def.default_parameters.begin(); it != macro_def.default_parameters.end(); it++) {
-    types.emplace_back(LogicalType::SQLNULL);
+    types.emplace_back(Type::SQLNULL);
     names.push_back(it->first);
     // now push the defaults into the positionals
     positionals.push_back(move(defaults[it->first]));

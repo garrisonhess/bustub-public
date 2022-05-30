@@ -7,8 +7,7 @@
 
 namespace bustub {
 
-unique_ptr<LogicalOperator> Binder::CastLogicalOperatorToTypes(vector<LogicalType> &source_types,
-                                                               vector<LogicalType> &target_types,
+unique_ptr<LogicalOperator> Binder::CastLogicalOperatorToTypes(vector<Type> &source_types, vector<Type> &target_types,
                                                                unique_ptr<LogicalOperator> op) {
   D_ASSERT(op);
   // first check if we even need to cast

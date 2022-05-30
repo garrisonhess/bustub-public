@@ -83,7 +83,7 @@ SchemaCatalogEntry *Binder::BindCreateFunctionInfo(CreateInfo &info) {
   }
 
   // create macro binding in order to bind the function
-  vector<LogicalType> dummy_types;
+  vector<Type> dummy_types;
   vector<string> dummy_names;
   // positional parameters
   for (uint64_t i = 0; i < base.function->parameters.size(); i++) {
@@ -91,7 +91,7 @@ SchemaCatalogEntry *Binder::BindCreateFunctionInfo(CreateInfo &info) {
     if (param.IsQualified()) {
       throw BinderException("Invalid parameter name '%s': must be unqualified", param.ToString());
     }
-    dummy_types.emplace_back(LogicalType::SQLNULL);
+    dummy_types.emplace_back(Type::SQLNULL);
     dummy_names.push_back(param.GetColumnName());
   }
   // default parameters
@@ -121,26 +121,26 @@ SchemaCatalogEntry *Binder::BindCreateFunctionInfo(CreateInfo &info) {
   return BindSchema(info);
 }
 
-void Binder::BindLogicalType(ClientContext &context, LogicalType &type, const string &schema) {
-  if (type.id() == LogicalTypeId::LIST) {
+void Binder::BindType(ClientContext &context, Type &type, const string &schema) {
+  if (type.id() == TypeId::LIST) {
     auto child_type = ListType::GetChildType(type);
-    BindLogicalType(context, child_type, schema);
-    type = LogicalType::LIST(child_type);
-  } else if (type.id() == LogicalTypeId::STRUCT || type.id() == LogicalTypeId::MAP) {
+    BindType(context, child_type, schema);
+    type = Type::LIST(child_type);
+  } else if (type.id() == TypeId::STRUCT || type.id() == TypeId::MAP) {
     auto child_types = StructType::GetChildTypes(type);
     for (auto &child_type : child_types) {
-      BindLogicalType(context, child_type.second, schema);
+      BindType(context, child_type.second, schema);
     }
     // Generate new Struct/Map Type
-    if (type.id() == LogicalTypeId::STRUCT) {
-      type = LogicalType::STRUCT(child_types);
+    if (type.id() == TypeId::STRUCT) {
+      type = Type::STRUCT(child_types);
     } else {
-      type = LogicalType::MAP(child_types);
+      type = Type::MAP(child_types);
     }
-  } else if (type.id() == LogicalTypeId::USER) {
+  } else if (type.id() == TypeId::USER) {
     auto &catalog = Catalog::GetCatalog(context);
     type = catalog.GetType(context, schema, UserType::GetTypeName(type));
-  } else if (type.id() == LogicalTypeId::ENUM) {
+  } else if (type.id() == TypeId::ENUM) {
     auto &enum_type_name = EnumType::GetTypeName(type);
     auto enum_type_catalog = (TypeCatalogEntry *)context.db->GetCatalog().GetEntry(context, CatalogType::TYPE_ENTRY,
                                                                                    schema, enum_type_name, true);
@@ -180,7 +180,7 @@ static void FindMatchingPrimaryKeyColumns(vector<unique_ptr<Constraint>> &constr
 BoundStatement Binder::Bind(CreateStatement &stmt) {
   BoundStatement result;
   result.names = {"Count"};
-  result.types = {LogicalType::BIGINT};
+  result.types = {Type::BIGINT};
   properties.return_type = StatementReturnType::NOTHING;
 
   auto catalog_type = stmt.info->type;

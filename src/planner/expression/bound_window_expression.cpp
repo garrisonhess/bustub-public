@@ -6,7 +6,7 @@
 
 namespace bustub {
 
-BoundWindowExpression::BoundWindowExpression(ExpressionType type, LogicalType return_type,
+BoundWindowExpression::BoundWindowExpression(ExpressionType type, Type return_type,
                                              unique_ptr<AggregateFunction> aggregate,
                                              unique_ptr<FunctionData> bind_info)
     : Expression(type, ExpressionClass::BOUND_WINDOW, move(return_type)),

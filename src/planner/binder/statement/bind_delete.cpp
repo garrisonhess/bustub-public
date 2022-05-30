@@ -72,8 +72,8 @@ BoundStatement Binder::Bind(DeleteStatement &stmt) {
   del->AddChild(move(root));
 
   // set up the delete expression
-  del->expressions.push_back(make_unique<BoundColumnRefExpression>(
-      LogicalType::ROW_TYPE, ColumnBinding(get.table_index, get.column_ids.size())));
+  del->expressions.push_back(
+      make_unique<BoundColumnRefExpression>(Type::ROW_TYPE, ColumnBinding(get.table_index, get.column_ids.size())));
   get.column_ids.push_back(COLUMN_IDENTIFIER_ROW_ID);
 
   if (!stmt.returning_list.empty()) {
@@ -88,7 +88,7 @@ BoundStatement Binder::Bind(DeleteStatement &stmt) {
   } else {
     result.plan = move(del);
     result.names = {"Count"};
-    result.types = {LogicalType::BIGINT};
+    result.types = {Type::BIGINT};
     properties.allow_stream_result = false;
     properties.return_type = StatementReturnType::CHANGED_ROWS;
   }
