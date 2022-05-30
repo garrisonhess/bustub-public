@@ -41,7 +41,7 @@ TEST(ParserTest, CreateParserTest) {
 
 TEST(ParserTest, InsertParserTest) {
   Parser parser;
-  parser.ParseQuery("INSERT INTO test_table (column1, column2, column3) VALUES (1, 1.0, '1'));");
+  parser.ParseQuery("INSERT INTO test_table (column1) VALUES (1);");
 
   for (auto &&stmt : parser.statements_) {
     LOG_INFO("Statement data: query: %s", stmt->query_.c_str());

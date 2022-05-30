@@ -45,6 +45,12 @@ unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgque
       auto tmp2 = TransformInsert(stmt);
       return tmp2;
     }
+    case bustub_libpgquery::T_PGUpdateStmt:
+      // return TransformUpdate(stmt);
+    case bustub_libpgquery::T_PGDeleteStmt:
+      // return TransformDelete(stmt);
+    case bustub_libpgquery::T_PGIndexStmt:
+      // return TransformCreateIndex(stmt);
     case bustub_libpgquery::T_PGCreateSchemaStmt:
       // return TransformCreateSchema(stmt);
     case bustub_libpgquery::T_PGViewStmt:
@@ -59,12 +65,6 @@ unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgque
       // return TransformCopy(stmt);
     case bustub_libpgquery::T_PGTransactionStmt:
       // return TransformTransaction(stmt);
-    case bustub_libpgquery::T_PGDeleteStmt:
-      // return TransformDelete(stmt);
-    case bustub_libpgquery::T_PGUpdateStmt:
-      // return TransformUpdate(stmt);
-    case bustub_libpgquery::T_PGIndexStmt:
-      // return TransformCreateIndex(stmt);
     case bustub_libpgquery::T_PGAlterTableStmt:
       // return TransformAlter(stmt);
     case bustub_libpgquery::T_PGRenameStmt:
