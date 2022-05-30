@@ -13,7 +13,6 @@ ColumnDefinition ColumnDefinition::Copy() const {
   ColumnDefinition copy(name_, type_);
   copy.oid_ = oid_;
   copy.default_value_ = default_value_ ? default_value_->Copy() : nullptr;
-  // copy.compression_type = compression_type;
   return copy;
 }
 

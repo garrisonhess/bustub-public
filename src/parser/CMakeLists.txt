@@ -16,7 +16,6 @@ add_library(
   keyword_helper.cpp
   parsed_expression.cpp
   parser.cpp
-  query_error_context.cpp
   query_node.cpp
   result_modifier.cpp
   tableref.cpp

@@ -60,8 +60,8 @@ class Parser {
   //! Parses a list as found in an ORDER BY expression (i.e. including optional ASCENDING/DESCENDING modifiers)
   static vector<OrderByNode> ParseOrderList(const string &select_list);
 
-  // //! Parses a VALUES list (i.e. the list of expressions after a VALUES clause)
-  // static vector<vector<unique_ptr<ParsedExpression>>> ParseValuesList(const string &value_list);
+  //! Parses a VALUES list (i.e. the list of expressions after a VALUES clause)
+  static vector<vector<unique_ptr<ParsedExpression>>> ParseValuesList(const string &value_list);
 
   //! Parses a column list (i.e. as found in a CREATE TABLE statement)
   static vector<ColumnDefinition> ParseColumnList(const string &column_list);
