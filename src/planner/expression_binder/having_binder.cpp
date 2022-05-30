@@ -3,7 +3,6 @@
 #include "common/string_util.h"
 #include "parser/expression/columnref_expression.h"
 #include "planner/binder.h"
-#include "planner/expression_binder/aggregate_binder.h"
 #include "planner/query_node/bound_select_node.h"
 
 namespace bustub {

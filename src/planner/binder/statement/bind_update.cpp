@@ -8,7 +8,6 @@
 #include "planner/expression_binder/update_binder.h"
 #include "planner/expression_binder/where_binder.h"
 #include "planner/operator/logical_filter.h"
-#include "planner/operator/logical_get.h"
 #include "planner/operator/logical_projection.h"
 #include "planner/operator/logical_update.h"
 #include "planner/tableref/bound_basetableref.h"

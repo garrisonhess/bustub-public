@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "main/prepared_statement_data.h"
 #include "planner/logical_operator.h"
 
 namespace bustub {

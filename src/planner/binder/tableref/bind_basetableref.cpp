@@ -5,7 +5,6 @@
 #include "parser/statement/select_statement.h"
 #include "parser/tableref/basetableref.h"
 #include "planner/binder.h"
-#include "planner/operator/logical_get.h"
 #include "planner/tableref/bound_basetableref.h"
 #include "planner/tableref/bound_dummytableref.h"
 

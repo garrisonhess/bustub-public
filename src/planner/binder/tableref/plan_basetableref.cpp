@@ -1,5 +1,4 @@
 #include "planner/binder.h"
-#include "planner/operator/logical_get.h"
 #include "planner/tableref/bound_basetableref.h"
 
 namespace bustub {

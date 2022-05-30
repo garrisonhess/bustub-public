@@ -5,7 +5,7 @@
 #include "planner/expression/bound_constant_expression.h"
 #include "planner/expression_binder/check_binder.h"
 #include "planner/expression_binder/constant_binder.h"
-#include "planner/parsed_data/bound_create_table_info.h"
+// #include "planner/parsed_data/bound_create_table_info.h"
 
 #include <algorithm>
 

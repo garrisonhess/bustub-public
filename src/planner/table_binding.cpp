@@ -7,7 +7,6 @@
 #include "planner/bind_context.h"
 #include "planner/bound_query_node.h"
 #include "planner/expression/bound_columnref_expression.h"
-#include "planner/operator/logical_get.h"
 
 namespace bustub {
 

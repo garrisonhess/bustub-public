@@ -1,6 +1,6 @@
 #include "common/limits.h"
 #include "common/string_util.h"
-#include "execution/expression_executor.h"
+// #include "execution/expression_executor.h"
 #include "main/config.h"
 #include "parser/expression/columnref_expression.h"
 #include "parser/expression/constant_expression.h"
@@ -12,7 +12,6 @@
 #include "planner/expression_binder/group_binder.h"
 #include "planner/expression_binder/having_binder.h"
 #include "planner/expression_binder/order_binder.h"
-#include "planner/expression_binder/qualify_binder.h"
 #include "planner/expression_binder/select_binder.h"
 #include "planner/expression_binder/where_binder.h"
 #include "planner/query_node/bound_select_node.h"
@@ -348,12 +347,6 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
     result->having = having_binder.Bind(statement.having);
   }
 
-  // bind the QUALIFY clause, if any
-  if (statement.qualify) {
-    QualifyBinder qualify_binder(*this, context, *result, info, alias_map);
-    ExpressionBinder::QualifyColumnNames(*this, statement.qualify);
-    result->qualify = qualify_binder.Bind(statement.qualify);
-  }
 
   // after that, we bind to the SELECT list
   SelectBinder select_binder(*this, context, *result, info);

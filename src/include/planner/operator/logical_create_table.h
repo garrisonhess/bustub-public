@@ -9,7 +9,7 @@
 #pragma once
 
 #include "planner/logical_operator.h"
-#include "planner/parsed_data/bound_create_table_info.h"
+// #include "planner/parsed_data/bound_create_table_info.h"
 
 namespace bustub {
 

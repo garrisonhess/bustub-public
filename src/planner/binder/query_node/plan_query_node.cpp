@@ -2,7 +2,6 @@
 #include "planner/binder.h"
 #include "planner/operator/logical_distinct.h"
 #include "planner/operator/logical_limit.h"
-#include "planner/operator/logical_limit_percent.h"
 #include "planner/operator/logical_order.h"
 
 namespace bustub {

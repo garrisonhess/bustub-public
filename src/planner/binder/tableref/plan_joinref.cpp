@@ -3,8 +3,6 @@
 #include "planner/expression/bound_columnref_expression.h"
 #include "planner/expression/bound_constant_expression.h"
 #include "planner/expression_iterator.h"
-#include "planner/operator/logical_any_join.h"
-#include "planner/operator/logical_comparison_join.h"
 #include "planner/operator/logical_filter.h"
 #include "planner/tableref/bound_joinref.h"
 

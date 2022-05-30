@@ -6,7 +6,6 @@
 #include "planner/operator/logical_cross_product.h"
 #include "planner/operator/logical_delete.h"
 #include "planner/operator/logical_filter.h"
-#include "planner/operator/logical_get.h"
 #include "planner/tableref/bound_basetableref.h"
 
 namespace bustub {

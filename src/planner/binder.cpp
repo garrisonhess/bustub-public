@@ -9,11 +9,8 @@
 #include "planner/expression.h"
 // #include "planner/expression_binder/returning_binder.h"
 #include "planner/operator/logical_projection.h"
-#include "planner/operator/logical_sample.h"
 
 #include <algorithm>
-
-#include "parser/tableref/table_function_ref.h"
 
 namespace bustub {
 

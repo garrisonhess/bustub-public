@@ -9,7 +9,7 @@
 #pragma once
 
 #include "common/case_insensitive_map.h"
-#include "parser/parsed_data/create_table_info.h"
+// #include "parser/parsed_data/create_table_info.h"
 #include "planner/expression.h"
 #include "planner/logical_operator.h"
 #include "storage/table/persistent_table_data.h"

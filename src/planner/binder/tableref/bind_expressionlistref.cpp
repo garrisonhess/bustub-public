@@ -1,7 +1,6 @@
 #include "common/common.h"
 #include "parser/tableref/expressionlistref.h"
 #include "planner/binder.h"
-#include "planner/expression/bound_cast_expression.h"
 #include "planner/expression_binder/insert_binder.h"
 #include "planner/tableref/bound_expressionlistref.h"
 

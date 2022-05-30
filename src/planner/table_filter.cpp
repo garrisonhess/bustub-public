@@ -1,5 +1,4 @@
 #include "planner/table_filter.h"
-#include "planner/filter/conjunction_filter.h"
 
 namespace bustub {
 

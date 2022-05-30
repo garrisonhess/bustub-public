@@ -9,8 +9,8 @@
 #pragma once
 
 #include "common/common.h"
+#include "common/enums/expression_type.h"
 #include "common/hash_util.h"
-#include "type/expression_type.h"
 
 namespace bustub {
 

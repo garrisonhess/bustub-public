@@ -6,7 +6,7 @@
 
 #include "parser/expression/star_expression.h"
 
-#include "common/pair.h"
+#include <pair>
 #include "common/string_util.h"
 
 #include <algorithm>
