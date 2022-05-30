@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "common/common.h"
 #include "common/exception.h"
 #include "parser/expression/bound_expression.h"
 #include "parser/parsed_expression.h"
