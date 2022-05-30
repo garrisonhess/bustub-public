@@ -181,7 +181,8 @@
 //   LogicalJoin::GetTableReferences(*right, right_bindings);
 //   // now create the join operator from the set of join conditions
 //   auto result =
-//       LogicalComparisonJoin::CreateJoin(ref.type, move(left), move(right), left_bindings, right_bindings, expressions);
+//       LogicalComparisonJoin::CreateJoin(ref.type, move(left), move(right), left_bindings, right_bindings,
+//       expressions);
 
 //   LogicalOperator *join;
 //   if (result->type == LogicalOperatorType::LOGICAL_FILTER) {

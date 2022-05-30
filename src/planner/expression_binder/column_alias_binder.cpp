@@ -9,7 +9,8 @@
 // ColumnAliasBinder::ColumnAliasBinder(BoundSelectNode &node, const case_insensitive_map_t<uint64_t> &alias_map)
 //     : node(node), alias_map(alias_map), in_alias(false) {}
 
-// BindResult ColumnAliasBinder::BindAlias(ExpressionBinder &enclosing_binder, ColumnRefExpression &expr, uint64_t depth,
+// BindResult ColumnAliasBinder::BindAlias(ExpressionBinder &enclosing_binder, ColumnRefExpression &expr, uint64_t
+// depth,
 //                                         bool root_expression) {
 //   if (expr.IsQualified()) {
 //     return BindResult(StringUtil::Format("Alias %s cannot be qualified.", expr.ToString()));

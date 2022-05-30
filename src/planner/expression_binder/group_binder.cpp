@@ -9,14 +9,16 @@
 // namespace bustub {
 
 // GroupBinder::GroupBinder(Binder &binder, ClientContext &context, SelectNode &node, uint64_t group_index,
-//                          case_insensitive_map_t<uint64_t> &alias_map, case_insensitive_map_t<uint64_t> &group_alias_map)
+//                          case_insensitive_map_t<uint64_t> &alias_map, case_insensitive_map_t<uint64_t>
+//                          &group_alias_map)
 //     : ExpressionBinder(binder, context),
 //       node(node),
 //       alias_map(alias_map),
 //       group_alias_map(group_alias_map),
 //       group_index(group_index) {}
 
-// BindResult GroupBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {
+// BindResult GroupBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression)
+// {
 //   auto &expr = **expr_ptr;
 //   if (root_expression && depth == 0) {
 //     switch (expr.expression_class_) {

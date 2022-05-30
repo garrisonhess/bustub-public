@@ -13,11 +13,11 @@ unique_ptr<BoundTableRef> Binder::Bind(ExpressionListRef &expr) {
   // bind value list
   InsertBinder binder(*this, context);
   binder.target_type = Type(TypeId::INVALID);
-  for (auto & expression_list : expr.values_) {
-     if (result->names.empty()) {
+  for (auto &expression_list : expr.values_) {
+    if (result->names.empty()) {
       // no names provided, generate them
       for (uint64_t val_idx = 0; val_idx < expression_list.size(); val_idx++) {
-        result->names.push_back("col" +std::to_string(val_idx));
+        result->names.push_back("col" + std::to_string(val_idx));
       }
     }
 
@@ -46,8 +46,8 @@ unique_ptr<BoundTableRef> Binder::Bind(ExpressionListRef &expr) {
       }
     }
     // finally do another loop over the expressions and add casts where required
-    for (auto & list : result->values) {
-       for (uint64_t val_idx = 0; val_idx < list.size(); val_idx++) {
+    for (auto &list : result->values) {
+      for (uint64_t val_idx = 0; val_idx < list.size(); val_idx++) {
         list[val_idx] = BoundCastExpression::AddCastToType(move(list[val_idx]), result->types[val_idx]);
       }
     }

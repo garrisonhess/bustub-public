@@ -196,32 +196,32 @@ void Binder::AddUsingBindingSet(unique_ptr<UsingColumnSet> set) {
   bind_context.AddUsingBindingSet(move(set));
 }
 
-bool Binder::HasMatchingBinding(const string &table_name, const string &column_name, string &error_message) {
-  string empty_schema;
-  return HasMatchingBinding(empty_schema, table_name, column_name, error_message);
-}
+// bool Binder::HasMatchingBinding(const string &table_name, const string &column_name, string &error_message) {
+//   string empty_schema;
+//   return HasMatchingBinding(empty_schema, table_name, column_name, error_message);
+// }
 
-bool Binder::HasMatchingBinding(const string &schema_name, const string &table_name, const string &column_name,
-                                string &error_message) {
-  Binding *binding = bind_context.GetBinding(table_name, error_message);
-  if (binding == nullptr) {
-    return false;
-  }
-  if (!schema_name.empty()) {
-    auto table_entry = binding->GetTableEntry();
-    if (table_entry == nullptr) {
-      return false;
-    }
-    if (table_entry->schema->name != schema_name || table_entry->name != table_name) {
-      return false;
-    }
-  }
-  if (!binding->HasMatchingBinding(column_name)) {
-    error_message = binding->ColumnNotFoundError(column_name);
-    return false;
-  }
-  return true;
-}
+// bool Binder::HasMatchingBinding(const string &schema_name, const string &table_name, const string &column_name,
+//                                 string &error_message) {
+//   Binding *binding = bind_context.GetBinding(table_name, error_message);
+//   if (binding == nullptr) {
+//     return false;
+//   }
+//   if (!schema_name.empty()) {
+//     auto table_entry = binding->GetTableEntry();
+//     if (table_entry == nullptr) {
+//       return false;
+//     }
+//     if (table_entry->schema->name != schema_name || table_entry->name != table_name) {
+//       return false;
+//     }
+//   }
+//   if (!binding->HasMatchingBinding(column_name)) {
+//     error_message = binding->ColumnNotFoundError(column_name);
+//     return false;
+//   }
+//   return true;
+// }
 
 void Binder::SetBindingMode(BindingMode mode) {
   if (parent) {

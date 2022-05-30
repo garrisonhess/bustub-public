@@ -9,10 +9,12 @@
 
 // namespace bustub {
 
-// SelectBinder::SelectBinder(Binder &binder, ClientContext &context, BoundSelectNode &node, BoundGroupInformation &info)
+// SelectBinder::SelectBinder(Binder &binder, ClientContext &context, BoundSelectNode &node, BoundGroupInformation
+// &info)
 //     : ExpressionBinder(binder, context), inside_window(false), node(node), info(info) {}
 
-// BindResult SelectBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {
+// BindResult SelectBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression)
+// {
 //   auto &expr = **expr_ptr;
 //   // check if the expression binds to one of the groups
 //   auto group_index = TryBindGroup(expr, depth);

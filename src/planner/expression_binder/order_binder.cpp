@@ -19,7 +19,8 @@
 //       projection_map(projection_map) {}
 // OrderBinder::OrderBinder(vector<Binder *> binders, uint64_t projection_index, SelectNode &node,
 //                          case_insensitive_map_t<uint64_t> &alias_map, expression_map_t<uint64_t> &projection_map)
-//     : binders(move(binders)), projection_index(projection_index), alias_map(alias_map), projection_map(projection_map) {
+//     : binders(move(binders)), projection_index(projection_index), alias_map(alias_map),
+//     projection_map(projection_map) {
 //   this->max_count = node.select_list.size();
 //   this->extra_list = &node.select_list;
 // }
@@ -44,7 +45,8 @@
 //   // in the ORDER BY clause we do not bind children
 //   // we bind ONLY to the select list
 //   // if there is no matching entry in the SELECT list already, we add the expression to the SELECT list and refer the
-//   // new expression the new entry will then be bound later during the binding of the SELECT list we also don't do type
+//   // new expression the new entry will then be bound later during the binding of the SELECT list we also don't do
+//   type
 //   // resolution here: this only happens after the SELECT list has been bound
 //   switch (expr->expression_class) {
 //     case ExpressionClass::CONSTANT: {

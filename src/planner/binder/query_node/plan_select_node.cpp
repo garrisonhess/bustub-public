@@ -112,7 +112,8 @@
 //     vector<unique_ptr<Expression>> prune_expressions;
 //     for (uint64_t i = 0; i < statement.column_count; i++) {
 //       prune_expressions.push_back(make_unique<BoundColumnRefExpression>(projection.expressions[i]->return_type,
-//                                                                         ColumnBinding(statement.projection_index, i)));
+//                                                                         ColumnBinding(statement.projection_index,
+//                                                                         i)));
 //     }
 //     auto prune = make_unique<LogicalProjection>(statement.prune_index, move(prune_expressions));
 //     prune->AddChild(move(root));

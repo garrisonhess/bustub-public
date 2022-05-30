@@ -36,7 +36,7 @@ unique_ptr<BoundTableRef> Binder::Bind(BaseTableRef &ref) {
       bind_context.AddBaseTable(table_index, alias, table_names, table_types, *logical_get);
       return make_unique_base<BoundTableRef, BoundBaseTableRef>(table, move(logical_get));
     }
-    case CatalogType::VIEW_ENTRY: 
+    case CatalogType::VIEW_ENTRY:
       throw Exception("Catalog entry type");
     default:
       throw Exception("Catalog entry type");

@@ -16,7 +16,8 @@
 
 // namespace bustub {
 
-// static void BindExtraColumns(TableCatalogEntry &table, LogicalGet &get, LogicalProjection &proj, LogicalUpdate &update,
+// static void BindExtraColumns(TableCatalogEntry &table, LogicalGet &get, LogicalProjection &proj, LogicalUpdate
+// &update,
 //                              unordered_set<uint64_t> &bound_columns) {
 //   if (bound_columns.size() <= 1) {
 //     return;
@@ -41,7 +42,8 @@
 //       // column is not projected yet: project it by adding the clause "i=i" to the set of updated columns
 //       auto &column = table.columns[check_column_id];
 //       update.expressions.push_back(
-//           make_unique<BoundColumnRefExpression>(column.type, ColumnBinding(proj.table_index, proj.expressions.size())));
+//           make_unique<BoundColumnRefExpression>(column.type, ColumnBinding(proj.table_index,
+//           proj.expressions.size())));
 //       proj.expressions.push_back(
 //           make_unique<BoundColumnRefExpression>(column.type, ColumnBinding(get.table_index, get.column_ids.size())));
 //       get.column_ids.push_back(check_column_id);
@@ -204,7 +206,8 @@
 
 //   // finally add the row id column to the projection list
 //   proj->expressions.push_back(
-//       make_unique<BoundColumnRefExpression>(Type::ROW_TYPE, ColumnBinding(get->table_index, get->column_ids.size())));
+//       make_unique<BoundColumnRefExpression>(Type::ROW_TYPE, ColumnBinding(get->table_index,
+//       get->column_ids.size())));
 //   get->column_ids.push_back(COLUMN_IDENTIFIER_ROW_ID);
 
 //   // set the projection as child of the update node and finalize the result

@@ -155,13 +155,13 @@ unique_ptr<ParsedExpression> BindContext::CreateColumnReference(const string &sc
   // because of case insensitivity in the binder we rename the column to the original name
   // as it appears in the binding itself
   auto binding = GetBinding(table_name, error_message);
-  if (binding) {
+  if (binding != nullptr) {
     auto column_index = binding->GetBindingIndex(column_name);
     if (column_index < binding->names.size() && binding->names[column_index] != column_name) {
       result->alias_ = binding->names[column_index];
     }
   }
-  return move(result);
+  return result;
 }
 
 Binding *BindContext::GetCTEBinding(const string &ctename) {
@@ -214,34 +214,6 @@ void BindContext::GenerateAllColumnExpressions(StarExpression &expr,
     for (auto &entry : bindings_list) {
       auto binding = entry.second;
       for (auto &column_name : binding->names) {
-        if (CheckExclusionList(expr, binding, column_name, new_select_list, excluded_columns)) {
-          continue;
-        }
-        // check if this column is a USING column
-        auto using_binding = GetUsingBinding(column_name, binding->alias);
-        if (using_binding != nullptr) {
-          // it is!
-          // check if we have already emitted the using column
-          if (handled_using_columns.find(using_binding) != handled_using_columns.end()) {
-            // we have! bail out
-            continue;
-          }
-          // we have not! output the using column
-          if (using_binding->primary_binding.empty()) {
-            // no primary binding: output a coalesce
-            auto coalesce = make_unique<OperatorExpression>(ExpressionType::OPERATOR_COALESCE);
-            for (auto &child_binding : using_binding->bindings) {
-              coalesce->children.push_back(make_unique<ColumnRefExpression>(column_name, child_binding));
-            }
-            coalesce->alias = column_name;
-            new_select_list.push_back(move(coalesce));
-          } else {
-            // primary binding: output the qualified column ref
-            new_select_list.push_back(make_unique<ColumnRefExpression>(column_name, using_binding->primary_binding));
-          }
-          handled_using_columns.insert(using_binding);
-          continue;
-        }
         new_select_list.push_back(make_unique<ColumnRefExpression>(column_name, binding->alias));
       }
     }

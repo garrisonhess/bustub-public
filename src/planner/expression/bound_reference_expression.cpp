@@ -28,7 +28,8 @@
 //   return other->index == index;
 // }
 
-// hash_t BoundReferenceExpression::Hash() const { return CombineHash(Expression::Hash(), bustub::Hash<uint64_t>(index)); }
+// hash_t BoundReferenceExpression::Hash() const { return CombineHash(Expression::Hash(),
+// bustub::Hash<uint64_t>(index)); }
 
 // unique_ptr<Expression> BoundReferenceExpression::Copy() {
 //   return make_unique<BoundReferenceExpression>(alias, return_type, index);

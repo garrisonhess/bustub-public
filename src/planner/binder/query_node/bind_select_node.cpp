@@ -73,7 +73,8 @@
 //   return move(result);
 // }
 
-// unique_ptr<BoundResultModifier> Binder::BindLimitPercent(OrderBinder &order_binder, LimitPercentModifier &limit_mod) {
+// unique_ptr<BoundResultModifier> Binder::BindLimitPercent(OrderBinder &order_binder, LimitPercentModifier &limit_mod)
+// {
 //   auto result = make_unique<BoundLimitPercentModifier>();
 //   if (limit_mod.limit) {
 //     Value val;
@@ -165,7 +166,8 @@
 //   }
 // }
 
-// static void AssignReturnType(unique_ptr<Expression> &expr, const vector<Type> &sql_types, uint64_t projection_index) {
+// static void AssignReturnType(unique_ptr<Expression> &expr, const vector<Type> &sql_types, uint64_t projection_index)
+// {
 //   if (!expr) {
 //     return;
 //   }
@@ -377,7 +379,8 @@
 
 //   // in the normal select binder, we bind columns as if there is no aggregation
 //   // i.e. in the query [SELECT i, SUM(i) FROM integers;] the "i" will be bound as a normal column
-//   // since we have an aggregation, we need to either (1) throw an error, or (2) wrap the column in a FIRST() aggregate
+//   // since we have an aggregation, we need to either (1) throw an error, or (2) wrap the column in a FIRST()
+//   aggregate
 //   // we choose the former one [CONTROVERSIAL: this is the PostgreSQL behavior]
 //   if (!result->groups.group_expressions.empty() || !result->aggregates.empty() || statement.having ||
 //       !result->groups.grouping_sets.empty()) {
@@ -391,7 +394,8 @@
 //     }
 //   }
 
-//   // QUALIFY clause requires at least one window function to be specified in at least one of the SELECT column list or
+//   // QUALIFY clause requires at least one window function to be specified in at least one of the SELECT column list
+//   or
 //   // the filter predicate of the QUALIFY clause
 //   if (statement.qualify && result->windows.empty()) {
 //     throw Exception("at least one window function must appear in the SELECT column or QUALIFY clause");

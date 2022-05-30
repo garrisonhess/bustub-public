@@ -9,7 +9,8 @@
 namespace bustub {
 
 ExpressionBinder::ExpressionBinder(Binder &binder, ClientContext &context, bool replace_binder)
-    : binder(binder), context(context), stored_binder(nullptr) {
+    : target_type(Type(TypeId::INVALID)), binder(binder), context(context), stored_binder(nullptr) {
+  // type_ = Type(TypeId::INVALID);
   if (replace_binder) {
     stored_binder = binder.GetActiveBinder();
     binder.SetActiveBinder(this);

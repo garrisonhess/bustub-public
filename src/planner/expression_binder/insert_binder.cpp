@@ -6,7 +6,8 @@
 
 // InsertBinder::InsertBinder(Binder &binder, ClientContext &context) : ExpressionBinder(binder, context) {}
 
-// BindResult InsertBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {
+// BindResult InsertBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression)
+// {
 //   auto &expr = **expr_ptr;
 //   switch (expr.GetExpressionClass()) {
 //     case ExpressionClass::DEFAULT:

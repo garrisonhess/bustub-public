@@ -59,20 +59,19 @@ vector<ColumnBinding> LogicalOperator::MapBindings(const vector<ColumnBinding> &
                                                    const vector<uint64_t> &projection_map) {
   if (projection_map.empty()) {
     return bindings;
-  } else {
-    vector<ColumnBinding> result_bindings;
-    result_bindings.reserve(projection_map.size());
-    for (auto index : projection_map) {
-      result_bindings.push_back(bindings[index]);
-    }
-    return result_bindings;
   }
+  vector<ColumnBinding> result_bindings;
+  result_bindings.reserve(projection_map.size());
+  for (auto index : projection_map) {
+    result_bindings.push_back(bindings[index]);
+  }
+  return result_bindings;
 }
 
-string LogicalOperator::ToString() const {
-  TreeRenderer renderer;
-  return renderer.ToString(*this);
-}
+// string LogicalOperator::ToString() const {
+//   TreeRenderer renderer;
+//   return renderer.ToString(*this);
+// }
 
 void LogicalOperator::Verify() {
 #ifdef DEBUG
