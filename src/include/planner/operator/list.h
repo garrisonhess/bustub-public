@@ -1,4 +1,3 @@
-#include "planner/operator/logical_create_table.h"
 #include "planner/operator/logical_delete.h"
 #include "planner/operator/logical_distinct.h"
 #include "planner/operator/logical_dummy_scan.h"

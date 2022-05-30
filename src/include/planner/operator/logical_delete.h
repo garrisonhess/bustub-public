@@ -1,40 +1,28 @@
-//===----------------------------------------------------------------------===//
-//                         BusTub
-//
-// planner/operator/logical_delete.h
-//
-//
-//===----------------------------------------------------------------------===//
+// //===----------------------------------------------------------------------===//
+// //                         BusTub
+// //
+// // planner/operator/logical_delete.h
+// //
+// //
+// //===----------------------------------------------------------------------===//
 
-#pragma once
+// #pragma once
 
-#include "planner/logical_operator.h"
+// #include "planner/logical_operator.h"
 
-namespace bustub {
+// namespace bustub {
 
-class LogicalDelete : public LogicalOperator {
- public:
-  explicit LogicalDelete(TableCatalogEntry *table)
-      : LogicalOperator(LogicalOperatorType::LOGICAL_DELETE), table(table), table_index(0), return_chunk(false) {}
+// class LogicalDelete : public LogicalOperator {
+//  public:
+//   explicit LogicalDelete(TableCatalogEntry *table)
+//       : LogicalOperator(LogicalOperatorType::LOGICAL_DELETE), table(table), table_index(0), return_chunk(false) {}
 
-  TableCatalogEntry *table;
-  uint64_t table_index;
-  bool return_chunk;
+//   TableCatalogEntry *table;
+//   uint64_t table_index;
 
- protected:
-  vector<ColumnBinding> GetColumnBindings() override {
-    if (return_chunk) {
-      return GenerateColumnBindings(table_index, table->columns.size());
-    }
-    return {ColumnBinding(0, 0)};
-  }
+//  protected:
+//   vector<ColumnBinding> GetColumnBindings() override { return {ColumnBinding(0, 0)}; }
 
-  void ResolveTypes() override {
-    if (return_chunk) {
-      types = table->GetTypes();
-    } else {
-      types.emplace_back(Type::BIGINT);
-    }
-  }
-};
-}  // namespace bustub
+//   void ResolveTypes() override { types.emplace_back(Type(TypeId::BIGINT)); }
+// };
+// }  // namespace bustub

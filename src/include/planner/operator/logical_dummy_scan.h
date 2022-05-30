@@ -23,8 +23,6 @@ class LogicalDummyScan : public LogicalOperator {
  public:
   vector<ColumnBinding> GetColumnBindings() override { return {ColumnBinding(table_index, 0)}; }
 
-  uint64_t EstimateCardinality(ClientContext &context) override { return 1; }
-
  protected:
   void ResolveTypes() override {
     if (types.empty()) {
