@@ -1,7 +1,9 @@
 #include "parser/tableref.h"
+#include <cassert>
 
 #include "common/field_writer.h"
 #include "common/printer.h"
+#include "parser/keyword_helper.h"
 
 namespace bustub {
 
@@ -11,27 +13,20 @@ string TableRef::BaseToString(string result) const {
 }
 
 string TableRef::BaseToString(string result, const vector<string> &column_name_alias) const {
-  // if (!alias_.empty()) {
-  // 	result += " AS " + KeywordHelper::WriteOptionallyQuoted(alias);
-  // }
-  // if (!column_name_alias.empty()) {
-  // 	D_ASSERT(!alias.empty());
-  // 	result += "(";
-  // 	for (uint64_t i = 0; i < column_name_alias.size(); i++) {
-  // 		if (i > 0) {
-  // 			result += ", ";
-  // 		}
-  // 		result += KeywordHelper::WriteOptionallyQuoted(column_name_alias[i]);
-  // 	}
-  // 	result += ")";
-  // }
-  // if (sample) {
-  // 	result += " TABLESAMPLE " + SampleMethodToString(sample->method);
-  // 	result += "(" + sample->sample_size.ToString() + " " + string(sample->is_percentage ? "PERCENT" : "ROWS") + ")";
-  // 	if (sample->seed >= 0) {
-  // 		result += "REPEATABLE (" + to_string(sample->seed) + ")";
-  // 	}
-  // }
+  if (!alias_.empty()) {
+    result += " AS " + KeywordHelper::WriteOptionallyQuoted(alias_);
+  }
+  if (!column_name_alias.empty()) {
+    assert(!alias_.empty());
+    result += "(";
+    for (uint64_t i = 0; i < column_name_alias.size(); i++) {
+      if (i > 0) {
+        result += ", ";
+      }
+      result += KeywordHelper::WriteOptionallyQuoted(column_name_alias[i]);
+    }
+    result += ")";
+  }
 
   return result;
 }

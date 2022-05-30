@@ -40,11 +40,10 @@ unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgque
       auto tmp = TransformCreateTable(stmt);
       return tmp;
     }
-    // case bustub_libpgquery::T_PGInsertStmt: {
-    //   auto tmp1 = TransformInsert(stmt);
-    //   return tmp1;
-    // }
-    case bustub_libpgquery::T_PGInsertStmt:
+    case bustub_libpgquery::T_PGInsertStmt: {
+      auto tmp1 = TransformInsert(stmt);
+      return tmp1;
+    }
     case bustub_libpgquery::T_PGCreateSchemaStmt:
       // return TransformCreateSchema(stmt);
     case bustub_libpgquery::T_PGViewStmt:

@@ -74,6 +74,14 @@ class Transformer {
   //! Transform a Postgres bustub_libpgquery::T_PGSelectStmt node into a QueryNode
   unique_ptr<QueryNode> TransformSelectNode(bustub_libpgquery::PGSelectStmt *node);
 
+  unique_ptr<TableRef> TransformValuesList(bustub_libpgquery::PGList *list);
+
+  unique_ptr<ParsedExpression> TransformExpression(bustub_libpgquery::PGNode *node);
+
+  unique_ptr<ParsedExpression> TransformResTarget(bustub_libpgquery::PGResTarget *root);
+
+  unique_ptr<ParsedExpression> TransformNamedArg(bustub_libpgquery::PGNamedArgExpr *root);
+
   // //! Transform a Postgres GROUP BY expression into a list of Expression
   // bool TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &result);
   // void TransformGroupByNode(bustub_libpgquery::PGNode *n, GroupingExpressionMap &map, SelectNode &result,
@@ -85,8 +93,8 @@ class Transformer {
   // //! Transform a Postgres ORDER BY expression into an OrderByDescription
   // bool TransformOrderBy(bustub_libpgquery::PGList *order, vector<OrderByNode> &result);
 
-  // //! Transform a Postgres SELECT clause into a list of Expressions
-  // void TransformExpressionList(bustub_libpgquery::PGList &list, vector<unique_ptr<ParsedExpression>> &result);
+  //! Transform a Postgres SELECT clause into a list of Expressions
+  void TransformExpressionList(bustub_libpgquery::PGList &list, vector<unique_ptr<ParsedExpression>> &result);
 };
 
 }  // namespace bustub
