@@ -64,27 +64,27 @@ unique_ptr<TableRef> ExpressionListRef::Copy() {
 }
 
 void ExpressionListRef::Serialize(FieldWriter &writer) const {
-  // writer.WriteList<string>(expected_names_);
-  // writer.WriteRegularSerializableList<Type>(expected_types_);
-  // auto &serializer = writer.GetSerializer();
-  // writer.WriteField<uint32_t>(values_.size());
-  // for (uint64_t i = 0; i < values_.size(); i++) {
-  // 	serializer.WriteList(values_[i]);
-  // }
+  writer.WriteList<string>(expected_names_);
+  writer.WriteRegularSerializableList<Type>(expected_types_);
+  auto &serializer = writer.GetSerializer();
+  writer.WriteField<uint32_t>(values_.size());
+  for (const auto & value : values_) {
+  	serializer.WriteList(value);
+  }
 }
 
 unique_ptr<TableRef> ExpressionListRef::Deserialize(FieldReader &reader) {
   auto result = std::make_unique<ExpressionListRef>();
-  // // value list
-  // result->expected_names_ = reader.ReadRequiredList<string>();
+  // value list
+  result->expected_names_ = reader.ReadRequiredList<string>();
   // result->expected_types_ = reader.ReadRequiredSerializableList<Type, Type>();
-  // uint64_t value_list_size = reader.ReadRequired<uint32_t>();
-  // auto &source = reader.GetSource();
-  // for (uint64_t i = 0; i < value_list_size; i++) {
-  // 	vector<unique_ptr<ParsedExpression>> value_list;
-  // 	source.ReadList<ParsedExpression>(value_list);
-  // 	result->values_.push_back(move(value_list));
-  // }
+  uint64_t value_list_size = reader.ReadRequired<uint32_t>();
+  auto &source = reader.GetSource();
+  for (uint64_t i = 0; i < value_list_size; i++) {
+  	vector<unique_ptr<ParsedExpression>> value_list;
+  	source.ReadList<ParsedExpression>(value_list);
+  	result->values_.push_back(move(value_list));
+  }
   return result;
 }
 

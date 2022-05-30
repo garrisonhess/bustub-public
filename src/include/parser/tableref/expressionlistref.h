@@ -22,7 +22,7 @@ class ExpressionListRef : public TableRef {
   //! Value list, only used for VALUES statement
   vector<vector<unique_ptr<ParsedExpression>>> values_;
   //! Expected SQL types
-  vector<TypeId> expected_types_;
+  vector<Type> expected_types_;
   //! The set of expected names
   vector<string> expected_names_;
 
