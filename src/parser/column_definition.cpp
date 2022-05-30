@@ -25,13 +25,12 @@ void ColumnDefinition::Serialize(Serializer &serializer) const {
 }
 
 // ColumnDefinition ColumnDefinition::Deserialize(Deserializer &source) {
-// 	FieldReader reader(source);
-// 	auto column_name = reader.ReadRequired<string>();
-// 	auto column_type = reader.ReadRequiredSerializable<TypeId, TypeId>();
-// 	auto default_value = reader.ReadOptional<ParsedExpression>(nullptr);
-// 	reader.Finalize();
-
-// 	return {column_name, column_type, std::move(default_value)};
+// 	// FieldReader reader(source);
+// 	// auto column_name = reader.ReadRequired<string>();
+// 	// auto column_type = reader.ReadRequiredSerializable<Type, Type>();
+// 	// auto default_value = reader.ReadOptional<ParsedExpression>(nullptr);
+// 	// reader.Finalize();
+// 	// return {column_name, column_type, std::move(default_value)};
 // }
 
 }  // namespace bustub

@@ -187,16 +187,16 @@ class FieldReader {
     return result;
   }
 
-  // template <class T>
-  // unique_ptr<T> ReadOptional(unique_ptr<T> default_value) {
-  //   if (field_count_ >= max_field_count_) {
-  //     // field is not there, read the default value
-  //     return default_value;
-  //   }
-  //   // field is there, read the actual value
-  //   AddField();
-  //   return source_.template_ ReadOptional<T>();
-  // }
+  template <class T>
+  unique_ptr<T> ReadOptional(unique_ptr<T> default_value) {
+    if (field_count_ >= max_field_count_) {
+      // field is not there, read the default value
+      return default_value;
+    }
+    // field is there, read the actual value
+    AddField();
+    return source_.template ReadOptional<T>();
+  }
 
   template <class T, class RETURN_TYPE = unique_ptr<T>>
   RETURN_TYPE ReadSerializable(RETURN_TYPE default_value) {
