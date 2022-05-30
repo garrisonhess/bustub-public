@@ -2,7 +2,7 @@
 // #include "parser/transformer.h"
 // #include "common/operator/cast_operators.h"
 // #include "common/limits.h"
-// #include "common/types/decimal.h"
+// #include "type/type/decimal.h"
 
 // namespace bustub {
 

@@ -10,8 +10,8 @@
 
 #include <unordered_map>
 #include <unordered_set>
-#include "common/types/hash.h"
 #include "planner/column_binding.h"
+#include "type/type/hash.h"
 
 namespace bustub {
 

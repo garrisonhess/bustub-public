@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "common/types/value.h"
 #include "planner/expression.h"
+#include "type/type/value.h"
 
 namespace bustub {
 

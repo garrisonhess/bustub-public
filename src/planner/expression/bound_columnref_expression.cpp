@@ -1,7 +1,7 @@
 #include "planner/expression/bound_columnref_expression.h"
 
 #include "common/to_string.h"
-#include "common/types/hash.h"
+#include "type/type/hash.h"
 
 namespace bustub {
 

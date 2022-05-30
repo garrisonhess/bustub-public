@@ -1,7 +1,7 @@
 #include "planner/expression.h"
 
 #include "common/exception.h"
-#include "common/types/hash.h"
+#include "type/type/hash.h"
 #include "planner/expression_iterator.h"
 
 namespace bustub {

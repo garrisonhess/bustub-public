@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "common/types/chunk_collection.h"
 #include "planner/logical_operator.h"
+#include "type/type/chunk_collection.h"
 
 namespace bustub {
 

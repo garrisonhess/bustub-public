@@ -2,7 +2,7 @@
 
 #include "common/serializer.h"
 #include "common/to_string.h"
-#include "common/types/hash.h"
+#include "type/type/hash.h"
 
 namespace bustub {
 

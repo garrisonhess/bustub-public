@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include "common/common.h"
 #include "common/enums/filter_propagate_result.h"
-#include "common/types.h"
+#include "type/type.h"
 namespace bustub {
 
 enum class TableFilterType : uint8_t {
