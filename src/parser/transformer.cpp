@@ -2,6 +2,7 @@
 
 #include "common/logger.h"
 #include "parser/sql_statement.h"
+#include "parser/statement/create_statement.h"
 #include "parser/statement/select_statement.h"
 #include "parser/tableref/emptytableref.h"
 
@@ -35,8 +36,10 @@ unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgque
     }
     case bustub_libpgquery::T_PGSelectStmt:
       return TransformSelect(stmt);
-    case bustub_libpgquery::T_PGCreateStmt:
-      // return TransformCreateTable(stmt);
+    case bustub_libpgquery::T_PGCreateStmt: {
+      auto tmp = TransformCreateTable(stmt);
+      return tmp;
+    }
     case bustub_libpgquery::T_PGInsertStmt:
       // return TransformInsert(stmt);
     case bustub_libpgquery::T_PGCreateSchemaStmt:

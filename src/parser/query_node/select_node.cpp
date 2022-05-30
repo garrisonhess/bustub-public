@@ -1,8 +1,9 @@
 #include "parser/query_node/select_node.h"
-// #include "parser/expression_util.h"
+
 #include "common/field_writer.h"
-// #include "parser/keyword_helper.h"
 #include "common/logger.h"
+#include "parser/keyword_helper.h"
+// #include "parser/expression_util.h"
 
 namespace bustub {
 
@@ -10,13 +11,12 @@ SelectNode::SelectNode() : QueryNode(QueryNodeType::SELECT_NODE) {}
 
 string SelectNode::ToString() const {
   string result;
-  // result = CTEToString();
   result += "SELECT ";
 
   // search for a distinct modifier
   for (const auto &modifier : modifiers_) {
     if (modifier->type_ == ResultModifierType::DISTINCT_MODIFIER) {
-      auto &distinct_modifier = (DistinctModifier &)*modifier;
+      auto &distinct_modifier = static_cast<DistinctModifier &>(*modifier);
       result += "DISTINCT ";
       if (!distinct_modifier.distinct_on_targets_.empty()) {
         result += "ON (";
@@ -30,15 +30,15 @@ string SelectNode::ToString() const {
       }
     }
   }
-  // for (uint64_t i = 0; i < select_list_.size(); i++) {
-  // 	if (i > 0) {
-  // 		result += ", ";
-  // 	}
-  // 	result += select_list_[i]->ToString();
-  // 	if (!select_list_[i]->alias_.empty()) {
-  // 		result += " AS " + KeywordHelper::WriteOptionallyQuoted(select_list_[i]->alias_);
-  // 	}
-  // }
+  for (uint64_t i = 0; i < select_list_.size(); i++) {
+    if (i > 0) {
+      result += ", ";
+    }
+    result += select_list_[i]->ToString();
+    if (!select_list_[i]->alias_.empty()) {
+      result += " AS " + KeywordHelper::WriteOptionallyQuoted(select_list_[i]->alias_);
+    }
+  }
   if (from_table_ && from_table_->type_ != TableReferenceType::EMPTY) {
     result += " FROM " + from_table_->ToString();
   }
@@ -80,27 +80,12 @@ string SelectNode::ToString() const {
       result += ")";
     }
   }
-  //  else if (aggregate_handling == AggregateHandling::FORCE_AGGREGATES) {
-  // 	result += " GROUP BY ALL";
-  // }
   if (having_) {
     result += " HAVING " + having_->ToString();
   }
   if (qualify_) {
     result += " QUALIFY " + qualify_->ToString();
   }
-  // if (sample) {
-  // 	result += " USING SAMPLE ";
-  // 	result += sample->sample_size.ToString();
-  // 	if (sample->is_percentage) {
-  // 		result += "%";
-  // 	}
-  // 	result += " (" + SampleMethodToString(sample->method);
-  // 	if (sample->seed >= 0) {
-  // 		result += ", " + std::to_string(sample->seed);
-  // 	}
-  // 	result += ")";
-  // }
   return result + ResultModifiersToString();
 }
 
@@ -139,9 +124,6 @@ bool SelectNode::Equals(const QueryNode *other_p) const {
   if (groups_.grouping_sets_ != other->groups_.grouping_sets_) {
     return false;
   }
-  // if (!SampleOptions::Equals(sample.get(), other->sample.get())) {
-  // 	return false;
-  // }
   // HAVING
   if (!BaseExpression::Equals(having_.get(), other->having_.get())) {
     return false;

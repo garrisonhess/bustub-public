@@ -51,7 +51,7 @@ class Serializer {
 
   template <class T>
   void WriteList(const vector<unique_ptr<T>> &list) {
-    Write<uint32_t>((uint32_t)list.size());
+    Write<uint32_t>(static_cast<uint32_t>(list.size()));
     for (auto &child : list) {
       child->Serialize(*this);
     }

@@ -22,9 +22,6 @@ class CreateStatement : public SQLStatement {
   //! Table name to insert to
   string table_;
 
-  // //! List of columns of the table
-  // std::vector<ColumnDefinition> columns_;
-
   //! The schema name of the entry
   string schema_;
 
@@ -32,7 +29,7 @@ class CreateStatement : public SQLStatement {
   string sql_;
 
  protected:
-  CreateStatement(const CreateStatement &other) = default;
+  CreateStatement(const CreateStatement &other);
 
  public:
   unique_ptr<SQLStatement> Copy() const override;
