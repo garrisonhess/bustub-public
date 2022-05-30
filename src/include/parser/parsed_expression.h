@@ -11,11 +11,6 @@
 #include <memory>
 #include "parser/base_expression.h"
 
-// #include "common/string_util.h"
-// #include "common/vector.h"
-// #include "parser/expression_util.h"
-// #include "parser/qualified_name.h"
-
 namespace bustub {
 using std::unique_ptr;
 class Serializer;
@@ -59,8 +54,7 @@ class ParsedExpression : public BaseExpression {
   //! Serializes an Expression to a stand-alone binary blob
   virtual void Serialize(FieldWriter &writer) const = 0;
 
-  //! Deserializes a blob back into an Expression [CAN THROW:
-  //! SerializationException]
+  //! Deserializes a blob back into an Expression [CAN THROW: SerializationException]
   static unique_ptr<ParsedExpression> Deserialize(Deserializer &source);
 
  protected:

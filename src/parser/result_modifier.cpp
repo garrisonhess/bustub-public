@@ -1,6 +1,6 @@
 #include "parser/result_modifier.h"
 #include "common/field_writer.h"
-// #include "parser/expression_util.h"
+#include "parser/expression_util.h"
 
 namespace bustub {
 
@@ -56,36 +56,33 @@ bool LimitModifier::Equals(const ResultModifier *other_p) const {
 
 unique_ptr<ResultModifier> LimitModifier::Copy() const {
   auto copy = std::make_unique<LimitModifier>();
-  // if (limit) {
-  // 	copy->limit = limit->Copy();
-  // }
-  // if (offset) {
-  // 	copy->offset = offset->Copy();
-  // }
+  if (limit_) {
+  	copy->limit_ = limit_->Copy();
+  }
+  if (offset_) {
+  	copy->offset_ = offset_->Copy();
+  }
   return copy;
 }
 
 void LimitModifier::Serialize(FieldWriter &writer) const {
-  // writer.WriteOptional(limit);
-  // writer.WriteOptional(offset);
+  writer.WriteOptional(limit_);
+  writer.WriteOptional(offset_);
 }
 
 unique_ptr<ResultModifier> LimitModifier::Deserialize(FieldReader &reader) {
   auto mod = std::make_unique<LimitModifier>();
-  // mod->limit_ = reader.ReadOptional<ParsedExpression>(nullptr);
-  // mod->offset = reader.ReadOptional<ParsedExpression>(nullptr);
+  mod->limit_ = reader.ReadOptional<ParsedExpression>(nullptr);
+  mod->offset_ = reader.ReadOptional<ParsedExpression>(nullptr);
   return mod;
 }
 
 bool DistinctModifier::Equals(const ResultModifier *other_p) const {
-  // if (!ResultModifier::Equals(other_p)) {
-  // 	return false;
-  // }
-  // auto &other = (DistinctModifier &)*other_p;
-  // if (!ExpressionUtil::ListEquals(distinct_on_targets, other.distinct_on_targets)) {
-  // 	return false;
-  // }
-  return true;
+  if (!ResultModifier::Equals(other_p)) {
+  	return false;
+  }
+  auto &other = (DistinctModifier &)*other_p;
+  return static_cast<bool>(ExpressionUtil::ListEquals(distinct_on_targets_, other.distinct_on_targets_));
 }
 
 unique_ptr<ResultModifier> DistinctModifier::Copy() const {
@@ -100,7 +97,7 @@ void DistinctModifier::Serialize(FieldWriter &writer) const { writer.WriteSerial
 
 unique_ptr<ResultModifier> DistinctModifier::Deserialize(FieldReader &reader) {
   auto mod = std::make_unique<DistinctModifier>();
-  // mod->distinct_on_targets_ = reader.ReadRequiredSerializableList<ParsedExpression>();
+  mod->distinct_on_targets_ = reader.ReadRequiredSerializableList<ParsedExpression>();
   return mod;
 }
 
@@ -178,7 +175,7 @@ void OrderModifier::Serialize(FieldWriter &writer) const { writer.WriteRegularSe
 
 unique_ptr<ResultModifier> OrderModifier::Deserialize(FieldReader &reader) {
   auto mod = std::make_unique<OrderModifier>();
-  // mod->orders = reader.ReadRequiredSerializableList<OrderByNode, OrderByNode>();
+  mod->orders_ = reader.ReadRequiredSerializableList<OrderByNode, OrderByNode>();
   return mod;
 }
 

@@ -82,16 +82,17 @@ class Transformer {
 
   unique_ptr<ParsedExpression> TransformNamedArg(bustub_libpgquery::PGNamedArgExpr *root);
 
-  // //! Transform a Postgres GROUP BY expression into a list of Expression
-  // bool TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &result);
+  //! Transform a Postgres GROUP BY expression into a list of Expression
+  bool TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &result);
   // void TransformGroupByNode(bustub_libpgquery::PGNode *n, GroupingExpressionMap &map, SelectNode &result,
   //                           vector<GroupingSet> &result_sets);
   // void AddGroupByExpression(unique_ptr<ParsedExpression> expression, GroupingExpressionMap &map, GroupByNode &result,
   //                           vector<int64_t> &result_set);
   // void TransformGroupByExpression(bustub_libpgquery::PGNode *n, GroupingExpressionMap &map, GroupByNode &result,
   //                                 vector<int64_t> &result_set);
-  // //! Transform a Postgres ORDER BY expression into an OrderByDescription
-  // bool TransformOrderBy(bustub_libpgquery::PGList *order, vector<OrderByNode> &result);
+
+  //! Transform a Postgres ORDER BY expression into an OrderByDescription
+  bool TransformOrderBy(bustub_libpgquery::PGList *order, vector<OrderByNode> &result);
 
   //! Transform a Postgres SELECT clause into a list of Expressions
   void TransformExpressionList(bustub_libpgquery::PGList &list, vector<unique_ptr<ParsedExpression>> &result);

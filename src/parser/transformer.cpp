@@ -52,57 +52,31 @@ unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgque
     case bustub_libpgquery::T_PGIndexStmt:
       // return TransformCreateIndex(stmt);
     case bustub_libpgquery::T_PGCreateSchemaStmt:
-      // return TransformCreateSchema(stmt);
     case bustub_libpgquery::T_PGViewStmt:
-      // return TransformCreateView(stmt);
     case bustub_libpgquery::T_PGCreateSeqStmt:
-      // return TransformCreateSequence(stmt);
     case bustub_libpgquery::T_PGCreateFunctionStmt:
-      // return TransformCreateFunction(stmt);
     case bustub_libpgquery::T_PGDropStmt:
-      // return TransformDrop(stmt);
     case bustub_libpgquery::T_PGCopyStmt:
-      // return TransformCopy(stmt);
     case bustub_libpgquery::T_PGTransactionStmt:
-      // return TransformTransaction(stmt);
     case bustub_libpgquery::T_PGAlterTableStmt:
-      // return TransformAlter(stmt);
     case bustub_libpgquery::T_PGRenameStmt:
-      // return TransformRename(stmt);
     case bustub_libpgquery::T_PGPrepareStmt:
-      // return TransformPrepare(stmt);
     case bustub_libpgquery::T_PGExecuteStmt:
-      // return TransformExecute(stmt);
     case bustub_libpgquery::T_PGDeallocateStmt:
-      // return TransformDeallocate(stmt);
     case bustub_libpgquery::T_PGCreateTableAsStmt:
-      // return TransformCreateTableAs(stmt);
     case bustub_libpgquery::T_PGPragmaStmt:
-      // return TransformPragma(stmt);
     case bustub_libpgquery::T_PGExportStmt:
-      // return TransformExport(stmt);
     case bustub_libpgquery::T_PGImportStmt:
-      // return TransformImport(stmt);
     case bustub_libpgquery::T_PGExplainStmt:
-      // return TransformExplain(stmt);
     case bustub_libpgquery::T_PGVacuumStmt:
-      // return TransformVacuum(stmt);
     case bustub_libpgquery::T_PGVariableShowStmt:
-      // return TransformShow(stmt);
     case bustub_libpgquery::T_PGVariableShowSelectStmt:
-      // return TransformShowSelect(stmt);
     case bustub_libpgquery::T_PGCallStmt:
-      // return TransformCall(stmt);
     case bustub_libpgquery::T_PGVariableSetStmt:
-      // return TransformSet(stmt);
     case bustub_libpgquery::T_PGCheckPointStmt:
-      // return TransformCheckpoint(stmt);
     case bustub_libpgquery::T_PGLoadStmt:
-      // return TransformLoad(stmt);
     case bustub_libpgquery::T_PGCreateEnumStmt:
-      // return TransformCreateEnum(stmt);
     case bustub_libpgquery::T_PGAlterSeqStmt:
-      // return TransformAlterSequence(stmt);
       throw NotImplementedException(NodetypeToString(stmt->type));
     default:
       throw NotImplementedException(NodetypeToString(stmt->type));

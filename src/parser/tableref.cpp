@@ -4,6 +4,9 @@
 #include "common/field_writer.h"
 #include "common/printer.h"
 #include "parser/keyword_helper.h"
+#include "parser/tableref/basetableref.h"
+#include "parser/tableref/expressionlistref.h"
+#include "parser/tableref/emptytableref.h"
 
 namespace bustub {
 
@@ -48,30 +51,21 @@ unique_ptr<TableRef> TableRef::Deserialize(Deserializer &source) {
 
   auto type = reader.ReadRequired<TableReferenceType>();
   auto alias = reader.ReadRequired<string>();
-  // auto sample = reader.ReadOptional<SampleOptions>(nullptr);
   unique_ptr<TableRef> result;
   switch (type) {
     case TableReferenceType::BASE_TABLE:
-      // result = BaseTableRef::Deserialize(reader);
-      break;
-    case TableReferenceType::CROSS_PRODUCT:
-      // result = CrossProductRef::Deserialize(reader);
-      break;
-    case TableReferenceType::JOIN:
-      // result = JoinRef::Deserialize(reader);
-      break;
-    case TableReferenceType::SUBQUERY:
-      // result = SubqueryRef::Deserialize(reader);
-      break;
-    case TableReferenceType::TABLE_FUNCTION:
-      // result = TableFunctionRef::Deserialize(reader);
-      break;
-    case TableReferenceType::EMPTY:
-      // result = EmptyTableRef::Deserialize(reader);
+      result = BaseTableRef::Deserialize(reader);
       break;
     case TableReferenceType::EXPRESSION_LIST:
-      // result = ExpressionListRef::Deserialize(reader);
+      result = ExpressionListRef::Deserialize(reader);
       break;
+    case TableReferenceType::EMPTY:
+      result = EmptyTableRef::Deserialize(reader);
+      break;
+    case TableReferenceType::CROSS_PRODUCT:
+    case TableReferenceType::JOIN:
+    case TableReferenceType::SUBQUERY:
+    case TableReferenceType::TABLE_FUNCTION:
     case TableReferenceType::CTE:
     case TableReferenceType::INVALID:
       throw Exception("Unsupported type for TableRef::Deserialize");
@@ -79,15 +73,13 @@ unique_ptr<TableRef> TableRef::Deserialize(Deserializer &source) {
   reader.Finalize();
 
   result->alias_ = alias;
-  // result->sample = move(sample);
   return result;
 }
 
 void TableRef::CopyProperties(TableRef &target) const {
-  // D_ASSERT(type == target.type);
+  assert(type_ == target.type_);
   target.alias_ = alias_;
   target.query_location_ = query_location_;
-  // target.sample = sample ? sample->Copy() : nullptr;
 }
 
 void TableRef::Print() { Printer::Print(ToString()); }
