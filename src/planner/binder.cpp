@@ -1,13 +1,13 @@
 #include "planner/binder.h"
 
-#include "catalog/catalog_entry/table_catalog_entry.h"
-#include "catalog/catalog_entry/view_catalog_entry.h"
+// #include "catalog/catalog_entry/table_catalog_entry.h"
+// #include "catalog/catalog_entry/view_catalog_entry.h"
 #include "parser/query_node/select_node.h"
 #include "parser/statement/list.h"
 #include "planner/bound_query_node.h"
 #include "planner/bound_tableref.h"
 #include "planner/expression.h"
-#include "planner/expression_binder/returning_binder.h"
+// #include "planner/expression_binder/returning_binder.h"
 #include "planner/operator/logical_projection.h"
 #include "planner/operator/logical_sample.h"
 

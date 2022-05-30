@@ -2,9 +2,7 @@
 
 #include "planner/bound_query_node.h"
 #include "planner/expression/list.h"
-#include "planner/query_node/bound_recursive_cte_node.h"
 #include "planner/query_node/bound_select_node.h"
-#include "planner/query_node/bound_set_operation_node.h"
 #include "planner/tableref/list.h"
 
 namespace bustub {

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "function/copy_function.h"
 #include "parser/parsed_data/copy_info.h"
 #include "parser/parsed_data/exported_table_data.h"
 #include "planner/logical_operator.h"

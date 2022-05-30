@@ -1,7 +1,7 @@
 #include "parser/statement/delete_statement.h"
 #include "planner/binder.h"
 #include "planner/bound_tableref.h"
-#include "planner/expression_binder/returning_binder.h"
+// #include "planner/expression_binder/returning_binder.h"
 #include "planner/expression_binder/where_binder.h"
 #include "planner/operator/logical_cross_product.h"
 #include "planner/operator/logical_delete.h"

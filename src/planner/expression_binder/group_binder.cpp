@@ -1,6 +1,6 @@
 #include "planner/expression_binder/group_binder.h"
 
-#include "common/to_string.h"
+#include "common/common.h"
 #include "parser/expression/columnref_expression.h"
 #include "parser/expression/constant_expression.h"
 #include "parser/query_node/select_node.h"

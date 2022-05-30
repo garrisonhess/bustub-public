@@ -2,7 +2,6 @@
 
 #include "common/printer.h"
 #include "common/string_util.h"
-#include "common/tree_renderer.h"
 #include "parser/parser.h"
 
 namespace bustub {

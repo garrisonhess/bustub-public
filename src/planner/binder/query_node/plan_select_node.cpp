@@ -3,9 +3,7 @@
 #include "planner/expression/bound_reference_expression.h"
 #include "planner/operator/list.h"
 #include "planner/operator/logical_dummy_scan.h"
-#include "planner/operator/logical_expression_get.h"
 #include "planner/operator/logical_limit.h"
-#include "planner/operator/logical_limit_percent.h"
 #include "planner/query_node/bound_select_node.h"
 
 namespace bustub {
@@ -22,11 +20,6 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundSelectNode &statement) {
   assert(statement.from_table);
   root = CreatePlan(*statement.from_table);
   assert(root);
-
-  // plan the sample clause
-  if (statement.sample_options) {
-    root = make_unique<LogicalSample>(move(statement.sample_options), move(root));
-  }
 
   if (statement.where_clause) {
     root = PlanFilter(move(statement.where_clause), move(root));

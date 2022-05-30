@@ -1,6 +1,5 @@
 #include "planner/binder.h"
 #include "planner/operator/logical_dummy_scan.h"
-#include "planner/operator/logical_expression_get.h"
 #include "planner/tableref/bound_expressionlistref.h"
 
 namespace bustub {

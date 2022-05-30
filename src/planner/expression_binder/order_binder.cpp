@@ -2,7 +2,6 @@
 
 #include "parser/expression/columnref_expression.h"
 #include "parser/expression/constant_expression.h"
-#include "parser/expression/positional_reference_expression.h"
 #include "parser/expression/star_expression.h"
 #include "parser/query_node/select_node.h"
 #include "planner/expression_binder.h"

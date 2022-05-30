@@ -1,7 +1,7 @@
 #include "planner/expression/bound_constant_expression.h"
 
-#include "type/type/hash.h"
-#include "common/value_operations/value_operations.h"
+// #include "common/value_operations/value_operations.h"
+#include "common/hash_util.h"
 
 namespace bustub {
 

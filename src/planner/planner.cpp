@@ -2,7 +2,7 @@
 #include "common/serializer.h"
 #include "execution/expression_executor.h"
 #include "main/client_context.h"
-#include "main/client_data.h"
+// #include "main/client_data.h"
 #include "main/database.h"
 #include "main/prepared_statement_data.h"
 #include "main/query_profiler.h"

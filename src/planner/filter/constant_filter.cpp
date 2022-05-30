@@ -7,7 +7,6 @@ ConstantFilter::ConstantFilter(ExpressionType comparison_type_p, Value constant_
       comparison_type(comparison_type_p),
       constant(move(constant_p)) {}
 
-
 string ConstantFilter::ToString(const string &column_name) {
   return column_name + ExpressionTypeToOperator(comparison_type) + constant.ToString();
 }

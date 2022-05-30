@@ -10,7 +10,7 @@
 
 #include "common/enums/expression_type.h"
 #include "planner/table_filter.h"
-#include "type/type/value.h"
+#include "type/value.h"
 
 namespace bustub {
 

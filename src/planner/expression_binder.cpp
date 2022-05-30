@@ -1,14 +1,9 @@
 #include "planner/expression_binder.h"
 
 #include "parser/expression/columnref_expression.h"
-#include "parser/expression/positional_reference_expression.h"
-#include "parser/expression/subquery_expression.h"
 #include "parser/parsed_expression_iterator.h"
 #include "planner/binder.h"
-#include "planner/expression/bound_cast_expression.h"
 #include "planner/expression/bound_default_expression.h"
-#include "planner/expression/bound_parameter_expression.h"
-#include "planner/expression/bound_subquery_expression.h"
 #include "planner/expression_iterator.h"
 
 namespace bustub {

@@ -1,6 +1,5 @@
 // #include "catalog/catalog_entry/schema_catalog_entry.h"
 #include "common/string_util.h"
-#include "function/scalar/nested_functions.h"
 #include "parser/expression/columnref_expression.h"
 #include "parser/expression/constant_expression.h"
 #include "parser/parsed_expression_iterator.h"

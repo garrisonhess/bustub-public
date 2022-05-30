@@ -390,7 +390,6 @@ vector<string> BindContext::AliasColumnNames(const string &table_name, const vec
   return result;
 }
 
-
 void BindContext::AddGenericBinding(uint64_t index, const string &alias, const vector<string> &names,
                                     const vector<Type> &types) {
   AddBinding(alias, make_unique<Binding>(alias, types, names, index));

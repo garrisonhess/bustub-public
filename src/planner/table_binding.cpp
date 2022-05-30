@@ -1,10 +1,9 @@
 #include "planner/table_binding.h"
 
-#include "catalog/catalog_entry/table_catalog_entry.h"
-#include "catalog/catalog_entry/table_function_catalog_entry.h"
+// #include "catalog/catalog_entry/table_catalog_entry.h"
+// #include "catalog/catalog_entry/table_function_catalog_entry.h"
 #include "common/string_util.h"
 #include "parser/expression/columnref_expression.h"
-#include "parser/tableref/subqueryref.h"
 #include "planner/bind_context.h"
 #include "planner/bound_query_node.h"
 #include "planner/expression/bound_columnref_expression.h"

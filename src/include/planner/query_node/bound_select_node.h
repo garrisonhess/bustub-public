@@ -10,7 +10,6 @@
 
 #include "parser/expression_map.h"
 #include "parser/group_by_node.h"
-#include "parser/parsed_data/sample_options.h"
 #include "planner/bound_query_node.h"
 #include "planner/bound_tableref.h"
 #include "planner/logical_operator.h"
@@ -46,8 +45,6 @@ class BoundSelectNode : public BoundQueryNode {
   unique_ptr<Expression> having;
   //! QUALIFY clause
   unique_ptr<Expression> qualify;
-  //! SAMPLE clause
-  unique_ptr<SampleOptions> sample_options;
 
   //! The amount of columns in the final result
   uint64_t column_count;

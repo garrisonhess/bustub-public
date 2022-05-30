@@ -3,13 +3,10 @@
 #include "execution/expression_executor.h"
 #include "main/config.h"
 #include "parser/expression/columnref_expression.h"
-#include "parser/expression/comparison_expression.h"
 #include "parser/expression/constant_expression.h"
-#include "parser/expression/subquery_expression.h"
 #include "parser/query_node/select_node.h"
 #include "parser/tableref/joinref.h"
 #include "planner/binder.h"
-#include "planner/expression_binder/aggregate_binder.h"
 #include "planner/expression_binder/column_alias_binder.h"
 #include "planner/expression_binder/constant_binder.h"
 #include "planner/expression_binder/group_binder.h"
@@ -262,11 +259,6 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 
   // first bind the FROM table statement
   result->from_table = Bind(*statement.from_table);
-
-  // bind the sample clause
-  if (statement.sample) {
-    result->sample_options = move(statement.sample);
-  }
 
   // visit the select list and expand any "*" statements
   vector<unique_ptr<ParsedExpression>> new_select_list;

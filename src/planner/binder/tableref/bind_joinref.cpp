@@ -2,8 +2,6 @@
 #include "common/string_util.h"
 #include "parser/expression/bound_expression.h"
 #include "parser/expression/columnref_expression.h"
-#include "parser/expression/comparison_expression.h"
-#include "parser/expression/conjunction_expression.h"
 #include "parser/expression/constant_expression.h"
 #include "parser/tableref/joinref.h"
 #include "planner/binder.h"

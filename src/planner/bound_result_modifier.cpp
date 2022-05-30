@@ -9,9 +9,7 @@ BoundResultModifier::~BoundResultModifier() {}
 BoundOrderByNode::BoundOrderByNode(OrderType type, OrderByNullType null_order, unique_ptr<Expression> expression)
     : type(type), null_order(null_order), expression(move(expression)) {}
 
-BoundOrderByNode BoundOrderByNode::Copy() const {
-    return BoundOrderByNode(type, null_order, expression->Copy());
-}
+BoundOrderByNode BoundOrderByNode::Copy() const { return BoundOrderByNode(type, null_order, expression->Copy()); }
 
 string BoundOrderByNode::ToString() const {
   auto str = expression->ToString();

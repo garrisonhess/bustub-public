@@ -1,9 +1,7 @@
-#include "catalog/catalog_entry/type_catalog_entry.h"
+// #include "catalog/catalog_entry/type_catalog_entry.h"
 #include "catalog/dependency_manager.h"
-#include "parser/constraints/list.h"
 #include "parser/expression/cast_expression.h"
 #include "planner/binder.h"
-#include "planner/constraints/list.h"
 #include "planner/expression/bound_constant_expression.h"
 #include "planner/expression_binder/check_binder.h"
 #include "planner/expression_binder/constant_binder.h"
@@ -32,122 +30,6 @@ static void CreateColumnMap(BoundCreateTableInfo &info, bool allow_duplicate_nam
 
     info.name_map[col.name] = oid;
     col.oid = oid;
-  }
-}
-
-static void BindConstraints(Binder &binder, BoundCreateTableInfo &info) {
-  auto &base = (CreateTableInfo &)*info.base;
-
-  bool has_primary_key = false;
-  vector<uint64_t> primary_keys;
-  for (uint64_t i = 0; i < base.constraints.size(); i++) {
-    auto &cond = base.constraints[i];
-    switch (cond->type) {
-      case ConstraintType::CHECK: {
-        auto bound_constraint = make_unique<BoundCheckConstraint>();
-        // check constraint: bind the expression
-        CheckBinder check_binder(binder, binder.context, base.table, base.columns, bound_constraint->bound_columns);
-        auto &check = (CheckConstraint &)*cond;
-        // create a copy of the unbound expression because the binding destroys the constraint
-        auto unbound_expression = check.expression->Copy();
-        // now bind the constraint and create a new BoundCheckConstraint
-        bound_constraint->expression = check_binder.Bind(check.expression);
-        info.bound_constraints.push_back(move(bound_constraint));
-        // move the unbound constraint back into the original check expression
-        check.expression = move(unbound_expression);
-        break;
-      }
-      case ConstraintType::NOT_NULL: {
-        auto &not_null = (NotNullConstraint &)*cond;
-        info.bound_constraints.push_back(make_unique<BoundNotNullConstraint>(not_null.index));
-        break;
-      }
-      case ConstraintType::UNIQUE: {
-        auto &unique = (UniqueConstraint &)*cond;
-        // have to resolve columns of the unique constraint
-        vector<uint64_t> keys;
-        unordered_set<uint64_t> key_set;
-        if (unique.index != INVALID_INDEX) {
-          assert(unique.index < base.columns.size());
-          // unique constraint is given by single index
-          unique.columns.push_back(base.columns[unique.index].name);
-          keys.push_back(unique.index);
-          key_set.insert(unique.index);
-        } else {
-          // unique constraint is given by list of names
-          // have to resolve names
-          assert(!unique.columns.empty());
-          for (auto &keyname : unique.columns) {
-            auto entry = info.name_map.find(keyname);
-            if (entry == info.name_map.end()) {
-              throw ParserException("column \"%s\" named in key does not exist", keyname);
-            }
-            if (key_set.find(entry->second) != key_set.end()) {
-              throw ParserException(
-                  "column \"%s\" appears twice in "
-                  "primary key constraint",
-                  keyname);
-            }
-            keys.push_back(entry->second);
-            key_set.insert(entry->second);
-          }
-        }
-
-        if (unique.is_primary_key) {
-          // we can only have one primary key per table
-          if (has_primary_key) {
-            throw ParserException("table \"%s\" has more than one primary key", base.table);
-          }
-          has_primary_key = true;
-          primary_keys = keys;
-        }
-        info.bound_constraints.push_back(
-            make_unique<BoundUniqueConstraint>(move(keys), move(key_set), unique.is_primary_key));
-        break;
-      }
-      case ConstraintType::FOREIGN_KEY: {
-        auto &fk = (ForeignKeyConstraint &)*cond;
-        assert((fk.info.type == ForeignKeyType::FK_TYPE_FOREIGN_KEY_TABLE && !fk.info.pk_keys.empty()) ||
-                 (fk.info.type == ForeignKeyType::FK_TYPE_PRIMARY_KEY_TABLE && !fk.info.pk_keys.empty()) ||
-                 fk.info.type == ForeignKeyType::FK_TYPE_SELF_REFERENCE_TABLE);
-        if (fk.info.type == ForeignKeyType::FK_TYPE_SELF_REFERENCE_TABLE && fk.info.pk_keys.empty()) {
-          for (auto &keyname : fk.pk_columns) {
-            auto entry = info.name_map.find(keyname);
-            if (entry == info.name_map.end()) {
-              throw BinderException("column \"%s\" named in key does not exist", keyname);
-            }
-            fk.info.pk_keys.push_back(entry->second);
-          }
-        }
-        if (fk.info.fk_keys.empty()) {
-          for (auto &keyname : fk.fk_columns) {
-            auto entry = info.name_map.find(keyname);
-            if (entry == info.name_map.end()) {
-              throw BinderException("column \"%s\" named in key does not exist", keyname);
-            }
-            fk.info.fk_keys.push_back(entry->second);
-          }
-        }
-        unordered_set<uint64_t> fk_key_set, pk_key_set;
-        for (uint64_t i = 0; i < fk.info.pk_keys.size(); i++) {
-          pk_key_set.insert(fk.info.pk_keys[i]);
-        }
-        for (uint64_t i = 0; i < fk.info.fk_keys.size(); i++) {
-          fk_key_set.insert(fk.info.fk_keys[i]);
-        }
-        info.bound_constraints.push_back(make_unique<BoundForeignKeyConstraint>(fk.info, pk_key_set, fk_key_set));
-        break;
-      }
-      default:
-        throw NotImplementedException("unrecognized constraint type in bind");
-    }
-  }
-  if (has_primary_key) {
-    // if there is a primary key index, also create a NOT NULL constraint for each of the columns
-    for (auto &column_index : primary_keys) {
-      base.constraints.push_back(make_unique<NotNullConstraint>(column_index));
-      info.bound_constraints.push_back(make_unique<BoundNotNullConstraint>(column_index));
-    }
   }
 }
 
@@ -191,8 +73,6 @@ unique_ptr<BoundCreateTableInfo> Binder::BindCreateTableInfo(unique_ptr<CreateIn
   } else {
     // create the name map for the statement
     CreateColumnMap(*result, false);
-    // bind any constraints
-    BindConstraints(*this, *result);
     // bind the default values
     BindDefaultValues(base.columns, result->bound_defaults);
   }

@@ -3,7 +3,6 @@
 #include "parser/statement/update_statement.h"
 #include "planner/binder.h"
 #include "planner/bound_tableref.h"
-#include "planner/constraints/bound_check_constraint.h"
 #include "planner/expression/bound_columnref_expression.h"
 #include "planner/expression/bound_default_expression.h"
 #include "planner/expression_binder/update_binder.h"

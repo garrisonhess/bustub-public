@@ -8,7 +8,6 @@ string IsNullFilter::ToString(const string &column_name) { return column_name + 
 
 IsNotNullFilter::IsNotNullFilter() : TableFilter(TableFilterType::IS_NOT_NULL) {}
 
-
 string IsNotNullFilter::ToString(const string &column_name) { return column_name + " IS NOT NULL"; }
 
 }  // namespace bustub

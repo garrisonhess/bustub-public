@@ -9,7 +9,7 @@
 #pragma once
 
 #include "planner/expression.h"
-#include "type/type/value.h"
+#include "type/value.h"
 
 namespace bustub {
 
