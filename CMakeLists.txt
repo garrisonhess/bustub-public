@@ -78,6 +78,10 @@ execute_process(COMMAND "${CMAKE_COMMAND}" --build .
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # don't override our compiler/linker options when building gtest
 add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googletest-build")
 
+function(disable_target_warnings NAME)
+        target_compile_options(${NAME} PRIVATE "-w")
+endfunction()
+
 ######################################################################################################################
 # COMPILER SETUP
 ######################################################################################################################
@@ -101,14 +105,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-function(disable_target_warnings NAME)
-  if(MSVC)
-    target_compile_options(${NAME} PRIVATE "/W0")
-  elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
-         OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    target_compile_options(${NAME} PRIVATE "-w")
-  endif()
-endfunction()
 
 # Includes.
 set(BUSTUB_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src/include)
