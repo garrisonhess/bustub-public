@@ -31,6 +31,7 @@ class Transformer {
 
   //! Transforms a Postgres parse tree into a set of SQL Statements
   bool TransformParseTree(bustub_libpgquery::PGList *tree, std::vector<std::unique_ptr<SQLStatement>> &statements);
+
   std::string NodetypeToString(bustub_libpgquery::PGNodeTag type);
 
  private:
@@ -42,6 +43,10 @@ class Transformer {
 
   //! Transforms a Postgres statement into a single SQL statement
   unique_ptr<SQLStatement> TransformStatementInternal(bustub_libpgquery::PGNode *stmt);
+
+  ColumnDefinition TransformColumnDefinition(bustub_libpgquery::PGColumnDef *cdef);
+
+  // Type TransformTypeName(bustub_libpgquery::PGTypeName *type_name);
 
   //===--------------------------------------------------------------------===//
   // Statement transformation

@@ -22,11 +22,8 @@ class CreateStatement : public SQLStatement {
   //! Table name to insert to
   string table_;
 
-  //! CREATE TABLE from QUERY
-  unique_ptr<SelectStatement> query_;
-
-  //! List of columns of the table
-  std::vector<ColumnDefinition> columns_;
+  // //! List of columns of the table
+  // std::vector<ColumnDefinition> columns_;
 
   //! The schema name of the entry
   string schema_;
@@ -35,7 +32,7 @@ class CreateStatement : public SQLStatement {
   string sql_;
 
  protected:
-  CreateStatement(const CreateStatement &other);
+  CreateStatement(const CreateStatement &other) = default;
 
  public:
   unique_ptr<SQLStatement> Copy() const override;

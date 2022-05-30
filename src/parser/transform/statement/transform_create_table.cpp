@@ -10,14 +10,8 @@ ColumnDefinition Transformer::TransformColumnDefinition(bustub_libpgquery::PGCol
   if (cdef->colname != nullptr) {
     colname = cdef->colname;
   }
-  Type target_type = TransformTypeName(cdef->typeName);
-  if (cdef->collClause != nullptr) {
-    if (target_type.GetTypeId() != TypeId::VARCHAR) {
-      throw Exception("Only VARCHAR columns can have collations!");
-    }
-    target_type = Type::VARCHAR_COLLATION(TransformCollation(cdef->collClause));
-  }
-
+  // Type target_type = TransformTypeName(cdef->typeName);
+  Type target_type = Type(TypeId::INTEGER);
   return ColumnDefinition(colname, target_type);
 }
 
@@ -50,7 +44,7 @@ unique_ptr<CreateStatement> Transformer::TransformCreateTable(bustub_libpgquery:
       case bustub_libpgquery::T_PGColumnDef: {
         auto cdef = static_cast<bustub_libpgquery::PGColumnDef *>(c->data.ptr_value);
         auto centry = TransformColumnDefinition(cdef);
-        result->columns_.push_back(std::move(centry));
+        // result->columns_.push_back(std::move(centry));
         break;
       }
       default:

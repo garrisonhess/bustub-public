@@ -2,8 +2,6 @@
 
 #include "common/field_writer.h"
 #include "common/printer.h"
-// #include "parser/tableref/list.h"
-// #include "common/to_string.h"
 
 namespace bustub {
 
@@ -59,7 +57,7 @@ unique_ptr<TableRef> TableRef::Deserialize(Deserializer &source) {
   unique_ptr<TableRef> result;
   switch (type) {
     case TableReferenceType::BASE_TABLE:
-      result = BaseTableRef::Deserialize(reader);
+      // result = BaseTableRef::Deserialize(reader);
       break;
     case TableReferenceType::CROSS_PRODUCT:
       // result = CrossProductRef::Deserialize(reader);
@@ -74,10 +72,10 @@ unique_ptr<TableRef> TableRef::Deserialize(Deserializer &source) {
       // result = TableFunctionRef::Deserialize(reader);
       break;
     case TableReferenceType::EMPTY:
-      result = EmptyTableRef::Deserialize(reader);
+      // result = EmptyTableRef::Deserialize(reader);
       break;
     case TableReferenceType::EXPRESSION_LIST:
-      result = ExpressionListRef::Deserialize(reader);
+      // result = ExpressionListRef::Deserialize(reader);
       break;
     case TableReferenceType::CTE:
     case TableReferenceType::INVALID:
