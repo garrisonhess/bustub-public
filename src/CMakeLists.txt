@@ -13,21 +13,21 @@ add_subdirectory(type)
 add_library(bustub SHARED ${ALL_OBJECT_FILES})
 
 set(BUSTUB_LIBS
-bustub_buffer 
-bustub_catalog 
-bustub_common_util 
-bustub_common 
-bustub_concurrency 
-bustub_execution 
-bustub_main
-bustub_parser 
-bustub_recovery 
-bustub_type
-bustub_container_hash
-bustub_storage_disk
-bustub_storage_index
-bustub_storage_page
-bustub_storage_table
+    bustub_buffer 
+    bustub_catalog 
+    bustub_common_util 
+    bustub_common 
+    bustub_concurrency 
+    bustub_execution 
+    bustub_main
+    bustub_parser 
+    bustub_recovery 
+    bustub_type
+    bustub_container_hash
+    bustub_storage_disk
+    bustub_storage_index
+    bustub_storage_page
+    bustub_storage_table
 )
 
 set(BUSTUB_THIRDPARTY_LIBS
