@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "common/util/hash_util.h"
+#include "common/hash_util.h"
 #include "type/expression_type.h"
 
 namespace bustub {

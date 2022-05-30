@@ -17,7 +17,7 @@
 #include <utility>
 #include <vector>
 
-#include "common/util/hash_util.h"
+#include "common/hash_util.h"
 #include "container/hash/hash_function.h"
 #include "execution/executor_context.h"
 #include "execution/executors/abstract_executor.h"

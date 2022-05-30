@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 
-#include "common/util/string_util.h"
+#include "common/string_util.h"
 
 namespace bustub {
 

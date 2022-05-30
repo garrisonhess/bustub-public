@@ -1,7 +1,7 @@
 #include "parser/parsed_expression.h"
 
 #include "common/field_writer.h"
-#include "common/util/hash_util.h"
+#include "common/hash_util.h"
 // #include "parser/expression/list.h"
 // #include "parser/parsed_expression_iterator.h"
 
