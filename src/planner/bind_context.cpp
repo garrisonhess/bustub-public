@@ -1,13 +1,10 @@
 #include "planner/bind_context.h"
 
+#include "common/string_util.h"
 #include "parser/expression/columnref_expression.h"
+#include "parser/expression/star_expression.h"
 #include "planner/bound_query_node.h"
 #include "planner/expression/bound_columnref_expression.h"
-
-#include "parser/expression/star_expression.h"
-
-#include <pair>
-#include "common/string_util.h"
 
 #include <algorithm>
 

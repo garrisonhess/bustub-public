@@ -11,8 +11,8 @@
 #include "planner/operator/logical_projection.h"
 #include "planner/operator/logical_update.h"
 #include "planner/tableref/bound_basetableref.h"
-#include "planner/tableref/bound_crossproductref.h"
-#include "storage/data_table.h"
+// #include "planner/tableref/bound_crossproductref.h"
+// #include "storage/data_table.h"
 
 namespace bustub {
 

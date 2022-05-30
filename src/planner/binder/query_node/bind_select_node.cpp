@@ -347,7 +347,6 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
     result->having = having_binder.Bind(statement.having);
   }
 
-
   // after that, we bind to the SELECT list
   SelectBinder select_binder(*this, context, *result, info);
   vector<Type> internal_sql_types;

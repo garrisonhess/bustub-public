@@ -1,9 +1,8 @@
 // #include "catalog/catalog_entry/type_catalog_entry.h"
-#include "catalog/dependency_manager.h"
-#include "parser/expression/cast_expression.h"
+// #include "catalog/dependency_manager.h"
 #include "planner/binder.h"
 #include "planner/expression/bound_constant_expression.h"
-#include "planner/expression_binder/check_binder.h"
+// #include "planner/expression_binder/check_binder.h"
 #include "planner/expression_binder/constant_binder.h"
 // #include "planner/parsed_data/bound_create_table_info.h"
 

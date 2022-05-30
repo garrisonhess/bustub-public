@@ -3,7 +3,6 @@
 #include "planner/bound_tableref.h"
 // #include "planner/expression_binder/returning_binder.h"
 #include "planner/expression_binder/where_binder.h"
-#include "planner/operator/logical_cross_product.h"
 #include "planner/operator/logical_delete.h"
 #include "planner/operator/logical_filter.h"
 #include "planner/tableref/bound_basetableref.h"
@@ -16,7 +15,7 @@ BoundStatement Binder::Bind(DeleteStatement &stmt) {
   // visit the table reference
   auto bound_table = Bind(*stmt.table);
   if (bound_table->type != TableReferenceType::BASE_TABLE) {
-    throw BinderException("Can only delete from base table!");
+    throw Exception("Can only delete from base table!");
   }
   auto &table_binding = (BoundBaseTableRef &)*bound_table;
   auto table = table_binding.table;

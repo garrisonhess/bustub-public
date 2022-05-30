@@ -1,3 +1,6 @@
+include_directories(../../third_party/libpg_query/include)
+include_directories(../../third_party/libpg_query)
+
 add_subdirectory(expression)
 add_subdirectory(binder)
 add_subdirectory(expression_binder)
