@@ -8,7 +8,6 @@
 
 #pragma once
 
-// #include "common/case_insensitive_map.h"
 #include "parser/parsed_expression.h"
 
 namespace bustub {
@@ -31,6 +30,6 @@ class StarExpression : public ParsedExpression {
   unique_ptr<ParsedExpression> Copy() const override;
 
   void Serialize(FieldWriter &writer) const override;
-  static unique_ptr<ParsedExpression> Deserialize(ExpressionType type, FieldReader &source);
+  static unique_ptr<ParsedExpression> Deserialize(ExpressionType type, FieldReader &reader);
 };
 }  // namespace bustub

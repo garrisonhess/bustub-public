@@ -3,7 +3,7 @@
 #include "common/field_writer.h"
 #include "common/logger.h"
 #include "parser/keyword_helper.h"
-// #include "parser/expression_util.h"
+#include "parser/expression_util.h"
 
 namespace bustub {
 
@@ -99,9 +99,9 @@ bool SelectNode::Equals(const QueryNode *other_p) const {
   auto other = (SelectNode *)other_p;
 
   // SELECT
-  // if (!ExpressionUtil::ListEquals(select_list_, other->select_list_)) {
-  // 	return false;
-  // }
+  if (!ExpressionUtil::ListEquals(select_list_, other->select_list_)) {
+  	return false;
+  }
   // FROM
   if (from_table_) {
     // we have a FROM clause, compare to the other one
@@ -118,9 +118,9 @@ bool SelectNode::Equals(const QueryNode *other_p) const {
     return false;
   }
   // GROUP BY
-  // if (!ExpressionUtil::ListEquals(groups_.group_expressions_, other->groups_.group_expressions_)) {
-  // 	return false;
-  // }
+  if (!ExpressionUtil::ListEquals(groups_.group_expressions_, other->groups_.group_expressions_)) {
+  	return false;
+  }
   if (groups_.grouping_sets_ != other->groups_.grouping_sets_) {
     return false;
   }
