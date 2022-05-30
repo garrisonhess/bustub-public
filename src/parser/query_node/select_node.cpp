@@ -138,13 +138,13 @@ bool SelectNode::Equals(const QueryNode *other_p) const {
 unique_ptr<QueryNode> SelectNode::Copy() const {
   auto result = std::make_unique<SelectNode>();
   for (auto &child : select_list_) {
-  	result->select_list_.push_back(child->Copy());
+    result->select_list_.push_back(child->Copy());
   }
   result->from_table_ = from_table_ ? from_table_->Copy() : nullptr;
   result->where_clause_ = where_clause_ ? where_clause_->Copy() : nullptr;
   // groups
   for (auto &group : groups_.group_expressions_) {
-  	result->groups_.group_expressions_.push_back(group->Copy());
+    result->groups_.group_expressions_.push_back(group->Copy());
   }
   result->groups_.grouping_sets_ = groups_.grouping_sets_;
   result->having_ = having_ ? having_->Copy() : nullptr;
@@ -161,10 +161,10 @@ void SelectNode::Serialize(FieldWriter &writer) const {
   writer.WriteField<uint32_t>(groups_.grouping_sets_.size());
   auto &serializer = writer.GetSerializer();
   for (auto &grouping_set : groups_.grouping_sets_) {
-  	serializer.Write<uint64_t>(grouping_set.size());
-  	for (auto &idx : grouping_set) {
-  		serializer.Write<uint64_t>(idx);
-  	}
+    serializer.Write<uint64_t>(grouping_set.size());
+    for (auto &idx : grouping_set) {
+      serializer.Write<uint64_t>(idx);
+    }
   }
   writer.WriteOptional(having_);
   writer.WriteOptional(qualify_);
@@ -180,12 +180,12 @@ unique_ptr<QueryNode> SelectNode::Deserialize(FieldReader &reader) {
   auto grouping_set_count = reader.ReadRequired<uint32_t>();
   auto &source = reader.GetSource();
   for (uint64_t set_idx = 0; set_idx < grouping_set_count; set_idx++) {
-  	auto set_entries = source.Read<uint64_t>();
-  	GroupingSet grouping_set;
-  	for (uint64_t i = 0; i < set_entries; i++) {
-  		grouping_set.insert(source.Read<uint64_t>());
-  	}
-  	result->groups_.grouping_sets_.push_back(grouping_set);
+    auto set_entries = source.Read<uint64_t>();
+    GroupingSet grouping_set;
+    for (uint64_t i = 0; i < set_entries; i++) {
+      grouping_set.insert(source.Read<uint64_t>());
+    }
+    result->groups_.grouping_sets_.push_back(grouping_set);
   }
   result->having_ = reader.ReadOptional<ParsedExpression>(nullptr);
   result->qualify_ = reader.ReadOptional<ParsedExpression>(nullptr);

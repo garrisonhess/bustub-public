@@ -201,7 +201,7 @@ vector<ColumnDefinition> Parser::ParseColumnList(const string &column_list) {
     throw Exception("Expected a single CREATE statement");
   }
   // auto &create = (CreateStatement &)*parser.statements_[0];
-  // return move(create.columns_);
+  // return create.columns_;
   return {};
 }
 

@@ -65,20 +65,16 @@ void QueryNode::Serialize(Serializer &main_serializer) const {
   FieldWriter writer(main_serializer);
   writer.WriteField<QueryNodeType>(type_);
   writer.WriteSerializableList(modifiers_);
-  // auto &serializer = writer.GetSerializer();
   Serialize(writer);
   writer.Finalize();
 }
 
 unique_ptr<QueryNode> QueryNode::Deserialize(Deserializer &main_source) {
   FieldReader reader(main_source);
-
   auto type = reader.ReadRequired<QueryNodeType>();
-  // auto modifiers = reader.ReadRequiredSerializableList<ResultModifier>();
-  // auto cte_count = reader.ReadRequired<uint32_t>();
-  // auto &source = reader.GetSource();
-
+  auto modifiers = reader.ReadRequiredSerializableList<ResultModifier>();
   unique_ptr<QueryNode> result;
+
   switch (type) {
     case QueryNodeType::SELECT_NODE:
       result = SelectNode::Deserialize(reader);
@@ -86,7 +82,7 @@ unique_ptr<QueryNode> QueryNode::Deserialize(Deserializer &main_source) {
     default:
       throw Exception("Could not deserialize Query Node: unknown type!");
   }
-  // result->modifiers_ = std::move(modifiers);
+  result->modifiers_ = std::move(modifiers);
   reader.Finalize();
   return result;
 }

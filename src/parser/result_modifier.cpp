@@ -57,10 +57,10 @@ bool LimitModifier::Equals(const ResultModifier *other_p) const {
 unique_ptr<ResultModifier> LimitModifier::Copy() const {
   auto copy = std::make_unique<LimitModifier>();
   if (limit_) {
-  	copy->limit_ = limit_->Copy();
+    copy->limit_ = limit_->Copy();
   }
   if (offset_) {
-  	copy->offset_ = offset_->Copy();
+    copy->offset_ = offset_->Copy();
   }
   return copy;
 }
@@ -79,7 +79,7 @@ unique_ptr<ResultModifier> LimitModifier::Deserialize(FieldReader &reader) {
 
 bool DistinctModifier::Equals(const ResultModifier *other_p) const {
   if (!ResultModifier::Equals(other_p)) {
-  	return false;
+    return false;
   }
   auto &other = (DistinctModifier &)*other_p;
   return static_cast<bool>(ExpressionUtil::ListEquals(distinct_on_targets_, other.distinct_on_targets_));

@@ -1,27 +1,26 @@
-// #include "parser/expression/default_expression.h"
+#include "parser/expression/default_expression.h"
 
-// #include "common/exception.h"
+#include <string>
+#include "common/exception.h"
 
-// namespace bustub {
+namespace bustub {
+using std::make_unique;
+using std::string;
 
-// DefaultExpression::DefaultExpression() : ParsedExpression(ExpressionType::VALUE_DEFAULT, ExpressionClass::DEFAULT) {
-// }
+DefaultExpression::DefaultExpression() : ParsedExpression(ExpressionType::VALUE_DEFAULT, ExpressionClass::DEFAULT) {}
 
-// string DefaultExpression::ToString() const {
-// 	return "DEFAULT";
-// }
+string DefaultExpression::ToString() const { return "DEFAULT"; }
 
-// unique_ptr<ParsedExpression> DefaultExpression::Copy() const {
-// 	auto copy = make_unique<DefaultExpression>();
-// 	copy->CopyProperties(*this);
-// 	return move(copy);
-// }
+unique_ptr<ParsedExpression> DefaultExpression::Copy() const {
+  auto copy = make_unique<DefaultExpression>();
+  copy->CopyProperties(*this);
+  return copy;
+}
 
-// void DefaultExpression::Serialize(FieldWriter &writer) const {
-// }
+void DefaultExpression::Serialize(FieldWriter &writer) const {}
 
-// unique_ptr<ParsedExpression> DefaultExpression::Deserialize(ExpressionType type, FieldReader &source) {
-// 	return make_unique<DefaultExpression>();
-// }
+unique_ptr<ParsedExpression> DefaultExpression::Deserialize(ExpressionType type, FieldReader &source) {
+  return make_unique<DefaultExpression>();
+}
 
-// } // namespace bustub
+}  // namespace bustub
