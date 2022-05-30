@@ -80,6 +80,8 @@ class StringUtil {
    * @return a new string with no occurrences of the provided character
    */
   static auto Strip(const std::string &str, char c) -> std::string;
+
+  static auto Replace(std::string source, const std::string &from, const std::string &to) -> std::string;
 };
 
 }  // namespace bustub
