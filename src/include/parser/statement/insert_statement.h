@@ -20,6 +20,7 @@ class InsertStatement : public SQLStatement {
 
   //! The select statement to insert from
   unique_ptr<SelectStatement> select_statement_;
+
   //! Column names to insert into
   vector<string> columns_;
 

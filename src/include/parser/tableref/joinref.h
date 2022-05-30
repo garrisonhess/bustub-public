@@ -1,45 +1,45 @@
-// //===----------------------------------------------------------------------===//
-// //                         BusTub
-// //
-// // bustub/parser/tableref/joinref.h
-// //
-// //
-// //===----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
+//                         BusTub
+//
+// bustub/parser/tableref/joinref.h
+//
+//
+//===----------------------------------------------------------------------===//
 
-// #pragma once
+#pragma once
 
-// #include "common/enums/join_type.h"
-// #include "parser/parsed_expression.h"
-// #include "parser/tableref.h"
+#include "common/enums/join_type.h"
+#include "parser/parsed_expression.h"
+#include "parser/tableref.h"
 
-// namespace bustub {
-// //! Represents a JOIN between two expressions
-// class JoinRef : public TableRef {
-//  public:
-//   JoinRef() : TableRef(TableReferenceType::JOIN), is_natural(false) {}
+namespace bustub {
+//! Represents a JOIN between two expressions
+class JoinRef : public TableRef {
+ public:
+  JoinRef() : TableRef(TableReferenceType::JOIN), is_natural(false) {}
 
-//   //! The left hand side of the join
-//   unique_ptr<TableRef> left;
-//   //! The right hand side of the join
-//   unique_ptr<TableRef> right;
-//   //! The join condition
-//   unique_ptr<ParsedExpression> condition;
-//   //! The join type
-//   JoinType type;
-//   //! Natural join
-//   bool is_natural;
-//   //! The set of USING columns (if any)
-//   vector<string> using_columns;
+  //! The left hand side of the join
+  unique_ptr<TableRef> left;
+  //! The right hand side of the join
+  unique_ptr<TableRef> right;
+  //! The join condition
+  unique_ptr<ParsedExpression> condition;
+  //! The join type
+  JoinType type;
+  //! Natural join
+  bool is_natural;
+  //! The set of USING columns (if any)
+  vector<string> using_columns;
 
-//  public:
-//   string ToString() const override;
-//   bool Equals(const TableRef *other_p) const override;
+ public:
+  string ToString() const override;
+  bool Equals(const TableRef *other_p) const override;
 
-//   unique_ptr<TableRef> Copy() override;
+  unique_ptr<TableRef> Copy() override;
 
-//   //! Serializes a blob into a JoinRef
-//   void Serialize(FieldWriter &serializer) const override;
-//   //! Deserializes a blob back into a JoinRef
-//   static unique_ptr<TableRef> Deserialize(FieldReader &source);
-// };
-// }  // namespace bustub
+  //! Serializes a blob into a JoinRef
+  void Serialize(FieldWriter &serializer) const override;
+  //! Deserializes a blob back into a JoinRef
+  static unique_ptr<TableRef> Deserialize(FieldReader &source);
+};
+}  // namespace bustub

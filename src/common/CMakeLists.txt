@@ -4,6 +4,7 @@ add_library(
   bustub_common
   OBJECT
   field_writer.cpp
+  join_type.cpp
   printer.cpp
   serializer.cpp)
 

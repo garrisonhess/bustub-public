@@ -33,13 +33,17 @@ class SelectStatement : public SQLStatement {
  public:
   //! Convert the SELECT statement to a string
   string ToString() const override;
+
   //! Create a copy of this SelectStatement
   unique_ptr<SQLStatement> Copy() const override;
+
   //! Serializes a SelectStatement to a stand-alone binary blob
   void Serialize(Serializer &serializer) const;
+
   //! Deserializes a blob back into a SelectStatement, returns nullptr if
   //! deserialization is not possible
   static unique_ptr<SelectStatement> Deserialize(Deserializer &source);
+
   //! Whether or not the statements are equivalent
   bool Equals(const SQLStatement *other) const;
 };
