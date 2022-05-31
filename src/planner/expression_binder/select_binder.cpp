@@ -15,11 +15,11 @@ SelectBinder::SelectBinder(Binder &binder, ClientContext &context, BoundSelectNo
 
 BindResult SelectBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {
   auto &expr = **expr_ptr;
-//   // check if the expression binds to one of the groups
-//   auto group_index = TryBindGroup(expr, depth);
-//   if (group_index != INVALID_INDEX) {
-//     return BindGroup(expr, depth, group_index);
-//   }
+  //   // check if the expression binds to one of the groups
+  //   auto group_index = TryBindGroup(expr, depth);
+  //   if (group_index != INVALID_INDEX) {
+  //     return BindGroup(expr, depth, group_index);
+  //   }
   switch (expr.expression_class_) {
     case ExpressionClass::DEFAULT:
       return BindResult("SELECT clause cannot contain DEFAULT clause");

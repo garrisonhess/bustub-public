@@ -23,7 +23,12 @@ Binder::Binder(bool /*unused*/, ClientContext &context, shared_ptr<Binder> paren
 }
 
 BoundStatement Binder::Bind(SQLStatement &statement) {
+  LOG_INFO("In binder::bind.");
   root_statement_ = &statement;
+  LOG_INFO("marking statement: %s as root", statement.ToString().c_str());
+  LOG_INFO("stmt len %d | stmt loc %d | ", statement.stmt_length_, statement.stmt_location_);
+  LOG_INFO("stmt type %hhu | stmt query %s | ", statement.type_, statement.query_.c_str());
+
   switch (statement.type_) {
     case StatementType::SELECT_STATEMENT:
       return Bind((SelectStatement &)statement);
@@ -72,12 +77,13 @@ unique_ptr<BoundQueryNode> Binder::BindNode(QueryNode &node) {
 
 BoundStatement Binder::Bind(QueryNode &node) {
   auto bound_node = BindNode(node);
-
+  LOG_INFO("In Binder::Bind for QueryNode: %s", node.ToString().c_str());
   BoundStatement result;
   result.names_ = bound_node->names_;
   result.types_ = bound_node->types_;
 
   // and plan it
+  LOG_INFO("Now going to CreatePlan for this node");
   result.plan_ = CreatePlan(*bound_node);
   return result;
 }
@@ -85,6 +91,7 @@ BoundStatement Binder::Bind(QueryNode &node) {
 unique_ptr<LogicalOperator> Binder::CreatePlan(BoundQueryNode &node) {
   switch (node.type_) {
     case QueryNodeType::SELECT_NODE:
+      LOG_INFO("Calling CreatePlan for BoundQueryNode w/ QueryNodeType::SELECT_NODE");
       return CreatePlan((BoundSelectNode &)node);
     case QueryNodeType::SET_OPERATION_NODE:
     case QueryNodeType::RECURSIVE_CTE_NODE:

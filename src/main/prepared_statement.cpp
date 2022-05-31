@@ -24,6 +24,7 @@ const vector<Type> &PreparedStatement::GetTypes() { return types_; }
 const vector<string> &PreparedStatement::GetNames() { return names_; }
 
 unique_ptr<QueryResult> PreparedStatement::Execute() {
+  throw NotImplementedException("IN EXECUTE.  need to use the real plan here...");
   auto stmt_type = StatementType::SELECT_STATEMENT;
   vector<Type> types = {Type(TypeId::INTEGER)};
   vector<string> names = {"column1"};

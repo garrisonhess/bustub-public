@@ -66,9 +66,6 @@ class Binder : public std::enable_shared_from_this<Binder> {
   BoundStatement Bind(SQLStatement &statement);
   BoundStatement Bind(QueryNode &node);
 
-  // SchemaCatalogEntry *BindSchema(CreateInfo &info);
-  // SchemaCatalogEntry *BindCreateFunctionInfo(CreateInfo &info);
-
   unique_ptr<BoundTableRef> Bind(TableRef &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundTableRef &ref);
 
@@ -125,21 +122,7 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unordered_set<ViewCatalogEntry *> bound_views_;
 
  private:
-  //! Bind the default values of the columns of a table
-  void BindDefaultValues(vector<ColumnDefinition> &columns, vector<unique_ptr<Expression>> &bound_defaults);
-  //! Bind a limit value (LIMIT or OFFSET)
-  unique_ptr<Expression> BindDelimiter(ClientContext &context, OrderBinder &order_binder,
-                                       unique_ptr<ParsedExpression> delimiter, const Type &type,
-                                       Value &delimiter_value);
-
-  //! Move correlated expressions from the child binder to this binder
-  void MoveCorrelatedExpressions(Binder &other);
-
   BoundStatement Bind(SelectStatement &stmt);
-  // BoundStatement Bind(InsertStatement &stmt);
-  // BoundStatement Bind(DeleteStatement &stmt);
-  // BoundStatement Bind(UpdateStatement &stmt);
-  // BoundStatement Bind(CreateStatement &stmt);
 
   unique_ptr<BoundQueryNode> BindNode(SelectNode &node);
   unique_ptr<BoundQueryNode> BindNode(QueryNode &node);
@@ -149,22 +132,12 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unique_ptr<LogicalOperator> CreatePlan(BoundQueryNode &node);
 
   unique_ptr<BoundTableRef> Bind(BaseTableRef &ref);
-  // unique_ptr<BoundTableRef> Bind(JoinRef &ref);
   unique_ptr<BoundTableRef> Bind(EmptyTableRef &ref);
   unique_ptr<BoundTableRef> Bind(ExpressionListRef &ref);
 
   unique_ptr<LogicalOperator> CreatePlan(BoundBaseTableRef &ref);
-  // unique_ptr<LogicalOperator> CreatePlan(BoundJoinRef &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundEmptyTableRef &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundExpressionListRef &ref);
-
-  void BindModifiers(OrderBinder &order_binder, QueryNode &statement, BoundQueryNode &result);
-  void BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_types, uint64_t projection_index);
-
-  // unique_ptr<BoundResultModifier> BindLimit(OrderBinder &order_binder, LimitModifier &limit_mod);
-  // unique_ptr<Expression> BindOrderExpression(OrderBinder &order_binder, unique_ptr<ParsedExpression> expr);
-
-  unique_ptr<LogicalOperator> PlanFilter(unique_ptr<Expression> condition, unique_ptr<LogicalOperator> root);
 
   unique_ptr<LogicalOperator> CastLogicalOperatorToTypes(vector<Type> &source_types, vector<Type> &target_types,
                                                          unique_ptr<LogicalOperator> op);

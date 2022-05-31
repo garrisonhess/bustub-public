@@ -14,27 +14,28 @@ namespace bustub {
 Planner::Planner(ClientContext &context) : binder_(Binder::CreateBinder(context)), context_(context) {}
 
 void Planner::CreatePlan(SQLStatement &statement) {
+  LOG_INFO("In planner CreatePlan, about to Bind");
   auto bound_statement = binder_->Bind(statement);
   this->names_ = bound_statement.names_;
   this->types_ = bound_statement.types_;
   this->plan_ = move(bound_statement.plan_);
 }
 
-// shared_ptr<PreparedStatementData> Planner::PrepareSQLStatement(unique_ptr<SQLStatement> statement) {
-//   auto copied_statement = statement->Copy();
-//   // create a plan of the underlying statement
-//   CreatePlan(move(statement));
-//   // // now create the logical prepare
-//   // auto prepared_data = make_shared<PreparedStatementData>(copied_statement->type);
-//   // prepared_data->unbound_statement = move(copied_statement);
-//   // prepared_data->names = names;
-//   // prepared_data->types = types;
-//   // prepared_data->value_map = move(value_map);
-//   // prepared_data->properties = properties;
-//   // prepared_data->catalog_version = Transaction::GetTransaction(context).catalog_version;
-//   // return prepared_data;
-//   throw NotImplementedException("preparesql");
-// }
+shared_ptr<PreparedStatementData> Planner::PrepareSQLStatement(unique_ptr<SQLStatement> statement) {
+  auto copied_statement = statement->Copy();
+  // create a plan of the underlying statement
+  CreatePlan(move(statement));
+  // // now create the logical prepare
+  // auto prepared_data = make_shared<PreparedStatementData>(copied_statement->type);
+  // prepared_data->unbound_statement = move(copied_statement);
+  // prepared_data->names = names;
+  // prepared_data->types = types;
+  // prepared_data->value_map = move(value_map);
+  // prepared_data->properties = properties;
+  // prepared_data->catalog_version = Transaction::GetTransaction(context).catalog_version;
+  // return prepared_data;
+  throw NotImplementedException("preparesql");
+}
 
 // void Planner::PlanExecute(unique_ptr<SQLStatement> statement) {
 //   auto &stmt = (ExecuteStatement &)*statement;
@@ -137,15 +138,12 @@ void Planner::CreatePlan(unique_ptr<SQLStatement> statement) {
     case StatementType::SHOW_STATEMENT:
     case StatementType::SET_STATEMENT:
     case StatementType::LOAD_STATEMENT:
+      LOG_INFO("Createplan for statement: %s", statement->ToString().c_str());
       CreatePlan(*statement);
       break;
     case StatementType::EXECUTE_STATEMENT:
-      // PlanExecute(move(statement));
-      // break;
     case StatementType::PREPARE_STATEMENT:
-      // PlanPrepare(move(statement));
-      // break;
-      throw NotImplementedException("Cannot plan statement of type X!");
+      throw NotImplementedException("CreatePlan for PREPARE/EXECUTE are not implemented!");
     default:
       throw NotImplementedException("Cannot plan statement of type X!");
   }

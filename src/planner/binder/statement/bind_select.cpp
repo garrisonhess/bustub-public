@@ -4,6 +4,9 @@
 
 namespace bustub {
 
-BoundStatement Binder::Bind(SelectStatement &stmt) { return Bind(*stmt.node_); }
+BoundStatement Binder::Bind(SelectStatement &stmt) {
+  LOG_INFO("About to convert select statement into a boundstatement");
+  return Bind(*stmt.node_);
+}
 
 }  // namespace bustub

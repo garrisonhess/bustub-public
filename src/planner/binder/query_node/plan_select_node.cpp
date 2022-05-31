@@ -9,16 +9,17 @@
 
 namespace bustub {
 
-unique_ptr<LogicalOperator> Binder::PlanFilter(unique_ptr<Expression> condition, unique_ptr<LogicalOperator> root) {
-  //   PlanSubqueries(&condition, &root);
-  //   auto filter = make_unique<LogicalFilter>(move(condition));
-  //   filter->AddChild(move(root));
-  //   return move(filter);
-  throw NotImplementedException("planfilter");
-}
+// unique_ptr<LogicalOperator> Binder::PlanFilter(unique_ptr<Expression> condition, unique_ptr<LogicalOperator> root) {
+//   //   PlanSubqueries(&condition, &root);
+//   //   auto filter = make_unique<LogicalFilter>(move(condition));
+//   //   filter->AddChild(move(root));
+//   //   return move(filter);
+//   throw NotImplementedException("planfilter");
+// }
 
 unique_ptr<LogicalOperator> Binder::CreatePlan(BoundSelectNode &statement) {
-  throw NotImplementedException("");
+  LOG_INFO("IN Binder::CreatePlan for BoundSelectNode.  Should throw NotImplementedException next!");
+  throw NotImplementedException("createplan bound select node");
 
   //   unique_ptr<LogicalOperator> root;
   //   assert(statement.from_table);
