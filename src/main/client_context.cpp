@@ -8,6 +8,7 @@
 #include "main/database.h"
 #include "main/query_result.h"
 #include "parser/parser.h"
+#include "planner/planner.h"
 
 #include <mutex>
 #include <utility>
@@ -28,8 +29,11 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     result->types_ = {Type(TypeId::INTEGER)};
     result->names_ = {"column1"};
     LOG_INFO("prepared statement query: %s", statement_query.c_str());
-    return result;
 
+    Planner planner(*this);
+    planner.CreatePlan(move(statement));
+
+    return result;
   } catch (Exception &ex) {
     LOG_DEBUG("PREPARE FAILED");
     return std::make_unique<PreparedStatement>(ex.what());
