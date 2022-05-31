@@ -140,11 +140,12 @@ void Planner::CreatePlan(unique_ptr<SQLStatement> statement) {
       CreatePlan(*statement);
       break;
     case StatementType::EXECUTE_STATEMENT:
-      PlanExecute(move(statement));
-      break;
+      // PlanExecute(move(statement));
+      // break;
     case StatementType::PREPARE_STATEMENT:
-      PlanPrepare(move(statement));
-      break;
+      // PlanPrepare(move(statement));
+      // break;
+      throw NotImplementedException("Cannot plan statement of type X!");
     default:
       throw NotImplementedException("Cannot plan statement of type X!");
   }

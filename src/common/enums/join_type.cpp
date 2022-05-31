@@ -2,7 +2,7 @@
 
 namespace bustub {
 
-std::string JoinTypeToString(JoinType type) {
+string JoinTypeToString(JoinType type) {
   switch (type) {
     case JoinType::LEFT:
       return "LEFT";
@@ -12,7 +12,7 @@ std::string JoinTypeToString(JoinType type) {
       return "INNER";
     case JoinType::OUTER:
       return "FULL";
-    case JoinType::INVALID:
+    case JoinType::INVALID:  // LCOV_EXCL_START
       break;
   }
   return "INVALID";
