@@ -50,7 +50,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
   }
 }
 
-// // DEBUG VERSION - NO
+// // DEBUG VERSION - NO PLANNER
 // unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
 //   try {
 //     LOG_INFO("preparing statement: %s", statement->ToString().c_str());
