@@ -261,6 +261,7 @@ vector<string> BindContext::AliasColumnNames(const string &table_name, const vec
   }
   case_insensitive_set_t current_names;
   // use any provided column aliases first
+  result.reserve(column_aliases.size());
   for (const auto &column_aliase : column_aliases) {
     result.push_back(AddColumnNameToBinding(column_aliase, current_names));
   }

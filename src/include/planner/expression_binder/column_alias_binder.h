@@ -25,9 +25,9 @@ class ColumnAliasBinder {
                        bool root_expression);
 
  private:
-  BoundSelectNode &node;
-  const case_insensitive_map_t<uint64_t> &alias_map;
-  bool in_alias;
+  BoundSelectNode &node_;
+  const case_insensitive_map_t<uint64_t> &alias_map_;
+  bool in_alias_;
 };
 
 }  // namespace bustub

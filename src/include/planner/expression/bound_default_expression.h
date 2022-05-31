@@ -14,7 +14,7 @@ namespace bustub {
 
 class BoundDefaultExpression : public Expression {
  public:
-  explicit BoundDefaultExpression(Type type = Type(TypeId::INVALID))
+  explicit BoundDefaultExpression(const Type &type = Type(TypeId::INVALID))
       : Expression(ExpressionType::VALUE_DEFAULT, ExpressionClass::BOUND_DEFAULT, type) {}
 
  public:

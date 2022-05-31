@@ -22,9 +22,9 @@ class GroupBinder : public ExpressionBinder {
               case_insensitive_map_t<uint64_t> &alias_map, case_insensitive_map_t<uint64_t> &group_alias_map);
 
   //! The unbound root expression
-  unique_ptr<ParsedExpression> unbound_expression;
+  unique_ptr<ParsedExpression> unbound_expression_;
   //! The group index currently being bound
-  uint64_t bind_index;
+  uint64_t bind_index_;
 
  protected:
   BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) override;
@@ -33,12 +33,12 @@ class GroupBinder : public ExpressionBinder {
   BindResult BindColumnRef(ColumnRefExpression &expr);
   BindResult BindConstant(ConstantExpression &expr);
 
-  SelectNode &node;
-  case_insensitive_map_t<uint64_t> &alias_map;
-  case_insensitive_map_t<uint64_t> &group_alias_map;
-  unordered_set<uint64_t> used_aliases;
+  SelectNode &node_;
+  case_insensitive_map_t<uint64_t> &alias_map_;
+  case_insensitive_map_t<uint64_t> &group_alias_map_;
+  unordered_set<uint64_t> used_aliases_;
 
-  uint64_t group_index;
+  uint64_t group_index_;
 };
 
 }  // namespace bustub

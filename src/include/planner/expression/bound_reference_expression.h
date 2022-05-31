@@ -19,7 +19,7 @@ class BoundReferenceExpression : public Expression {
   BoundReferenceExpression(Type type, uint64_t index);
 
   //! Index used to access data in the chunks
-  uint64_t index;
+  uint64_t index_;
 
  public:
   bool IsScalar() const override { return false; }

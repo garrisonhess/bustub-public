@@ -11,13 +11,13 @@
 
 namespace bustub {
 
-Planner::Planner(ClientContext &context) : binder(Binder::CreateBinder(context)), context(context) {}
+Planner::Planner(ClientContext &context) : binder_(Binder::CreateBinder(context)), context_(context) {}
 
 void Planner::CreatePlan(SQLStatement &statement) {
-  auto bound_statement = binder->Bind(statement);
-  this->names = bound_statement.names_;
-  this->types = bound_statement.types_;
-  this->plan = move(bound_statement.plan_);
+  auto bound_statement = binder_->Bind(statement);
+  this->names_ = bound_statement.names_;
+  this->types_ = bound_statement.types_;
+  this->plan_ = move(bound_statement.plan_);
 }
 
 // shared_ptr<PreparedStatementData> Planner::PrepareSQLStatement(unique_ptr<SQLStatement> statement) {

@@ -29,7 +29,7 @@ class OrderBinder {
  public:
   unique_ptr<Expression> Bind(unique_ptr<ParsedExpression> expr);
 
-  uint64_t MaxCount() { return max_count; }
+  uint64_t MaxCount() { return max_count_; }
 
   unique_ptr<Expression> CreateExtraReference(unique_ptr<ParsedExpression> expr);
 
@@ -37,12 +37,12 @@ class OrderBinder {
   unique_ptr<Expression> CreateProjectionReference(ParsedExpression &expr, uint64_t index);
 
  private:
-  vector<Binder *> binders;
-  uint64_t projection_index;
-  uint64_t max_count;
-  vector<unique_ptr<ParsedExpression>> *extra_list;
-  case_insensitive_map_t<uint64_t> &alias_map;
-  expression_map_t<uint64_t> &projection_map;
+  vector<Binder *> binders_;
+  uint64_t projection_index_;
+  uint64_t max_count_;
+  vector<unique_ptr<ParsedExpression>> *extra_list_;
+  case_insensitive_map_t<uint64_t> &alias_map_;
+  expression_map_t<uint64_t> &projection_map_;
 };
 
 }  // namespace bustub

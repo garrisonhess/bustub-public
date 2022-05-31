@@ -25,7 +25,7 @@ class WhereBinder : public ExpressionBinder {
  private:
   BindResult BindColumnRef(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression);
 
-  ColumnAliasBinder *column_alias_binder;
+  ColumnAliasBinder *column_alias_binder_;
 };
 
 }  // namespace bustub

@@ -24,11 +24,11 @@ class Planner {
 
   void CreatePlan(unique_ptr<SQLStatement> statement);
 
-  unique_ptr<LogicalOperator> plan;
-  vector<string> names;
-  vector<Type> types;
-  shared_ptr<Binder> binder;
-  ClientContext &context;
+  unique_ptr<LogicalOperator> plan_;
+  vector<string> names_;
+  vector<Type> types_;
+  shared_ptr<Binder> binder_;
+  ClientContext &context_;
 
  private:
   void CreatePlan(SQLStatement &statement);
