@@ -91,9 +91,9 @@ class Binder : public std::enable_shared_from_this<Binder> {
 
   static void BindType(ClientContext &context, Type &type, const string &schema = "");
 
-  bool HasMatchingBinding(const string &table_name, const string &column_name, string &error_message);
-  bool HasMatchingBinding(const string &schema_name, const string &table_name, const string &column_name,
-                          string &error_message);
+  // bool HasMatchingBinding(const string &table_name, const string &column_name, string &error_message);
+  // bool HasMatchingBinding(const string &schema_name, const string &table_name, const string &column_name,
+  //                         string &error_message);
 
   void SetBindingMode(BindingMode mode);
   BindingMode GetBindingMode();
@@ -149,7 +149,7 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unique_ptr<LogicalOperator> CreatePlan(BoundQueryNode &node);
 
   unique_ptr<BoundTableRef> Bind(BaseTableRef &ref);
-  unique_ptr<BoundTableRef> Bind(JoinRef &ref);
+  // unique_ptr<BoundTableRef> Bind(JoinRef &ref);
   unique_ptr<BoundTableRef> Bind(EmptyTableRef &ref);
   unique_ptr<BoundTableRef> Bind(ExpressionListRef &ref);
 

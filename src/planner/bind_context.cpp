@@ -1,5 +1,6 @@
 #include "planner/bind_context.h"
 
+#include "common/exception.h"
 #include "common/string_util.h"
 #include "parser/expression/columnref_expression.h"
 #include "parser/expression/star_expression.h"
@@ -13,17 +14,17 @@ namespace bustub {
 string BindContext::GetMatchingBinding(const string &column_name) {
   string result;
   for (auto &kv : bindings) {
-    auto binding = kv.second.get();
+    // auto binding = kv.second.get();
     auto is_using_binding = GetUsingBinding(column_name, kv.first);
     if (is_using_binding != nullptr) {
       continue;
     }
-    if (binding->HasMatchingBinding(column_name)) {
-      if (!result.empty() || (is_using_binding != nullptr)) {
-        throw Exception("Ambiguous reference to column name");
-      }
-      result = kv.first;
-    }
+    // if (binding->HasMatchingBinding(column_name)) {
+    //   if (!result.empty() || (is_using_binding != nullptr)) {
+    //     throw Exception("Ambiguous reference to column name");
+    //   }
+    //   result = kv.first;
+    // }
   }
   return result;
 }
@@ -35,12 +36,13 @@ void BindContext::AddUsingBinding(const string &column_name, UsingColumnSet *set
 void BindContext::AddUsingBindingSet(unique_ptr<UsingColumnSet> set) { using_column_sets.push_back(move(set)); }
 
 bool BindContext::FindUsingBinding(const string &column_name, unordered_set<UsingColumnSet *> **out) {
-  auto entry = using_columns.find(column_name);
-  if (entry != using_columns.end()) {
-    *out = &entry->second;
-    return true;
-  }
-  return false;
+  throw NotImplementedException("");
+  // auto entry = using_columns.find(column_name);
+  // if (entry != using_columns.end()) {
+  //   *out = &entry->second;
+  //   return true;
+  // }
+  // return false;
 }
 
 UsingColumnSet *BindContext::GetUsingBinding(const string &column_name) {
@@ -113,26 +115,27 @@ void BindContext::TransferUsingBinding(BindContext &current_context, UsingColumn
 }
 
 string BindContext::GetActualColumnName(const string &binding_name, const string &column_name) {
-  string error;
-  auto binding = GetBinding(binding_name, error);
-  if (binding == nullptr) {
-    throw Exception("No binding with name ");
-  }
-  uint64_t binding_index;
-  if (!binding->TryGetBindingIndex(column_name, binding_index)) {  // LCOV_EXCL_START
-    throw Exception("Binding with name  does not have a column named ");
-  }
-  return binding->names[binding_index];
+  throw NotImplementedException("");
+  // string error;
+  // auto binding = GetBinding(binding_name, error);
+  // if (binding == nullptr) {
+  //   throw Exception("No binding with name ");
+  // }
+  // uint64_t binding_index;
+  // if (!binding->TryGetBindingIndex(column_name, binding_index)) {  // LCOV_EXCL_START
+  //   throw Exception("Binding with name  does not have a column named ");
+  // }
+  // return binding->names[binding_index];
 }
 
 unordered_set<string> BindContext::GetMatchingBindings(const string &column_name) {
   unordered_set<string> result;
-  for (auto &kv : bindings) {
-    auto binding = kv.second.get();
-    if (binding->HasMatchingBinding(column_name)) {
-      result.insert(kv.first);
-    }
-  }
+  // for (auto &kv : bindings) {
+  // auto binding = kv.second.get();
+  // if (binding->HasMatchingBinding(column_name)) {
+  //   result.insert(kv.first);
+  // }
+  // }
   return result;
 }
 
@@ -156,20 +159,12 @@ unique_ptr<ParsedExpression> BindContext::CreateColumnReference(const string &sc
   // as it appears in the binding itself
   auto binding = GetBinding(table_name, error_message);
   if (binding != nullptr) {
-    auto column_index = binding->GetBindingIndex(column_name);
-    if (column_index < binding->names.size() && binding->names[column_index] != column_name) {
-      result->alias_ = binding->names[column_index];
-    }
+    // auto column_index = binding->GetBindingIndex(column_name);
+    // if (column_index < binding->names.size() && binding->names[column_index] != column_name) {
+    //   result->alias_ = binding->names[column_index];
+    // }
   }
   return result;
-}
-
-Binding *BindContext::GetCTEBinding(const string &ctename) {
-  auto match = cte_bindings.find(ctename);
-  if (match == cte_bindings.end()) {
-    return nullptr;
-  }
-  return match->second.get();
 }
 
 Binding *BindContext::GetBinding(const string &name, string &out_error) {
@@ -195,7 +190,7 @@ BindResult BindContext::BindColumn(ColumnRefExpression &colref, uint64_t depth) 
 
   string error;
   auto binding = GetBinding(colref.GetTableName(), error);
-  if (!binding) {
+  if (binding == nullptr) {
     return BindResult(error);
   }
   return binding->Bind(colref, depth);
@@ -225,9 +220,6 @@ void BindContext::GenerateAllColumnExpressions(StarExpression &expr,
       throw Exception(error);
     }
     for (auto &column_name : binding->names) {
-      if (CheckExclusionList(expr, binding, column_name, new_select_list, excluded_columns)) {
-        continue;
-      }
       new_select_list.push_back(make_unique<ColumnRefExpression>(column_name, binding->alias));
     }
   }

@@ -36,10 +36,6 @@ struct UsingColumnSet {
 //! encountered during the binding process.
 class BindContext {
  public:
-  //! Keep track of recursive CTE references
-  case_insensitive_map_t<std::shared_ptr<uint64_t>> cte_references;
-
- public:
   //! Given a column name, find the matching table it belongs to. Throws an
   //! exception if no table has a column of the given name.
   string GetMatchingBinding(const string &column_name);
@@ -50,7 +46,6 @@ class BindContext {
   //! matching ones
   vector<string> GetSimilarBindings(const string &column_name);
 
-  Binding *GetCTEBinding(const string &ctename);
   //! Binds a column expression to the base table. Returns the bound expression
   //! or throws an exception if the column could not be bound.
   BindResult BindColumn(ColumnRefExpression &colref, uint64_t depth);
@@ -63,11 +58,6 @@ class BindContext {
   //! referenced tables. This is used to resolve the * expression in a
   //! selection list.
   void GenerateAllColumnExpressions(StarExpression &expr, vector<unique_ptr<ParsedExpression>> &new_select_list);
-  //! Check if the given (binding, column_name) is in the exclusion/replacement lists.
-  //! Returns true if it is in one of these lists, and should therefore be skipped.
-  bool CheckExclusionList(StarExpression &expr, Binding *binding, const string &column_name,
-                          vector<unique_ptr<ParsedExpression>> &new_select_list,
-                          case_insensitive_set_t &excluded_columns);
 
   const vector<std::pair<string, Binding *>> &GetBindingsList() { return bindings_list; }
 
@@ -80,10 +70,6 @@ class BindContext {
 
   //! Adds a base table with the given alias to the BindContext.
   void AddGenericBinding(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types);
-
-  //! Adds a base table with the given alias to the CTE BindContext.
-  //! We need this to correctly bind recursive CTEs with multiple references.
-  void AddCTEBinding(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types);
 
   //! Add an implicit join condition (e.g. USING (x))
   void AddUsingBinding(const string &column_name, UsingColumnSet *set);
@@ -107,9 +93,6 @@ class BindContext {
   //! This can be different from "column_name" because of case insensitivity
   //! (e.g. "column_name" might return "COLUMN_NAME")
   string GetActualColumnName(const string &binding, const string &column_name);
-
-  case_insensitive_map_t<std::shared_ptr<Binding>> GetCTEBindings() { return cte_bindings; }
-  void SetCTEBindings(case_insensitive_map_t<std::shared_ptr<Binding>> bindings) { cte_bindings = bindings; }
 
   //! Alias a set of column names for the specified table, using the original names if there are not enough aliases
   //! specified.
@@ -135,8 +118,5 @@ class BindContext {
   case_insensitive_map_t<unordered_set<UsingColumnSet *>> using_columns;
   //! Using column sets
   vector<unique_ptr<UsingColumnSet>> using_column_sets;
-
-  //! The set of CTE bindings
-  case_insensitive_map_t<std::shared_ptr<Binding>> cte_bindings;
 };
 }  // namespace bustub

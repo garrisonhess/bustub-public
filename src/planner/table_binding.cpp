@@ -11,28 +11,28 @@
 
 namespace bustub {
 
-// Binding::Binding(const string &alias, vector<Type> coltypes, vector<string> colnames, uint64_t index)
-//     : alias(alias), index(index), types(move(coltypes)), names(move(colnames)) {
-//   assert(types.size() == names.size());
-//   for (uint64_t i = 0; i < names.size(); i++) {
-//     auto &name = names[i];
-//     assert(!name.empty());
-//     if (name_map.find(name) != name_map.end()) {
-//       throw Exception("table has duplicate column name");
-//     }
-//     name_map[name] = i;
-//   }
-// }
-
-bool Binding::TryGetBindingIndex(const string &column_name, uint64_t &result) {
-  throw bustub::NotImplementedException("");
-  //   auto entry = name_map.find(column_name);
-  //   if (entry != name_map.end()) {
-  //     result = entry->second;
-  //     return true;
-  //   }
-  //   return false;
+Binding::Binding(const string &alias, vector<Type> coltypes, vector<string> colnames, uint64_t index)
+    : alias(alias), index(index), types(move(coltypes)), names(move(colnames)) {
+  assert(types.size() == names.size());
+  for (uint64_t i = 0; i < names.size(); i++) {
+    auto &name = names[i];
+    assert(!name.empty());
+    if (name_map.find(name) != name_map.end()) {
+      throw Exception("table has duplicate column name");
+    }
+    name_map[name] = i;
+  }
 }
+
+// bool Binding::TryGetBindingIndex(const string &column_name, uint64_t &result) {
+//   throw bustub::NotImplementedException("");
+//   //   auto entry = name_map.find(column_name);
+//   //   if (entry != name_map.end()) {
+//   //     result = entry->second;
+//   //     return true;
+//   //   }
+//   //   return false;
+// }
 
 // uint64_t Binding::GetBindingIndex(const string &column_name) {
 //   uint64_t result;
@@ -68,15 +68,15 @@ bool Binding::TryGetBindingIndex(const string &column_name, uint64_t &result) {
 
 // TableCatalogEntry *Binding::GetTableEntry() { return nullptr; }
 
-// TableBinding::TableBinding(const string &alias, vector<Type> types_p, vector<string> names_p, LogicalGet &get,
-//                            uint64_t index, bool add_row_id)
-//     : Binding(alias, move(types_p), move(names_p), index), get(get) {
-//   if (add_row_id) {
-//     if (name_map.find("rowid") == name_map.end()) {
-//       name_map["rowid"] = COLUMN_IDENTIFIER_ROW_ID;
-//     }
-//   }
-// }
+TableBinding::TableBinding(const string &alias, vector<Type> types_p, vector<string> names_p, LogicalGet &get,
+                           uint64_t index, bool add_row_id)
+    : Binding(alias, move(types_p), move(names_p), index), get(get) {
+  if (add_row_id) {
+    // if (name_map.find("rowid") == name_map.end()) {
+    //   name_map["rowid"] = COLUMN_IDENTIFIER_ROW_ID;
+    // }
+  }
+}
 
 // BindResult TableBinding::Bind(ColumnRefExpression &colref, uint64_t depth) {
 //   auto &column_name = colref.GetColumnName();

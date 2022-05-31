@@ -65,19 +65,20 @@ void ExpressionIterator::EnumerateTableRefChildren(BoundTableRef &ref,
       }
       break;
     }
-    case TableReferenceType::JOIN: {
-      auto &bound_join = (BoundJoinRef &)ref;
-      EnumerateExpression(bound_join.condition, callback);
-      EnumerateTableRefChildren(*bound_join.left, callback);
-      EnumerateTableRefChildren(*bound_join.right, callback);
-      break;
-    }
-    case TableReferenceType::TABLE_FUNCTION:
+
     case TableReferenceType::EMPTY:
     case TableReferenceType::BASE_TABLE:
-    case TableReferenceType::CTE:
       break;
-
+      //       case TableReferenceType::JOIN: {
+      //   auto &bound_join = (BoundJoinRef &)ref;
+      //   EnumerateExpression(bound_join.condition, callback);
+      //   EnumerateTableRefChildren(*bound_join.left, callback);
+      //   EnumerateTableRefChildren(*bound_join.right, callback);
+      //   break;
+      // }
+    case TableReferenceType::JOIN:
+    case TableReferenceType::TABLE_FUNCTION:
+    case TableReferenceType::CTE:
     case TableReferenceType::SUBQUERY:
     case TableReferenceType::CROSS_PRODUCT:
       throw NotImplementedException("Unimplemented table reference type in ExpressionIterator");

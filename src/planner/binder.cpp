@@ -100,9 +100,7 @@ unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
     case TableReferenceType::BASE_TABLE:
       result = Bind((BaseTableRef &)ref);
       break;
-    case TableReferenceType::JOIN:
-      result = Bind((JoinRef &)ref);
-      break;
+
     case TableReferenceType::EMPTY:
       result = Bind((EmptyTableRef &)ref);
       break;
@@ -113,6 +111,10 @@ unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
     case TableReferenceType::SUBQUERY:
     case TableReferenceType::TABLE_FUNCTION:
       break;
+    case TableReferenceType::JOIN:
+      // result = Bind((JoinRef &)ref);
+      // break;
+      throw Exception("Unknown table ref type");
     default:
       throw Exception("Unknown table ref type");
   }

@@ -1,4 +1,5 @@
 #include "common/common.h"
+#include "common/exception.h"
 #include "parser/tableref/expressionlistref.h"
 #include "planner/binder.h"
 #include "planner/expression_binder/insert_binder.h"
@@ -7,31 +8,33 @@
 namespace bustub {
 
 unique_ptr<BoundTableRef> Binder::Bind(ExpressionListRef &expr) {
-  auto result = make_unique<BoundExpressionListRef>();
-  result->types = expr.expected_types_;
-  result->names = expr.expected_names_;
-  // bind value list
-  InsertBinder binder(*this, context);
-  binder.target_type = Type(TypeId::INVALID);
-  for (auto &expression_list : expr.values_) {
-    if (result->names.empty()) {
-      // no names provided, generate them
-      for (uint64_t val_idx = 0; val_idx < expression_list.size(); val_idx++) {
-        result->names.push_back("col" + std::to_string(val_idx));
-      }
-    }
+  throw NotImplementedException("");
 
-    vector<unique_ptr<Expression>> list;
-    for (uint64_t val_idx = 0; val_idx < expression_list.size(); val_idx++) {
-      if (!result->types.empty()) {
-        assert(result->types.size() == expression_list.size());
-        binder.target_type = result->types[val_idx];
-      }
-      auto expr = binder.Bind(expression_list[val_idx]);
-      list.push_back(move(expr));
-    }
-    result->values.push_back(move(list));
-  }
+  // auto result = make_unique<BoundExpressionListRef>();
+  // result->types = expr.expected_types_;
+  // result->names = expr.expected_names_;
+  // // bind value list
+  // InsertBinder binder(*this, context);
+  // binder.target_type = Type(TypeId::INVALID);
+  // for (auto &expression_list : expr.values_) {
+  //   if (result->names.empty()) {
+  //     // no names provided, generate them
+  //     for (uint64_t val_idx = 0; val_idx < expression_list.size(); val_idx++) {
+  //       result->names.push_back("col" + std::to_string(val_idx));
+  //     }
+  //   }
+
+  //   vector<unique_ptr<Expression>> list;
+  //   for (uint64_t val_idx = 0; val_idx < expression_list.size(); val_idx++) {
+  //     if (!result->types.empty()) {
+  //       assert(result->types.size() == expression_list.size());
+  //       binder.target_type = result->types[val_idx];
+  //     }
+  //     auto expr = binder.Bind(expression_list[val_idx]);
+  //     list.push_back(move(expr));
+  //   }
+  //   result->values.push_back(move(list));
+  // }
   // if (result->types.empty() && !expr.values_.empty()) {
   //   // there are no types specified
   //   // we have to figure out the result types
@@ -52,9 +55,9 @@ unique_ptr<BoundTableRef> Binder::Bind(ExpressionListRef &expr) {
   //     }
   //   }
   // }
-  result->bind_index = GenerateTableIndex();
-  bind_context.AddGenericBinding(result->bind_index, expr.alias_, result->names, result->types);
-  return result;
+  // result->bind_index = GenerateTableIndex();
+  // bind_context.AddGenericBinding(result->bind_index, expr.alias_, result->names, result->types);
+  // return result;
 }
 
 }  // namespace bustub
