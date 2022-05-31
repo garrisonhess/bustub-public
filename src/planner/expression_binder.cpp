@@ -9,9 +9,9 @@
 namespace bustub {
 
 ExpressionBinder::ExpressionBinder(Binder &binder, ClientContext &context, bool replace_binder)
-    : target_type(Type(TypeId::INVALID)), binder(binder), context(context), stored_binder(nullptr) {
+    : target_type_(Type(TypeId::INVALID)), binder_(binder), context_(context), stored_binder_(nullptr) {
   if (replace_binder) {
-    stored_binder = binder.GetActiveBinder();
+    stored_binder_ = binder.GetActiveBinder();
     binder.SetActiveBinder(this);
   } else {
     binder.PushExpressionBinder(this);
@@ -19,11 +19,11 @@ ExpressionBinder::ExpressionBinder(Binder &binder, ClientContext &context, bool 
 }
 
 ExpressionBinder::~ExpressionBinder() {
-  if (binder.HasActiveBinder()) {
-    if (stored_binder != nullptr) {
-      binder.SetActiveBinder(stored_binder);
+  if (binder_.HasActiveBinder()) {
+    if (stored_binder_ != nullptr) {
+      binder_.SetActiveBinder(stored_binder_);
     } else {
-      binder.PopExpressionBinder();
+      binder_.PopExpressionBinder();
     }
   }
 }
@@ -86,7 +86,7 @@ unique_ptr<Expression> ExpressionBinder::Bind(unique_ptr<ParsedExpression> &expr
   // }
   assert(expr->expression_class_ == ExpressionClass::BOUND_EXPRESSION);
   auto bound_expr = (BoundExpression *)expr.get();
-  unique_ptr<Expression> result = move(bound_expr->expr);
+  unique_ptr<Expression> result = move(bound_expr->expr_);
   // if (target_type.id() != TypeId::INVALID) {
   //   // the binder has a specific target type: add a cast to that type
   //   result = BoundCastExpression::AddCastToType(move(result), target_type);
@@ -117,16 +117,16 @@ string ExpressionBinder::Bind(unique_ptr<ParsedExpression> *expr, uint64_t depth
   // bind the expression
   BindResult result = BindExpression(expr, depth, root_expression);
   if (result.HasError()) {
-    return result.error;
+    return result.error_;
   }
 
   // successfully bound: replace the node with a BoundExpression
-  *expr = make_unique<BoundExpression>(move(result.expression));
+  *expr = make_unique<BoundExpression>(move(result.expression_));
   auto be = (BoundExpression *)expr->get();
   assert(be);
   be->alias_ = alias;
   if (!alias.empty()) {
-    be->expr->alias_ = alias;
+    be->expr_->alias_ = alias;
   }
   return string();
 }

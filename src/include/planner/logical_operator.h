@@ -25,19 +25,19 @@ namespace bustub {
 //! logical query tree
 class LogicalOperator {
  public:
-  explicit LogicalOperator(LogicalOperatorType type) : type(type) {}
+  explicit LogicalOperator(LogicalOperatorType type) : type_(type) {}
   LogicalOperator(LogicalOperatorType type, vector<unique_ptr<Expression>> expressions)
-      : type(type), expressions(move(expressions)) {}
-  virtual ~LogicalOperator() {}
+      : type_(type), expressions_(move(expressions)) {}
+  virtual ~LogicalOperator() = default;
 
   //! The type of the logical operator
-  LogicalOperatorType type;
+  LogicalOperatorType type_;
   //! The set of children of the operator
-  vector<unique_ptr<LogicalOperator>> children;
+  vector<unique_ptr<LogicalOperator>> children_;
   //! The set of expressions contained within the operator, if any
-  vector<unique_ptr<Expression>> expressions;
+  vector<unique_ptr<Expression>> expressions_;
   //! The types returned by this logical operator. Set by calling LogicalOperator::ResolveTypes.
-  vector<Type> types;
+  vector<Type> types_;
 
  public:
   virtual vector<ColumnBinding> GetColumnBindings() { return {ColumnBinding(0, 0)}; }
@@ -55,7 +55,7 @@ class LogicalOperator {
   //! Debug method: verify that the integrity of expressions & child nodes are maintained
   virtual void Verify();
 
-  void AddChild(unique_ptr<LogicalOperator> child) { children.push_back(move(child)); }
+  void AddChild(unique_ptr<LogicalOperator> child) { children_.push_back(move(child)); }
 
  protected:
   //! Resolve types for this specific operator

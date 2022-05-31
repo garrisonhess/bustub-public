@@ -19,17 +19,17 @@ namespace bustub {
 //! when dealing with subqueries.
 class BoundExpression : public ParsedExpression {
  public:
-  BoundExpression(unique_ptr<Expression> expr)
-      : ParsedExpression(ExpressionType::INVALID, ExpressionClass::BOUND_EXPRESSION), expr(move(expr)) {}
+  explicit BoundExpression(unique_ptr<Expression> expr)
+      : ParsedExpression(ExpressionType::INVALID, ExpressionClass::BOUND_EXPRESSION), expr_(move(expr)) {}
 
-  unique_ptr<Expression> expr;
+  unique_ptr<Expression> expr_;
 
  public:
   string ToString() const override {
-    if (!expr) {
+    if (!expr_) {
       throw Exception("ToString(): BoundExpression does not have a child");
     }
-    return expr->ToString();
+    return expr_->ToString();
   }
 
   bool Equals(const BaseExpression *other) const override { return false; }

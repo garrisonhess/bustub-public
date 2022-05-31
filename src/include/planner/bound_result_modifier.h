@@ -28,9 +28,9 @@ struct BoundOrderByNode {
  public:
   BoundOrderByNode(OrderType type, OrderByNullType null_order, unique_ptr<Expression> expression);
 
-  OrderType type;
-  OrderByNullType null_order;
-  unique_ptr<Expression> expression;
+  OrderType type_;
+  OrderByNullType null_order_;
+  unique_ptr<Expression> expression_;
 
  public:
   BoundOrderByNode Copy() const;
@@ -42,13 +42,13 @@ class BoundLimitModifier : public BoundResultModifier {
   BoundLimitModifier();
 
   //! LIMIT
-  int64_t limit_val = BUSTUB_INT64_MAX;
+  int64_t limit_val_ = BUSTUB_INT64_MAX;
   //! OFFSET
-  int64_t offset_val = 0;
+  int64_t offset_val_ = 0;
   //! Expression in case limit is not constant
-  unique_ptr<Expression> limit;
+  unique_ptr<Expression> limit_;
   //! Expression in case limit is not constant
-  unique_ptr<Expression> offset;
+  unique_ptr<Expression> offset_;
 };
 
 class BoundOrderModifier : public BoundResultModifier {
@@ -56,7 +56,7 @@ class BoundOrderModifier : public BoundResultModifier {
   BoundOrderModifier();
 
   //! List of order nodes
-  vector<BoundOrderByNode> orders;
+  vector<BoundOrderByNode> orders_;
 };
 
 class BoundDistinctModifier : public BoundResultModifier {
@@ -64,7 +64,7 @@ class BoundDistinctModifier : public BoundResultModifier {
   BoundDistinctModifier();
 
   //! list of distinct on targets (if any)
-  vector<unique_ptr<Expression>> target_distincts;
+  vector<unique_ptr<Expression>> target_distincts_;
 };
 
 class BoundLimitPercentModifier : public BoundResultModifier {
@@ -72,13 +72,13 @@ class BoundLimitPercentModifier : public BoundResultModifier {
   BoundLimitPercentModifier();
 
   //! LIMIT %
-  double limit_percent = 100.0;
+  double limit_percent_ = 100.0;
   //! OFFSET
-  int64_t offset_val = 0;
+  int64_t offset_val_ = 0;
   //! Expression in case limit is not constant
-  unique_ptr<Expression> limit;
+  unique_ptr<Expression> limit_;
   //! Expression in case limit is not constant
-  unique_ptr<Expression> offset;
+  unique_ptr<Expression> offset_;
 };
 
 }  // namespace bustub

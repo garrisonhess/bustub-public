@@ -18,7 +18,7 @@ class ConstantBinder : public ExpressionBinder {
   ConstantBinder(Binder &binder, ClientContext &context, string clause);
 
   //! The location where this binder is used, used for error messages
-  string clause;
+  string clause_;
 
  protected:
   BindResult BindExpression(unique_ptr<ParsedExpression> *expr, uint64_t depth, bool root_expression) override;

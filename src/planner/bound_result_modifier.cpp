@@ -4,16 +4,16 @@ namespace bustub {
 
 BoundResultModifier::BoundResultModifier(ResultModifierType type) : type_(type) {}
 
-BoundResultModifier::~BoundResultModifier() {}
+BoundResultModifier::~BoundResultModifier() = default;
 
 BoundOrderByNode::BoundOrderByNode(OrderType type, OrderByNullType null_order, unique_ptr<Expression> expression)
-    : type(type), null_order(null_order), expression(move(expression)) {}
+    : type_(type), null_order_(null_order), expression_(move(expression)) {}
 
-BoundOrderByNode BoundOrderByNode::Copy() const { return BoundOrderByNode(type, null_order, expression->Copy()); }
+BoundOrderByNode BoundOrderByNode::Copy() const { return BoundOrderByNode(type_, null_order_, expression_->Copy()); }
 
 string BoundOrderByNode::ToString() const {
-  auto str = expression->ToString();
-  switch (type) {
+  auto str = expression_->ToString();
+  switch (type_) {
     case OrderType::ASCENDING:
       str += " ASC";
       break;
@@ -24,7 +24,7 @@ string BoundOrderByNode::ToString() const {
       break;
   }
 
-  switch (null_order) {
+  switch (null_order_) {
     case OrderByNullType::NULLS_FIRST:
       str += " NULLS FIRST";
       break;

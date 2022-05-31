@@ -7,8 +7,8 @@
 
 namespace bustub {
 
-ConstantExpression::ConstantExpression(Value val)
-    : ParsedExpression(ExpressionType::VALUE_CONSTANT, ExpressionClass::CONSTANT), value_(std::move(val)) {}
+ConstantExpression::ConstantExpression(const Value &val)
+    : ParsedExpression(ExpressionType::VALUE_CONSTANT, ExpressionClass::CONSTANT), value_(val) {}
 
 string ConstantExpression::ToString() const {
   throw NotImplementedException("const expr not impl");

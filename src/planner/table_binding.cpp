@@ -1,5 +1,7 @@
 #include "planner/table_binding.h"
 
+#include <utility>
+
 // #include "catalog/catalog_entry/table_catalog_entry.h"
 // #include "catalog/catalog_entry/table_function_catalog_entry.h"
 #include "common/exception.h"
@@ -11,16 +13,16 @@
 
 namespace bustub {
 
-Binding::Binding(const string &alias, vector<Type> coltypes, vector<string> colnames, uint64_t index)
-    : alias(alias), index(index), types(move(coltypes)), names(move(colnames)) {
-  assert(types.size() == names.size());
-  for (uint64_t i = 0; i < names.size(); i++) {
-    auto &name = names[i];
+Binding::Binding(string alias, vector<Type> coltypes, vector<string> colnames, uint64_t index)
+    : alias_(std::move(alias)), index_(index), types_(move(coltypes)), names_(move(colnames)) {
+  assert(types_.size() == names_.size());
+  for (uint64_t i = 0; i < names_.size(); i++) {
+    auto &name = names_[i];
     assert(!name.empty());
-    if (name_map.find(name) != name_map.end()) {
+    if (name_map_.find(name) != name_map_.end()) {
       throw Exception("table has duplicate column name");
     }
-    name_map[name] = i;
+    name_map_[name] = i;
   }
 }
 
@@ -73,7 +75,7 @@ TableCatalogEntry *Binding::GetTableEntry() { return nullptr; }
 
 TableBinding::TableBinding(const string &alias, vector<Type> types_p, vector<string> names_p, LogicalGet &get,
                            uint64_t index, bool add_row_id)
-    : Binding(alias, move(types_p), move(names_p), index), get(get) {
+    : Binding(alias, move(types_p), move(names_p), index), get_(get) {
   if (add_row_id) {
     // if (name_map.find("rowid") == name_map.end()) {
     //   name_map["rowid"] = COLUMN_IDENTIFIER_ROW_ID;

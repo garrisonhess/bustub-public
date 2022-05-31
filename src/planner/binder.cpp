@@ -17,13 +17,13 @@ shared_ptr<Binder> Binder::CreateBinder(ClientContext &context, Binder *parent, 
 }
 
 Binder::Binder(bool /*unused*/, ClientContext &context, shared_ptr<Binder> parent_p, bool inherit_ctes_p)
-    : context(context), parent(move(parent_p)), bound_tables(0), inherit_ctes(inherit_ctes_p) {
-  parameters = nullptr;
-  parameter_types = nullptr;
+    : context_(context), parent_(move(parent_p)), bound_tables_(0), inherit_ctes_(inherit_ctes_p) {
+  parameters_ = nullptr;
+  parameter_types_ = nullptr;
 }
 
 BoundStatement Binder::Bind(SQLStatement &statement) {
-  root_statement = &statement;
+  root_statement_ = &statement;
   switch (statement.type_) {
     case StatementType::SELECT_STATEMENT:
       return Bind((SelectStatement &)statement);
@@ -74,16 +74,16 @@ BoundStatement Binder::Bind(QueryNode &node) {
   auto bound_node = BindNode(node);
 
   BoundStatement result;
-  result.names = bound_node->names;
-  result.types = bound_node->types;
+  result.names_ = bound_node->names_;
+  result.types_ = bound_node->types_;
 
   // and plan it
-  result.plan = CreatePlan(*bound_node);
+  result.plan_ = CreatePlan(*bound_node);
   return result;
 }
 
 unique_ptr<LogicalOperator> Binder::CreatePlan(BoundQueryNode &node) {
-  switch (node.type) {
+  switch (node.type_) {
     case QueryNodeType::SELECT_NODE:
       return CreatePlan((BoundSelectNode &)node);
     case QueryNodeType::SET_OPERATION_NODE:
@@ -123,7 +123,7 @@ unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
 
 unique_ptr<LogicalOperator> Binder::CreatePlan(BoundTableRef &ref) {
   unique_ptr<LogicalOperator> root;
-  switch (ref.type) {
+  switch (ref.type_) {
     case TableReferenceType::BASE_TABLE:
       root = CreatePlan((BoundBaseTableRef &)ref);
       break;
@@ -149,19 +149,19 @@ void Binder::AddBoundView(ViewCatalogEntry *view) {
   // check if the view is already bound
   auto current = this;
   while (current != nullptr) {
-    if (current->bound_views.find(view) != current->bound_views.end()) {
+    if (current->bound_views_.find(view) != current->bound_views_.end()) {
       throw Exception("infinite recursion detected: attempting to recursively bind view");
     }
-    current = current->parent.get();
+    current = current->parent_.get();
   }
-  bound_views.insert(view);
+  bound_views_.insert(view);
 }
 
 uint64_t Binder::GenerateTableIndex() {
-  if (parent) {
-    return parent->GenerateTableIndex();
+  if (parent_) {
+    return parent_->GenerateTableIndex();
   }
-  return bound_tables++;
+  return bound_tables_++;
 }
 
 void Binder::PushExpressionBinder(ExpressionBinder *binder) { GetActiveBinders().push_back(binder); }
@@ -181,47 +181,47 @@ ExpressionBinder *Binder::GetActiveBinder() { return GetActiveBinders().back(); 
 bool Binder::HasActiveBinder() { return !GetActiveBinders().empty(); }
 
 vector<ExpressionBinder *> &Binder::GetActiveBinders() {
-  if (parent) {
-    return parent->GetActiveBinders();
+  if (parent_) {
+    return parent_->GetActiveBinders();
   }
-  return active_binders;
+  return active_binders_;
 }
 
 void Binder::AddUsingBindingSet(unique_ptr<UsingColumnSet> set) {
-  if (parent) {
-    parent->AddUsingBindingSet(move(set));
+  if (parent_) {
+    parent_->AddUsingBindingSet(move(set));
     return;
   }
-  bind_context.AddUsingBindingSet(move(set));
+  bind_context_.AddUsingBindingSet(move(set));
 }
 
 void Binder::SetBindingMode(BindingMode mode) {
-  if (parent) {
-    parent->SetBindingMode(mode);
+  if (parent_) {
+    parent_->SetBindingMode(mode);
   }
-  this->mode = mode;
+  this->mode_ = mode;
 }
 
 BindingMode Binder::GetBindingMode() {
-  if (parent) {
-    return parent->GetBindingMode();
+  if (parent_) {
+    return parent_->GetBindingMode();
   }
-  return mode;
+  return mode_;
 }
 
 void Binder::AddTableName(string table_name) {
-  if (parent) {
-    parent->AddTableName(move(table_name));
+  if (parent_) {
+    parent_->AddTableName(move(table_name));
     return;
   }
-  table_names.insert(move(table_name));
+  table_names_.insert(move(table_name));
 }
 
 const unordered_set<string> &Binder::GetTableNames() {
-  if (parent) {
-    return parent->GetTableNames();
+  if (parent_) {
+    return parent_->GetTableNames();
   }
-  return table_names;
+  return table_names_;
 }
 
 }  // namespace bustub

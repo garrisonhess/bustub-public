@@ -15,10 +15,10 @@ namespace bustub {
 
 class BoundTableRef {
  public:
-  explicit BoundTableRef(TableReferenceType type) : type(type) {}
-  virtual ~BoundTableRef() {}
+  explicit BoundTableRef(TableReferenceType type) : type_(type) {}
+  virtual ~BoundTableRef() = default;
 
   //! The type of table reference
-  TableReferenceType type;
+  TableReferenceType type_;
 };
 }  // namespace bustub

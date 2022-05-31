@@ -18,7 +18,7 @@ using std::string;
 //! ConstantExpression represents a constant value in the query
 class ConstantExpression : public ParsedExpression {
  public:
-  explicit ConstantExpression(Value val);
+  explicit ConstantExpression(const Value &val);
 
   //! The constant value referenced
   Value value_;

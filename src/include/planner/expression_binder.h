@@ -16,6 +16,7 @@
 #include "planner/expression.h"
 
 #include <unordered_map>
+#include <utility>
 
 namespace bustub {
 
@@ -30,19 +31,19 @@ class CatalogEntry;
 class SimpleFunction;
 
 struct BoundColumnReferenceInfo {
-  string name;
-  uint64_t query_location;
+  string name_;
+  uint64_t query_location_;
 };
 
 struct BindResult {
-  BindResult() {}
-  explicit BindResult(string error) : error(error) {}
-  explicit BindResult(unique_ptr<Expression> expr) : expression(move(expr)) {}
+  BindResult() = default;
+  explicit BindResult(string error) : error_(std::move(std::move(error))) {}
+  explicit BindResult(unique_ptr<Expression> expr) : expression_(move(expr)) {}
 
-  bool HasError() { return !error.empty(); }
+  bool HasError() { return !error_.empty(); }
 
-  unique_ptr<Expression> expression;
-  string error;
+  unique_ptr<Expression> expression_;
+  string error_;
 };
 
 class ExpressionBinder {
@@ -52,15 +53,15 @@ class ExpressionBinder {
 
   //! The target type that should result from the binder. If the result is not of this type, a cast to this type will
   //! be added. Defaults to INVALID.
-  Type target_type;
+  Type target_type_;
 
  public:
   unique_ptr<Expression> Bind(unique_ptr<ParsedExpression> &expr, Type *result_type = nullptr,
                               bool root_expression = true);
 
   //! Returns whether or not any columns have been bound by the expression binder
-  bool HasBoundColumns() { return !bound_columns.empty(); }
-  const vector<BoundColumnReferenceInfo> &GetBoundColumns() { return bound_columns; }
+  bool HasBoundColumns() { return !bound_columns_.empty(); }
+  const vector<BoundColumnReferenceInfo> &GetBoundColumns() { return bound_columns_; }
 
   string Bind(unique_ptr<ParsedExpression> *expr, uint64_t depth, bool root_expression = false);
 
@@ -89,10 +90,10 @@ class ExpressionBinder {
   BindResult BindExpression(ConstantExpression &expr, uint64_t depth);
 
  protected:
-  Binder &binder;
-  ClientContext &context;
-  ExpressionBinder *stored_binder;
-  vector<BoundColumnReferenceInfo> bound_columns;
+  Binder &binder_;
+  ClientContext &context_;
+  ExpressionBinder *stored_binder_;
+  vector<BoundColumnReferenceInfo> bound_columns_;
 };
 
 }  // namespace bustub

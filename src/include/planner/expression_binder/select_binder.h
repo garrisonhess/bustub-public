@@ -19,8 +19,8 @@ class WindowExpression;
 class BoundSelectNode;
 
 struct BoundGroupInformation {
-  expression_map_t<uint64_t> map;
-  case_insensitive_map_t<uint64_t> alias_map;
+  expression_map_t<uint64_t> map_;
+  case_insensitive_map_t<uint64_t> alias_map_;
 };
 
 //! The SELECT binder is responsible for binding an expression within the SELECT clause of a SQL statement
@@ -28,10 +28,10 @@ class SelectBinder : public ExpressionBinder {
  public:
   SelectBinder(Binder &binder, ClientContext &context, BoundSelectNode &node, BoundGroupInformation &info);
 
-  bool BoundAggregates() { return bound_aggregate; }
+  bool BoundAggregates() { return bound_aggregate_; }
   void ResetBindings() {
-    this->bound_aggregate = false;
-    this->bound_columns.clear();
+    this->bound_aggregate_ = false;
+    this->bound_columns_.clear();
   }
 
  protected:
@@ -40,11 +40,11 @@ class SelectBinder : public ExpressionBinder {
   // BindResult BindAggregate(FunctionExpression &expr, AggregateFunctionCatalogEntry *function, uint64_t depth)
   // override;
 
-  bool inside_window;
-  bool bound_aggregate = false;
+  bool inside_window_;
+  bool bound_aggregate_ = false;
 
-  BoundSelectNode &node;
-  BoundGroupInformation &info;
+  BoundSelectNode &node_;
+  BoundGroupInformation &info_;
 
  protected:
   uint64_t TryBindGroup(ParsedExpression &expr, uint64_t depth);

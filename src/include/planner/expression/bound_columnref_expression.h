@@ -22,10 +22,10 @@ class BoundColumnRefExpression : public Expression {
   BoundColumnRefExpression(string alias, Type type, ColumnBinding binding, uint64_t depth = 0);
 
   //! Column index set by the binder, used to generate the final BoundExpression
-  ColumnBinding binding;
+  ColumnBinding binding_;
   //! The subquery depth (i.e. depth 0 = current query, depth 1 = parent query, depth 2 = parent of parent, etc...).
   //! This is only non-zero for correlated expressions inside subqueries.
-  uint64_t depth;
+  uint64_t depth_;
 
  public:
   bool IsScalar() const override { return false; }

@@ -55,10 +55,10 @@ void ExpressionIterator::EnumerateExpression(unique_ptr<Expression> &expr,
 
 void ExpressionIterator::EnumerateTableRefChildren(BoundTableRef &ref,
                                                    const std::function<void(Expression &child)> &callback) {
-  switch (ref.type) {
+  switch (ref.type_) {
     case TableReferenceType::EXPRESSION_LIST: {
       auto &bound_expr_list = (BoundExpressionListRef &)ref;
-      for (auto &expr_list : bound_expr_list.values) {
+      for (auto &expr_list : bound_expr_list.values_) {
         for (auto &expr : expr_list) {
           EnumerateExpression(expr, callback);
         }
@@ -90,7 +90,7 @@ void ExpressionIterator::EnumerateTableRefChildren(BoundTableRef &ref,
 
 void ExpressionIterator::EnumerateQueryNodeChildren(BoundQueryNode &node,
                                                     const std::function<void(Expression &child)> &callback) {
-  switch (node.type) {
+  switch (node.type_) {
     case QueryNodeType::SELECT_NODE: {
       auto &bound_select = (BoundSelectNode &)node;
       for (auto &i : bound_select.select_list) {
@@ -121,16 +121,16 @@ void ExpressionIterator::EnumerateQueryNodeChildren(BoundQueryNode &node,
     default:
       throw NotImplementedException("Unimplemented query node in ExpressionIterator");
   }
-  for (auto &modifier : node.modifiers) {
+  for (auto &modifier : node.modifiers_) {
     switch (modifier->type_) {
       case ResultModifierType::DISTINCT_MODIFIER:
-        for (auto &expr : ((BoundDistinctModifier &)*modifier).target_distincts) {
+        for (auto &expr : ((BoundDistinctModifier &)*modifier).target_distincts_) {
           EnumerateExpression(expr, callback);
         }
         break;
       case ResultModifierType::ORDER_MODIFIER:
-        for (auto &order : ((BoundOrderModifier &)*modifier).orders) {
-          EnumerateExpression(order.expression, callback);
+        for (auto &order : ((BoundOrderModifier &)*modifier).orders_) {
+          EnumerateExpression(order.expression_, callback);
         }
         break;
       default:

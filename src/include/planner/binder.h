@@ -52,15 +52,15 @@ class Binder : public std::enable_shared_from_this<Binder> {
   static shared_ptr<Binder> CreateBinder(ClientContext &context, Binder *parent = nullptr, bool inherit_ctes = true);
 
   //! The client context
-  ClientContext &context;
+  ClientContext &context_;
   //! The bind context
-  BindContext bind_context;
+  BindContext bind_context_;
   //! The set of parameter expressions bound by this binder
-  vector<BoundParameterExpression *> *parameters;
+  vector<BoundParameterExpression *> *parameters_;
   //! The types of the prepared statement parameters, if any
-  vector<Type> *parameter_types;
+  vector<Type> *parameter_types_;
   //! The alias for the currently processing subquery, if it exists
-  string alias;
+  string alias_;
 
  public:
   BoundStatement Bind(SQLStatement &statement);
@@ -102,27 +102,27 @@ class Binder : public std::enable_shared_from_this<Binder> {
 
  private:
   //! The parent binder (if any)
-  shared_ptr<Binder> parent;
+  shared_ptr<Binder> parent_;
   //! The vector of active binders
-  vector<ExpressionBinder *> active_binders;
+  vector<ExpressionBinder *> active_binders_;
   //! The count of bound_tables
-  uint64_t bound_tables;
+  uint64_t bound_tables_;
   //! Whether or not the binder has any unplanned subqueries that still need to be planned
-  bool has_unplanned_subqueries = false;
+  bool has_unplanned_subqueries_ = false;
   //! Whether or not subqueries should be planned already
-  bool plan_subquery = true;
+  bool plan_subquery_ = true;
   //! Whether CTEs should reference the parent binder (if it exists)
-  bool inherit_ctes = true;
+  bool inherit_ctes_ = true;
   //! Whether or not the binder can contain NULLs as the root of expressions
-  bool can_contain_nulls = false;
+  bool can_contain_nulls_ = false;
   //! The root statement of the query that is currently being parsed
-  SQLStatement *root_statement = nullptr;
+  SQLStatement *root_statement_ = nullptr;
   //! Binding mode
-  BindingMode mode = BindingMode::STANDARD_BINDING;
+  BindingMode mode_ = BindingMode::STANDARD_BINDING;
   //! Table names extracted for BindingMode::EXTRACT_NAMES
-  unordered_set<string> table_names;
+  unordered_set<string> table_names_;
   //! The set of bound views
-  unordered_set<ViewCatalogEntry *> bound_views;
+  unordered_set<ViewCatalogEntry *> bound_views_;
 
  private:
   //! Bind the default values of the columns of a table

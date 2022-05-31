@@ -15,9 +15,9 @@ namespace bustub {
 
 class BoundConstantExpression : public Expression {
  public:
-  explicit BoundConstantExpression(Value value);
+  explicit BoundConstantExpression(const Value &value);
 
-  Value value;
+  Value value_;
 
  public:
   string ToString() const override;

@@ -3,6 +3,6 @@
 
 namespace bustub {
 
-unique_ptr<LogicalOperator> Binder::CreatePlan(BoundBaseTableRef &ref) { return move(ref.get); }
+unique_ptr<LogicalOperator> Binder::CreatePlan(BoundBaseTableRef &ref) { return move(ref.get_); }
 
 }  // namespace bustub

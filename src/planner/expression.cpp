@@ -6,10 +6,10 @@
 
 namespace bustub {
 
-Expression::Expression(ExpressionType type, ExpressionClass expression_class, Type return_type)
+Expression::Expression(ExpressionType type, ExpressionClass expression_class, const Type &return_type)
     : BaseExpression(type, expression_class), return_type_(return_type) {}
 
-Expression::~Expression() {}
+Expression::~Expression() = default;
 
 bool Expression::IsAggregate() const {
   bool is_aggregate = false;

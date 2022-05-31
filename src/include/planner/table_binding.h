@@ -26,18 +26,18 @@ class BoundTableFunction;
 
 //! A Binding represents a binding to a table, table-producing function or subquery with a specified table index.
 struct Binding {
-  Binding(const string &alias, vector<Type> types, vector<string> names, uint64_t index);
+  Binding(string alias, vector<Type> types, vector<string> names, uint64_t index);
   virtual ~Binding() = default;
 
   //! The alias of the binding
-  string alias;
+  string alias_;
   //! The table index of the binding
-  uint64_t index;
-  vector<Type> types;
+  uint64_t index_;
+  vector<Type> types_;
   //! Column names of the subquery
-  vector<string> names;
+  vector<string> names_;
   //! Name -> index for the names
-  case_insensitive_map_t<uint64_t> name_map;
+  case_insensitive_map_t<uint64_t> name_map_;
 
  public:
   bool TryGetBindingIndex(const string &column_name, uint64_t &column_index);
@@ -55,7 +55,7 @@ struct TableBinding : public Binding {
                bool add_row_id = false);
 
   //! the underlying LogicalGet
-  LogicalGet &get;
+  LogicalGet &get_;
 
  public:
   BindResult Bind(ColumnRefExpression &colref, uint64_t depth) override;

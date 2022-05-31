@@ -6,9 +6,9 @@
 
 namespace bustub {
 
-BoundConstantExpression::BoundConstantExpression(Value value_p)
+BoundConstantExpression::BoundConstantExpression(const Value &value_p)
     : Expression(ExpressionType::VALUE_CONSTANT, ExpressionClass::BOUND_CONSTANT, Type(value_p.GetTypeId())),
-      value(value_p) {}
+      value_(value_p) {}
 
 string BoundConstantExpression::ToString() const {
   throw NotImplementedException("");
@@ -31,7 +31,7 @@ hash_t BoundConstantExpression::Hash() const {
 }
 
 unique_ptr<Expression> BoundConstantExpression::Copy() {
-  auto copy = make_unique<BoundConstantExpression>(value);
+  auto copy = make_unique<BoundConstantExpression>(value_);
   copy->CopyProperties(*this);
   return copy;
 }

@@ -19,14 +19,14 @@ class LogicalEmptyResult : public LogicalOperator {
   explicit LogicalEmptyResult(unique_ptr<LogicalOperator> op);
 
   //! The set of return types of the empty result
-  vector<Type> return_types;
+  vector<Type> return_types_;
   //! The columns that would be bound at this location (if the subtree was not optimized away)
-  vector<ColumnBinding> bindings;
+  vector<ColumnBinding> bindings_;
 
  public:
-  vector<ColumnBinding> GetColumnBindings() override { return bindings; }
+  vector<ColumnBinding> GetColumnBindings() override { return bindings_; }
 
  protected:
-  void ResolveTypes() override { this->types = return_types; }
+  void ResolveTypes() override { this->types_ = return_types_; }
 };
 }  // namespace bustub

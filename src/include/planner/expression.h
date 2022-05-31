@@ -15,7 +15,7 @@ namespace bustub {
 //!  The Expression class represents a bound Expression with a return type
 class Expression : public BaseExpression {
  public:
-  Expression(ExpressionType type, ExpressionClass expression_class, Type return_type);
+  Expression(ExpressionType type, ExpressionClass expression_class, const Type &return_type);
   ~Expression() override;
 
   //! The return type of the expression

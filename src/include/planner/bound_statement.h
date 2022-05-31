@@ -13,9 +13,9 @@
 namespace bustub {
 
 struct BoundStatement {
-  unique_ptr<LogicalOperator> plan;
-  vector<Type> types;
-  vector<string> names;
+  unique_ptr<LogicalOperator> plan_;
+  vector<Type> types_;
+  vector<string> names_;
 };
 
 }  // namespace bustub

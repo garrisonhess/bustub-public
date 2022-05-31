@@ -26,30 +26,30 @@ enum class TableFilterType : uint8_t {
 //! TableFilter represents a filter pushed down into the table scan.
 class TableFilter {
  public:
-  TableFilter(TableFilterType filter_type_p) : filter_type(filter_type_p) {}
-  virtual ~TableFilter() {}
+  explicit TableFilter(TableFilterType filter_type_p) : filter_type_(filter_type_p) {}
+  virtual ~TableFilter() = default;
 
-  TableFilterType filter_type;
+  TableFilterType filter_type_;
 
  public:
   virtual string ToString(const string &column_name) = 0;
-  virtual bool Equals(const TableFilter &other) const { return filter_type != other.filter_type; }
+  virtual bool Equals(const TableFilter &other) const { return filter_type_ != other.filter_type_; }
 };
 
 class TableFilterSet {
  public:
-  unordered_map<uint64_t, unique_ptr<TableFilter>> filters;
+  unordered_map<uint64_t, unique_ptr<TableFilter>> filters_;
 
  public:
   void PushFilter(uint64_t table_index, unique_ptr<TableFilter> filter);
 
   bool Equals(TableFilterSet &other) {
-    if (filters.size() != other.filters.size()) {
+    if (filters_.size() != other.filters_.size()) {
       return false;
     }
-    for (auto &entry : filters) {
-      auto other_entry = other.filters.find(entry.first);
-      if (other_entry == other.filters.end()) {
+    for (auto &entry : filters_) {
+      auto other_entry = other.filters_.find(entry.first);
+      if (other_entry == other.filters_.end()) {
         return false;
       }
       if (!entry.second->Equals(*other_entry->second)) {
@@ -62,7 +62,7 @@ class TableFilterSet {
     if (left == right) {
       return true;
     }
-    if (!left || !right) {
+    if ((left == nullptr) || (right == nullptr)) {
       return false;
     }
     return left->Equals(*right);

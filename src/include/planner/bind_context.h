@@ -28,8 +28,8 @@ class BoundQueryNode;
 class StarExpression;
 
 struct UsingColumnSet {
-  string primary_binding;
-  unordered_set<string> bindings;
+  string primary_binding_;
+  unordered_set<string> bindings_;
 };
 
 //! The BindContext object keeps track of all the tables and columns that are
@@ -59,7 +59,7 @@ class BindContext {
   //! selection list.
   void GenerateAllColumnExpressions(StarExpression &expr, vector<unique_ptr<ParsedExpression>> &new_select_list);
 
-  const vector<std::pair<string, Binding *>> &GetBindingsList() { return bindings_list; }
+  const vector<std::pair<string, Binding *>> &GetBindingsList() { return bindings_list_; }
 
   //! Adds a base table with the given alias to the BindContext.
   void AddBaseTable(uint64_t index, const string &alias, const vector<string> &names, const vector<Type> &types,
@@ -111,12 +111,12 @@ class BindContext {
 
  private:
   //! The set of bindings
-  case_insensitive_map_t<unique_ptr<Binding>> bindings;
+  case_insensitive_map_t<unique_ptr<Binding>> bindings_;
   //! The list of bindings in insertion order
-  vector<std::pair<string, Binding *>> bindings_list;
+  vector<std::pair<string, Binding *>> bindings_list_;
   //! The set of columns used in USING join conditions
-  case_insensitive_map_t<unordered_set<UsingColumnSet *>> using_columns;
+  case_insensitive_map_t<unordered_set<UsingColumnSet *>> using_columns_;
   //! Using column sets
-  vector<unique_ptr<UsingColumnSet>> using_column_sets;
+  vector<unique_ptr<UsingColumnSet>> using_column_sets_;
 };
 }  // namespace bustub

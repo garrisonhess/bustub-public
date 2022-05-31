@@ -14,14 +14,14 @@
 namespace bustub {
 
 struct ColumnBinding {
-  uint64_t table_index;
-  uint64_t column_index;
+  uint64_t table_index_;
+  uint64_t column_index_;
 
-  ColumnBinding() : table_index(INVALID_INDEX), column_index(INVALID_INDEX) {}
-  ColumnBinding(uint64_t table, uint64_t column) : table_index(table), column_index(column) {}
+  ColumnBinding() : table_index_(INVALID_INDEX), column_index_(INVALID_INDEX) {}
+  ColumnBinding(uint64_t table, uint64_t column) : table_index_(table), column_index_(column) {}
 
   bool operator==(const ColumnBinding &rhs) const {
-    return table_index == rhs.table_index && column_index == rhs.column_index;
+    return table_index_ == rhs.table_index_ && column_index_ == rhs.column_index_;
   }
 };
 

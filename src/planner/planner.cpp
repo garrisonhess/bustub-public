@@ -15,9 +15,9 @@ Planner::Planner(ClientContext &context) : binder(Binder::CreateBinder(context))
 
 void Planner::CreatePlan(SQLStatement &statement) {
   auto bound_statement = binder->Bind(statement);
-  this->names = bound_statement.names;
-  this->types = bound_statement.types;
-  this->plan = move(bound_statement.plan);
+  this->names = bound_statement.names_;
+  this->types = bound_statement.types_;
+  this->plan = move(bound_statement.plan_);
 }
 
 // shared_ptr<PreparedStatementData> Planner::PrepareSQLStatement(unique_ptr<SQLStatement> statement) {

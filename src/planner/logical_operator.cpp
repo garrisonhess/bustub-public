@@ -7,15 +7,15 @@
 
 namespace bustub {
 
-string LogicalOperator::GetName() const { return LogicalOperatorToString(type); }
+string LogicalOperator::GetName() const { return LogicalOperatorToString(type_); }
 
 string LogicalOperator::ParamsToString() const {
   string result;
-  for (uint64_t i = 0; i < expressions.size(); i++) {
+  for (uint64_t i = 0; i < expressions_.size(); i++) {
     if (i > 0) {
       result += "\n";
     }
-    result += expressions[i]->GetName();
+    result += expressions_[i]->GetName();
   }
   return result;
 }
@@ -25,14 +25,14 @@ void LogicalOperator::ResolveOperatorTypes() {
   // 	// types already resolved for this node
   // 	return;
   // }
-  types.clear();
+  types_.clear();
   // first resolve child types
-  for (auto &child : children) {
+  for (auto &child : children_) {
     child->ResolveOperatorTypes();
   }
   // now resolve the types for this operator
   ResolveTypes();
-  assert(types.size() == GetColumnBindings().size());
+  assert(types_.size() == GetColumnBindings().size());
 }
 
 vector<ColumnBinding> LogicalOperator::GenerateColumnBindings(uint64_t table_idx, uint64_t column_count) {

@@ -15,7 +15,8 @@ namespace bustub {
 //! Represents a cross product
 class BoundEmptyTableRef : public BoundTableRef {
  public:
-  explicit BoundEmptyTableRef(uint64_t bind_index) : BoundTableRef(TableReferenceType::EMPTY), bind_index(bind_index) {}
-  uint64_t bind_index;
+  explicit BoundEmptyTableRef(uint64_t bind_index)
+      : BoundTableRef(TableReferenceType::EMPTY), bind_index_(bind_index) {}
+  uint64_t bind_index_;
 };
 }  // namespace bustub

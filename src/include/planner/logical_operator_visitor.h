@@ -19,7 +19,8 @@ namespace bustub {
 //! Visitor pattern on LogicalOperator.
 class LogicalOperatorVisitor {
  public:
-  virtual ~LogicalOperatorVisitor(){};
+  virtual ~LogicalOperatorVisitor() = default;
+  ;
 
   virtual void VisitOperator(LogicalOperator &op);
   virtual void VisitExpression(unique_ptr<Expression> *expression);

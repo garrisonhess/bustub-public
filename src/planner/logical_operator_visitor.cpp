@@ -13,14 +13,14 @@ void LogicalOperatorVisitor::VisitOperator(LogicalOperator &op) {
 }
 
 void LogicalOperatorVisitor::VisitOperatorChildren(LogicalOperator &op) {
-  for (auto &child : op.children) {
+  for (auto &child : op.children_) {
     VisitOperator(*child);
   }
 }
 
 void LogicalOperatorVisitor::EnumerateExpressions(LogicalOperator &op,
                                                   const std::function<void(unique_ptr<Expression> *child)> &callback) {
-  switch (op.type) {
+  switch (op.type_) {
     case LogicalOperatorType::LOGICAL_EXPRESSION_GET:
     case LogicalOperatorType::LOGICAL_ORDER_BY:
     case LogicalOperatorType::LOGICAL_TOP_N:
@@ -35,7 +35,7 @@ void LogicalOperatorVisitor::EnumerateExpressions(LogicalOperator &op,
     default:
       break;
   }
-  for (auto &expression : op.expressions) {
+  for (auto &expression : op.expressions_) {
     callback(&expression);
   }
 }
@@ -163,7 +163,5 @@ unique_ptr<Expression> LogicalOperatorVisitor::VisitReplace(BoundUnnestExpressio
                                                             unique_ptr<Expression> *expr_ptr) {
   return nullptr;
 }
-
-// LCOV_EXCL_STOP
 
 }  // namespace bustub
