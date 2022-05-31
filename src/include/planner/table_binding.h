@@ -63,24 +63,4 @@ struct TableBinding : public Binding {
   string ColumnNotFoundError(const string &column_name) const override;
 };
 
-//! MacroBinding is like the Binding, except the alias and index are set by default. Used for binding Macro
-//! Params/Arguments.
-struct MacroBinding : public Binding {
-  static constexpr const char *MACRO_NAME = "0_macro_parameters";
-
- public:
-  MacroBinding(vector<Type> types_p, vector<string> names_p, string macro_name);
-
-  //! Arguments
-  vector<unique_ptr<ParsedExpression>> arguments;
-  //! The name of the macro
-  string macro_name;
-
- public:
-  BindResult Bind(ColumnRefExpression &colref, uint64_t depth) override;
-
-  //! Given the parameter colref, returns a copy of the argument that was supplied for this parameter
-  unique_ptr<ParsedExpression> ParamToArg(ColumnRefExpression &colref);
-};
-
 }  // namespace bustub

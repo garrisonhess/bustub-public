@@ -1,13 +1,13 @@
-// #include "planner/expression/bound_constant_expression.h"
+#include "planner/expression/bound_constant_expression.h"
 
-// // #include "common/value_operations/value_operations.h"
-// #include "common/hash_util.h"
+// #include "common/value_operations/value_operations.h"
+#include "common/hash_util.h"
 
-// namespace bustub {
+namespace bustub {
 
-// BoundConstantExpression::BoundConstantExpression(Value value_p)
-//     : Expression(ExpressionType::VALUE_CONSTANT, ExpressionClass::BOUND_CONSTANT, value_p.type()),
-//       value(move(value_p)) {}
+BoundConstantExpression::BoundConstantExpression(Value value_p)
+    : Expression(ExpressionType::VALUE_CONSTANT, ExpressionClass::BOUND_CONSTANT, Type(value_p.GetTypeId())),
+      value(value_p) {}
 
 // string BoundConstantExpression::ToString() const { return value.ToSQLString(); }
 
@@ -30,4 +30,4 @@
 //   return move(copy);
 // }
 
-// }  // namespace bustub
+}  // namespace bustub

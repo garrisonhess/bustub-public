@@ -1,15 +1,15 @@
-// #include "planner/table_binding.h"
+#include "planner/table_binding.h"
 
-// // #include "catalog/catalog_entry/table_catalog_entry.h"
-// // #include "catalog/catalog_entry/table_function_catalog_entry.h"
-// #include "common/string_util.h"
-// #include "parser/expression/columnref_expression.h"
-// #include "planner/bind_context.h"
-// #include "common/exception.h"
-// #include "planner/bound_query_node.h"
-// #include "planner/expression/bound_columnref_expression.h"
+// #include "catalog/catalog_entry/table_catalog_entry.h"
+// #include "catalog/catalog_entry/table_function_catalog_entry.h"
+#include "common/exception.h"
+#include "common/string_util.h"
+#include "parser/expression/columnref_expression.h"
+#include "planner/bind_context.h"
+#include "planner/bound_query_node.h"
+#include "planner/expression/bound_columnref_expression.h"
 
-// namespace bustub {
+namespace bustub {
 
 // Binding::Binding(const string &alias, vector<Type> coltypes, vector<string> colnames, uint64_t index)
 //     : alias(alias), index(index), types(move(coltypes)), names(move(colnames)) {
@@ -24,14 +24,15 @@
 //   }
 // }
 
-// bool Binding::TryGetBindingIndex(const string &column_name, uint64_t &result) {
-//   auto entry = name_map.find(column_name);
-//   if (entry != name_map.end()) {
-//     result = entry->second;
-//     return true;
-//   }
-//   return false;
-// }
+bool Binding::TryGetBindingIndex(const string &column_name, uint64_t &result) {
+  throw bustub::NotImplementedException("");
+  //   auto entry = name_map.find(column_name);
+  //   if (entry != name_map.end()) {
+  //     result = entry->second;
+  //     return true;
+  //   }
+  //   return false;
+}
 
 // uint64_t Binding::GetBindingIndex(const string &column_name) {
 //   uint64_t result;
@@ -147,4 +148,4 @@
 //   return arg;
 // }
 
-// }  // namespace bustub
+}  // namespace bustub

@@ -20,10 +20,7 @@ class WhereBinder : public ExpressionBinder {
   WhereBinder(Binder &binder, ClientContext &context, ColumnAliasBinder *column_alias_binder = nullptr);
 
  protected:
-  BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth,
-                            bool root_expression = false) override;
-
-  string UnsupportedAggregateMessage() override;
+  BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) override;
 
  private:
   BindResult BindColumnRef(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression);

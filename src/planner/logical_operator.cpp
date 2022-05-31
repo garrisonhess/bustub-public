@@ -1,5 +1,6 @@
 #include "planner/logical_operator.h"
 
+#include "common/exception.h"
 #include "common/printer.h"
 #include "common/string_util.h"
 #include "parser/parser.h"
@@ -68,10 +69,11 @@ vector<ColumnBinding> LogicalOperator::MapBindings(const vector<ColumnBinding> &
   return result_bindings;
 }
 
-// string LogicalOperator::ToString() const {
-//   TreeRenderer renderer;
-//   return renderer.ToString(*this);
-// }
+string LogicalOperator::ToString() const {
+  throw NotImplementedException("");
+  // TreeRenderer renderer;
+  // return renderer.ToString(*this);
+}
 
 void LogicalOperator::Verify() {
 #ifdef DEBUG

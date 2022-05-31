@@ -115,7 +115,7 @@ void BindContext::TransferUsingBinding(BindContext &current_context, UsingColumn
 string BindContext::GetActualColumnName(const string &binding_name, const string &column_name) {
   string error;
   auto binding = GetBinding(binding_name, error);
-  if (!binding) {
+  if (binding == nullptr) {
     throw Exception("No binding with name ");
   }
   uint64_t binding_index;

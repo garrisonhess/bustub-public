@@ -35,12 +35,10 @@ class SelectBinder : public ExpressionBinder {
   }
 
  protected:
-  BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth,
-                            bool root_expression = false) override;
+  BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) override;
 
-  BindResult BindAggregate(FunctionExpression &expr, AggregateFunctionCatalogEntry *function, uint64_t depth) override;
-
-  BindResult BindUnnest(FunctionExpression &function, uint64_t depth) override;
+  // BindResult BindAggregate(FunctionExpression &expr, AggregateFunctionCatalogEntry *function, uint64_t depth)
+  // override;
 
   bool inside_window;
   bool bound_aggregate = false;
@@ -49,9 +47,6 @@ class SelectBinder : public ExpressionBinder {
   BoundGroupInformation &info;
 
  protected:
-  BindResult BindGroupingFunction(OperatorExpression &op, uint64_t depth) override;
-  BindResult BindWindow(WindowExpression &expr, uint64_t depth);
-
   uint64_t TryBindGroup(ParsedExpression &expr, uint64_t depth);
   BindResult BindGroup(ParsedExpression &expr, uint64_t depth, uint64_t group_index);
 };

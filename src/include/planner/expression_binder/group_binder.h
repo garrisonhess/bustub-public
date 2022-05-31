@@ -29,8 +29,6 @@ class GroupBinder : public ExpressionBinder {
  protected:
   BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) override;
 
-  string UnsupportedAggregateMessage() override;
-
   BindResult BindSelectRef(uint64_t entry);
   BindResult BindColumnRef(ColumnRefExpression &expr);
   BindResult BindConstant(ConstantExpression &expr);
