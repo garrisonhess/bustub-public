@@ -16,7 +16,7 @@ shared_ptr<Binder> Binder::CreateBinder(ClientContext &context, Binder *parent, 
   return make_shared<Binder>(true, context, parent != nullptr ? parent->shared_from_this() : nullptr, inherit_ctes);
 }
 
-Binder::Binder(bool, ClientContext &context, shared_ptr<Binder> parent_p, bool inherit_ctes_p)
+Binder::Binder(bool /*unused*/, ClientContext &context, shared_ptr<Binder> parent_p, bool inherit_ctes_p)
     : context(context), parent(move(parent_p)), bound_tables(0), inherit_ctes(inherit_ctes_p) {
   parameters = nullptr;
   parameter_types = nullptr;

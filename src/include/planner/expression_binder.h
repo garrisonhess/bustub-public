@@ -89,9 +89,6 @@ class ExpressionBinder {
   BindResult BindExpression(ConstantExpression &expr, uint64_t depth);
 
  protected:
-  virtual string UnsupportedAggregateMessage();
-  virtual string UnsupportedUnnestMessage();
-
   Binder &binder;
   ClientContext &context;
   ExpressionBinder *stored_binder;

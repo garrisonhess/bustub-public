@@ -21,9 +21,7 @@ class ConstantBinder : public ExpressionBinder {
   string clause;
 
  protected:
-  BindResult BindExpression(unique_ptr<ParsedExpression> *expr, uint64_t depth, bool root_expression = false) override;
-
-  string UnsupportedAggregateMessage() override;
+  BindResult BindExpression(unique_ptr<ParsedExpression> *expr, uint64_t depth, bool root_expression) override;
 };
 
 }  // namespace bustub
