@@ -24,23 +24,25 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     string prepare_name = "____bustub_internal_prepare_" + std::to_string(prepare_count);
     prepare_count_++;
 
+    auto unbound_statement = statement->Copy();
+
     LOG_INFO("About to call planner w/ query: %s", statement->query_.c_str());
     Planner planner = Planner(*this);
     planner.CreatePlan(move(statement));
     LOG_INFO("Done w/ CreatePlan.");
-    LOG_INFO("planner plan: %s", planner.plan_->ToString().c_str());
+    LOG_INFO("planner plan: \n%s", planner.plan_->ToString().c_str());
+    // LOG_INFO("planner binder_: \n%s", planner.binder_->ToString().c_str());
+    // LOG_INFO("planner context_: \n%s", planner.context_->ToString().c_str());
+    // LOG_INFO("planner names_: \n%s", planner.names_->ToString().c_str());
+    // LOG_INFO("planner types_: \n%s", planner.types_->ToString().c_str());
 
-    // planner.plan_
-    // planner.binder_
-    // planner.context_
-    // planner.names_
-    // planner.types_
-
-    unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(), statement->query_);
+    unique_ptr<PreparedStatement> result =
+        std::make_unique<PreparedStatement>(shared_from_this(), unbound_statement->query_);
+    LOG_INFO("created Preparedstatement");
     result->statement_type_ = StatementType::SELECT_STATEMENT;
     result->types_ = {Type(TypeId::INTEGER)};
     result->names_ = {"column1"};
-
+    LOG_INFO("Returning result now!");
     return result;
   } catch (Exception &ex) {
     LOG_DEBUG("PREPARE FAILED");
