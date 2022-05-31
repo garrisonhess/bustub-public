@@ -3,6 +3,7 @@
 #include "common/exception.h"
 #include "common/printer.h"
 #include "common/string_util.h"
+#include "common/tree_renderer.h"
 #include "parser/parser.h"
 
 namespace bustub {
@@ -69,9 +70,8 @@ vector<ColumnBinding> LogicalOperator::MapBindings(const vector<ColumnBinding> &
 }
 
 string LogicalOperator::ToString() const {
-  throw NotImplementedException("");
-  // TreeRenderer renderer;
-  // return renderer.ToString(*this);
+  TreeRenderer renderer;
+  return renderer.ToString(*this);
 }
 
 void LogicalOperator::Verify() {

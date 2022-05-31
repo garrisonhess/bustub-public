@@ -9,7 +9,6 @@ namespace bustub {
 
 unique_ptr<LogicalOperator> Binder::VisitQueryNode(BoundQueryNode &node, unique_ptr<LogicalOperator> root) {
   assert(root);
-  throw NotImplementedException("");
   //   for (auto &mod : node.modifiers) {
   //     switch (mod->type) {
   //       case ResultModifierType::DISTINCT_MODIFIER: {

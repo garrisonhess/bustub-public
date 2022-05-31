@@ -6,6 +6,7 @@
 #include "parser/expression/columnref_expression.h"
 #include "parser/expression/constant_expression.h"
 #include "parser/query_node/select_node.h"
+#include "parser/tableref/emptytableref.h"
 #include "parser/tableref/joinref.h"
 #include "planner/binder.h"
 #include "planner/expression_binder/column_alias_binder.h"
@@ -18,6 +19,7 @@
 #include "planner/query_node/bound_select_node.h"
 
 namespace bustub {
+using std::make_unique;
 
 // unique_ptr<Expression> Binder::BindOrderExpression(OrderBinder &order_binder, unique_ptr<ParsedExpression> expr) {
 //   // we treat the Distinct list as a order by
@@ -228,16 +230,14 @@ namespace bustub {
 // }
 
 unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
+  LOG_INFO("In BindNode(SelectNode) for node: %s", node.ToString().c_str());
   auto result = make_unique<BoundSelectNode>();
-  result->projection_index_ = GenerateTableIndex();
-  result->group_index_ = GenerateTableIndex();
-  result->aggregate_index_ = GenerateTableIndex();
-  result->groupings_index_ = GenerateTableIndex();
-  result->window_index_ = GenerateTableIndex();
-  result->unnest_index_ = GenerateTableIndex();
-  result->prune_index_ = GenerateTableIndex();
-
   // first bind the FROM table statement
+  if (node.from_table_ == nullptr) {
+    LOG_INFO("stupid select from_table is nullptr, so we're making it empty here...");
+    node.from_table_ = make_unique<EmptyTableRef>();
+  }
+
   result->from_table_ = Bind(*node.from_table_);
 
   // visit the select list and expand any "*" statements
@@ -251,9 +251,9 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
       new_select_list.push_back(move(select_element));
     }
   }
-  if (new_select_list.empty()) {
-    throw Exception("SELECT list is empty after resolving * expressions!");
-  }
+  // if (new_select_list.empty()) {
+  //   throw Exception("SELECT list is empty after resolving * expressions!");
+  // }
   node.select_list_ = move(new_select_list);
 
   // // create a mapping of (alias -> index) and a mapping of (Expression -> index) for the SELECT list
@@ -340,6 +340,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
 
   // // now that the SELECT list is bound, we set the types of DISTINCT/ORDER BY expressions
   // BindModifierTypes(*result, internal_sql_types, result->projection_index_);
+  LOG_INFO("DONE - BindNode(SelectNode) for node: %s", node.ToString().c_str());
   return result;
 }
 

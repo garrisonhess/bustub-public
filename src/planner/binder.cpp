@@ -27,7 +27,7 @@ BoundStatement Binder::Bind(SQLStatement &statement) {
   root_statement_ = &statement;
   LOG_INFO("marking statement: %s as root", statement.ToString().c_str());
   LOG_INFO("stmt len %d | stmt loc %d | ", statement.stmt_length_, statement.stmt_location_);
-  LOG_INFO("stmt type %hhu | stmt query %s | ", statement.type_, statement.query_.c_str());
+  LOG_INFO("stmt type %d | stmt query %s | ", static_cast<uint8_t>(statement.type_), statement.query_.c_str());
 
   switch (statement.type_) {
     case StatementType::SELECT_STATEMENT:
@@ -61,6 +61,8 @@ BoundStatement Binder::Bind(SQLStatement &statement) {
 unique_ptr<BoundQueryNode> Binder::BindNode(QueryNode &node) {
   // now we bind the node
   unique_ptr<BoundQueryNode> result;
+  LOG_INFO("in BindNode for node: %s", node.ToString().c_str());
+
   switch (node.type_) {
     case QueryNodeType::SELECT_NODE:
       result = BindNode((SelectNode &)node);
@@ -72,12 +74,14 @@ unique_ptr<BoundQueryNode> Binder::BindNode(QueryNode &node) {
     default:
       throw NotImplementedException("Unimplemented node type for Bind");
   }
+
+  LOG_INFO("Done with BindNode for node: %s", node.ToString().c_str());
   return result;
 }
 
 BoundStatement Binder::Bind(QueryNode &node) {
-  auto bound_node = BindNode(node);
   LOG_INFO("In Binder::Bind for QueryNode: %s", node.ToString().c_str());
+  auto bound_node = BindNode(node);
   BoundStatement result;
   result.names_ = bound_node->names_;
   result.types_ = bound_node->types_;
@@ -102,6 +106,7 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundQueryNode &node) {
 }
 
 unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
+  LOG_INFO("In Binder::Bind(TableRef) for ref: %s", ref.ToString().c_str());
   unique_ptr<BoundTableRef> result;
   switch (ref.type_) {
     case TableReferenceType::BASE_TABLE:

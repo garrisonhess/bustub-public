@@ -62,12 +62,6 @@ ExpressionListRef *InsertStatement::GetValuesList() const {
     return nullptr;
   }
   auto &node = (SelectNode &)*select_statement_->node_;
-  if (node.where_clause_ || node.qualify_ || node.having_) {
-    return nullptr;
-  }
-  if (!node.groups_.grouping_sets_.empty()) {
-    return nullptr;
-  }
   if (node.select_list_.size() != 1 || node.select_list_[0]->type_ != ExpressionType::STAR) {
     return nullptr;
   }

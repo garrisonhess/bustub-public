@@ -96,20 +96,6 @@ void ExpressionIterator::EnumerateQueryNodeChildren(BoundQueryNode &node,
       for (auto &i : bound_select.select_list_) {
         EnumerateExpression(i, callback);
       }
-      EnumerateExpression(bound_select.where_clause_, callback);
-      for (auto &group_expression : bound_select.groups_.group_expressions_) {
-        EnumerateExpression(group_expression, callback);
-      }
-      EnumerateExpression(bound_select.having_, callback);
-      for (auto &aggregate : bound_select.aggregates_) {
-        EnumerateExpression(aggregate, callback);
-      }
-      for (auto &unnest : bound_select.unnests_) {
-        EnumerateExpression(unnest, callback);
-      }
-      for (auto &window : bound_select.windows_) {
-        EnumerateExpression(window, callback);
-      }
       if (bound_select.from_table_) {
         EnumerateTableRefChildren(*bound_select.from_table_, callback);
       }

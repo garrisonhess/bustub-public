@@ -126,19 +126,6 @@ void ParsedExpressionIterator::EnumerateQueryNodeChildren(
       for (auto &i : sel_node.select_list_) {
         callback(i);
       }
-      for (auto &group_expression : sel_node.groups_.group_expressions_) {
-        callback(group_expression);
-      }
-      if (sel_node.where_clause_) {
-        callback(sel_node.where_clause_);
-      }
-      if (sel_node.having_) {
-        callback(sel_node.having_);
-      }
-      if (sel_node.qualify_) {
-        callback(sel_node.qualify_);
-      }
-
       EnumerateTableRefChildren(*sel_node.from_table_, callback);
       break;
     }
