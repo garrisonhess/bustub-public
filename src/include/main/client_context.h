@@ -9,12 +9,12 @@
 #pragma once
 
 #include "common/enums/statement_type.h"
-#include "execution/execution_engine.h"
 #include "main/database.h"
 #include "main/prepared_statement.h"
 #include "parser/sql_statement.h"
 
 namespace bustub {
+class ExecutionEngine;
 
 //! The ClientContext holds information relevant to the current client session
 //! during execution

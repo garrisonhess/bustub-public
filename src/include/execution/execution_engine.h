@@ -17,8 +17,6 @@
 #include "buffer/buffer_pool_manager.h"
 #include "catalog/catalog.h"
 #include "concurrency/transaction_manager.h"
-#include "execution/executor_context.h"
-#include "execution/executor_factory.h"
 #include "execution/plans/abstract_plan.h"
 #include "main/client_context.h"
 #include "main/database.h"
@@ -38,7 +36,7 @@ class ExecutionEngine {
    * @param txn_mgr The transaction manager used by the execution engine
    * @param catalog The catalog used by the execution engine
    */
-  explicit ExecutionEngine(ClientContext &context) : context_(context) {}
+  explicit ExecutionEngine(ClientContext &context);
 
   DISALLOW_COPY_AND_MOVE(ExecutionEngine);
 
@@ -50,23 +48,20 @@ class ExecutionEngine {
    * @param exec_ctx The executor context in which the query executes
    * @return `true` if execution of the query plan succeeds, `false` otherwise
    */
-  auto Execute(const AbstractPlanNode *plan, std::vector<Tuple> *result_set, Transaction *txn,
-               ExecutorContext *exec_ctx) -> bool {
+  auto Execute(AbstractPlanNode *plan, std::vector<Tuple> *result_set, Transaction *txn) -> bool {
     // Construct and executor for the plan
-    auto executor = ExecutorFactory::CreateExecutor(exec_ctx, plan);
-
     // Prepare the root executor
-    executor->Init();
+    // context_.executor_->Init();
 
     // Execute the query plan
     try {
-      Tuple tuple;
-      RID rid;
-      while (executor->Next(&tuple, &rid)) {
-        if (result_set != nullptr) {
-          result_set->push_back(tuple);
-        }
-      }
+      // Tuple tuple;
+      // RID rid;
+      // while (context_.executor_->Next(&tuple, &rid)) {
+      //   if (result_set != nullptr) {
+      //     result_set->push_back(tuple);
+      //   }
+      // }
     } catch (Exception &e) {
       // TODO(student): handle exceptions
     }

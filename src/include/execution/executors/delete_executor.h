@@ -16,9 +16,9 @@
 #include <utility>
 #include <vector>
 
-#include "execution/executor_context.h"
 #include "execution/executors/abstract_executor.h"
 #include "execution/plans/delete_plan.h"
+#include "main/client_context.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {
@@ -35,7 +35,7 @@ class DeleteExecutor : public AbstractExecutor {
    * @param plan The delete plan to be executed
    * @param child_executor The child executor that feeds the delete
    */
-  DeleteExecutor(ExecutorContext *exec_ctx, const DeletePlanNode *plan,
+  DeleteExecutor(ClientContext &context, const DeletePlanNode *plan,
                  std::unique_ptr<AbstractExecutor> &&child_executor);
 
   /** Initialize the delete */

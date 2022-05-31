@@ -14,7 +14,6 @@
 
 #include <vector>
 
-#include "execution/executor_context.h"
 #include "execution/executors/abstract_executor.h"
 #include "execution/plans/seq_scan_plan.h"
 #include "storage/table/tuple.h"
@@ -31,7 +30,7 @@ class SeqScanExecutor : public AbstractExecutor {
    * @param exec_ctx The executor context
    * @param plan The sequential scan plan to be executed
    */
-  SeqScanExecutor(ExecutorContext *exec_ctx, const SeqScanPlanNode *plan);
+  SeqScanExecutor(ClientContext &context, const SeqScanPlanNode *plan);
 
   /** Initialize the sequential scan */
   void Init() override;

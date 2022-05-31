@@ -15,7 +15,6 @@
 #include <memory>
 #include <utility>
 
-#include "execution/executor_context.h"
 #include "execution/executors/abstract_executor.h"
 #include "execution/plans/nested_loop_join_plan.h"
 #include "storage/table/tuple.h"
@@ -34,7 +33,7 @@ class NestedLoopJoinExecutor : public AbstractExecutor {
    * @param left_executor The child executor that produces tuple for the left side of join
    * @param right_executor The child executor that produces tuple for the right side of join
    */
-  NestedLoopJoinExecutor(ExecutorContext *exec_ctx, const NestedLoopJoinPlanNode *plan,
+  NestedLoopJoinExecutor(ClientContext &context, const NestedLoopJoinPlanNode *plan,
                          std::unique_ptr<AbstractExecutor> &&left_executor,
                          std::unique_ptr<AbstractExecutor> &&right_executor);
 

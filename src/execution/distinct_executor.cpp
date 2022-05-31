@@ -14,9 +14,9 @@
 
 namespace bustub {
 
-DistinctExecutor::DistinctExecutor(ExecutorContext *exec_ctx, const DistinctPlanNode *plan,
+DistinctExecutor::DistinctExecutor(ClientContext &context, const DistinctPlanNode *plan,
                                    std::unique_ptr<AbstractExecutor> &&child_executor)
-    : AbstractExecutor(exec_ctx) {}
+    : AbstractExecutor(context) {}
 
 void DistinctExecutor::Init() {}
 

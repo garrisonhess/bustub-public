@@ -12,7 +12,7 @@
 #include "execution/executors/index_scan_executor.h"
 
 namespace bustub {
-IndexScanExecutor::IndexScanExecutor(ExecutorContext *exec_ctx, const IndexScanPlanNode *plan)
+IndexScanExecutor::IndexScanExecutor(ClientContext &exec_ctx, const IndexScanPlanNode *plan)
     : AbstractExecutor(exec_ctx) {}
 
 void IndexScanExecutor::Init() {}

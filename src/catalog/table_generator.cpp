@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <random>
 #include <vector>
+#include "common/exception.h"
 
 namespace bustub {
 
@@ -77,7 +78,9 @@ void TableGenerator::FillTable(TableInfo *info, TableInsertMeta *table_meta) {
         entry.emplace_back(col[i]);
       }
       RID rid;
-      bool inserted = info->table_->InsertTuple(Tuple(entry, &info->schema_), &rid, exec_ctx_->GetTransaction());
+      Transaction txn = Transaction(12345);
+      // TODO(GH): fix this!
+      bool inserted = info->table_->InsertTuple(Tuple(entry, &info->schema_), &rid, &txn);
       BUSTUB_ASSERT(inserted, "Sequential insertion cannot fail");
       num_inserted++;
     }
@@ -174,8 +177,9 @@ void TableGenerator::GenerateTestTables() {
       }
     }
     Schema schema(cols);
-    auto info = exec_ctx_->GetCatalog()->CreateTable(exec_ctx_->GetTransaction(), table_meta.name_, schema);
-    FillTable(info, &table_meta);
+    // auto info = context_.GetCatalog()->CreateTable(context_->GetTransaction(), table_meta.name_, schema);
+    // FillTable(info, &table_meta);
+    throw NotImplementedException("table generator");
   }
 }
 }  // namespace bustub

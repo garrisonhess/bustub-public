@@ -19,10 +19,10 @@
 
 #include "common/hash_util.h"
 #include "container/hash/hash_function.h"
-#include "execution/executor_context.h"
 #include "execution/executors/abstract_executor.h"
 #include "execution/expressions/abstract_expression.h"
 #include "execution/plans/aggregation_plan.h"
+#include "main/client_context.h"
 #include "storage/table/tuple.h"
 #include "type/value_factory.h"
 
@@ -164,7 +164,7 @@ class AggregationExecutor : public AbstractExecutor {
    * @param plan The insert plan to be executed
    * @param child_executor The child executor from which inserted tuples are pulled (may be `nullptr`)
    */
-  AggregationExecutor(ExecutorContext *exec_ctx, const AggregationPlanNode *plan,
+  AggregationExecutor(ClientContext &context, const AggregationPlanNode *plan,
                       std::unique_ptr<AbstractExecutor> &&child);
 
   /** Initialize the aggregation */

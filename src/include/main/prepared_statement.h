@@ -52,7 +52,7 @@ class PreparedStatement {
   StatementType statement_type_;
 
   //! The fully prepared physical plan of the prepared statement
-  unique_ptr<AbstractPlanNode> plan_;
+  AbstractPlanNode *plan_;
 
   //! The result names of the transaction
   vector<string> names_;

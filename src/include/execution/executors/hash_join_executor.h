@@ -15,7 +15,7 @@
 #include <memory>
 #include <utility>
 
-#include "execution/executor_context.h"
+#include "execution/execution_engine.h"
 #include "execution/executors/abstract_executor.h"
 #include "execution/plans/hash_join_plan.h"
 #include "storage/table/tuple.h"
@@ -34,8 +34,8 @@ class HashJoinExecutor : public AbstractExecutor {
    * @param left_child The child executor that produces tuples for the left side of join
    * @param right_child The child executor that produces tuples for the right side of join
    */
-  HashJoinExecutor(ExecutorContext *exec_ctx, const HashJoinPlanNode *plan,
-                   std::unique_ptr<AbstractExecutor> &&left_child, std::unique_ptr<AbstractExecutor> &&right_child);
+  HashJoinExecutor(ClientContext &context, const HashJoinPlanNode *plan, std::unique_ptr<AbstractExecutor> &&left_child,
+                   std::unique_ptr<AbstractExecutor> &&right_child);
 
   /** Initialize the join */
   void Init() override;

@@ -2,7 +2,7 @@
 
 #include "common/exception.h"
 #include "common/macros.h"
-#include "execution/executor_context.h"
+#include "execution/execution_engine.h"
 #include "execution/plans/seq_scan_plan.h"
 #include "main/client_context.h"
 
@@ -30,10 +30,9 @@ unique_ptr<QueryResult> PreparedStatement::Execute() {
   vector<string> names = {"column1"};
   unique_ptr<QueryResult> result = std::make_unique<QueryResult>(stmt_type, types, names);
   std::vector<Tuple> data = {};
-  // const AbstractPlanNode *plan = nullptr;
-  // Transaction * txn = nullptr;
-  // ExecutorContext * exec_ctx = nullptr;
-  // context_->executor_->Execute(plan, &result->data_, txn, exec_ctx);
+  Transaction txn = Transaction(101);
+  context_->executor_->Execute(plan_, &result->data_, &txn);
+
   result->success_ = true;
 
   vector<Value> temp_values = {Value(TypeId::INTEGER, 42069)};
