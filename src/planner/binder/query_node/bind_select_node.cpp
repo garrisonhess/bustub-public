@@ -227,163 +227,122 @@ void Binder::BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_t
   //   }
 }
 
-unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
-  throw NotImplementedException("");
-  //   auto result = make_unique<BoundSelectNode>();
-  //   result->projection_index = GenerateTableIndex();
-  //   result->group_index = GenerateTableIndex();
-  //   result->aggregate_index = GenerateTableIndex();
-  //   result->groupings_index = GenerateTableIndex();
-  //   result->window_index = GenerateTableIndex();
-  //   result->unnest_index = GenerateTableIndex();
-  //   result->prune_index = GenerateTableIndex();
+unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
+    auto result = make_unique<BoundSelectNode>();
+    result->projection_index_ = GenerateTableIndex();
+    result->group_index_ = GenerateTableIndex();
+    result->aggregate_index_ = GenerateTableIndex();
+    result->groupings_index_ = GenerateTableIndex();
+    result->window_index_ = GenerateTableIndex();
+    result->unnest_index_ = GenerateTableIndex();
+    result->prune_index_ = GenerateTableIndex();
 
-  //   // first bind the FROM table statement
-  //   result->from_table = Bind(*statement.from_table);
+    // first bind the FROM table statement
+    result->from_table_ = Bind(*node.from_table_);
 
-  //   // visit the select list and expand any "*" statements
-  //   vector<unique_ptr<ParsedExpression>> new_select_list;
-  //   for (auto &select_element : statement.select_list) {
-  //     if (select_element->GetExpressionType() == ExpressionType::STAR) {
-  //       // * statement, expand to all columns from the FROM clause
-  //       bind_context.GenerateAllColumnExpressions((StarExpression &)*select_element, new_select_list);
-  //     } else {
-  //       // regular statement, add it to the list
-  //       new_select_list.push_back(move(select_element));
-  //     }
-  //   }
-  //   if (new_select_list.empty()) {
-  //     throw Exception("SELECT list is empty after resolving * expressions!");
-  //   }
-  //   statement.select_list = move(new_select_list);
+    // visit the select list and expand any "*" statements
+    vector<unique_ptr<ParsedExpression>> new_select_list;
+    for (auto &select_element : node.select_list_) {
+      if (select_element->GetExpressionType() == ExpressionType::STAR) {
+        // * statement, expand to all columns from the FROM clause
+        bind_context_.GenerateAllColumnExpressions((StarExpression &)*select_element, new_select_list);
+      } else {
+        // regular statement, add it to the list
+        new_select_list.push_back(move(select_element));
+      }
+    }
+    if (new_select_list.empty()) {
+      throw Exception("SELECT list is empty after resolving * expressions!");
+    }
+    node.select_list_ = move(new_select_list);
 
-  //   // create a mapping of (alias -> index) and a mapping of (Expression -> index) for the SELECT list
-  //   case_insensitive_map_t<uint64_t> alias_map;
-  //   expression_map_t<uint64_t> projection_map;
-  //   for (uint64_t i = 0; i < statement.select_list.size(); i++) {
-  //     auto &expr = statement.select_list[i];
-  //     result->names.push_back(expr->GetName());
-  //     ExpressionBinder::QualifyColumnNames(*this, expr);
-  //     if (!expr->alias.empty()) {
-  //       alias_map[expr->alias] = i;
-  //       result->names[i] = expr->alias;
-  //     }
-  //     projection_map[expr.get()] = i;
-  //     result->original_expressions.push_back(expr->Copy());
-  //   }
-  //   result->column_count = statement.select_list.size();
+    // // create a mapping of (alias -> index) and a mapping of (Expression -> index) for the SELECT list
+    // case_insensitive_map_t<uint64_t> alias_map;
+    // expression_map_t<uint64_t> projection_map;
+    // for (uint64_t i = 0; i < node.select_list_.size(); i++) {
+    //   auto &expr = node.select_list_[i];
+    //   result->names_.push_back(expr->GetName());
+    //   ExpressionBinder::QualifyColumnNames(*this, expr);
+    //   if (!expr->alias_.empty()) {
+    //     alias_map[expr->alias_] = i;
+    //     result->names_[i] = expr->alias_;
+    //   }
+    //   projection_map[expr.get()] = i;
+    //   result->original_expressions_.push_back(expr->Copy());
+    // }
+    // result->column_count_ = node.select_list_.size();
 
-  //   // first visit the WHERE clause
-  //   // the WHERE clause happens before the GROUP BY, PROJECTION or HAVING clauses
-  //   if (statement.where_clause) {
-  //     ColumnAliasBinder alias_binder(*result, alias_map);
-  //     WhereBinder where_binder(*this, context, &alias_binder);
-  //     unique_ptr<ParsedExpression> condition = move(statement.where_clause);
-  //     result->where_clause = where_binder.Bind(condition);
-  //   }
+    // // first visit the WHERE clause
+    // // the WHERE clause happens before the GROUP BY, PROJECTION or HAVING clauses
+    // if (node.where_clause_) {
+    //   ColumnAliasBinder alias_binder(*result, alias_map);
+    //   WhereBinder where_binder(*this, context_, &alias_binder);
+    //   unique_ptr<ParsedExpression> condition = move(node.where_clause_);
+    //   result->where_clause_ = where_binder.Bind(condition);
+    // }
 
-  //   // now bind all the result modifiers; including DISTINCT and ORDER BY targets
-  //   OrderBinder order_binder({this}, result->projection_index, statement, alias_map, projection_map);
-  //   BindModifiers(order_binder, statement, *result);
+    // // now bind all the result modifiers; including DISTINCT and ORDER BY targets
+    // OrderBinder order_binder({this}, result->projection_index_, statement, alias_map, projection_map);
+    // BindModifiers(order_binder, statement, *result);
 
-  //   vector<unique_ptr<ParsedExpression>> unbound_groups;
-  //   BoundGroupInformation info;
-  //   auto &group_expressions = statement.groups.group_expressions;
-  //   if (!group_expressions.empty()) {
-  //     // the statement has a GROUP BY clause, bind it
-  //     unbound_groups.resize(group_expressions.size());
-  //     GroupBinder group_binder(*this, context, statement, result->group_index, alias_map, info.alias_map);
-  //     for (uint64_t i = 0; i < group_expressions.size(); i++) {
-  //       // we keep a copy of the unbound expression;
-  //       // we keep the unbound copy around to check for group references in the SELECT and HAVING clause
-  //       // the reason we want the unbound copy is because we want to figure out whether an expression
-  //       // is a group reference BEFORE binding in the SELECT/HAVING binder
-  //       group_binder.unbound_expression = group_expressions[i]->Copy();
-  //       group_binder.bind_index = i;
+    // vector<unique_ptr<ParsedExpression>> unbound_groups;
+    // BoundGroupInformation info;
+    // auto &group_expressions = statement.groups_.group_expressions_;
+    // if (!group_expressions.empty()) {
+    //   // the statement has a GROUP BY clause, bind it
+    //   unbound_groups.resize(group_expressions.size());
+    //   GroupBinder group_binder(*this, context_, statement, result->group_index_, alias_map, info.alias_map_);
+    //   for (uint64_t i = 0; i < group_expressions.size(); i++) {
+    //     // we keep a copy of the unbound expression;
+    //     // we keep the unbound copy around to check for group references in the SELECT and HAVING clause
+    //     // the reason we want the unbound copy is because we want to figure out whether an expression
+    //     // is a group reference BEFORE binding in the SELECT/HAVING binder
+    //     group_binder.unbound_expression_ = group_expressions[i]->Copy();
+    //     group_binder.bind_index_ = i;
 
-  //       // bind the groups
-  //       Type group_type;
-  //       auto bound_expr = group_binder.Bind(group_expressions[i], &group_type);
-  //       assert(bound_expr->return_type.id() != TypeId::INVALID);
+    //     // bind the groups
+    //     Type group_type;
+    //     auto bound_expr = group_binder.Bind(group_expressions[i], &group_type);
+    //     assert(bound_expr->return_type_.GetTypeId() != TypeId::INVALID);
+        
+    //     // in the unbound expression we DO bind the table names of any ColumnRefs
+    //     // we do this to make sure that "table.a" and "a" are treated the same
+    //     // if we wouldn't do this then (SELECT test.a FROM test GROUP BY a) would not work because "test.a" <> "a"
+    //     // hence we convert "a" -> "test.a" in the unbound expression
+    //     unbound_groups[i] = move(group_binder.unbound_expression_);
+    //     ExpressionBinder::QualifyColumnNames(*this, unbound_groups[i]);
+    //     info.map_[unbound_groups[i].get()] = i;
+    //   }
+    // }
+    // result->groups_.grouping_sets_ = move(statement.groups_.grouping_sets_);
 
-  //       // push a potential collation, if necessary
-  //       bound_expr =
-  //           ExpressionBinder::PushCollation(context, move(bound_expr), StringType::GetCollation(group_type), true);
-  //       result->groups.group_expressions.push_back(move(bound_expr));
+    // // bind the HAVING clause, if any
+    // if (node.having_) {
+    //   HavingBinder having_binder(*this, context_, *result, info, alias_map);
+    //   ExpressionBinder::QualifyColumnNames(*this, node.having_);
+    //   result->having_ = having_binder.Bind(node.having_);
+    // }
 
-  //       // in the unbound expression we DO bind the table names of any ColumnRefs
-  //       // we do this to make sure that "table.a" and "a" are treated the same
-  //       // if we wouldn't do this then (SELECT test.a FROM test GROUP BY a) would not work because "test.a" <> "a"
-  //       // hence we convert "a" -> "test.a" in the unbound expression
-  //       unbound_groups[i] = move(group_binder.unbound_expression);
-  //       ExpressionBinder::QualifyColumnNames(*this, unbound_groups[i]);
-  //       info.map[unbound_groups[i].get()] = i;
-  //     }
-  //   }
-  //   result->groups.grouping_sets = move(statement.groups.grouping_sets);
+    // after that, we bind to the SELECT list
+    BoundGroupInformation info; // TODO(GH): this is a hack
+    SelectBinder select_binder(*this, context_, *result, info);
+    vector<Type> internal_sql_types;
+    for (uint64_t i = 0; i < node.select_list_.size(); i++) {
+      Type result_type = Type(TypeId::INVALID);
+      auto expr = select_binder.Bind(node.select_list_[i], &result_type);
+      result->select_list_.push_back(move(expr));
+      if (i < result->column_count_) {
+        result->types_.push_back(result_type);
+      }
+      internal_sql_types.push_back(result_type);
+    }
+    result->need_prune_ = result->select_list_.size() > result->column_count_;
 
-  //   // bind the HAVING clause, if any
-  //   if (statement.having) {
-  //     HavingBinder having_binder(*this, context, *result, info, alias_map);
-  //     ExpressionBinder::QualifyColumnNames(*this, statement.having);
-  //     result->having = having_binder.Bind(statement.having);
-  //   }
 
-  //   // after that, we bind to the SELECT list
-  //   SelectBinder select_binder(*this, context, *result, info);
-  //   vector<Type> internal_sql_types;
-  //   for (uint64_t i = 0; i < statement.select_list.size(); i++) {
-  //     Type result_type;
-  //     auto expr = select_binder.Bind(statement.select_list[i], &result_type);
-  //     if (statement.aggregate_handling == AggregateHandling::FORCE_AGGREGATES && select_binder.HasBoundColumns()) {
-  //       if (select_binder.BoundAggregates()) {
-  //         throw Exception("Cannot mix aggregates with non-aggregated columns!");
-  //       }
-  //       // we are forcing aggregates, and the node has columns bound
-  //       // this entry becomes a group
-  //       auto group_ref = make_unique<BoundColumnRefExpression>(
-  //           expr->return_type, ColumnBinding(result->group_index, result->groups.group_expressions.size()));
-  //       result->groups.group_expressions.push_back(move(expr));
-  //       expr = move(group_ref);
-  //     }
-  //     result->select_list.push_back(move(expr));
-  //     if (i < result->column_count) {
-  //       result->types.push_back(result_type);
-  //     }
-  //     internal_sql_types.push_back(result_type);
-  //     if (statement.aggregate_handling == AggregateHandling::FORCE_AGGREGATES) {
-  //       select_binder.ResetBindings();
-  //     }
-  //   }
-  //   result->need_prune = result->select_list.size() > result->column_count;
 
-  //   // in the normal select binder, we bind columns as if there is no aggregation
-  //   // i.e. in the query [SELECT i, SUM(i) FROM integers;] the "i" will be bound as a normal column
-  //   // since we have an aggregation, we need to either (1) throw an error, or (2) wrap the column in a FIRST()
-  //   //   aggregate
-  //   // we choose the former one [CONTROVERSIAL: this is the PostgreSQL behavior]
-  //   if (!result->groups.group_expressions.empty() || !result->aggregates.empty() || statement.having ||
-  //       !result->groups.grouping_sets.empty()) {
-  //     if (statement.aggregate_handling == AggregateHandling::NO_AGGREGATES_ALLOWED) {
-  //       throw Exception("Aggregates cannot be present in a Project relation!");
-  //     } else if (statement.aggregate_handling == AggregateHandling::STANDARD_HANDLING) {
-  //       if (select_binder.HasBoundColumns()) {
-  //         auto &bound_columns = select_binder.GetBoundColumns();
-  //         throw Exception("column X must appear in the GROUP BY clause or be used in an aggregate function");
-  //       }
-  //     }
-  //   }
-
-  //   // QUALIFY clause requires at least one window function to be specified in at least one of the SELECT column list
-  //   //   or
-  //   // the filter predicate of the QUALIFY clause
-  //   if (statement.qualify && result->windows.empty()) {
-  //     throw Exception("at least one window function must appear in the SELECT column or QUALIFY clause");
-  //   }
-
-  //   // now that the SELECT list is bound, we set the types of DISTINCT/ORDER BY expressions
-  //   BindModifierTypes(*result, internal_sql_types, result->projection_index);
-  //   return move(result);
+    // // now that the SELECT list is bound, we set the types of DISTINCT/ORDER BY expressions
+    // BindModifierTypes(*result, internal_sql_types, result->projection_index_);
+    return result;
 }
 
 }  // namespace bustub

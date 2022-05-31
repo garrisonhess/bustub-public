@@ -100,7 +100,6 @@ unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
     case TableReferenceType::BASE_TABLE:
       result = Bind((BaseTableRef &)ref);
       break;
-
     case TableReferenceType::EMPTY:
       result = Bind((EmptyTableRef &)ref);
       break;

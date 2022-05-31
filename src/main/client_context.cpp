@@ -28,11 +28,17 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     result->statement_type_ = StatementType::SELECT_STATEMENT;
     result->types_ = {Type(TypeId::INTEGER)};
     result->names_ = {"column1"};
-    LOG_INFO("prepared statement query: %s", statement_query.c_str());
-
+    LOG_INFO("About to call planner w/ query: %s", statement_query.c_str());
     Planner planner(*this);
     planner.CreatePlan(move(statement));
 
+    LOG_INFO("Done w/ CreatePlan.");
+
+    // planner.plan_
+    // planner.binder_
+    // planner.context_
+    // planner.names_
+    // planner.types_
     return result;
   } catch (Exception &ex) {
     LOG_DEBUG("PREPARE FAILED");
