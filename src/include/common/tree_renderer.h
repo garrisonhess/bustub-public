@@ -53,19 +53,19 @@ struct TreeRendererConfig {
   bool detailed_ = false;
 
 #ifndef BUSTUB_ASCII_TREE_RENDERER
-  const char *LTCORNER = "\342\224\214";  // "┌";
-  const char *RTCORNER = "\342\224\220";  // "┐";
-  const char *LDCORNER = "\342\224\224";  // "└";
-  const char *RDCORNER = "\342\224\230";  // "┘";
+  const char *ltcorner_ = "\342\224\214";  // "┌";
+  const char *rtcorner_ = "\342\224\220";  // "┐";
+  const char *ldcorner_ = "\342\224\224";  // "└";
+  const char *rdcorner_ = "\342\224\230";  // "┘";
 
-  const char *MIDDLE = "\342\224\274";   // "┼";
-  const char *TMIDDLE = "\342\224\254";  // "┬";
-  const char *LMIDDLE = "\342\224\234";  // "├";
-  const char *RMIDDLE = "\342\224\244";  // "┤";
-  const char *DMIDDLE = "\342\224\264";  // "┴";
+  const char *middle_ = "\342\224\274";   // "┼";
+  const char *tmiddle_ = "\342\224\254";  // "┬";
+  const char *lmiddle_ = "\342\224\234";  // "├";
+  const char *rmiddle_ = "\342\224\244";  // "┤";
+  const char *dmiddle_ = "\342\224\264";  // "┴";
 
-  const char *VERTICAL = "\342\224\202";    // "│";
-  const char *HORIZONTAL = "\342\224\200";  // "─";
+  const char *vertical_ = "\342\224\202";    // "│";
+  const char *horizontal_ = "\342\224\200";  // "─";
 #else
   // ASCII version
   const char *LTCORNER = "<";
