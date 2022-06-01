@@ -50,22 +50,4 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
   }
 }
 
-// // DEBUG VERSION - NO PLANNER
-// unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
-//   try {
-//     LOG_INFO("preparing statement: %s", statement->ToString().c_str());
-//     static int prepare_count = 0;
-//     string prepare_name = "____bustub_internal_prepare_" + std::to_string(prepare_count);
-//     prepare_count_++;
-//     auto statement_query = statement->query_;
-//     auto unbound_statement = statement->Copy();
-//     unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(),
-//     statement->query_); result->statement_type_ = StatementType::SELECT_STATEMENT; result->types_ =
-//     {Type(TypeId::INTEGER)}; result->names_ = {"column1"}; return result;
-//   } catch (Exception &ex) {
-//     LOG_DEBUG("PREPARE FAILED");
-//     return std::make_unique<PreparedStatement>(ex.what());
-//   }
-// }
-
 }  // namespace bustub

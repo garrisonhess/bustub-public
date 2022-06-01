@@ -16,7 +16,7 @@
 
 namespace bustub {
 
-DeleteExecutor::DeleteExecutor(ClientContext & context, const DeletePlanNode *plan,
+DeleteExecutor::DeleteExecutor(ClientContext &context, const DeletePlanNode *plan,
                                std::unique_ptr<AbstractExecutor> &&child_executor)
     : AbstractExecutor(context) {}
 

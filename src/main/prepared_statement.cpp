@@ -24,24 +24,34 @@ const vector<Type> &PreparedStatement::GetTypes() { return types_; }
 const vector<string> &PreparedStatement::GetNames() { return names_; }
 
 unique_ptr<QueryResult> PreparedStatement::Execute() {
-  LOG_INFO("IN EXECUTE - spoofing results.  need to use the real plan here...");
   auto stmt_type = StatementType::SELECT_STATEMENT;
   vector<Type> types = {Type(TypeId::INTEGER)};
   vector<string> names = {"column1"};
   unique_ptr<QueryResult> result = std::make_unique<QueryResult>(stmt_type, types, names);
-  std::vector<Tuple> data = {};
   Transaction txn = Transaction(101);
+  LOG_INFO("PreparedStatement Executing");
   context_->executor_->Execute(plan_, &result->data_, &txn);
+  LOG_INFO("PreparedStatement Done");
 
+  Column col = Column(names.at(0), types.at(0).GetTypeId());
+  const vector<Column> &columns = {col};
+  Schema schema = Schema(columns);
+
+  LOG_INFO("result length: %zu", result->data_.size());
   result->success_ = true;
 
-  vector<Value> temp_values = {Value(TypeId::INTEGER, 42069)};
-  Column col = Column("column1", TypeId::INTEGER);
-  const std::vector<Column> &columns = {col};
-  Schema schema = Schema(columns);
-  Tuple tup2 = Tuple(temp_values, &schema);
-  result->data_.push_back(tup2);
-  LOG_INFO("PreparedStatement Executing");
+  LOG_INFO("result data: ");
+  for (auto &tuple : result->data_) {
+    LOG_INFO("tuple: %s", tuple.ToString(&schema).c_str());
+  }
+
+  // vector<Value> temp_values = {Value(TypeId::INTEGER, 42069)};
+  // Column col = Column("column1", TypeId::INTEGER);
+  // const std::vector<Column> &columns = {col};
+  // Schema schema = Schema(columns);
+  // Tuple tup2 = Tuple(temp_values, &schema);
+  // result->data_.push_back(tup2);
+
   return result;
 }
 

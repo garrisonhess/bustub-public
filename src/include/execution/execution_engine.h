@@ -17,6 +17,7 @@
 #include "buffer/buffer_pool_manager.h"
 #include "catalog/catalog.h"
 #include "concurrency/transaction_manager.h"
+#include "execution/executor_factory.h"
 #include "execution/plans/abstract_plan.h"
 #include "main/client_context.h"
 #include "main/database.h"
@@ -51,17 +52,20 @@ class ExecutionEngine {
   auto Execute(AbstractPlanNode *plan, std::vector<Tuple> *result_set, Transaction *txn) -> bool {
     // Construct and executor for the plan
     // Prepare the root executor
-    // context_.executor_->Init();
+    auto executor = ExecutorFactory::CreateExecutor(context_, plan);
+
+    // Prepare the root executor
+    executor->Init();
 
     // Execute the query plan
     try {
-      // Tuple tuple;
-      // RID rid;
-      // while (context_.executor_->Next(&tuple, &rid)) {
-      //   if (result_set != nullptr) {
-      //     result_set->push_back(tuple);
-      //   }
-      // }
+      Tuple tuple;
+      RID rid;
+      while (executor->Next(&tuple, &rid)) {
+        if (result_set != nullptr) {
+          result_set->push_back(tuple);
+        }
+      }
     } catch (Exception &e) {
       // TODO(student): handle exceptions
     }

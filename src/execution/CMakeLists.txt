@@ -12,7 +12,8 @@ add_library(
   nested_loop_join_executor.cpp
   seq_scan_executor.cpp
   update_executor.cpp
-  execution_engine.cpp)
+  execution_engine.cpp
+  executor_factory.cpp)
 
 set(ALL_OBJECT_FILES
     ${ALL_OBJECT_FILES} $<TARGET_OBJECTS:bustub_execution>

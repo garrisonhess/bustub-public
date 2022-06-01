@@ -15,9 +15,7 @@
 namespace bustub {
 using std::vector;
 
-//! The QueryResult object holds the result of a query. It can either be a MaterializedQueryResult, in which case the
-//! result contains the entire result set, or a StreamQueryResult in which case the Fetch method can be called to
-//! incrementally fetch data from the database.
+//! The QueryResult object holds the result of a query.
 class QueryResult {
  public:
   explicit QueryResult(StatementType statement_type, vector<Type> types, vector<string> names);
