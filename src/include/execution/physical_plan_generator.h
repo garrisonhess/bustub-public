@@ -20,7 +20,8 @@ class ClientContext;
 //! logical query plan
 class PhysicalPlanGenerator {
  public:
-  explicit PhysicalPlanGenerator(ClientContext &context) : context_(context) {}
+  explicit PhysicalPlanGenerator(ClientContext &context);
+  ~PhysicalPlanGenerator() = default;
 
  public:
   //! Creates a plan from the logical operator. This involves resolving column bindings and generating physical

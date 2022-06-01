@@ -13,8 +13,6 @@ PreparedStatement::PreparedStatement(shared_ptr<ClientContext> context, string q
 
 PreparedStatement::PreparedStatement(string error) : context_(nullptr), success_(false), error_(move(error)) {}
 
-PreparedStatement::~PreparedStatement() = default;
-
 int64_t PreparedStatement::ColumnCount() { return types_.size(); }
 
 StatementType PreparedStatement::GetStatementType() { return statement_type_; }

@@ -34,7 +34,7 @@ class PreparedStatement {
   //! Create a prepared statement that was not successfully prepared
   explicit PreparedStatement(string error);
 
-  ~PreparedStatement();
+  ~PreparedStatement() = default;
 
  public:
   //! The client context this prepared statement belongs to

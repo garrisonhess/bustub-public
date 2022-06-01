@@ -4,6 +4,8 @@
 
 namespace bustub {
 
+PhysicalPlanGenerator::PhysicalPlanGenerator(ClientContext &context) : context_(context) {}
+
 unique_ptr<AbstractPlanNode> PhysicalPlanGenerator::CreatePlan(unique_ptr<LogicalOperator> op) {
   // // first resolve column references
   // ColumnBindingResolver resolver;
