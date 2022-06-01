@@ -1,11 +1,4 @@
-#include "common/exception.h"
-#include "main/prepared_statement.h"
 #include "sqlite3.h"
-
-#include "bustub.h"
-#include "common/logger.h"
-#include "parser/parser.h"
-#include "parser/sql_statement.h"
 
 #include <cassert>
 #include <cctype>
@@ -16,6 +9,13 @@
 #include <ctime>
 #include <memory>
 #include <string>
+
+#include "bustub.h"
+#include "common/exception.h"
+#include "common/logger.h"
+#include "main/prepared_statement.h"
+#include "parser/parser.h"
+#include "parser/sql_statement.h"
 
 static char *Sqlite3Strdup(const char *str);
 
@@ -133,7 +133,6 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     auto prepared = db->con_->Prepare(move(statements.back()));
 
     printf("SQLITE3_prepare_v2 made a prepared statement for query: \n: %s", prepared->query_.c_str());
-
     printf("number of names: %zu", prepared->names_.size());
     printf("sqlite3 prepare v2 got prepared names[0]: %s", prepared->names_.at(0).c_str());
 
@@ -248,10 +247,8 @@ int sqlite3_exec(sqlite3 *db,                /* The database on which the SQL ex
 
   while (rc == SQLITE_OK && (zSql[0] != 0)) {
     int n_col;
-    printf("begin sqlite3 exec loop\n");
     p_stmt = nullptr;
     rc = sqlite3_prepare_v2(db, zSql, -1, &p_stmt, &z_leftover);
-
     printf("exec is done preparing\n");
 
     if (rc != SQLITE_OK) {
@@ -449,22 +446,14 @@ const unsigned char *sqlite3_column_text(sqlite3_stmt *pStmt, int iCol) {
       uint32_t strlen = val.ToString().size();
       printf("value has string length: %d\n", strlen);
       entry.data_ = std::unique_ptr<char[]>(new char[strlen + 1]);
-      // bustub::string x = bustub::Type::ToString(val);
-
-      // TODO(GH): Make this a real implementation.
-
-      printf("assigned data\n");
       memcpy(entry.data_.get(), val.ToString().c_str(), strlen + 1);
-      printf("memcpy done!\n");
     }
 
-    // return reinterpret_cast<const unsigned char *>("column_test_text");
     return reinterpret_cast<const unsigned char *>(entry.data_.get());
   } catch (...) {
     // memory error!
     printf("col text memory err\n");
-    return reinterpret_cast<const unsigned char *>("error_text");
-    // return nullptr;
+    return nullptr;
   }
 }
 
@@ -479,20 +468,11 @@ int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) { return
 
 int Sqlite3InternalBindValue(sqlite3_stmt *stmt, int idx, const bustub::Value &value) { return 0; }
 
-int sqlite3_bind_int(sqlite3_stmt *stmt, int idx, int val) {
-  // return sqlite3_internal_bind_value(stmt, idx, Value::INTEGER(val));
-  return 0;
-}
+int sqlite3_bind_int(sqlite3_stmt *stmt, int idx, int val) { return 0; }
 
-int sqlite3_bind_int64(sqlite3_stmt *stmt, int idx, sqlite3_int64 val) {
-  // return sqlite3_internal_bind_value(stmt, idx, Value::BIGINT(val));
-  return 0;
-}
+int sqlite3_bind_int64(sqlite3_stmt *stmt, int idx, sqlite3_int64 val) { return 0; }
 
-int sqlite3_bind_double(sqlite3_stmt *stmt, int idx, double val) {
-  // return sqlite3_internal_bind_value(stmt, idx, Value::DOUBLE(val));
-  return 0;
-}
+int sqlite3_bind_double(sqlite3_stmt *stmt, int idx, double val) { return 0; }
 
 int sqlite3_bind_null(sqlite3_stmt *stmt, int idx) { return Sqlite3InternalBindValue(stmt, idx, bustub::Value()); }
 
@@ -628,7 +608,7 @@ void *sqlite3_realloc(void *ptr, int n) { return sqlite3_realloc64(ptr, n); }
 
 void *sqlite3_realloc64(void *ptr, sqlite3_uint64 n) { return realloc(ptr, n); }
 
-// TODO(xx): stub
+// TODO(duckdb): stub
 int sqlite3_config(int i, ...) { return SQLITE_OK; }
 
 int sqlite3_errcode(sqlite3 *db) {
@@ -656,7 +636,6 @@ const char *sqlite3_sourceid(void) { return bustub::BusTub::SourceID(); }
 int sqlite3_reset(sqlite3_stmt *stmt) {
   if (stmt != nullptr) {
     stmt->result_ = nullptr;
-    // TODO(GH): Implement reset. (probably just set the current result to null or something like that.)
   }
   return SQLITE_OK;
 }
@@ -669,7 +648,7 @@ int sqlite3_db_status(sqlite3 * /*unused*/, int op, int *pCur, int *pHiwtr, int 
   return -1;
 }
 
-// TODO(xx) these should eventually be implemented
+// TODO(duckdb) these should eventually be implemented
 
 int sqlite3_changes(sqlite3 *db) {
   fprintf(stderr, "sqlite3_changes: unsupported.\n");
@@ -716,7 +695,6 @@ int sqlite3_db_config(sqlite3 * /*unused*/, int op, ...) {
 }
 
 int sqlite3_get_autocommit(sqlite3 *db) {
-  // TODO(GH) fix this
   // return db->con->context->transaction.IsAutoCommit();
   fprintf(stderr, "sqlite3_get_autocommit: unsupported.\n");
   return -1;
@@ -732,7 +710,7 @@ int sqlite3_stmt_readonly(sqlite3_stmt *pStmt) {
   return -1;
 }
 
-// TODO(xx) pretty easy schema lookup
+// TODO(duckdb) pretty easy schema lookup
 int sqlite3_table_column_metadata(sqlite3 *db,             /* Connection handle */
                                   const char *zDbName,     /* Database name or NULL */
                                   const char *zTableName,  /* Table name */
@@ -921,7 +899,7 @@ SQLITE_API sqlite3 *sqlite3_context_db_handle(sqlite3_context * /*unused*/) { re
 
 void *sqlite3_user_data(sqlite3_context * /*unused*/) { return nullptr; }
 
-// TODO(xx) complain
+// TODO(duckdb) complain
 SQLITE_API void sqlite3_result_blob(sqlite3_context * /*unused*/, const void * /*unused*/, int /*unused*/,
                                     void (* /*unused*/)(void *)) {}
 SQLITE_API void sqlite3_result_blob64(sqlite3_context * /*unused*/, const void * /*unused*/, sqlite3_uint64 /*unused*/,
@@ -951,7 +929,7 @@ SQLITE_API void sqlite3_result_pointer(sqlite3_context * /*unused*/, void * /*un
 SQLITE_API void sqlite3_result_zeroblob(sqlite3_context * /*unused*/, int n) {}
 SQLITE_API int sqlite3_result_zeroblob64(sqlite3_context * /*unused*/, sqlite3_uint64 n) { return -1; }
 
-// TODO(xx) complain
+// TODO(duckdb) complain
 const void *sqlite3_value_blob(sqlite3_value * /*unused*/) { return nullptr; }
 double sqlite3_value_double(sqlite3_value * /*unused*/) { return 0; }
 int sqlite3_value_int(sqlite3_value * /*unused*/) { return 0; }
@@ -1016,8 +994,7 @@ SQLITE_API int sqlite3_stmt_isexplain(sqlite3_stmt *pStmt) {
   if ((pStmt == nullptr) || !pStmt->prepared_) {
     return 0;
   }
-  // return pStmt->prepared_->type == bustub::StatementType::EXPLAIN_STATEMENT;
-  return 0;
+  return static_cast<int>(pStmt->prepared_->statement_type_ == bustub::StatementType::EXPLAIN_STATEMENT);
 }
 
 SQLITE_API int sqlite3_vtab_config(sqlite3 * /*unused*/, int op, ...) {
