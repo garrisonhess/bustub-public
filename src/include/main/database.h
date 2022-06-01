@@ -22,6 +22,7 @@ class LogManager;
 class LockManager;
 class BufferPoolManagerInstance;
 class TransactionManager;
+class ExecutionEngine;
 class Catalog;
 
 class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
@@ -41,6 +42,7 @@ class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
   DiskManager &GetDiskManager();
   CheckpointManager &GetCheckpointManager();
   LockManager &GetLockManager();
+  ExecutionEngine &GetExecutionEngine();
 
  private:
   void Initialize(const char *path, DBConfig *config);
@@ -53,6 +55,7 @@ class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
   unique_ptr<LogManager> log_manager_;
   unique_ptr<LockManager> lock_manager_;
   unique_ptr<TransactionManager> transaction_manager_;
+  unique_ptr<ExecutionEngine> execution_engine_;
 };
 
 //! The database object. This object holds the catalog and all the

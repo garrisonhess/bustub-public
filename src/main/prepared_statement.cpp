@@ -30,7 +30,9 @@ unique_ptr<QueryResult> PreparedStatement::Execute() {
   unique_ptr<QueryResult> result = std::make_unique<QueryResult>(stmt_type, types, names);
   Transaction txn = Transaction(101);
   LOG_INFO("PreparedStatement Executing");
-  context_->executor_->Execute(plan_, &result->data_, &txn);
+
+  context_->db_->GetExecutionEngine().Execute(plan_, &result->data_, &txn);
+
   LOG_INFO("PreparedStatement Done");
 
   Column col = Column(names.at(0), types.at(0).GetTypeId());

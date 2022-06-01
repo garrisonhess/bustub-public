@@ -29,9 +29,6 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
   //! The current query being executed by the client context
   string query_;
 
-  //! The query executor (has transaction manager and catalog)
-  ExecutionEngine *executor_;
-
  public:
   //! Directly prepare a SQL statement
   unique_ptr<PreparedStatement> Prepare(unique_ptr<SQLStatement> statement);

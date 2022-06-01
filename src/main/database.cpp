@@ -3,6 +3,7 @@
 #include "main/database.h"
 #include "buffer/buffer_pool_manager_instance.h"
 #include "catalog/catalog.h"
+#include "execution/execution_engine.h"
 #include "recovery/checkpoint_manager.h"
 #include "storage/disk/disk_manager.h"
 
@@ -26,6 +27,8 @@ CheckpointManager &DatabaseInstance::GetCheckpointManager() { return *checkpoint
 Catalog &DatabaseInstance::GetCatalog() { return *catalog_; }
 
 LockManager &DatabaseInstance::GetLockManager() { return *lock_manager_; }
+
+ExecutionEngine &DatabaseInstance::GetExecutionEngine() { return *execution_engine_; }
 
 // The initialization must occur in DB-bootstrap order.
 void DatabaseInstance::Initialize(const char *path, DBConfig *config) {
@@ -69,5 +72,7 @@ CheckpointManager &CheckpointManager::Get(DatabaseInstance &db) { return db.GetC
 Catalog &Catalog::Get(DatabaseInstance &db) { return db.GetCatalog(); }
 
 LockManager &LockManager::Get(DatabaseInstance &db) { return db.GetLockManager(); }
+
+ExecutionEngine &ExecutionEngine::Get(DatabaseInstance &db) { return db.GetExecutionEngine(); }
 
 }  // namespace bustub
