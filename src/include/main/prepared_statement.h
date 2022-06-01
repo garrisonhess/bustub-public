@@ -54,6 +54,9 @@ class PreparedStatement {
   //! The fully prepared physical plan of the prepared statement
   AbstractPlanNode *plan_;
 
+  // Output schema
+  Schema *schema_;
+
   //! The result names of the transaction
   vector<string> names_;
 

@@ -33,14 +33,7 @@ struct sqlite3_stmt {
   std::unique_ptr<bustub::PreparedStatement> prepared_;
   //! The result object, if successfully executed
   std::unique_ptr<bustub::QueryResult> result_;
-  //! The current chunk that we are iterating over
-  bustub::Tuple current_tuple_;
-  //! The current row into the current chunk that we are iterating over
-  int64_t current_row_;
-  //! Bound values, used for binding to the prepared statement
-  std::vector<bustub::Value> bound_values_;
-  //! Names of the prepared parameters
-  std::vector<bustub::string> bound_names_;
+  int curr_idx_;
   //! The current column values converted to string, used and filled by sqlite3_column_text
   std::unique_ptr<Sqlite3StringBuffer[]> current_text_;
 };
@@ -138,6 +131,14 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
 
     // now prepare the query
     auto prepared = db->con_->Prepare(move(statements.back()));
+
+    printf("SQLITE3_prepare_v2 made a prepared statement for query: \n: %s", prepared->query_.c_str());
+
+    printf("number of names: %zu", prepared->names_.size());
+    printf("sqlite3 prepare v2 got prepared names[0]: %s", prepared->names_.at(0).c_str());
+
+    // printf("SQLITE3_prepare_v2 GOT PLAN: \n: %s", prepared->plan_.ToString().c_str());
+
     if (!prepared->success_) {
       // failed to prepare: set the error message
       db->last_error_ = prepared->error_;
@@ -150,7 +151,6 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     stmt->db_ = db;
     stmt->query_string_ = query;
     stmt->prepared_ = move(prepared);
-    stmt->current_row_ = -1;
 
     // extract the remainder of the query and assign it to the pzTail
     if ((pzTail != nullptr) && set_remainder) {
@@ -201,13 +201,15 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
       return SQLITE_ERROR;
     }
 
-    // TODO(GH): Implement this!
-    pStmt->current_tuple_ = pStmt->result_->data_.at(0);
-
     if (!Sqlite3DisplayResult(pStmt->prepared_->statement_type_)) {
       // Not all statements return results.
       sqlite3_reset(pStmt);
     }
+  }
+
+  if (pStmt->curr_idx_ >= static_cast<int32_t>(pStmt->result_->data_.size())) {
+    sqlite3_reset(pStmt);
+    return SQLITE_DONE;
   }
 
   static int ctr = 0;
@@ -218,7 +220,7 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
   }
 
   // TODO(GH): Determine when we're done and return SQLITE_DONE.
-  pStmt->current_row_++;
+  pStmt->curr_idx_++;
   printf("step returned another row \n");
 
   return SQLITE_ROW;
@@ -399,10 +401,10 @@ static bool Sqlite3ColumnHasValue(sqlite3_stmt *pStmt, int iCol, bustub::TypeId 
   // TODO(GH): Check for NULL and return SQLITE_NULL.
 
   try {
-    const std::vector<bustub::Column> &columns = {bustub::Column("column1", bustub::TypeId::INTEGER)};
-    bustub::Schema result_schema = bustub::Schema(columns);
-    val = pStmt->current_tuple_.GetValue(&result_schema, 0).CastAs(target_type);
-    // TODO(GH): make this a real implementation
+    assert(pStmt->prepared_->schema_);
+    printf("col has val | schema: %s", pStmt->prepared_->schema_->ToString().c_str());
+    bustub::Tuple tuple = pStmt->result_->data_.at(pStmt->curr_idx_);
+    val = tuple.GetValue(pStmt->prepared_->schema_, 0).CastAs(target_type);
   } catch (...) {
     return false;
   }
@@ -473,17 +475,7 @@ int sqlite3_bind_parameter_count(sqlite3_stmt *stmt) { return 0; }
 
 const char *sqlite3_bind_parameter_name(sqlite3_stmt *stmt, int idx) { return nullptr; }
 
-int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) {
-  if ((stmt == nullptr) || (zName == nullptr)) {
-    return 0;
-  }
-  for (uint64_t i = 0; i < stmt->bound_names_.size(); i++) {
-    if (stmt->bound_names_[i] == std::string(zName)) {
-      return i + 1;
-    }
-  }
-  return -1;
-}
+int sqlite3_bind_parameter_index(sqlite3_stmt *stmt, const char *zName) { return -1; }
 
 int Sqlite3InternalBindValue(sqlite3_stmt *stmt, int idx, const bustub::Value &value) { return 0; }
 

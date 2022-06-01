@@ -28,7 +28,7 @@ Catalog &DatabaseInstance::GetCatalog() { return *catalog_; }
 
 LockManager &DatabaseInstance::GetLockManager() { return *lock_manager_; }
 
-ExecutionEngine &DatabaseInstance::GetExecutionEngine() { return *execution_engine_; }
+// ExecutionEngine &DatabaseInstance::GetExecutionEngine() { return *execution_engine_; }
 
 // The initialization must occur in DB-bootstrap order.
 void DatabaseInstance::Initialize(const char *path, DBConfig *config) {
@@ -73,6 +73,6 @@ Catalog &Catalog::Get(DatabaseInstance &db) { return db.GetCatalog(); }
 
 LockManager &LockManager::Get(DatabaseInstance &db) { return db.GetLockManager(); }
 
-ExecutionEngine &ExecutionEngine::Get(DatabaseInstance &db) { return db.GetExecutionEngine(); }
+// ExecutionEngine &ExecutionEngine::Get(DatabaseInstance &db) { return db.GetExecutionEngine(); }
 
 }  // namespace bustub
