@@ -28,6 +28,14 @@ class SelectNode : public QueryNode {
   vector<unique_ptr<ParsedExpression>> select_list_;
   //! The FROM clause
   unique_ptr<TableRef> from_table_;
+  //! The WHERE clause
+  unique_ptr<ParsedExpression> where_clause_;
+  //! list of groups
+  GroupByNode groups_;
+  //! HAVING clause
+  unique_ptr<ParsedExpression> having_;
+  //! QUALIFY clause
+  unique_ptr<ParsedExpression> qualify_;
 
   const vector<unique_ptr<ParsedExpression>> &GetSelectList() const override { return select_list_; }
 
