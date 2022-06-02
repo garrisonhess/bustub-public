@@ -43,6 +43,7 @@ class Expression : public BaseExpression {
   static bool Equals(Expression *left, Expression *right) {
     return BaseExpression::Equals((BaseExpression *)left, (BaseExpression *)right);
   }
+
   //! Create a copy of this expression
   virtual unique_ptr<Expression> Copy() = 0;
 
