@@ -76,6 +76,8 @@ class Transformer {
 
   unique_ptr<TableRef> TransformValuesList(bustub_libpgquery::PGList *list);
 
+  unique_ptr<ParsedExpression> TransformConstant(bustub_libpgquery::PGAConst *c);
+
   unique_ptr<ParsedExpression> TransformExpression(bustub_libpgquery::PGNode *node);
 
   unique_ptr<ParsedExpression> TransformResTarget(bustub_libpgquery::PGResTarget *root);
@@ -86,6 +88,8 @@ class Transformer {
   unique_ptr<ParsedExpression> TransformNamedArg(bustub_libpgquery::PGNamedArgExpr *root);
 
   unique_ptr<ParsedExpression> TransformStarExpression(bustub_libpgquery::PGNode *node);
+
+  unique_ptr<ConstantExpression> TransformValue(bustub_libpgquery::PGValue val);
 
   //! Transform a Postgres GROUP BY expression into a list of Expression
   bool TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &result);

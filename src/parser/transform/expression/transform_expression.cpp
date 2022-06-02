@@ -76,7 +76,7 @@ unique_ptr<ParsedExpression> Transformer::TransformExpression(bustub_libpgquery:
     case bustub_libpgquery::T_PGGroupingFunc:
     //   return TransformGroupingFunction(reinterpret_cast<bustub_libpgquery::PGGroupingFunc *>(node));
     case bustub_libpgquery::T_PGAStar:
-        return TransformStarExpression(node);
+      return TransformStarExpression(node);
       throw NotImplementedException("no transformer");
     default:
       throw NotImplementedException("Expr of type not implemented\n");
