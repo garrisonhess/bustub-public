@@ -43,7 +43,8 @@ class LogicalOperator {
   virtual vector<ColumnBinding> GetColumnBindings() { return {ColumnBinding(0, 0)}; }
   static vector<ColumnBinding> GenerateColumnBindings(uint64_t table_idx, uint64_t column_count);
   static vector<Type> MapTypes(const vector<Type> &types, const vector<uint64_t> &projection_map);
-  static vector<ColumnBinding> MapBindings(const vector<ColumnBinding> &types, const vector<uint64_t> &projection_map);
+  static vector<ColumnBinding> MapBindings(const vector<ColumnBinding> &bindings,
+                                           const vector<uint64_t> &projection_map);
 
   //! Resolve the types of the logical operator and its children
   void ResolveOperatorTypes();

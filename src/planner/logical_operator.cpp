@@ -22,10 +22,6 @@ string LogicalOperator::ParamsToString() const {
 }
 
 void LogicalOperator::ResolveOperatorTypes() {
-  // if (types.size() > 0) {
-  // 	// types already resolved for this node
-  // 	return;
-  // }
   types_.clear();
   // first resolve child types
   for (auto &child : children_) {
@@ -75,24 +71,24 @@ string LogicalOperator::ToString() const {
 }
 
 void LogicalOperator::Verify() {
-#ifdef DEBUG
+  // #ifdef DEBUG
   // verify expressions
-  for (uint64_t expr_idx = 0; expr_idx < expressions.size(); expr_idx++) {
-    auto str = expressions[expr_idx]->ToString();
+  for (uint64_t expr_idx = 0; expr_idx < expressions_.size(); expr_idx++) {
+    auto str = expressions_[expr_idx]->ToString();
     // verify that we can (correctly) copy this expression
-    auto copy = expressions[expr_idx]->Copy();
-    auto original_hash = expressions[expr_idx]->Hash();
+    auto copy = expressions_[expr_idx]->Copy();
+    auto original_hash = expressions_[expr_idx]->Hash();
     auto copy_hash = copy->Hash();
     // copy should be identical to original
-    assert(expressions[expr_idx]->ToString() == copy->ToString());
+    assert(expressions_[expr_idx]->ToString() == copy->ToString());
     assert(original_hash == copy_hash);
-    assert(Expression::Equals(expressions[expr_idx].get(), copy.get()));
+    assert(Expression::Equals(expressions_[expr_idx].get(), copy.get()));
 
-    assert(!Expression::Equals(expressions[expr_idx].get(), nullptr));
+    assert(!Expression::Equals(expressions_[expr_idx].get(), nullptr));
     for (uint64_t other_idx = 0; other_idx < expr_idx; other_idx++) {
       // comparison with other expressions
-      auto other_hash = expressions[other_idx]->Hash();
-      bool expr_equal = Expression::Equals(expressions[expr_idx].get(), expressions[other_idx].get());
+      auto other_hash = expressions_[other_idx]->Hash();
+      bool expr_equal = Expression::Equals(expressions_[expr_idx].get(), expressions_[other_idx].get());
       if (original_hash != other_hash) {
         // if the hashes are not equal the expressions should not be equal either
         assert(!expr_equal);
@@ -101,10 +97,10 @@ void LogicalOperator::Verify() {
     assert(!str.empty());
   }
   assert(!ToString().empty());
-  for (auto &child : children) {
+  for (auto &child : children_) {
     child->Verify();
   }
-#endif
+  // #endif
 }
 
 void LogicalOperator::Print() { Printer::Print(ToString()); }

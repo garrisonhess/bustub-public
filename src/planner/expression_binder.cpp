@@ -75,19 +75,13 @@ unique_ptr<Expression> ExpressionBinder::Bind(unique_ptr<ParsedExpression> &expr
                                               bool root_expression) {
   // bind the main expression
   auto error_msg = Bind(&expr, 0, root_expression);
-  // if (!error_msg.empty()) {
-  //   // failed to bind: try to bind correlated columns in the expression (if any)
-  //   bool success = BindCorrelatedColumns(expr);
-  //   if (!success) {
-  //     throw Exception(error_msg);
-  //   }
-  //   auto bound_expr = (BoundExpression *)expr.get();
-  //   ExtractCorrelatedExpressions(binder, *bound_expr->expr);
-  // }
+  if (!error_msg.empty()) {
+    throw Exception(error_msg);
+  }
   assert(expr->expression_class_ == ExpressionClass::BOUND_EXPRESSION);
   auto bound_expr = (BoundExpression *)expr.get();
   unique_ptr<Expression> result = move(bound_expr->expr_);
-  // if (target_type.id() != TypeId::INVALID) {
+  // if (target_type_.GetTypeId() != TypeId::INVALID) {
   //   // the binder has a specific target type: add a cast to that type
   //   result = BoundCastExpression::AddCastToType(move(result), target_type);
   // } else {
