@@ -10,24 +10,20 @@ BoundConstantExpression::BoundConstantExpression(const Value &value_p)
     : Expression(ExpressionType::VALUE_CONSTANT, ExpressionClass::BOUND_CONSTANT, Type(value_p.GetTypeId())),
       value_(value_p) {}
 
-string BoundConstantExpression::ToString() const {
-  throw NotImplementedException("");
-  // return value.ToSQLString();
-}
+string BoundConstantExpression::ToString() const { return value_.ToString(); }
 
 bool BoundConstantExpression::Equals(const BaseExpression *other_p) const {
   if (!Expression::Equals(other_p)) {
     return false;
   }
-  return false;
   // auto other = (BoundConstantExpression *)other_p;
-  // return !ValueOperations::DistinctFrom(value, other->value);
+  // return !ValueOperations::DistinctFrom(value_, other->value_);
+  return true;
 }
 
 hash_t BoundConstantExpression::Hash() const {
-  throw NotImplementedException("");
-  // hash_t result = Expression::Hash();
-  // return CombineHash(value.Hash(), result);
+  hash_t result = Expression::Hash();
+  return HashUtil::CombineHashes(HashUtil::HashValue(&value_), result);
 }
 
 unique_ptr<Expression> BoundConstantExpression::Copy() {
