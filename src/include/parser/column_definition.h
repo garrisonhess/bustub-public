@@ -20,8 +20,7 @@ using std::string;
 //! A column of a table.
 class ColumnDefinition {
  public:
-  ColumnDefinition(string name, const Type &type);
-  ColumnDefinition(string name, const Type &type, unique_ptr<ParsedExpression> default_value);
+  explicit ColumnDefinition(string name, const Type &type);
 
   //! The name of the entry
   string name_;
@@ -29,8 +28,6 @@ class ColumnDefinition {
   int64_t oid_;
   //! The type of the column
   Type type_;
-  //! The default value of the column (if any)
-  unique_ptr<ParsedExpression> default_value_;
 
  public:
   ColumnDefinition Copy() const;

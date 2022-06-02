@@ -9,6 +9,7 @@
 #pragma once
 
 #include <vector>
+#include "common/enums/catalog_type.h"
 #include "parser/column_definition.h"
 #include "parser/sql_statement.h"
 #include "parser/statement/select_statement.h"
@@ -19,6 +20,9 @@ class CreateStatement : public SQLStatement {
  public:
   CreateStatement();
 
+  //! The to-be-created catalog type
+  CatalogType type_;
+
   //! Table name to insert to
   string table_;
 
@@ -27,6 +31,9 @@ class CreateStatement : public SQLStatement {
 
   //! The SQL string of the CREATE statement
   string sql_;
+
+  //! List of columns of the table
+  vector<ColumnDefinition> columns_;
 
  protected:
   CreateStatement(const CreateStatement &other);

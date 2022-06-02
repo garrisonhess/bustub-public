@@ -1,6 +1,6 @@
-#include "common/string_util.h"
 #include <unordered_set>
 #include "common/exception.h"
+#include "common/string_util.h"
 #include "parser/transformer.h"
 #include "type/decimal_type.h"
 
