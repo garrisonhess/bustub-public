@@ -155,21 +155,21 @@ std::vector<OrderByNode> Parser::ParseOrderList(const std::string &select_list) 
   return move(order.orders_);
 }
 
-// void Parser::ParseUpdateList(const std::string &update_list, std::vector<std::string> &update_columns,
-//                              std::vector<std::unique_ptr<ParsedExpression>> &expressions) {
-//   // construct a mock query
-//   std::string mock_query = "UPDATE tbl SET " + update_list;
-//   // parse the query
-//   Parser parser;
-//   parser.ParseQuery(mock_query);
-//   // check the statements
-//   if (parser.statements_.size() != 1 || parser.statements_[0]->type_ != StatementType::UPDATE_STATEMENT) {
-//     throw Exception("Expected a single UPDATE statement");
-//   }
-//   auto &update = (UpdateStatement &)*parser.statements_[0];
-//   update_columns = move(update.columns_);
-//   expressions = move(update.expressions_);
-// }
+void Parser::ParseUpdateList(const std::string &update_list, std::vector<std::string> &update_columns,
+                             std::vector<std::unique_ptr<ParsedExpression>> &expressions) {
+  // construct a mock query
+  std::string mock_query = "UPDATE tbl SET " + update_list;
+  // parse the query
+  Parser parser;
+  parser.ParseQuery(mock_query);
+  // check the statements
+  if (parser.statements_.size() != 1 || parser.statements_[0]->type_ != StatementType::UPDATE_STATEMENT) {
+    throw Exception("Expected a single UPDATE statement");
+  }
+  auto &update = (UpdateStatement &)*parser.statements_[0];
+  update_columns = move(update.columns_);
+  expressions = move(update.expressions_);
+}
 
 std::vector<std::vector<std::unique_ptr<ParsedExpression>>> Parser::ParseValuesList(const std::string &value_list) {
   // construct a mock query
