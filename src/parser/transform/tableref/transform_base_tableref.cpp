@@ -1,7 +1,7 @@
-// #include "parser/tableref/basetableref.h"
-// #include "parser/transformer.h"
+#include "parser/tableref/basetableref.h"
+#include "parser/transformer.h"
 
-// namespace bustub {
+namespace bustub {
 
 // unique_ptr<TableRef> Transformer::TransformRangeVar(bustub_libpgquery::PGRangeVar *root) {
 // 	auto result = std::make_unique<BaseTableRef>();
@@ -13,26 +13,23 @@
 // 	if (root->schemaname != nullptr) {
 // 		result->schema_name_ = root->schemaname;
 // 	}
-// 	// if (root->sample != nullptr) {
-// 	// 	result->sample = TransformSampleOptions(root->sample);
-// 	// }
 // 	result->query_location_ = root->location;
 // 	return result;
 // }
 
-// // QualifiedName Transformer::TransformQualifiedName(bustub_libpgquery::PGRangeVar *root) {
-// // 	QualifiedName qname;
-// // 	if (root->relname) {
-// // 		qname.name = root->relname;
-// // 	} else {
-// // 		qname.name = string();
-// // 	}
-// // 	if (root->schemaname) {
-// // 		qname.schema = root->schemaname;
-// // 	} else {
-// // 		qname.schema = INVALID_SCHEMA;
-// // 	}
-// // 	return qname;
-// // }
+// QualifiedName Transformer::TransformQualifiedName(bustub_libpgquery::PGRangeVar *root) {
+// 	QualifiedName qname;
+// 	if (root->relname) {
+// 		qname.name = root->relname;
+// 	} else {
+// 		qname.name = string();
+// 	}
+// 	if (root->schemaname) {
+// 		qname.schema = root->schemaname;
+// 	} else {
+// 		qname.schema = INVALID_SCHEMA;
+// 	}
+// 	return qname;
+// }
 
-// } // namespace bustub
+}  // namespace bustub

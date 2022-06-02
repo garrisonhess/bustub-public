@@ -68,6 +68,8 @@ class Transformer {
   //! Transform a Postgres bustub_libpgquery::T_PGUpdateStmt node into a UpdateStatement
   unique_ptr<UpdateStatement> TransformUpdate(bustub_libpgquery::PGNode *node);
 
+  unique_ptr<TableRef> TransformFrom(bustub_libpgquery::PGList *root);
+
   //===--------------------------------------------------------------------===//
   // Query Node Transform
   //===--------------------------------------------------------------------===//
@@ -79,6 +81,8 @@ class Transformer {
   unique_ptr<ParsedExpression> TransformConstant(bustub_libpgquery::PGAConst *c);
 
   unique_ptr<ParsedExpression> TransformExpression(bustub_libpgquery::PGNode *node);
+
+  unique_ptr<TableRef> TransformTableRefNode(bustub_libpgquery::PGNode *n);
 
   unique_ptr<ParsedExpression> TransformResTarget(bustub_libpgquery::PGResTarget *root);
 
