@@ -11,7 +11,6 @@
 #include <string>
 #include "common/constants.h"
 #include "common/enums/statement_type.h"
-#include "execution/plans/abstract_plan.h"
 #include "main/query_result.h"
 #include "parser/sql_statement.h"
 #include "type/type.h"
@@ -21,9 +20,10 @@
 #include <vector>
 
 namespace bustub {
-
-class ClientContext;
 using std::vector;
+class ClientContext;
+class AbstractExecutor;
+class LogicalOperator;
 
 //! A prepared statement
 class PreparedStatement {
@@ -51,8 +51,11 @@ class PreparedStatement {
 
   StatementType statement_type_;
 
-  //! The fully prepared physical plan of the prepared statement
-  AbstractPlanNode *plan_;
+  // //! The fully prepared physical plan of the prepared statement
+  // LogicalOperator *logical_;
+
+  // //! The fully prepared physical plan of the prepared statement
+  // AbstractExecutor *physical_;
 
   // Output schema
   Schema *schema_;

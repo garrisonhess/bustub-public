@@ -31,8 +31,8 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     Planner planner = Planner(*this);
     planner.CreatePlan(move(statement));
 
-    PhysicalPlanGenerator gen = PhysicalPlanGenerator(*this);
-    auto physical_plan = gen.CreatePlan(move(planner.plan_));
+    // PhysicalPlanGenerator gen = PhysicalPlanGenerator(*this);
+    // auto physical_plan = gen.CreatePlan(move(planner.plan_));
 
     // LOG_INFO("Done w/ CreatePlan.");
     // // LOG_INFO("planner plan: \n%s", planner.plan_->ToString().c_str());
@@ -47,7 +47,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     result->statement_type_ = StatementType::SELECT_STATEMENT;
     result->types_ = {Type(TypeId::INTEGER)};
     result->names_ = {"column1"};
-    result->plan_ = physical_plan.release();
+    // result->plan_ = physical_plan.release();
 
     // LOG_INFO("Returning result now!");
     return result;

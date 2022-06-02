@@ -20,6 +20,8 @@ static constexpr uint32_t TEST9_SIZE = 10;
 static constexpr uint32_t TEST_VARLEN_SIZE = 10;
 
 class TableGenerator {
+  class ClientContext;
+
  public:
   /**
    * Constructor

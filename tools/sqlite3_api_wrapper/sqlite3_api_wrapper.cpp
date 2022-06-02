@@ -135,7 +135,7 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     printf("SQLITE3_prepare_v2 made a prepared statement for query: \n: %s\n", prepared->query_.c_str());
     printf("number of names: %zu \n", prepared->names_.size());
     printf("sqlite3 prepare v2 got prepared names[0]: %s \n", prepared->names_.at(0).c_str());
-    printf("SQLITE3_prepare_v2 prepared statement's plan ptr: %p \n", (void*)prepared->plan_);
+    // printf("SQLITE3_prepare_v2 prepared statement's plan ptr: %p \n", (void*)prepared->plan_);
 
     if (!prepared->success_) {
       // failed to prepare: set the error message

@@ -10,9 +10,8 @@
 #include <memory>
 
 namespace bustub {
-class BufferPoolManagerInstance;
-
 using std::make_unique;
+class BufferPoolManagerInstance;
 
 TransactionManager &DatabaseInstance::GetTransactionManager() { return *transaction_manager_; }
 

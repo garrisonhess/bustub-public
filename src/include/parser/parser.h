@@ -65,10 +65,6 @@ class Parser {
 
   //! Parses a column list (i.e. as found in a CREATE TABLE statement)
   static vector<ColumnDefinition> ParseColumnList(const string &column_list);
-
- private:
-  bool preserve_identifier_case_ = true;
-  int32_t max_expression_depth_ = 1000;
 };
 
 }  // namespace bustub

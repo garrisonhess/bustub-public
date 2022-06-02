@@ -28,10 +28,10 @@ unique_ptr<QueryResult> PreparedStatement::Execute() {
   unique_ptr<QueryResult> result = std::make_unique<QueryResult>(stmt_type, types, names);
   Transaction txn = Transaction(101);
   LOG_INFO("PreparedStatement Executing");
-  LOG_INFO("plan pointer: %p", (void *)plan_);
+  // LOG_INFO("plan pointer: %p", (void *)plan_);
 
-  ExecutionEngine engine = ExecutionEngine(*context_);
-  engine.Execute(plan_, &result->data_, &txn);
+  // ExecutionEngine engine = ExecutionEngine(*context_);
+  // engine.Execute(plan_, &result->data_, &txn);
 
   LOG_INFO("PreparedStatement Done");
 
