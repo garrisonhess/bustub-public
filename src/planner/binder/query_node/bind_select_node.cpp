@@ -155,7 +155,7 @@ using std::make_unique;
 //     return;
 //   }
 //   auto &bound_colref = (BoundColumnRefExpression &)*expr;
-//   bound_colref.return_type_ = sql_types[bound_colref.binding.column_index];
+//   bound_colref.return_type_ = sql_types[bound_colref.binding_.column_index_];
 // }
 
 // void Binder::BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_types, uint64_t projection_index) {

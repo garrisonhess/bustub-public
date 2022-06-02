@@ -12,14 +12,6 @@
 
 // vector<ColumnBinding> LogicalLimit::GetColumnBindings() { return children[0]->GetColumnBindings(); }
 
-// uint64_t LogicalLimit::EstimateCardinality(ClientContext &context) {
-//   auto child_cardinality = children[0]->EstimateCardinality(context);
-//   if (limit_val >= 0 && uint64_t(limit_val) < child_cardinality) {
-//     child_cardinality = limit_val;
-//   }
-//   return child_cardinality;
-// }
-
-// void LogicalLimit::ResolveTypes() { types = children[0]->types; }
+// void LogicalLimit::ResolveTypes() { types = children[0]->types_; }
 
 // }  // namespace bustub
