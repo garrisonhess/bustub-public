@@ -18,10 +18,7 @@ class UpdateBinder : public ExpressionBinder {
   UpdateBinder(Binder &binder, ClientContext &context);
 
  protected:
-  BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth,
-                            bool root_expression = false) override;
-
-  string UnsupportedAggregateMessage() override;
+  BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) override;
 };
 
 }  // namespace bustub

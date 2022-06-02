@@ -13,20 +13,20 @@
 //   BoundStatement result;
 
 //   // visit the table reference
-//   auto bound_table = Bind(*stmt.table);
-//   if (bound_table->type != TableReferenceType::BASE_TABLE) {
+//   auto bound_table = Bind(*stmt.table_);
+//   if (bound_table->type_ != TableReferenceType::BASE_TABLE) {
 //     throw Exception("Can only delete from base table!");
 //   }
 //   auto &table_binding = (BoundBaseTableRef &)*bound_table;
-//   auto table = table_binding.table;
+//   auto table = table_binding.table_;
 
 //   auto root = CreatePlan(*bound_table);
 //   auto &get = (LogicalGet &)*root;
-//   assert(root->type == LogicalOperatorType::LOGICAL_GET);
+//   assert(root->type_ == LogicalOperatorType::LOGICAL_GET);
 
 //   if (!table->temporary) {
 //     // delete from persistent table: not read only!
-//     properties.read_only = false;
+//     properties_.read_only = false;
 //   }
 
 //   // plan any tables from the various using clauses
@@ -84,11 +84,11 @@
 //     return BindReturning(move(stmt.returning_list), table, update_table_index, move(del_as_logicaloperator),
 //                          move(result));
 //   } else {
-//     result.plan = move(del);
-//     result.names = {"Count"};
-//     result.types = {Type::BIGINT};
-//     properties.allow_stream_result = false;
-//     properties.return_type = StatementReturnType::CHANGED_ROWS;
+//     result.plan_ = move(del);
+//     result.names_ = {"Count"};
+//     result.types_ = {Type::BIGINT};
+//     properties_.allow_stream_result = false;
+//     properties_.return_type = StatementReturnType::CHANGED_ROWS;
 //   }
 //   return result;
 // }

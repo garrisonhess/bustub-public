@@ -20,8 +20,7 @@ class HavingBinder : public SelectBinder {
                case_insensitive_map_t<uint64_t> &alias_map);
 
  protected:
-  BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth,
-                            bool root_expression = false) override;
+  BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) override;
 
  private:
   BindResult BindColumnRef(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression);
