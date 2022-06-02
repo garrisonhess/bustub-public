@@ -72,7 +72,7 @@ class Transformer {
   // Query Node Transform
   //===--------------------------------------------------------------------===//
   //! Transform a Postgres bustub_libpgquery::T_PGSelectStmt node into a QueryNode
-  unique_ptr<QueryNode> TransformSelectNode(bustub_libpgquery::PGSelectStmt *node);
+  unique_ptr<QueryNode> TransformSelectNode(bustub_libpgquery::PGSelectStmt *stmt);
 
   unique_ptr<TableRef> TransformValuesList(bustub_libpgquery::PGList *list);
 
@@ -80,7 +80,12 @@ class Transformer {
 
   unique_ptr<ParsedExpression> TransformResTarget(bustub_libpgquery::PGResTarget *root);
 
+  //! Transform a Postgres column reference into an Expression
+  unique_ptr<ParsedExpression> TransformColumnRef(bustub_libpgquery::PGColumnRef *root);
+
   unique_ptr<ParsedExpression> TransformNamedArg(bustub_libpgquery::PGNamedArgExpr *root);
+
+  unique_ptr<ParsedExpression> TransformStarExpression(bustub_libpgquery::PGNode *node);
 
   //! Transform a Postgres GROUP BY expression into a list of Expression
   bool TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &result);

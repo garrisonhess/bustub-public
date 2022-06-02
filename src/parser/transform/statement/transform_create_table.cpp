@@ -43,7 +43,7 @@ unique_ptr<CreateStatement> Transformer::TransformCreateTable(bustub_libpgquery:
       case bustub_libpgquery::T_PGColumnDef: {
         auto cdef = static_cast<bustub_libpgquery::PGColumnDef *>(c->data.ptr_value);
         auto centry = TransformColumnDefinition(cdef);
-        // result->columns_.push_back(std::move(centry));
+        result->columns_.push_back(std::move(centry));
         break;
       }
       default:

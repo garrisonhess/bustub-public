@@ -134,10 +134,10 @@
 // // If multiple grouping items are specified in a single GROUP BY clause,
 // // then the final list of grouping sets is the cross product of the individual items.
 // bool Transformer::TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &select_node) {
-// 	if (!group) {
+// 	if (group == nullptr) {
 // 		return false;
 // 	}
-// 	auto &result = select_node.groups;
+// 	auto &result = select_node.groups_;
 // 	GroupingExpressionMap map;
 // 	for (auto node = group->head; node != nullptr; node = node->next) {
 // 		auto n = reinterpret_cast<bustub_libpgquery::PGNode *>(node->data.ptr_value);
