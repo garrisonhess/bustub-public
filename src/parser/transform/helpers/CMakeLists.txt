@@ -1,6 +1,7 @@
 add_library(
   bustub_transformer_helpers
   OBJECT
+  transform_alias.cpp
   transform_groupby.cpp
   transform_orderby.cpp
   transform_typename.cpp

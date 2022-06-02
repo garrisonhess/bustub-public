@@ -44,10 +44,6 @@ class Transformer {
   //! Transforms a Postgres statement into a single SQL statement
   unique_ptr<SQLStatement> TransformStatementInternal(bustub_libpgquery::PGNode *stmt);
 
-  ColumnDefinition TransformColumnDefinition(bustub_libpgquery::PGColumnDef *cdef);
-
-  Type TransformTypeName(bustub_libpgquery::PGTypeName *type_name);
-
   //===--------------------------------------------------------------------===//
   // Statement transformation
   //===--------------------------------------------------------------------===//
@@ -68,16 +64,15 @@ class Transformer {
   //! Transform a Postgres bustub_libpgquery::T_PGUpdateStmt node into a UpdateStatement
   unique_ptr<UpdateStatement> TransformUpdate(bustub_libpgquery::PGNode *node);
 
-  unique_ptr<TableRef> TransformFrom(bustub_libpgquery::PGList *root);
-
   //===--------------------------------------------------------------------===//
   // Query Node Transform
   //===--------------------------------------------------------------------===//
   //! Transform a Postgres bustub_libpgquery::T_PGSelectStmt node into a QueryNode
   unique_ptr<QueryNode> TransformSelectNode(bustub_libpgquery::PGSelectStmt *stmt);
 
-  unique_ptr<TableRef> TransformValuesList(bustub_libpgquery::PGList *list);
-
+  //===--------------------------------------------------------------------===//
+  // Expression Transform
+  //===--------------------------------------------------------------------===//
   unique_ptr<ParsedExpression> TransformConstant(bustub_libpgquery::PGAConst *c);
 
   unique_ptr<ParsedExpression> TransformExpression(bustub_libpgquery::PGNode *node);
@@ -94,6 +89,36 @@ class Transformer {
   unique_ptr<ParsedExpression> TransformStarExpression(bustub_libpgquery::PGNode *node);
 
   unique_ptr<ConstantExpression> TransformValue(bustub_libpgquery::PGValue val);
+
+  //! Transform a Postgres column reference into an Expression
+  ColumnDefinition TransformColumnDefinition(bustub_libpgquery::PGColumnDef *cdef);
+
+  //===--------------------------------------------------------------------===//
+  // Helpers
+  //===--------------------------------------------------------------------===//
+  string TransformAlias(bustub_libpgquery::PGAlias *root, vector<string> &column_name_alias);
+
+  //===--------------------------------------------------------------------===//
+  // TableRef transform
+  //===--------------------------------------------------------------------===//
+  // //! Transform a Postgres node into a TableRef
+  // unique_ptr<TableRef> TransformTableRefNode(duckdb_libpgquery::PGNode *node);
+  //! Transform a Postgres FROM clause into a TableRef
+  unique_ptr<TableRef> TransformFrom(bustub_libpgquery::PGList *root);
+
+  //! Transform a Postgres table reference into a TableRef
+  unique_ptr<TableRef> TransformRangeVar(bustub_libpgquery::PGRangeVar *root);
+  // //! Transform a Postgres table-producing function into a TableRef
+  // unique_ptr<TableRef> TransformRangeFunction(bustub_libpgquery::PGRangeFunction *root);
+  // //! Transform a Postgres join node into a TableRef
+  // unique_ptr<TableRef> TransformJoin(bustub_libpgquery::PGJoinExpr *root);
+  // //! Transform a table producing subquery into a TableRef
+  // unique_ptr<TableRef> TransformRangeSubselect(bustub_libpgquery::PGRangeSubselect *root);
+  //! Transform a VALUES list into a set of expressions
+  unique_ptr<TableRef> TransformValuesList(bustub_libpgquery::PGList *list);
+
+  //! Transform a Postgres TypeName string into a Type
+  Type TransformTypeName(bustub_libpgquery::PGTypeName *type_name);
 
   //! Transform a Postgres GROUP BY expression into a list of Expression
   bool TransformGroupBy(bustub_libpgquery::PGList *group, SelectNode &result);
