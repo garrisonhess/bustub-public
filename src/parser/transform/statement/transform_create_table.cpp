@@ -10,8 +10,7 @@ ColumnDefinition Transformer::TransformColumnDefinition(bustub_libpgquery::PGCol
   if (cdef->colname != nullptr) {
     colname = cdef->colname;
   }
-  // Type target_type = TransformTypeName(cdef->typeName);
-  Type target_type = Type(TypeId::INTEGER);
+  Type target_type = TransformTypeName(cdef->typeName);
   return ColumnDefinition(colname, target_type);
 }
 

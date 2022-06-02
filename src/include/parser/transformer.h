@@ -46,7 +46,7 @@ class Transformer {
 
   ColumnDefinition TransformColumnDefinition(bustub_libpgquery::PGColumnDef *cdef);
 
-  // Type TransformTypeName(bustub_libpgquery::PGTypeName *type_name);
+  Type TransformTypeName(bustub_libpgquery::PGTypeName *type_name);
 
   //===--------------------------------------------------------------------===//
   // Statement transformation

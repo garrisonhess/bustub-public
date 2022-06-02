@@ -3,6 +3,7 @@ add_library(
   OBJECT
   transform_groupby.cpp
   transform_orderby.cpp
+  transform_typename.cpp
   nodetype_to_string.cpp)
 set(ALL_OBJECT_FILES
     ${ALL_OBJECT_FILES} $<TARGET_OBJECTS:bustub_transformer_helpers>
