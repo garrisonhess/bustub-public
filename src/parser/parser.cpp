@@ -201,18 +201,12 @@ vector<ColumnDefinition> Parser::ParseColumnList(const string &column_list) {
     throw Exception("Expected a single CREATE statement");
   }
 
-  auto statement = parser.statements_[0]->Copy();
-  CreateStatement *derived_pointer = dynamic_cast<CreateStatement *>(statement.get());
+  auto &create = dynamic_cast<CreateStatement &>(*parser.statements_[0]);
+  if (create.type_ != CatalogType::TABLE_ENTRY) {
+    throw Exception("Expected a single CREATE TABLE statement");
+  }
 
-  // auto &create = (CreateStatement &)*statement;
-  // if (create.type_ != CatalogType::TABLE_ENTRY) {
-  //   throw Exception("Expected a single CREATE TABLE statement");
-  // }
-
-  auto temp = derived_pointer->columns_;
-  ColumnDefinition col = ColumnDefinition("column1", Type(TypeId::BIGINT));
-  std::vector<ColumnDefinition> temp2 = {col};
-  return temp2;
+  return create.columns_;
 }
 
 }  // namespace bustub
