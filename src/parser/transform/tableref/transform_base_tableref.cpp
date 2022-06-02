@@ -3,19 +3,19 @@
 
 namespace bustub {
 
-// unique_ptr<TableRef> Transformer::TransformRangeVar(bustub_libpgquery::PGRangeVar *root) {
-// 	auto result = std::make_unique<BaseTableRef>();
+unique_ptr<TableRef> Transformer::TransformRangeVar(bustub_libpgquery::PGRangeVar *root) {
+  auto result = std::make_unique<BaseTableRef>();
 
-// 	result->alias_ = TransformAlias(root->alias, result->column_name_alias_);
-// 	if (root->relname != nullptr) {
-// 		result->table_name_ = root->relname;
-// 	}
-// 	if (root->schemaname != nullptr) {
-// 		result->schema_name_ = root->schemaname;
-// 	}
-// 	result->query_location_ = root->location;
-// 	return result;
-// }
+  result->alias_ = TransformAlias(root->alias, result->column_name_alias_);
+  if (root->relname != nullptr) {
+    result->table_name_ = root->relname;
+  }
+  if (root->schemaname != nullptr) {
+    result->schema_name_ = root->schemaname;
+  }
+  result->query_location_ = root->location;
+  return result;
+}
 
 // QualifiedName Transformer::TransformQualifiedName(bustub_libpgquery::PGRangeVar *root) {
 // 	QualifiedName qname;

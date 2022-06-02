@@ -83,8 +83,8 @@ class Binder : public std::enable_shared_from_this<Binder> {
 
   vector<ExpressionBinder *> &GetActiveBinders();
 
-  string FormatError(ParsedExpression &expr_context, const string &message);
-  string FormatError(TableRef &ref_context, const string &message);
+  // string FormatError(ParsedExpression &expr_context, const string &message);
+  // string FormatError(TableRef &ref_context, const string &message);
 
   static void BindType(ClientContext &context, Type &type, const string &schema = "");
 

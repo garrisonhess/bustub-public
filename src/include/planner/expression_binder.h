@@ -65,8 +65,6 @@ class ExpressionBinder {
 
   string Bind(unique_ptr<ParsedExpression> *expr, uint64_t depth, bool root_expression = false);
 
-  unique_ptr<ParsedExpression> CreateStructExtract(unique_ptr<ParsedExpression> base, string field_name);
-  unique_ptr<ParsedExpression> CreateStructPack(ColumnRefExpression &colref);
   BindResult BindQualifiedColumnName(ColumnRefExpression &colref, const string &table_name);
 
   unique_ptr<ParsedExpression> QualifyColumnName(const string &column_name, string &error_message);
@@ -86,8 +84,20 @@ class ExpressionBinder {
   virtual BindResult BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression);
 
  protected:
+  // BindResult BindExpression(BetweenExpression &expr, uint64_t depth);
+  // BindResult BindExpression(CaseExpression &expr, uint64_t depth);
+  // BindResult BindExpression(CollateExpression &expr, uint64_t depth);
+  // BindResult BindExpression(CastExpression &expr, uint64_t depth);
   BindResult BindExpression(ColumnRefExpression &expr, uint64_t depth);
+  // BindResult BindExpression(ComparisonExpression &expr, uint64_t depth);
+  // BindResult BindExpression(ConjunctionExpression &expr, uint64_t depth);
   BindResult BindExpression(ConstantExpression &expr, uint64_t depth);
+  // BindResult BindExpression(FunctionExpression &expr, uint64_t depth, unique_ptr<ParsedExpression> *expr_ptr);
+  // BindResult BindExpression(LambdaExpression &expr, uint64_t depth);
+  // BindResult BindExpression(OperatorExpression &expr, uint64_t depth);
+  // BindResult BindExpression(ParameterExpression &expr, uint64_t depth);
+  // BindResult BindExpression(PositionalReferenceExpression &ref, uint64_t depth);
+  // BindResult BindExpression(SubqueryExpression &expr, uint64_t depth);
 
  protected:
   Binder &binder_;
