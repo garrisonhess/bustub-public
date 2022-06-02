@@ -88,9 +88,9 @@ class Binder : public std::enable_shared_from_this<Binder> {
 
   static void BindType(ClientContext &context, Type &type, const string &schema = "");
 
-  // bool HasMatchingBinding(const string &table_name, const string &column_name, string &error_message);
-  // bool HasMatchingBinding(const string &schema_name, const string &table_name, const string &column_name,
-  //                         string &error_message);
+  bool HasMatchingBinding(const string &table_name, const string &column_name, string &error_message);
+  bool HasMatchingBinding(const string &schema_name, const string &table_name, const string &column_name,
+                          string &error_message);
 
   void SetBindingMode(BindingMode mode);
   BindingMode GetBindingMode();
@@ -122,22 +122,90 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unordered_set<ViewCatalogEntry *> bound_views_;
 
  private:
+  //! Bind the default values of the columns of a table
+  void BindDefaultValues(vector<ColumnDefinition> &columns, vector<unique_ptr<Expression>> &bound_defaults);
+  //! Bind a limit value (LIMIT or OFFSET)
+  unique_ptr<Expression> BindDelimiter(ClientContext &context, OrderBinder &order_binder,
+                                       unique_ptr<ParsedExpression> delimiter, const Type &type,
+                                       Value &delimiter_value);
+
+  //! Move correlated expressions from the child binder to this binder
+  void MoveCorrelatedExpressions(Binder &other);
+
   BoundStatement Bind(SelectStatement &stmt);
+  // BoundStatement Bind(InsertStatement &stmt);
+  // BoundStatement Bind(CopyStatement &stmt);
+  // BoundStatement Bind(DeleteStatement &stmt);
+  // BoundStatement Bind(UpdateStatement &stmt);
+  // BoundStatement Bind(CreateStatement &stmt);
+  // BoundStatement Bind(DropStatement &stmt);
+  // BoundStatement Bind(AlterStatement &stmt);
+  // BoundStatement Bind(TransactionStatement &stmt);
+  // BoundStatement Bind(PragmaStatement &stmt);
+  // BoundStatement Bind(ExplainStatement &stmt);
+  // BoundStatement Bind(VacuumStatement &stmt);
+  // BoundStatement Bind(RelationStatement &stmt);
+  // BoundStatement Bind(ShowStatement &stmt);
+  // BoundStatement Bind(CallStatement &stmt);
+  // BoundStatement Bind(ExportStatement &stmt);
+  // BoundStatement Bind(SetStatement &stmt);
+  // BoundStatement Bind(LoadStatement &stmt);
+  BoundStatement BindReturning(vector<unique_ptr<ParsedExpression>> returning_list, TableCatalogEntry *table,
+                               uint64_t update_table_index, unique_ptr<LogicalOperator> child_operator,
+                               BoundStatement result);
+
+  // unique_ptr<QueryNode> BindTableMacro(FunctionExpression &function, TableMacroCatalogEntry *macro_func, idx_t
+  // depth);
 
   unique_ptr<BoundQueryNode> BindNode(SelectNode &node);
+  // unique_ptr<BoundQueryNode> BindNode(SetOperationNode &node);
+  // unique_ptr<BoundQueryNode> BindNode(RecursiveCTENode &node);
   unique_ptr<BoundQueryNode> BindNode(QueryNode &node);
 
   unique_ptr<LogicalOperator> VisitQueryNode(BoundQueryNode &node, unique_ptr<LogicalOperator> root);
+  unique_ptr<LogicalOperator> CreatePlan(BoundRecursiveCTENode &node);
   unique_ptr<LogicalOperator> CreatePlan(BoundSelectNode &statement);
+  unique_ptr<LogicalOperator> CreatePlan(BoundSetOperationNode &node);
   unique_ptr<LogicalOperator> CreatePlan(BoundQueryNode &node);
 
   unique_ptr<BoundTableRef> Bind(BaseTableRef &ref);
+  // unique_ptr<BoundTableRef> Bind(CrossProductRef &ref);
+  unique_ptr<BoundTableRef> Bind(JoinRef &ref);
+  // unique_ptr<BoundTableRef> Bind(SubqueryRef &ref, CommonTableExpressionInfo *cte = nullptr);
+  // unique_ptr<BoundTableRef> Bind(TableFunctionRef &ref);
   unique_ptr<BoundTableRef> Bind(EmptyTableRef &ref);
   unique_ptr<BoundTableRef> Bind(ExpressionListRef &ref);
 
+  // bool BindTableFunctionParameters(TableFunctionCatalogEntry &table_function,
+  //                                  vector<unique_ptr<ParsedExpression>> &expressions, vector<Type> &arguments,
+  //                                  vector<Value> &parameters, named_parameter_map_t &named_parameters,
+  //                                  unique_ptr<BoundSubqueryRef> &subquery, string &error);
+  // bool BindTableInTableOutFunction(vector<unique_ptr<ParsedExpression>> &expressions,
+  //                                  unique_ptr<BoundSubqueryRef> &subquery, string &error);
+
   unique_ptr<LogicalOperator> CreatePlan(BoundBaseTableRef &ref);
+  unique_ptr<LogicalOperator> CreatePlan(BoundCrossProductRef &ref);
+  unique_ptr<LogicalOperator> CreatePlan(BoundJoinRef &ref);
+  unique_ptr<LogicalOperator> CreatePlan(BoundSubqueryRef &ref);
+  unique_ptr<LogicalOperator> CreatePlan(BoundTableFunction &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundEmptyTableRef &ref);
   unique_ptr<LogicalOperator> CreatePlan(BoundExpressionListRef &ref);
+  unique_ptr<LogicalOperator> CreatePlan(BoundCTERef &ref);
+
+  // BoundStatement BindCopyTo(CopyStatement &stmt);
+  // BoundStatement BindCopyFrom(CopyStatement &stmt);
+
+  void BindModifiers(OrderBinder &order_binder, QueryNode &statement, BoundQueryNode &result);
+  void BindModifierTypes(BoundQueryNode &result, const vector<Type> &sql_types, uint64_t projection_index);
+
+  // BoundStatement BindSummarize(ShowStatement &stmt);
+  unique_ptr<BoundResultModifier> BindLimit(OrderBinder &order_binder, LimitModifier &limit_mod);
+  unique_ptr<Expression> BindOrderExpression(OrderBinder &order_binder, unique_ptr<ParsedExpression> expr);
+
+  unique_ptr<LogicalOperator> PlanFilter(unique_ptr<Expression> condition, unique_ptr<LogicalOperator> root);
+
+  void PlanSubqueries(unique_ptr<Expression> *expr, unique_ptr<LogicalOperator> *root);
+  unique_ptr<Expression> PlanSubquery(BoundSubqueryExpression &expr, unique_ptr<LogicalOperator> &root);
 
   unique_ptr<LogicalOperator> CastLogicalOperatorToTypes(vector<Type> &source_types, vector<Type> &target_types,
                                                          unique_ptr<LogicalOperator> op);

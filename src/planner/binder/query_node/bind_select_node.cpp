@@ -2,6 +2,7 @@
 #include "common/limits.h"
 #include "common/string_util.h"
 // #include "execution/expression_executor.h"
+#include "common/enums/order_type.h"
 #include "main/config.h"
 #include "parser/expression/columnref_expression.h"
 #include "parser/expression/constant_expression.h"
@@ -17,134 +18,134 @@
 #include "planner/expression_binder/select_binder.h"
 #include "planner/expression_binder/where_binder.h"
 #include "planner/query_node/bound_select_node.h"
+#include "type/value_factory.h"
 
 namespace bustub {
 using std::make_unique;
 
-// unique_ptr<Expression> Binder::BindOrderExpression(OrderBinder &order_binder, unique_ptr<ParsedExpression> expr) {
-//   // we treat the Distinct list as a order by
-//   auto bound_expr = order_binder.Bind(move(expr));
-//   if (!bound_expr) {
-//     // DISTINCT ON non-integer constant
-//     // remove the expression from the DISTINCT ON list
-//     return nullptr;
-//   }
-//   assert(bound_expr->type == ExpressionType::BOUND_COLUMN_REF);
-//   return bound_expr;
-// }
+unique_ptr<Expression> Binder::BindOrderExpression(OrderBinder &order_binder, unique_ptr<ParsedExpression> expr) {
+  // we treat the Distinct list as a order by
+  auto bound_expr = order_binder.Bind(move(expr));
+  if (!bound_expr) {
+    // DISTINCT ON non-integer constant
+    // remove the expression from the DISTINCT ON list
+    return nullptr;
+  }
+  assert(bound_expr->type_ == ExpressionType::BOUND_COLUMN_REF);
+  return bound_expr;
+}
 
-// unique_ptr<Expression> Binder::BindDelimiter(ClientContext &context, OrderBinder &order_binder,
-//                                              unique_ptr<ParsedExpression> delimiter, const Type &type,
-//                                              Value &delimiter_value) {
-//   auto new_binder = Binder::CreateBinder(context, this, true);
-//   if (delimiter->HasSubquery()) {
-//     return order_binder.CreateExtraReference(move(delimiter));
-//   }
-//   ExpressionBinder expr_binder(*new_binder, context);
-//   expr_binder.target_type = type;
-//   auto expr = expr_binder.Bind(delimiter);
-//   if (expr->IsFoldable()) {
-//     //! this is a constant
-//     delimiter_value = ExpressionExecutor::EvaluateScalar(*expr).CastAs(type);
-//     return nullptr;
-//   }
-//   return expr;
-// }
+unique_ptr<Expression> Binder::BindDelimiter(ClientContext &context, OrderBinder &order_binder,
+                                             unique_ptr<ParsedExpression> delimiter, const Type &type,
+                                             Value &delimiter_value) {
+  auto new_binder = Binder::CreateBinder(context, this, true);
+  if (delimiter->HasSubquery()) {
+    return order_binder.CreateExtraReference(move(delimiter));
+  }
+  ExpressionBinder expr_binder(*new_binder, context, false);
+  expr_binder.target_type_ = type;
+  auto expr = expr_binder.Bind(delimiter);
+  // if (expr->IsFoldable()) {
+  //   //! this is a constant
+  //   delimiter_value = ExpressionExecutor::EvaluateScalar(*expr).CastAs(type);
+  //   return nullptr;
+  // }
+  return expr;
+}
 
-// unique_ptr<BoundResultModifier> Binder::BindLimit(OrderBinder &order_binder, LimitModifier &limit_mod) {
-//   auto result = make_unique<BoundLimitModifier>();
-//   if (limit_mod.limit) {
-//     Value val;
-//     result->limit = BindDelimiter(context, order_binder, move(limit_mod.limit), Type::BIGINT, val);
-//     if (!result->limit) {
-//       result->limit_val = val.GetValue<int64_t>();
-//       if (result->limit_val < 0) {
-//         throw Exception("LIMIT cannot be negative");
-//       }
-//     }
-//   }
-//   if (limit_mod.offset) {
-//     Value val;
-//     result->offset = BindDelimiter(context, order_binder, move(limit_mod.offset), Type::BIGINT, val);
-//     if (!result->offset) {
-//       result->offset_val = val.GetValue<int64_t>();
-//       if (result->offset_val < 0) {
-//         throw Exception("OFFSET cannot be negative");
-//       }
-//     }
-//   }
-//   return move(result);
-// }
+unique_ptr<BoundResultModifier> Binder::BindLimit(OrderBinder &order_binder, LimitModifier &limit_mod) {
+  auto result = make_unique<BoundLimitModifier>();
+  if (limit_mod.limit_) {
+    Value val;
+    result->limit_ = BindDelimiter(context_, order_binder, move(limit_mod.limit_), Type(TypeId::BIGINT), val);
+    // if (!result->limit_) {
+    //   result->limit_val_ = val.GetValue<int64_t>();
+    //   if (result->limit_val_ < 0) {
+    //     throw Exception("LIMIT cannot be negative");
+    //   }
+    // }
+  }
+  if (limit_mod.offset_) {
+    Value val;
+    result->offset_ = BindDelimiter(context_, order_binder, move(limit_mod.offset_), Type(TypeId::BIGINT), val);
+    // if (!result->offset_) {
+    //   result->offset_val_ = val.GetValue<int64_t>();
+    //   if (result->offset_val_ < 0) {
+    //     throw Exception("OFFSET cannot be negative");
+    //   }
+    // }
+  }
+  return move(result);
+}
 
-// void Binder::BindModifiers(OrderBinder &order_binder, QueryNode &statement, BoundQueryNode &result) {
-//   for (auto &mod : statement.modifiers) {
-//     unique_ptr<BoundResultModifier> bound_modifier;
-//     switch (mod->type) {
-//       case ResultModifierType::DISTINCT_MODIFIER: {
-//         auto &distinct = (DistinctModifier &)*mod;
-//         auto bound_distinct = make_unique<BoundDistinctModifier>();
-//         if (distinct.distinct_on_targets.empty()) {
-//           for (uint64_t i = 0; i < result.names.size(); i++) {
-//             distinct.distinct_on_targets.push_back(make_unique<ConstantExpression>(Value::INTEGER(1 + i)));
-//           }
-//         }
-//         for (auto &distinct_on_target : distinct.distinct_on_targets) {
-//           auto expr = BindOrderExpression(order_binder, move(distinct_on_target));
-//           if (!expr) {
-//             continue;
-//           }
-//           bound_distinct->target_distincts.push_back(move(expr));
-//         }
-//         bound_modifier = move(bound_distinct);
-//         break;
-//       }
-//       case ResultModifierType::ORDER_MODIFIER: {
-//         auto &order = (OrderModifier &)*mod;
-//         auto bound_order = make_unique<BoundOrderModifier>();
-//         auto &config = DBConfig::GetConfig(context);
-//         assert(!order.orders.empty());
-//         if (order.orders[0].expression->type == ExpressionType::STAR) {
-//           // ORDER BY ALL
-//           // replace the order list with the maximum order by count
-//           assert(order.orders.size() == 1);
-//           auto order_type = order.orders[0].type;
-//           auto null_order = order.orders[0].null_order;
+void Binder::BindModifiers(OrderBinder &order_binder, QueryNode &statement, BoundQueryNode &result) {
+  for (auto &mod : statement.modifiers_) {
+    unique_ptr<BoundResultModifier> bound_modifier;
+    switch (mod->type_) {
+      case ResultModifierType::DISTINCT_MODIFIER: {
+        auto &distinct = (DistinctModifier &)*mod;
+        auto bound_distinct = make_unique<BoundDistinctModifier>();
+        if (distinct.distinct_on_targets_.empty()) {
+          for (uint64_t i = 0; i < result.names_.size(); i++) {
+            distinct.distinct_on_targets_.push_back(
+                make_unique<ConstantExpression>(ValueFactory::GetIntegerValue(1 + i)));
+          }
+        }
+        for (auto &distinct_on_target : distinct.distinct_on_targets_) {
+          auto expr = BindOrderExpression(order_binder, move(distinct_on_target));
+          if (!expr) {
+            continue;
+          }
+          bound_distinct->target_distincts_.push_back(move(expr));
+        }
+        bound_modifier = move(bound_distinct);
+        break;
+      }
+      case ResultModifierType::ORDER_MODIFIER: {
+        auto &order = (OrderModifier &)*mod;
+        auto bound_order = make_unique<BoundOrderModifier>();
+        // auto &config = DBConfig::GetConfig(context_);
+        assert(!order.orders_.empty());
+        if (order.orders_[0].expression_->type_ == ExpressionType::STAR) {
+          // ORDER BY ALL
+          // replace the order list with the maximum order by count
+          assert(order.orders_.size() == 1);
+          auto order_type = order.orders_[0].type_;
+          auto null_order = order.orders_[0].null_order_;
 
-//           vector<OrderByNode> new_orders;
-//           for (uint64_t i = 0; i < order_binder.MaxCount(); i++) {
-//             new_orders.emplace_back(order_type, null_order, make_unique<ConstantExpression>(Value::INTEGER(i + 1)));
-//           }
-//           order.orders = move(new_orders);
-//         }
-//         for (auto &order_node : order.orders) {
-//           auto order_expression = BindOrderExpression(order_binder, move(order_node.expression));
-//           if (!order_expression) {
-//             continue;
-//           }
-//           auto type = order_node.type == OrderType::ORDER_DEFAULT ? config.default_order_type : order_node.type;
-//           auto null_order = order_node.null_order == OrderByNullType::ORDER_DEFAULT ? config.default_null_order
-//                                                                                     : order_node.null_order;
-//           bound_order->orders.emplace_back(type, null_order, move(order_expression));
-//         }
-//         if (!bound_order->orders.empty()) {
-//           bound_modifier = move(bound_order);
-//         }
-//         break;
-//       }
-//       case ResultModifierType::LIMIT_MODIFIER:
-//         bound_modifier = BindLimit(order_binder, (LimitModifier &)*mod);
-//         break;
-//       case ResultModifierType::LIMIT_PERCENT_MODIFIER:
-//         bound_modifier = BindLimitPercent(order_binder, (LimitPercentModifier &)*mod);
-//         break;
-//       default:
-//         throw Exception("Unsupported result modifier");
-//     }
-//     if (bound_modifier) {
-//       result.modifiers.push_back(move(bound_modifier));
-//     }
-//   }
-// }
+          vector<OrderByNode> new_orders;
+          for (uint64_t i = 0; i < order_binder.MaxCount(); i++) {
+            new_orders.emplace_back(order_type, null_order,
+                                    make_unique<ConstantExpression>(ValueFactory::GetIntegerValue(i + 1)));
+          }
+          order.orders_ = move(new_orders);
+        }
+        for (auto &order_node : order.orders_) {
+          auto order_expression = BindOrderExpression(order_binder, move(order_node.expression_));
+          if (!order_expression) {
+            continue;
+          }
+          auto type = order_node.type_ == OrderType::ORDER_DEFAULT ? OrderType::ASCENDING : order_node.type_;
+          auto null_order = order_node.null_order_ == OrderByNullType::ORDER_DEFAULT ? OrderByNullType::NULLS_FIRST
+                                                                                     : order_node.null_order_;
+          bound_order->orders_.emplace_back(type, null_order, move(order_expression));
+        }
+        if (!bound_order->orders_.empty()) {
+          bound_modifier = move(bound_order);
+        }
+        break;
+      }
+      case ResultModifierType::LIMIT_MODIFIER:
+        bound_modifier = BindLimit(order_binder, (LimitModifier &)*mod);
+        break;
+      default:
+        throw Exception("Unsupported result modifier");
+    }
+    if (bound_modifier) {
+      result.modifiers_.push_back(move(bound_modifier));
+    }
+  }
+}
 
 // static void AssignReturnType(unique_ptr<Expression> &expr, const vector<Type> &sql_types, uint64_t projection_index)
 // {
