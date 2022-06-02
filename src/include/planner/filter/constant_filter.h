@@ -8,7 +8,7 @@
 
 #pragma once
 
-// #include "common/enums/expression_type.h"
+#include "common/enums/expression_type.h"
 #include "planner/table_filter.h"
 #include "type/value.h"
 
@@ -19,9 +19,9 @@ class ConstantFilter : public TableFilter {
   ConstantFilter(ExpressionType comparison_type, Value constant);
 
   //! The comparison type (e.g. COMPARE_EQUAL, COMPARE_GREATERTHAN, COMPARE_LESSTHAN, ...)
-  ExpressionType comparison_type;
+  ExpressionType comparison_type_;
   //! The constant value to filter on
-  Value constant;
+  Value constant_;
 
  public:
   string ToString(const string &column_name) override;
