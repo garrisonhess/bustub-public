@@ -22,9 +22,9 @@ void Planner::CreatePlan(SQLStatement &statement) {
 }
 
 shared_ptr<PreparedStatementData> Planner::PrepareSQLStatement(unique_ptr<SQLStatement> statement) {
-  auto copied_statement = statement->Copy();
+  // auto copied_statement = statement->Copy();
   // create a plan of the underlying statement
-  CreatePlan(move(statement));
+  // CreatePlan(move(statement));
   // // now create the logical prepare
   // auto prepared_data = make_shared<PreparedStatementData>(copied_statement->type);
   // prepared_data->unbound_statement = move(copied_statement);
