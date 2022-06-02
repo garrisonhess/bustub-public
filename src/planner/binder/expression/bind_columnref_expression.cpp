@@ -142,6 +142,11 @@ void ExpressionBinder::QualifyColumnNames(unique_ptr<ParsedExpression> &expr) {
                                               [&](unique_ptr<ParsedExpression> &child) { QualifyColumnNames(child); });
 }
 
+void ExpressionBinder::QualifyColumnNames(Binder &binder, unique_ptr<ParsedExpression> &expr) {
+  WhereBinder where_binder(binder, binder.context_);
+  where_binder.QualifyColumnNames(expr);
+}
+
 BindResult ExpressionBinder::BindExpression(ColumnRefExpression &expr, uint64_t depth) {
   if (binder_.GetBindingMode() == BindingMode::EXTRACT_NAMES) {
     const auto val = ValueFactory::GetNullValueByType(TypeId::INTEGER);

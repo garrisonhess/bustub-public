@@ -232,12 +232,15 @@ using std::make_unique;
 unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
   LOG_INFO("In BindNode(SelectNode) for node: %s", node.ToString().c_str());
   auto result = make_unique<BoundSelectNode>();
-  // first bind the FROM table statement
-  if (node.from_table_ == nullptr) {
-    LOG_INFO("stupid select from_table is nullptr, so we're making it empty here...");
-    node.from_table_ = make_unique<EmptyTableRef>();
-  }
+  result->projection_index_ = GenerateTableIndex();
+  // result->group_index_ = GenerateTableIndex();
+  // result->aggregate_index_ = GenerateTableIndex();
+  // result->groupings_index_ = GenerateTableIndex();
+  // result->window_index_ = GenerateTableIndex();
+  // result->unnest_index_ = GenerateTableIndex();
+  result->prune_index_ = GenerateTableIndex();
 
+  // first bind the FROM table statement
   result->from_table_ = Bind(*node.from_table_);
 
   // visit the select list and expand any "*" statements
@@ -256,21 +259,21 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
   }
   node.select_list_ = move(new_select_list);
 
-  // // create a mapping of (alias -> index) and a mapping of (Expression -> index) for the SELECT list
-  // case_insensitive_map_t<uint64_t> alias_map;
-  // expression_map_t<uint64_t> projection_map;
-  // for (uint64_t i = 0; i < node.select_list_.size(); i++) {
-  //   auto &expr = node.select_list_[i];
-  //   result->names_.push_back(expr->GetName());
-  //   ExpressionBinder::QualifyColumnNames(*this, expr);
-  //   if (!expr->alias_.empty()) {
-  //     alias_map[expr->alias_] = i;
-  //     result->names_[i] = expr->alias_;
-  //   }
-  //   projection_map[expr.get()] = i;
-  //   result->original_expressions_.push_back(expr->Copy());
-  // }
-  // result->column_count_ = node.select_list_.size();
+  // create a mapping of (alias -> index) and a mapping of (Expression -> index) for the SELECT list
+  case_insensitive_map_t<uint64_t> alias_map;
+  expression_map_t<uint64_t> projection_map;
+  for (uint64_t i = 0; i < node.select_list_.size(); i++) {
+    auto &expr = node.select_list_[i];
+    result->names_.push_back(expr->GetName());
+    ExpressionBinder::QualifyColumnNames(*this, expr);
+    if (!expr->alias_.empty()) {
+      alias_map[expr->alias_] = i;
+      result->names_[i] = expr->alias_;
+    }
+    projection_map[expr.get()] = i;
+    result->original_expressions_.push_back(expr->Copy());
+  }
+  result->column_count_ = node.select_list_.size();
 
   // // first visit the WHERE clause
   // // the WHERE clause happens before the GROUP BY, PROJECTION or HAVING clauses

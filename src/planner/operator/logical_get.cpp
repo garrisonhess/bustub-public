@@ -1,19 +1,21 @@
 #include "planner/operator/logical_get.h"
 
 // #include "catalog/catalog_entry/table_catalog_entry.h"
-#include "storage/data_table.h"
 #include "common/string_util.h"
-#include "planner/table_binding.h"
 #include "function/table/table_scan.h"
+#include "planner/table_binding.h"
+#include "storage/data_table.h"
 
 namespace bustub {
 
 LogicalGet::LogicalGet(uint64_t table_index, TableFunction function, unique_ptr<FunctionData> bind_data,
                        vector<Type> returned_types, vector<string> returned_names)
-    : LogicalOperator(LogicalOperatorType::LOGICAL_GET), table_index_(table_index), function_(move(function)),
-      bind_data_(move(bind_data)), returned_types_(move(returned_types)), names_(move(returned_names)) {
-}
-
+    : LogicalOperator(LogicalOperatorType::LOGICAL_GET),
+      table_index_(table_index),
+      function_(move(function)),
+      bind_data_(move(bind_data)),
+      returned_types_(move(returned_types)),
+      names_(move(returned_names)) {}
 
 string LogicalGet::GetName() const { return StringUtil::Upper(function_.name); }
 
