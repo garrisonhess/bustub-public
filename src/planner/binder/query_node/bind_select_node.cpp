@@ -251,9 +251,9 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
       new_select_list.push_back(move(select_element));
     }
   }
-  // if (new_select_list.empty()) {
-  //   throw Exception("SELECT list is empty after resolving * expressions!");
-  // }
+  if (new_select_list.empty()) {
+    throw Exception("SELECT list is empty after resolving * expressions!");
+  }
   node.select_list_ = move(new_select_list);
 
   // // create a mapping of (alias -> index) and a mapping of (Expression -> index) for the SELECT list
