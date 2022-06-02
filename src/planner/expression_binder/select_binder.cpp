@@ -15,11 +15,11 @@ SelectBinder::SelectBinder(Binder &binder, ClientContext &context, BoundSelectNo
 
 BindResult SelectBinder::BindExpression(unique_ptr<ParsedExpression> *expr_ptr, uint64_t depth, bool root_expression) {
   auto &expr = **expr_ptr;
-    // check if the expression binds to one of the groups
-    auto group_index = TryBindGroup(expr, depth);
-    if (group_index != INVALID_INDEX) {
-      return BindGroup(expr, depth, group_index);
-    }
+  // check if the expression binds to one of the groups
+  auto group_index = TryBindGroup(expr, depth);
+  if (group_index != INVALID_INDEX) {
+    return BindGroup(expr, depth, group_index);
+  }
   switch (expr.expression_class_) {
     case ExpressionClass::DEFAULT:
       return BindResult("SELECT clause cannot contain DEFAULT clause");
@@ -48,18 +48,19 @@ uint64_t SelectBinder::TryBindGroup(ParsedExpression &expr, uint64_t depth) {
   if (entry != info_.map_.end()) {
     return entry->second;
   }
-// #ifdef DEBUG
+  // #ifdef DEBUG
   for (auto entry : info_.map_) {
     assert(!entry.first->Equals(&expr));
     assert(!expr.Equals(entry.first));
   }
-// #endif
+  // #endif
   return INVALID_INDEX;
 }
 
 BindResult SelectBinder::BindGroup(ParsedExpression &expr, uint64_t depth, uint64_t group_index) {
   auto &group = node_.groups_.group_expressions_[group_index];
-  return BindResult(make_unique<BoundColumnRefExpression>(expr.GetName(), group->return_type_, ColumnBinding(node_.group_index_, group_index), depth));
+  return BindResult(make_unique<BoundColumnRefExpression>(expr.GetName(), group->return_type_,
+                                                          ColumnBinding(node_.group_index_, group_index), depth));
 }
 
 }  // namespace bustub
