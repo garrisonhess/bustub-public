@@ -14,17 +14,17 @@ namespace bustub {
 string BindContext::GetMatchingBinding(const string &column_name) {
   string result;
   for (auto &kv : bindings_) {
-    // auto binding = kv.second.get();
+    auto binding = kv.second.get();
     auto is_using_binding = GetUsingBinding(column_name, kv.first);
     if (is_using_binding != nullptr) {
       continue;
     }
-    // if (binding->HasMatchingBinding(column_name)) {
-    //   if (!result.empty() || (is_using_binding != nullptr)) {
-    //     throw Exception("Ambiguous reference to column name");
-    //   }
-    //   result = kv.first;
-    // }
+    if (binding->HasMatchingBinding(column_name)) {
+      if (!result.empty() || (is_using_binding != nullptr)) {
+        throw Exception("Ambiguous reference to column name");
+      }
+      result = kv.first;
+    }
   }
   return result;
 }
@@ -35,14 +35,13 @@ void BindContext::AddUsingBinding(const string &column_name, UsingColumnSet *set
 
 void BindContext::AddUsingBindingSet(unique_ptr<UsingColumnSet> set) { using_column_sets_.push_back(move(set)); }
 
-bool BindContext::FindUsingBinding(const string &column_name, unordered_set<UsingColumnSet *> **out) {
-  throw NotImplementedException("");
-  // auto entry = using_columns.find(column_name);
-  // if (entry != using_columns.end()) {
-  //   *out = &entry->second;
-  //   return true;
-  // }
-  // return false;
+bool BindContext::FindUsingBinding(const string &column_name, unordered_set<UsingColumnSet *> **using_columns) {
+  auto entry = using_columns_.find(column_name);
+  if (entry != using_columns_.end()) {
+    *using_columns = &entry->second;
+    return true;
+  }
+  return false;
 }
 
 UsingColumnSet *BindContext::GetUsingBinding(const string &column_name) {
@@ -115,27 +114,26 @@ void BindContext::TransferUsingBinding(BindContext &current_context, UsingColumn
 }
 
 string BindContext::GetActualColumnName(const string &binding_name, const string &column_name) {
-  throw NotImplementedException("");
-  // string error;
-  // auto binding = GetBinding(binding_name, error);
-  // if (binding == nullptr) {
-  //   throw Exception("No binding with name ");
-  // }
-  // uint64_t binding_index;
-  // if (!binding->TryGetBindingIndex(column_name, binding_index)) {  // LCOV_EXCL_START
-  //   throw Exception("Binding with name  does not have a column named ");
-  // }
-  // return binding->names[binding_index];
+  string error;
+  auto binding = GetBinding(binding_name, error);
+  if (binding == nullptr) {
+    throw Exception("No binding with name ");
+  }
+  uint64_t binding_index;
+  if (!binding->TryGetBindingIndex(column_name, binding_index)) {  // LCOV_EXCL_START
+    throw Exception("Binding with name  does not have a column named ");
+  }
+  return binding->names_[binding_index];
 }
 
 unordered_set<string> BindContext::GetMatchingBindings(const string &column_name) {
   unordered_set<string> result;
-  // for (auto &kv : bindings) {
-  // auto binding = kv.second.get();
-  // if (binding->HasMatchingBinding(column_name)) {
-  //   result.insert(kv.first);
-  // }
-  // }
+  for (auto &kv : bindings_) {
+    auto binding = kv.second.get();
+    if (binding->HasMatchingBinding(column_name)) {
+      result.insert(kv.first);
+    }
+  }
   return result;
 }
 
@@ -159,10 +157,10 @@ unique_ptr<ParsedExpression> BindContext::CreateColumnReference(const string &sc
   // as it appears in the binding itself
   auto binding = GetBinding(table_name, error_message);
   if (binding != nullptr) {
-    // auto column_index = binding->GetBindingIndex(column_name);
-    // if (column_index < binding->names.size() && binding->names[column_index] != column_name) {
-    //   result->alias_ = binding->names[column_index];
-    // }
+    auto column_index = binding->GetBindingIndex(column_name);
+    if (column_index < binding->names_.size() && binding->names_[column_index] != column_name) {
+      result->alias_ = binding->names_[column_index];
+    }
   }
   return result;
 }
@@ -175,9 +173,7 @@ Binding *BindContext::GetBinding(const string &name, string &out_error) {
     for (auto &kv : bindings_) {
       candidates.push_back(kv.first);
     }
-    // string candidate_str =
-    //     StringUtil::CandidatesMessage(StringUtil::TopNLevenshtein(candidates, name), "Candidate tables");
-    // out_error = StringUtil::Format("Referenced table \"%s\" not found!%s", name, candidate_str);
+    out_error = StringUtil::Format("Referenced table %s not found!", name.c_str());
     return nullptr;
   }
   return match->second.get();

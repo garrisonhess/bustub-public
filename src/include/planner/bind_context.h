@@ -79,6 +79,7 @@ class BindContext {
   //! Returns any using column set for the given column name, or nullptr if there is none. On conflict (multiple using
   //! column sets with the same name) throw an exception.
   UsingColumnSet *GetUsingBinding(const string &column_name);
+
   //! Returns any using column set for the given column name, or nullptr if there is none
   UsingColumnSet *GetUsingBinding(const string &column_name, const string &binding_name);
   //! Erase a using binding from the set of using bindings
