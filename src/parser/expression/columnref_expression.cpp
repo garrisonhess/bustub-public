@@ -14,11 +14,11 @@ ColumnRefExpression::ColumnRefExpression(string column_name) : ColumnRefExpressi
 
 ColumnRefExpression::ColumnRefExpression(vector<string> column_names_p)
     : ParsedExpression(ExpressionType::COLUMN_REF, ExpressionClass::COLUMN_REF), column_names_(move(column_names_p)) {
-// #ifdef DEBUG
+  // #ifdef DEBUG
   for (auto &col_name : column_names_) {
     assert(!col_name.empty());
   }
-// #endif
+  // #endif
 }
 
 bool ColumnRefExpression::IsQualified() const { return column_names_.size() > 1; }
