@@ -16,7 +16,7 @@ namespace bustub {
 //! SQLStatement is the base class of any type of SQL statement.
 class SQLStatement {
  public:
-  explicit SQLStatement(StatementType type) : type_(type){};
+  explicit SQLStatement(StatementType type);
   virtual ~SQLStatement() = default;
 
   //! The statement type

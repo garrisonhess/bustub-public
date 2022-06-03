@@ -8,6 +8,7 @@ add_library(
   bustub_parser
   OBJECT
   keyword_helper.cpp
+  sql_statement.cpp
   parser.cpp)
 set(ALL_OBJECT_FILES
     ${ALL_OBJECT_FILES} $<TARGET_OBJECTS:bustub_parser>

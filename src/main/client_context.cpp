@@ -34,7 +34,7 @@ ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) { db_ = std:
 unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
   try {
     try {
-      LOG_INFO("statement type: %hhu", statement->type_);
+      LOG_INFO("statement type: %d", static_cast<int>(statement->type_));
       LOG_INFO("statement query_: %s", statement->query_.c_str());
       // LOG_INFO("preparing statement: %s", statement->ToString().c_str());
     } catch (Exception &ex) {
