@@ -4,7 +4,7 @@ include_directories(../../third_party/libpg_query)
 # add_subdirectory(expression)
 # add_subdirectory(statement)
 # add_subdirectory(tableref)
-# add_subdirectory(transform)
+add_subdirectory(transform)
 
 add_library(
   bustub_parser

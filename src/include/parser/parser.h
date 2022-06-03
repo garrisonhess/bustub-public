@@ -10,6 +10,7 @@
 
 #include <memory>
 
+#include "parser/simplified_token.h"
 #include "parser/sql_statement.h"
 #include "postgres_parser.hpp"
 
@@ -41,6 +42,12 @@ class Parser {
 
   //! Returns true if the given text matches a keyword of the parser
   static bool IsKeyword(const string &text);
+
+  //! Returns a list of all keywords in the parser
+  static vector<ParserKeyword> KeywordList();
+
+  //! Tokenize a query, returning the raw tokens together with their locations
+  static vector<SimplifiedToken> Tokenize(const string &query);
 };
 
 }  // namespace bustub
