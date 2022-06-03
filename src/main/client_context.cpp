@@ -26,23 +26,18 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     prepare_count_++;
 
     auto unbound_statement = statement->Copy();
-    // LOG_INFO("About to call planner w/ query: %s", statement->query_.c_str());
     Planner planner = Planner(*this);
     planner.CreatePlan(move(statement));
+    LOG_INFO("planner plan: \n%s", planner.plan_->ToString().c_str());
 
     // PhysicalPlanGenerator gen = PhysicalPlanGenerator(*this);
     // auto physical_plan = gen.CreatePlan(move(planner.plan_));
-    LOG_INFO("planner plan: \n%s", planner.plan_->ToString().c_str());
-    // LOG_INFO("planner binder_: \n%s", planner.binder_->ToString().c_str());
-    // LOG_INFO("planner context_: \n%s", planner.context_->ToString().c_str());
-    // LOG_INFO("planner names_: \n%s", planner.names_->ToString().c_str());
-    // LOG_INFO("planner types_: \n%s", planner.types_->ToString().c_str());
-
     unique_ptr<PreparedStatement> result =
         std::make_unique<PreparedStatement>(shared_from_this(), unbound_statement->query_);
     result->statement_type_ = StatementType::SELECT_STATEMENT;
     result->types_ = planner.types_;
     result->names_ = planner.names_;
+    result->logical_ = planner.plan_.release();
     // result->plan_ = physical_plan.release();
     return result;
   } catch (Exception &ex) {
