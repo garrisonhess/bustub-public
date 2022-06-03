@@ -333,7 +333,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
   }
   result->need_prune_ = result->select_list_.size() > result->column_count_;
 
-  // // now that the SELECT list is bound, we set the types of DISTINCT/ORDER BY expressions
+  // now that the SELECT list is bound, we set the types of DISTINCT/ORDER BY expressions
   BindModifierTypes(*result, internal_sql_types, result->projection_index_);
   LOG_INFO("DONE - BindNode(SelectNode) for node: %s", node.ToString().c_str());
   return result;

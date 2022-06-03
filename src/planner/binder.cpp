@@ -120,8 +120,6 @@ unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
       break;
     case TableReferenceType::JOIN:
       // result = Bind((JoinRef &)ref);
-      // break;
-      throw Exception("Unknown table ref type");
     default:
       throw Exception("Unknown table ref type");
   }
@@ -232,5 +230,23 @@ const unordered_set<string> &Binder::GetTableNames() {
   }
   return table_names_;
 }
+
+// void Binder::MoveCorrelatedExpressions(Binder &other) {
+// 	MergeCorrelatedColumns(other.correlated_columns_);
+// 	other.correlated_columns_.clear();
+// }
+
+// void Binder::MergeCorrelatedColumns(vector<CorrelatedColumnInfo> &other) {
+// 	for (uint64_t i = 0; i < other.size(); i++) {
+// 		AddCorrelatedColumn(other[i]);
+// 	}
+// }
+
+// void Binder::AddCorrelatedColumn(const CorrelatedColumnInfo &info) {
+// 	// we only add correlated columns to the list if they are not already there
+// 	if (std::find(correlated_columns_.begin(), correlated_columns_.end(), info) == correlated_columns.end()) {
+// 		correlated_columns_.push_back(info);
+// 	}
+// }
 
 }  // namespace bustub

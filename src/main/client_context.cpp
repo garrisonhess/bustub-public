@@ -26,8 +26,6 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     prepare_count_++;
 
     auto unbound_statement = statement->Copy();
-
-    // TODO(GH): figure out why it's select *
     LOG_INFO("About to call planner w/ query: %s", statement->query_.c_str());
     Planner planner = Planner(*this);
     planner.CreatePlan(move(statement));

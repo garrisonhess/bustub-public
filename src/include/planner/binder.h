@@ -14,6 +14,7 @@
 #include "common/enums/statement_type.h"
 #include "parser/column_definition.h"
 #include "parser/result_modifier.h"
+#include "parser/tableref/crossproductref.h"
 #include "parser/tokens.h"
 #include "planner/bind_context.h"
 #include "planner/bound_statement.h"
@@ -169,9 +170,9 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unique_ptr<LogicalOperator> CreatePlan(BoundQueryNode &node);
 
   unique_ptr<BoundTableRef> Bind(BaseTableRef &ref);
-  // unique_ptr<BoundTableRef> Bind(CrossProductRef &ref);
+  unique_ptr<BoundTableRef> Bind(CrossProductRef &ref);
   unique_ptr<BoundTableRef> Bind(JoinRef &ref);
-  // unique_ptr<BoundTableRef> Bind(SubqueryRef &ref, CommonTableExpressionInfo *cte = nullptr);
+  unique_ptr<BoundTableRef> Bind(SubqueryRef &ref);
   // unique_ptr<BoundTableRef> Bind(TableFunctionRef &ref);
   unique_ptr<BoundTableRef> Bind(EmptyTableRef &ref);
   unique_ptr<BoundTableRef> Bind(ExpressionListRef &ref);
