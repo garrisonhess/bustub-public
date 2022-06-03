@@ -335,7 +335,6 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
 
   // now that the SELECT list is bound, we set the types of DISTINCT/ORDER BY expressions
   BindModifierTypes(*result, internal_sql_types, result->projection_index_);
-  LOG_INFO("DONE - BindNode(SelectNode) for node: %s", node.ToString().c_str());
   return result;
 }
 

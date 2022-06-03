@@ -58,8 +58,6 @@ BoundStatement Binder::Bind(SQLStatement &statement) {
 unique_ptr<BoundQueryNode> Binder::BindNode(QueryNode &node) {
   // now we bind the node
   unique_ptr<BoundQueryNode> result;
-  LOG_INFO("in BindNode for node: %s", node.ToString().c_str());
-
   switch (node.type_) {
     case QueryNodeType::SELECT_NODE:
       result = BindNode((SelectNode &)node);
@@ -71,8 +69,6 @@ unique_ptr<BoundQueryNode> Binder::BindNode(QueryNode &node) {
     default:
       throw NotImplementedException("Unimplemented node type for Bind");
   }
-
-  LOG_INFO("Done with BindNode for node: %s", node.ToString().c_str());
   return result;
 }
 
@@ -84,7 +80,6 @@ BoundStatement Binder::Bind(QueryNode &node) {
   result.types_ = bound_node->types_;
 
   // and plan it
-  LOG_INFO("Now going to CreatePlan for this node");
   result.plan_ = CreatePlan(*bound_node);
   return result;
 }
@@ -92,7 +87,6 @@ BoundStatement Binder::Bind(QueryNode &node) {
 unique_ptr<LogicalOperator> Binder::CreatePlan(BoundQueryNode &node) {
   switch (node.type_) {
     case QueryNodeType::SELECT_NODE:
-      LOG_INFO("Calling CreatePlan for BoundQueryNode w/ QueryNodeType::SELECT_NODE");
       return CreatePlan((BoundSelectNode &)node);
     case QueryNodeType::SET_OPERATION_NODE:
     case QueryNodeType::RECURSIVE_CTE_NODE:
@@ -124,7 +118,7 @@ unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
       throw Exception("Unknown table ref type");
   }
 
-  LOG_INFO("Binder::Bind(TableRef) Resolved Table Reference: %s", ref.ToString().c_str());
+  // LOG_INFO("Binder::Bind(TableRef) Resolved Table Reference: %s", ref.ToString().c_str());
   return result;
 }
 

@@ -18,8 +18,6 @@ namespace bustub {
 // }
 
 unique_ptr<LogicalOperator> Binder::CreatePlan(BoundSelectNode &statement) {
-  LOG_INFO("IN Binder::CreatePlan for BoundSelectNode.");
-
   unique_ptr<LogicalOperator> root;
   assert(statement.from_table_);
   root = CreatePlan(*statement.from_table_);
