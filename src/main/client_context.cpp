@@ -20,67 +20,6 @@ namespace bustub {
 
 ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) { db_ = std::move(database); }
 
-// void ValidateCreate(const CreateStatement &stmt) {
-//   switch (stmt.type_) {
-//     case CatalogType::TABLE_ENTRY:
-//       break;
-//     case CatalogType::INDEX_ENTRY:
-//       throw NotImplementedException("todo index impl");
-//     case CatalogType::INVALID:
-//     case CatalogType::SCHEMA_ENTRY:
-//     case CatalogType::VIEW_ENTRY:
-//     case CatalogType::PREPARED_STATEMENT:
-//     case CatalogType::SEQUENCE_ENTRY:
-//     case CatalogType::COLLATION_ENTRY:
-//     case CatalogType::TYPE_ENTRY:
-//     case CatalogType::TABLE_FUNCTION_ENTRY:
-//     case CatalogType::SCALAR_FUNCTION_ENTRY:
-//     case CatalogType::AGGREGATE_FUNCTION_ENTRY:
-//     case CatalogType::PRAGMA_FUNCTION_ENTRY:
-//     case CatalogType::COPY_FUNCTION_ENTRY:
-//     case CatalogType::MACRO_ENTRY:
-//     case CatalogType::TABLE_MACRO_ENTRY:
-//     case CatalogType::UPDATED_ENTRY:
-//     case CatalogType::DELETED_ENTRY:
-//       throw NotImplementedException("Create is not implemented for this CatalogType!");
-//   }
-// }
-
-// void ValidateStatement(const SQLStatement &stmt) {
-//   switch (stmt.type_) {
-//     case StatementType::CREATE_STATEMENT:
-//       ValidateCreate(dynamic_cast<const CreateStatement &>(stmt));
-//       break;
-//     case StatementType::INSERT_STATEMENT:
-//       break;
-//     case StatementType::SELECT_STATEMENT:
-//       throw NotImplementedException("TODO implement this statement type.");
-//     case StatementType::UPDATE_STATEMENT:
-//     case StatementType::DELETE_STATEMENT:
-//       throw NotImplementedException("TODO implement this statement type.");
-//     case StatementType::INVALID_STATEMENT:
-//     case StatementType::PREPARE_STATEMENT:
-//     case StatementType::EXECUTE_STATEMENT:
-//     case StatementType::ALTER_STATEMENT:
-//     case StatementType::TRANSACTION_STATEMENT:
-//     case StatementType::COPY_STATEMENT:
-//     case StatementType::ANALYZE_STATEMENT:
-//     case StatementType::VARIABLE_SET_STATEMENT:
-//     case StatementType::CREATE_FUNC_STATEMENT:
-//     case StatementType::EXPLAIN_STATEMENT:
-//     case StatementType::DROP_STATEMENT:
-//     case StatementType::EXPORT_STATEMENT:
-//     case StatementType::PRAGMA_STATEMENT:
-//     case StatementType::SHOW_STATEMENT:
-//     case StatementType::VACUUM_STATEMENT:
-//     case StatementType::CALL_STATEMENT:
-//     case StatementType::SET_STATEMENT:
-//     case StatementType::LOAD_STATEMENT:
-//     case StatementType::RELATION_STATEMENT:
-//       throw NotImplementedException("Statment type not implemented.");
-//   }
-// }
-
 // static void ExecuteCreateTable(Catalog &catalog, CreateStatement &stmt) {
 //   Transaction txn = Transaction(123002);
 //   vector<Column> columns = {};
@@ -97,7 +36,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     try {
       LOG_INFO("statement type: %hhu", statement->type_);
       LOG_INFO("statement query_: %s", statement->query_.c_str());
-      LOG_INFO("preparing statement: %s", statement->ToString().c_str());
+      // LOG_INFO("preparing statement: %s", statement->ToString().c_str());
     } catch (Exception &ex) {
       LOG_INFO("couldn't print");
     }
@@ -117,14 +56,14 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
       // TableInfo *table = catalog.GetTable(statement.table_);
     }
 
-    auto unbound_statement = statement->Copy();
+    // auto unbound_statement = statement->Copy();
 
-    // Then just run the executor factory.
-    unique_ptr<PreparedStatement> result =
-        std::make_unique<PreparedStatement>(shared_from_this(), unbound_statement->query_);
-    result->statement_type_ = statement->type_;
-
-    return result;
+    // // Then just run the executor factory.
+    // unique_ptr<PreparedStatement> result =
+    //     std::make_unique<PreparedStatement>(shared_from_this(), unbound_statement->query_);
+    // result->statement_type_ = statement->type_;
+    return nullptr;
+    // return result;
   } catch (Exception &ex) {
     LOG_DEBUG("PREPARE FAILED");
     return std::make_unique<PreparedStatement>(ex.what());

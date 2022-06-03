@@ -1,8 +1,6 @@
 add_library(
   bustub_expression
   OBJECT
-  columnref_expression.cpp
-  comparison_expression.cpp
   constant_expression.cpp)
 set(ALL_OBJECT_FILES
     ${ALL_OBJECT_FILES} $<TARGET_OBJECTS:bustub_expression>
