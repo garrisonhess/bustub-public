@@ -23,11 +23,8 @@ Binder::Binder(bool /*unused*/, ClientContext &context, shared_ptr<Binder> paren
 }
 
 BoundStatement Binder::Bind(SQLStatement &statement) {
-  LOG_INFO("In binder::bind.");
   root_statement_ = &statement;
-  LOG_INFO("marking statement: %s as root", statement.ToString().c_str());
-  LOG_INFO("stmt len %d | stmt loc %d | ", statement.stmt_length_, statement.stmt_location_);
-  LOG_INFO("stmt type %d | stmt query %s | ", static_cast<uint8_t>(statement.type_), statement.query_.c_str());
+  LOG_INFO("bind | stmt type %d | stmt query %s | ", static_cast<uint8_t>(statement.type_), statement.query_.c_str());
 
   switch (statement.type_) {
     case StatementType::SELECT_STATEMENT:
@@ -80,7 +77,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(QueryNode &node) {
 }
 
 BoundStatement Binder::Bind(QueryNode &node) {
-  LOG_INFO("In Binder::Bind for QueryNode: %s", node.ToString().c_str());
+  LOG_INFO("bind querynode: %s", node.ToString().c_str());
   auto bound_node = BindNode(node);
   BoundStatement result;
   result.names_ = bound_node->names_;
@@ -106,7 +103,6 @@ unique_ptr<LogicalOperator> Binder::CreatePlan(BoundQueryNode &node) {
 }
 
 unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
-  LOG_INFO("In Binder::Bind(TableRef) for ref: %s", ref.ToString().c_str());
   unique_ptr<BoundTableRef> result;
   switch (ref.type_) {
     case TableReferenceType::BASE_TABLE:
@@ -129,6 +125,8 @@ unique_ptr<BoundTableRef> Binder::Bind(TableRef &ref) {
     default:
       throw Exception("Unknown table ref type");
   }
+
+  LOG_INFO("Binder::Bind(TableRef) Resolved Table Reference: %s", ref.ToString().c_str());
   return result;
 }
 
