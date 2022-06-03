@@ -1,7 +1,0 @@
-#include "planner/tableref/bound_basetableref.h"
-#include "planner/tableref/bound_crossproductref.h"
-#include "planner/tableref/bound_dummytableref.h"
-#include "planner/tableref/bound_expressionlistref.h"
-#include "planner/tableref/bound_joinref.h"
-#include "planner/tableref/bound_subqueryref.h"
-#include "planner/tableref/bound_table_function.h"

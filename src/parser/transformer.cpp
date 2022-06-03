@@ -2,10 +2,6 @@
 
 #include "common/logger.h"
 #include "parser/sql_statement.h"
-#include "parser/statement/create_statement.h"
-#include "parser/statement/insert_statement.h"
-#include "parser/statement/select_statement.h"
-#include "parser/tableref/emptytableref.h"
 
 namespace bustub {
 
@@ -20,11 +16,6 @@ bool Transformer::TransformParseTree(bustub_libpgquery::PGList *tree, vector<uni
 }
 
 unique_ptr<SQLStatement> Transformer::TransformStatement(bustub_libpgquery::PGNode *stmt) {
-  auto result = TransformStatementInternal(stmt);
-  return result;
-}
-
-unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgquery::PGNode *stmt) {
   switch (stmt->type) {
     case bustub_libpgquery::T_PGRawStmt: {
       auto raw_stmt = reinterpret_cast<bustub_libpgquery::PGRawStmt *>(stmt);
@@ -36,15 +27,17 @@ unique_ptr<SQLStatement> Transformer::TransformStatementInternal(bustub_libpgque
       return result;
     }
     case bustub_libpgquery::T_PGSelectStmt:
-      return TransformSelect(stmt);
-    case bustub_libpgquery::T_PGCreateStmt: {
-      auto tmp = TransformCreateTable(stmt);
-      return tmp;
-    }
-    case bustub_libpgquery::T_PGInsertStmt: {
-      auto tmp2 = TransformInsert(stmt);
-      return tmp2;
-    }
+      // return TransformSelect(stmt);
+    case bustub_libpgquery::T_PGCreateStmt:
+    // {
+    //   auto tmp = TransformCreateTable(stmt);
+    //   return tmp;
+    // }
+    case bustub_libpgquery::T_PGInsertStmt:
+    // {
+    //   auto tmp2 = TransformInsert(stmt);
+    //   return tmp2;
+    // }
     case bustub_libpgquery::T_PGUpdateStmt:
       // return TransformUpdate(stmt);
     case bustub_libpgquery::T_PGDeleteStmt:

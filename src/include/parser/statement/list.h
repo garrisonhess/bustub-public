@@ -1,5 +1,0 @@
-#include "parser/statement/create_statement.h"
-#include "parser/statement/delete_statement.h"
-#include "parser/statement/insert_statement.h"
-#include "parser/statement/select_statement.h"
-#include "parser/statement/update_statement.h"

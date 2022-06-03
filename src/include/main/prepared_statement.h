@@ -55,9 +55,6 @@ class PreparedStatement {
   StatementType statement_type_;
 
   //! The fully prepared physical plan of the prepared statement
-  LogicalOperator *logical_;
-
-  //! The fully prepared physical plan of the prepared statement
   AbstractExecutor *plan_;
 
   // Output schema

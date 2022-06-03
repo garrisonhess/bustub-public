@@ -32,8 +32,5 @@ class ClientContext : public std::enable_shared_from_this<ClientContext> {
  public:
   //! Directly prepare a SQL statement
   unique_ptr<PreparedStatement> Prepare(unique_ptr<SQLStatement> statement);
-
- private:
-  int64_t prepare_count_ = 0;
 };
 }  // namespace bustub

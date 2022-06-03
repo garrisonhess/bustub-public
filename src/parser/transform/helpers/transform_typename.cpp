@@ -44,7 +44,6 @@ static const std::pair<std::string, TypeId> INTERNAL_TYPES[] = {
     {"float8", TypeId::DECIMAL},
     {"tinyint", TypeId::TINYINT},
     {"int1", TypeId::TINYINT},
-    //    {"null", TypeId::SQLNULL}, // TODO(GH): Probably need to handle this
     {"", TypeId::INVALID}};
 
 Type Transformer::TransformTypeName(bustub_libpgquery::PGTypeName *type_name) {
