@@ -30,7 +30,7 @@ unique_ptr<QueryNode> Transformer::TransformSelectNode(bustub_libpgquery::PGSele
       // do this early so the value lists also have a `FROM`
       if (stmt->valuesLists != nullptr) {
         // VALUES list, create an ExpressionList
-        // assert(!stmt->fromClause);
+        assert(!stmt->fromClause);
         result->from_table_ = TransformValuesList(stmt->valuesLists);
         result->select_list_.push_back(std::make_unique<StarExpression>());
       } else {

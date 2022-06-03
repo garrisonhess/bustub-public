@@ -10,10 +10,7 @@ namespace bustub {
 ConstantExpression::ConstantExpression(const Value &val)
     : ParsedExpression(ExpressionType::VALUE_CONSTANT, ExpressionClass::CONSTANT), value_(val) {}
 
-string ConstantExpression::ToString() const {
-  throw NotImplementedException("const expr not impl");
-  // return value_.ToSQLString();
-}
+string ConstantExpression::ToString() const { return value_.ToString(); }
 
 bool ConstantExpression::Equals(const ConstantExpression *a, const ConstantExpression *b) {
   return false;
@@ -33,7 +30,8 @@ void ConstantExpression::Serialize(FieldWriter &writer) const { writer.WriteSeri
 unique_ptr<ParsedExpression> ConstantExpression::Deserialize(ExpressionType type, FieldReader &reader) {
   // Value value = reader.ReadRequiredSerializable<Value, Value>();
   // return std::make_unique<ConstantExpression>(std::move(value));
-  return nullptr;
+  throw NotImplementedException("constant expr deserialize");
+  // return nullptr;
 }
 
 }  // namespace bustub
