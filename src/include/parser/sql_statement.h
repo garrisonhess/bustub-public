@@ -30,6 +30,14 @@ class SQLStatement {
 
   //! The query text that corresponds to this SQL statement
   std::string query_;
+
+  //  protected:
+  //   SQLStatement(const SQLStatement &other) = default;
+
+  //  public:
+  //   virtual string ToString() const { throw Exception("ToString not supported for this type of SQLStatement"); }
+  //   //! Create a copy of this SelectStatement
+  //   virtual unique_ptr<SQLStatement> Copy() const = 0;
 };
 
 }  // namespace bustub

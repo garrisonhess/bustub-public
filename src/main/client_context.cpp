@@ -33,16 +33,8 @@ ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) { db_ = std:
 
 unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
   try {
-    try {
-      LOG_INFO("statement type: %d", static_cast<int>(statement->type_));
-      LOG_INFO("statement query_: %s", statement->query_.c_str());
-      // LOG_INFO("preparing statement: %s", statement->ToString().c_str());
-    } catch (Exception &ex) {
-      LOG_INFO("couldn't print");
-    }
-
-    // ValidateStatement(*statement);
-
+    LOG_INFO("statement type: %d", static_cast<int>(statement->type_));
+    LOG_INFO("statement query_: %s", statement->query_.c_str());
     // if (statement->type_ == StatementType::CREATE_STATEMENT) {
     //   Catalog &catalog = db_->GetCatalog();
     //   ExecuteCreateTable(catalog, dynamic_cast<CreateStatement &>(*statement));
@@ -50,19 +42,17 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     //   result->completed_ = true;
     //   return result;
     // }
+    // if (statement->type_ == StatementType::INSERT_STATEMENT) {
+    //   // Catalog &catalog = db_->GetCatalog();
+    //   // TableInfo *table = catalog.GetTable(statement.table_);
+    // }
 
-    if (statement->type_ == StatementType::INSERT_STATEMENT) {
-      // Catalog &catalog = db_->GetCatalog();
-      // TableInfo *table = catalog.GetTable(statement.table_);
-    }
+    std::string unbound_query = statement->query_;
 
-    // auto unbound_statement = statement->Copy();
-
-    // // Then just run the executor factory.
-    // unique_ptr<PreparedStatement> result =
-    //     std::make_unique<PreparedStatement>(shared_from_this(), unbound_statement->query_);
-    // result->statement_type_ = statement->type_;
-    return nullptr;
+    // Then just run the executor factory.
+    unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(), unbound_query);
+    result->statement_type_ = statement->type_;
+    return result;
     // return result;
   } catch (Exception &ex) {
     LOG_DEBUG("PREPARE FAILED");

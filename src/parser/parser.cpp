@@ -37,6 +37,13 @@ void Parser::ParseQuery(const std::string &query) {
   // if it succeeded, we transform the Postgres parse tree into a list of
   // SQLStatements
   TransformParseTree(parser.parse_tree, statements_);
+  if (!statements_.empty()) {
+    auto &last_statement = statements_.back();
+    last_statement->stmt_length_ = query.size() - last_statement->stmt_location_;
+    for (auto &statement : statements_) {
+      statement->query_ = query;
+    }
+  }
 }
 
 bool Parser::IsKeyword(const std::string &text) { return PostgresParser::IsKeyword(text); }
@@ -126,9 +133,8 @@ unique_ptr<SQLStatement> Parser::TransformStatement(bustub_libpgquery::PGNode *s
       return make_unique<CreateStatement>(*this, reinterpret_cast<PGCreateStmt *>(stmt));
     // case bustub_libpgquery::T_PGSelectStmt:
     //   return make_unique<SelectStatement>(*this, reinterpret_cast<PGSelectStmt *>(stmt));
-    case bustub_libpgquery::T_PGInsertStmt:
-      return make_unique<CreateStatement>(*this, reinterpret_cast<PGCreateStmt *>(stmt));
-      // return make_unique<InsertStatement>(*this, reinterpret_cast<PGInsertStmt *>(stmt));
+    // case bustub_libpgquery::T_PGInsertStmt:
+    // return make_unique<InsertStatement>(*this, reinterpret_cast<PGInsertStmt *>(stmt));
     // case bustub_libpgquery::T_PGDeleteStmt:
     //   return make_unique<DeleteStatement>(*this, reinterpret_cast<bustub_libpgquery::PGDeleteStmt *>(stmt));
     // case bustub_libpgquery::T_PGIndexStmt:
@@ -137,8 +143,6 @@ unique_ptr<SQLStatement> Parser::TransformStatement(bustub_libpgquery::PGNode *s
     default:
       throw NotImplementedException(NodetypeToString(stmt->type));
   }
-
-  throw NotImplementedException(NodetypeToString(stmt->type));
 }
 
 static const std::pair<std::string, TypeId> INTERNAL_TYPES[] = {
