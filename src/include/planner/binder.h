@@ -203,10 +203,10 @@ class Binder : public std::enable_shared_from_this<Binder> {
   unique_ptr<BoundResultModifier> BindLimit(OrderBinder &order_binder, LimitModifier &limit_mod);
   unique_ptr<Expression> BindOrderExpression(OrderBinder &order_binder, unique_ptr<ParsedExpression> expr);
 
-  unique_ptr<LogicalOperator> PlanFilter(unique_ptr<Expression> condition, unique_ptr<LogicalOperator> root);
+  // unique_ptr<LogicalOperator> PlanFilter(unique_ptr<Expression> condition, unique_ptr<LogicalOperator> root);
 
-  void PlanSubqueries(unique_ptr<Expression> *expr, unique_ptr<LogicalOperator> *root);
-  unique_ptr<Expression> PlanSubquery(BoundSubqueryExpression &expr, unique_ptr<LogicalOperator> &root);
+  // void PlanSubqueries(unique_ptr<Expression> *expr, unique_ptr<LogicalOperator> *root);
+  // unique_ptr<Expression> PlanSubquery(BoundSubqueryExpression &expr, unique_ptr<LogicalOperator> &root);
 
   unique_ptr<LogicalOperator> CastLogicalOperatorToTypes(vector<Type> &source_types, vector<Type> &target_types,
                                                          unique_ptr<LogicalOperator> op);

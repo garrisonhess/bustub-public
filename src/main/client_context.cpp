@@ -32,7 +32,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
 
     // PhysicalPlanGenerator gen = PhysicalPlanGenerator(*this);
     // auto physical_plan = gen.CreatePlan(move(planner.plan_));
-    // LOG_INFO("planner plan: \n%s", planner.plan_->ToString().c_str());
+    LOG_INFO("planner plan: \n%s", planner.plan_->ToString().c_str());
     // LOG_INFO("planner binder_: \n%s", planner.binder_->ToString().c_str());
     // LOG_INFO("planner context_: \n%s", planner.context_->ToString().c_str());
     // LOG_INFO("planner names_: \n%s", planner.names_->ToString().c_str());

@@ -241,9 +241,11 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
   for (auto &select_element : node.select_list_) {
     if (select_element->GetExpressionType() == ExpressionType::STAR) {
       // * statement, expand to all columns from the FROM clause
+      LOG_INFO("binding star: %s\n", select_element->ToString().c_str());
       bind_context_.GenerateAllColumnExpressions((StarExpression &)*select_element, new_select_list);
     } else {
       // regular statement, add it to the list
+      LOG_INFO("binding select element: %s\n", select_element->ToString().c_str());
       new_select_list.push_back(move(select_element));
     }
   }
@@ -267,6 +269,10 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
     result->original_expressions_.push_back(expr->Copy());
   }
   result->column_count_ = node.select_list_.size();
+
+  for (auto &k : projection_map) {
+    LOG_INFO("projection map | key: %s | value: %lu", k.first->ToString().c_str(), k.second);
+  }
 
   // first visit the WHERE clause
   // the WHERE clause happens before the GROUP BY, PROJECTION or HAVING clauses
@@ -332,6 +338,9 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &node) {
     internal_sql_types.push_back(result_type);
   }
   result->need_prune_ = result->select_list_.size() > result->column_count_;
+
+  LOG_INFO("select list length: %zu", result->select_list_.size());
+  LOG_INFO("need prune: %d", result->need_prune_);
 
   // now that the SELECT list is bound, we set the types of DISTINCT/ORDER BY expressions
   BindModifierTypes(*result, internal_sql_types, result->projection_index_);

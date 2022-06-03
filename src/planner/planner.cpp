@@ -18,6 +18,13 @@ void Planner::CreatePlan(SQLStatement &statement) {
   auto bound_statement = binder_->Bind(statement);
   names_ = bound_statement.names_;
   types_ = bound_statement.types_;
+
+  LOG_INFO("bound statment has %zu names", bound_statement.names_.size());
+  for (auto &name : bound_statement.names_) {
+    LOG_INFO("name: %s", name.c_str());
+  }
+
+  LOG_INFO("bound statment has %zu types_", bound_statement.types_.size());
   plan_ = move(bound_statement.plan_);
 }
 

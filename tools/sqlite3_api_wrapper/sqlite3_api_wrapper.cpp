@@ -116,10 +116,14 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
   }
   try {
     bustub::Parser parser;
+    printf("raw query string: %s \n", query.c_str());
     parser.ParseQuery(query);
+
     if (parser.statements_.empty()) {
       return SQLITE_OK;
     }
+
+    printf("parsed query string: %s \n", parser.statements_[0]->query_.c_str());
 
     // extract the remainder
     int64_t next_location = parser.statements_[0]->stmt_location_ + parser.statements_[0]->stmt_length_;
@@ -132,12 +136,14 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
     // now prepare the query
     auto prepared = db->con_->Prepare(move(statements.back()));
 
-    printf("SQLITE3_prepare_v2 made a prepared statement for query: \n: %s\n", prepared->query_.c_str());
+    printf("prepared statement query string: \n: %s\n", prepared->query_.c_str());
     printf("number of names: %zu \n", prepared->names_.size());
     if (!prepared->names_.empty()) {
       printf("sqlite3 prepare v2 got prepared names[0]: %s \n", prepared->names_.at(0).c_str());
     }
     // printf("SQLITE3_prepare_v2 prepared statement's plan ptr: %p \n", (void*)prepared->plan_);
+
+    // printf("prepared physical plan: \n: %s\n", prepared->plan_.c_str());
 
     if (!prepared->success_) {
       // failed to prepare: set the error message
