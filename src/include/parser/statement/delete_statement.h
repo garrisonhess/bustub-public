@@ -1,14 +1,13 @@
 
 #pragma once
 
-#include "catalog/column.h"
-#include "parser/sql_statement.h"
+#include "parser/parser.h"
 
 namespace bustub {
 
 class DeleteStatement : public SQLStatement {
  public:
-  DeleteStatement();
+  explicit DeleteStatement(Parser &parser, bustub_libpgquery::PGDeleteStmt *pg_stmt);
 
   string table_;
 };

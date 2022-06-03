@@ -8,10 +8,15 @@
 #include "common/string_util.h"
 #include "parser/sql_statement.h"
 #include "parser/statement/create_statement.h"
+#include "parser/statement/delete_statement.h"
+#include "parser/tokens.h"
 #include "type/decimal_type.h"
 
 namespace bustub {
+using bustub_libpgquery::PGCreateStmt;
+using bustub_libpgquery::PGInsertStmt;
 using bustub_libpgquery::PGKeywordCategory;
+using bustub_libpgquery::PGSelectStmt;
 using bustub_libpgquery::PGSimplifiedTokenType;
 using std::move;
 
@@ -118,39 +123,16 @@ unique_ptr<SQLStatement> Parser::TransformStatement(bustub_libpgquery::PGNode *s
       return result;
     }
     case bustub_libpgquery::T_PGCreateStmt:
-      return std::make_unique<CreateStatement>(*this, reinterpret_cast<bustub_libpgquery::PGCreateStmt *>(stmt));
-    case bustub_libpgquery::T_PGSelectStmt:
+      return make_unique<CreateStatement>(*this, reinterpret_cast<PGCreateStmt *>(stmt));
+    // case bustub_libpgquery::T_PGSelectStmt:
+    //   return make_unique<SelectStatement>(*this, reinterpret_cast<PGSelectStmt *>(stmt));
     case bustub_libpgquery::T_PGInsertStmt:
-    case bustub_libpgquery::T_PGUpdateStmt:
-    case bustub_libpgquery::T_PGDeleteStmt:
-    case bustub_libpgquery::T_PGIndexStmt:
-    case bustub_libpgquery::T_PGCreateSchemaStmt:
-    case bustub_libpgquery::T_PGViewStmt:
-    case bustub_libpgquery::T_PGCreateSeqStmt:
-    case bustub_libpgquery::T_PGCreateFunctionStmt:
-    case bustub_libpgquery::T_PGDropStmt:
-    case bustub_libpgquery::T_PGCopyStmt:
-    case bustub_libpgquery::T_PGTransactionStmt:
-    case bustub_libpgquery::T_PGAlterTableStmt:
-    case bustub_libpgquery::T_PGRenameStmt:
-    case bustub_libpgquery::T_PGPrepareStmt:
-    case bustub_libpgquery::T_PGExecuteStmt:
-    case bustub_libpgquery::T_PGDeallocateStmt:
-    case bustub_libpgquery::T_PGCreateTableAsStmt:
-    case bustub_libpgquery::T_PGPragmaStmt:
-    case bustub_libpgquery::T_PGExportStmt:
-    case bustub_libpgquery::T_PGImportStmt:
-    case bustub_libpgquery::T_PGExplainStmt:
-    case bustub_libpgquery::T_PGVacuumStmt:
-    case bustub_libpgquery::T_PGVariableShowStmt:
-    case bustub_libpgquery::T_PGVariableShowSelectStmt:
-    case bustub_libpgquery::T_PGCallStmt:
-    case bustub_libpgquery::T_PGVariableSetStmt:
-    case bustub_libpgquery::T_PGCheckPointStmt:
-    case bustub_libpgquery::T_PGLoadStmt:
-    case bustub_libpgquery::T_PGCreateEnumStmt:
-    case bustub_libpgquery::T_PGAlterSeqStmt:
-      throw NotImplementedException(NodetypeToString(stmt->type));
+      return make_unique<InsertStatement>(*this, reinterpret_cast<PGInsertStmt *>(stmt));
+    // case bustub_libpgquery::T_PGDeleteStmt:
+    //   return make_unique<DeleteStatement>(*this, reinterpret_cast<bustub_libpgquery::PGDeleteStmt *>(stmt));
+    // case bustub_libpgquery::T_PGIndexStmt:
+    // return make_unique<CreateStatement>(*this, reinterpret_cast<bustub_libpgquery::PGCreateStmt *>(stmt));
+    // case bustub_libpgquery::T_PGUpdateStmt:
     default:
       throw NotImplementedException(NodetypeToString(stmt->type));
   }

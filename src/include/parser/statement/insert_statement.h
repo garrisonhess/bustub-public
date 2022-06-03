@@ -1,15 +1,14 @@
 
 #pragma once
 
-#include "catalog/column.h"
 #include "execution/expressions/constant_value_expression.h"
-#include "parser/sql_statement.h"
+#include "parser/parser.h"
 
 namespace bustub {
 
 class InsertStatement : public SQLStatement {
  public:
-  InsertStatement();
+  explicit InsertStatement(Parser &parser, bustub_libpgquery::PGInsertStmt *pg_stmt);
 
   string table_;
   vector<Column> columns_;

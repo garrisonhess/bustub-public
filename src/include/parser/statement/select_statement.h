@@ -1,14 +1,13 @@
 
 #pragma once
 
-#include "catalog/column.h"
-#include "parser/sql_statement.h"
+#include "parser/parser.h"
 
 namespace bustub {
 
 class SelectStatement : public SQLStatement {
  public:
-  SelectStatement();
+  explicit SelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt *pg_stmt);
 
   string table_;
   vector<Column> columns_;

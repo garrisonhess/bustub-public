@@ -1,8 +1,3 @@
-#include "parser/parser.h"
-
-#include "catalog/column.h"
-#include "common/logger.h"
-#include "parser/sql_statement.h"
 #include "parser/statement/create_statement.h"
 
 namespace bustub {
