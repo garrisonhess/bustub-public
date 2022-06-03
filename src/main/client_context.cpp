@@ -126,14 +126,17 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
       return result;
     }
 
+
+
     static int prepare_count = 0;
     string prepare_name = "____bustub_internal_prepare_" + std::to_string(prepare_count);
     prepare_count_++;
 
     auto unbound_statement = statement->Copy();
-    Planner planner = Planner(*this);
-    planner.CreatePlan(move(statement));
-    LOG_INFO("planner plan: \n%s", planner.plan_->ToString().c_str());
+
+    // Planner planner = Planner(*this);
+    // planner.CreatePlan(move(statement));
+    // LOG_INFO("planner plan: \n%s", planner.plan_->ToString().c_str());
 
     // Convert the logical plan to a BusTub plan.
     // planner.plan_.
@@ -141,7 +144,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     // Then just run the executor factory.
     unique_ptr<PreparedStatement> result =
         std::make_unique<PreparedStatement>(shared_from_this(), unbound_statement->query_);
-    // result->statement_type_ = StatementType::SELECT_STATEMENT;
+    result->statement_type_ = statement->type_;
     // result->types_ = planner.types_;
     // result->names_ = planner.names_;
     // result->logical_ = planner.plan_.release();
