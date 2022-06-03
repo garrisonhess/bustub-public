@@ -18,7 +18,7 @@ namespace bustub {
 
 class CreateStatement : public SQLStatement {
  public:
-  CreateStatement();
+  explicit CreateStatement();
 
   //! The to-be-created catalog type
   CatalogType type_;

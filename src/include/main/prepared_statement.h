@@ -46,6 +46,9 @@ class PreparedStatement {
   //! Whether or not the statement was successfully prepared
   bool success_;
 
+  // DDL executes immediately.
+  bool completed_;
+
   //! The error message (if success = false)
   string error_;
 

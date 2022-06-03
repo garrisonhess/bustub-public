@@ -145,7 +145,6 @@ void Planner::CreatePlan(unique_ptr<SQLStatement> statement) {
     case StatementType::SHOW_STATEMENT:
     case StatementType::SET_STATEMENT:
     case StatementType::LOAD_STATEMENT:
-      LOG_INFO("Createplan for statement: %s", statement->ToString().c_str());
       CreatePlan(*statement);
       break;
     case StatementType::EXECUTE_STATEMENT:

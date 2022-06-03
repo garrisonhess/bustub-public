@@ -135,6 +135,10 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
 
     // now prepare the query
     auto prepared = db->con_->Prepare(move(statements.back()));
+    if (prepared->completed_){
+      *ppStmt = nullptr;
+      return SQLITE_OK;
+    }
 
     printf("prepared statement query string: \n: %s\n", prepared->query_.c_str());
     printf("number of names: %zu \n", prepared->names_.size());

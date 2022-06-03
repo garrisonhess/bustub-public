@@ -1,7 +1,6 @@
 add_library(
   bustub_bind_statement
   OBJECT
-  bind_create_table.cpp
   bind_delete.cpp
   bind_insert.cpp
   bind_select.cpp
