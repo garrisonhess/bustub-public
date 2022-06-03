@@ -3,7 +3,7 @@
 #include "common/exception.h"
 #include "common/field_writer.h"
 #include "common/hash_util.h"
-// #include "common/value_operations/value_operations.h"
+#include "type/type.h"
 
 namespace bustub {
 
@@ -13,8 +13,7 @@ ConstantExpression::ConstantExpression(const Value &val)
 string ConstantExpression::ToString() const { return value_.ToString(); }
 
 bool ConstantExpression::Equals(const ConstantExpression *a, const ConstantExpression *b) {
-  return false;
-  // return !ValueOperations::DistinctFrom(a->value_, b->value_);
+  return a->value_.CompareEquals(b->value_) == CmpBool::CmpTrue;
 }
 
 hash_t ConstantExpression::Hash() const { return ParsedExpression::Hash(); }
@@ -31,7 +30,6 @@ unique_ptr<ParsedExpression> ConstantExpression::Deserialize(ExpressionType type
   // Value value = reader.ReadRequiredSerializable<Value, Value>();
   // return std::make_unique<ConstantExpression>(std::move(value));
   throw NotImplementedException("constant expr deserialize");
-  // return nullptr;
 }
 
 }  // namespace bustub

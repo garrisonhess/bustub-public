@@ -1,7 +1,7 @@
 //===----------------------------------------------------------------------===//
-//                         BusTub
+//                         DuckDB
 //
-// parser/expression/default_expression.h
+// duckdb/parser/expression/positional_reference_expression.hpp
 //
 //
 //===----------------------------------------------------------------------===//
@@ -11,17 +11,20 @@
 #include "parser/parsed_expression.h"
 
 namespace bustub {
-//! Represents the default value of a column
-class DefaultExpression : public ParsedExpression {
+class PositionalReferenceExpression : public ParsedExpression {
  public:
-  DefaultExpression();
+  explicit PositionalReferenceExpression(uint64_t index);
+
+  uint64_t index_;
 
  public:
   bool IsScalar() const override { return false; }
 
-  std::string ToString() const override;
+  string ToString() const override;
 
-  std::unique_ptr<ParsedExpression> Copy() const override;
+  static bool Equals(const PositionalReferenceExpression *a, const PositionalReferenceExpression *b);
+  unique_ptr<ParsedExpression> Copy() const override;
+  hash_t Hash() const override;
 
   void Serialize(FieldWriter &writer) const override;
   static unique_ptr<ParsedExpression> Deserialize(ExpressionType type, FieldReader &reader);
