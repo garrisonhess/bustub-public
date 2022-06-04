@@ -19,7 +19,7 @@
 
 namespace bustub {
 
-TEST(ParserTest, SimpleParserTest) {
+TEST(ParserTest, DISABLED_SimpleParserTest) {
   Parser parser;
   parser.ParseQuery("SELECT * FROM test_table;");
 
@@ -29,7 +29,7 @@ TEST(ParserTest, SimpleParserTest) {
   }
 }
 
-TEST(ParserTest, CreateParserTest) {
+TEST(ParserTest, DISABLED_CreateParserTest) {
   Parser parser;
   parser.ParseQuery("CREATE TABLE test_table (column1 int, column2 decimal, column3 varchar);");
 
@@ -39,7 +39,7 @@ TEST(ParserTest, CreateParserTest) {
   }
 }
 
-TEST(ParserTest, InsertParserTest) {
+TEST(ParserTest, DISABLED_InsertParserTest) {
   Parser parser;
   parser.ParseQuery("INSERT INTO test_table (column1) VALUES (1);");
 
@@ -49,7 +49,7 @@ TEST(ParserTest, InsertParserTest) {
   }
 }
 
-TEST(ParserTest, BadQueryParserTest) {
+TEST(ParserTest, DISABLED_BadQueryParserTest) {
   Parser parser;
   try {
     parser.ParseQuery("SELECT * F_ROM test_table;");

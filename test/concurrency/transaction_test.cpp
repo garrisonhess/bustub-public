@@ -23,7 +23,7 @@
 #include "concurrency/transaction.h"
 #include "concurrency/transaction_manager.h"
 #include "execution/execution_engine.h"
-#include "execution/executor_context.h"
+// #include "execution/executor_context.h"
 #include "execution/executors/insert_executor.h"
 #include "execution/expressions/aggregate_value_expression.h"
 #include "execution/expressions/column_value_expression.h"
@@ -84,7 +84,7 @@ class TransactionTest : public ::testing::Test {
   };
 
   /** @return the executor context in our test class */
-  auto GetExecutorContext() -> ExecutorContext * { return exec_ctx_.get(); }
+  // auto GetExecutorContext() -> ExecutorContext * { return exec_ctx_.get(); }
   auto GetExecutionEngine() -> ExecutionEngine * { return execution_engine_.get(); }
   auto GetTxn() -> Transaction * { return txn_; }
   auto GetTxnManager() -> TransactionManager * { return txn_mgr_.get(); }
@@ -142,7 +142,7 @@ class TransactionTest : public ::testing::Test {
   std::unique_ptr<LockManager> lock_manager_;
   std::unique_ptr<BufferPoolManager> bpm_;
   std::unique_ptr<Catalog> catalog_;
-  std::unique_ptr<ExecutorContext> exec_ctx_;
+  // std::unique_ptr<ExecutorContext> exec_ctx_;
   std::unique_ptr<ExecutionEngine> execution_engine_;
   std::vector<std::unique_ptr<AbstractExpression>> allocated_exprs_;
   std::vector<std::unique_ptr<Schema>> allocated_output_schemas_;

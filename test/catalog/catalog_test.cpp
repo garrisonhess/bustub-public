@@ -17,7 +17,6 @@
 #include "buffer/buffer_pool_manager_instance.h"
 #include "catalog/catalog.h"
 #include "catalog/table_generator.h"
-#include "execution/executor_context.h"
 #include "gtest/gtest.h"
 #include "type/value_factory.h"
 
@@ -30,37 +29,37 @@ using BigintValueType = RID;
 using BigintComparatorType = GenericComparator<BIGINT_SIZE>;
 using BigintHashFunctionType = HashFunction<BigintKeyType>;
 
-// TEST(CatalogTest, DISABLED_CreateTable1) {
-//   DBConfig config;
-//   config.buffer_pool_frames_ = 32;
-//   unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
-//   auto catalog = std::make_unique<Catalog>(*tub->instance_);
+TEST(CatalogTest, DISABLED_CreateTable1) {
+  DBConfig config;
+  config.buffer_pool_frames_ = 32;
+  unique_ptr<BusTub> tub = std::make_unique<BusTub>(BusTub("catalog_test.db", &config));
+  auto catalog = std::make_unique<Catalog>(*tub->instance_);
 
-//   const std::string table_name{"foobar"};
+  const std::string table_name{"foobar"};
 
-//   // The table shouldn't exist in the catalog yet
-//   EXPECT_EQ(Catalog::NULL_TABLE_INFO, catalog->GetTable(table_name));
+  // The table shouldn't exist in the catalog yet
+  EXPECT_EQ(Catalog::NULL_TABLE_INFO, catalog->GetTable(table_name));
 
-//   // Construct a new table and add it to the catalog
-//   std::vector<Column> columns{};
-//   columns.emplace_back("A", TypeId::INTEGER);
-//   columns.emplace_back("B", TypeId::BOOLEAN);
+  // Construct a new table and add it to the catalog
+  std::vector<Column> columns{};
+  columns.emplace_back("A", TypeId::INTEGER);
+  columns.emplace_back("B", TypeId::BOOLEAN);
 
-//   // Table creation should succeed
-//   Schema schema{columns};
-//   auto *table_info = catalog->CreateTable(nullptr, table_name, schema);
-//   EXPECT_NE(Catalog::NULL_TABLE_INFO, table_info);
+  // Table creation should succeed
+  Schema schema{columns};
+  auto *table_info = catalog->CreateTable(nullptr, table_name, schema);
+  EXPECT_NE(Catalog::NULL_TABLE_INFO, table_info);
 
-//   // Querying the table name should now succeed
-//   EXPECT_NE(Catalog::NULL_TABLE_INFO, catalog->GetTable(table_name));
+  // Querying the table name should now succeed
+  EXPECT_NE(Catalog::NULL_TABLE_INFO, catalog->GetTable(table_name));
 
-//   // Querying the table OID should also succeed
-//   const auto table_oid = table_info->oid_;
-//   EXPECT_NE(Catalog::NULL_TABLE_INFO, catalog->GetTable(table_oid));
+  // Querying the table OID should also succeed
+  const auto table_oid = table_info->oid_;
+  EXPECT_NE(Catalog::NULL_TABLE_INFO, catalog->GetTable(table_oid));
 
-//   remove("catalog_test.db");
-//   remove("catalog_test.log");
-// }
+  remove("catalog_test.db");
+  remove("catalog_test.log");
+}
 
 // TEST(CatalogTest, DISABLED_CreateTable2) {
 //   DBConfig config;

@@ -20,7 +20,6 @@
 #include "buffer/buffer_pool_manager_instance.h"
 #include "concurrency/transaction_manager.h"
 #include "execution/execution_engine.h"
-#include "execution/executor_context.h"
 #include "execution/executors/aggregation_executor.h"
 #include "execution/executors/insert_executor.h"
 #include "execution/executors/nested_loop_join_executor.h"
