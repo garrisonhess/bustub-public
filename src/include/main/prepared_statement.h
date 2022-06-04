@@ -55,8 +55,7 @@ class PreparedStatement {
 
   StatementType statement_type_;
 
-  //! The fully prepared physical plan of the prepared statement
-  AbstractPlanNode *plan_;
+  unique_ptr<AbstractPlanNode> plan_;
 
   // Output schema
   Schema *schema_;

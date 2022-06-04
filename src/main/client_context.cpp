@@ -11,6 +11,7 @@
 #include "parser/parser.h"
 #include "parser/statement/create_statement.h"
 #include "planner/expressions/constant_value_expression.h"
+#include "planner/plan_factory.h"
 #include "planner/plans/insert_plan.h"
 #include "planner/plans/seq_scan_plan.h"
 
@@ -37,14 +38,13 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     }
 
     std::string unbound_query = statement->query_;
-
     unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(), unbound_query);
     result->statement_type_ = statement->type_;
+    result->success_ = true;
 
-    //  Create AbstractPlanNode
-    // result->plan_ = InsertPlanNode(statement->values_, 12345);
-    // SeqScanPlanNode(const Schema *output, const AbstractExpression *predicate, table_oid_t table_oid)
-    // DeletePlanNode(const AbstractPlanNode *child, table_oid_t table_oid)
+    // TODO(gh): bind types, names, and schema to the PreparedStatement (if needed by sqlite3 api wrapper).
+    PlanFactory pf;
+    result->plan_ = pf.CreatePlan(*this, *statement);
 
     return result;
   } catch (Exception &ex) {
