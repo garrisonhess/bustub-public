@@ -3,7 +3,7 @@ add_library(
   OBJECT
   create_statement.cpp
   delete_statement.cpp
-  acreate_statement.cpp
+  select_statement.cpp
   insert_statement.cpp)
 set(ALL_OBJECT_FILES
     ${ALL_OBJECT_FILES} $<TARGET_OBJECTS:bustub_statement>
