@@ -3,35 +3,6 @@
 
 namespace bustub {
 
-Value TransformConstant(bustub_libpgquery::PGAConst *c) {
-  bustub_libpgquery::PGValue pg_val = c->val;
-
-  switch (pg_val.type) {
-    case bustub_libpgquery::T_PGInteger:
-      assert(pg_val.val.ival <= BUSTUB_INT32_MAX);
-      return Value(TypeId::INTEGER, static_cast<int32_t>(pg_val.val.ival));
-    default:
-      throw NotImplementedException("Value not implemented!");
-  }
-}
-
-void TransformExpressionList(bustub_libpgquery::PGList &list, vector<Value> &result) {
-  for (auto node = list.head; node != nullptr; node = node->next) {
-    auto target = reinterpret_cast<bustub_libpgquery::PGNode *>(node->data.ptr_value);
-    assert(target);
-
-    switch (target->type) {
-      case bustub_libpgquery::T_PGAConst: {
-        auto val = TransformConstant(reinterpret_cast<bustub_libpgquery::PGAConst *>(node));
-        result.push_back(val);
-        break;
-      }
-      default:
-        throw NotImplementedException("Expr of type not implemented\n");
-    }
-  }
-}
-
 InsertStatement::InsertStatement(Parser &parser, bustub_libpgquery::PGInsertStmt *pg_stmt)
     : SQLStatement(StatementType::INSERT_STATEMENT) {
   table_ = pg_stmt->relation->relname;
@@ -53,7 +24,7 @@ InsertStatement::InsertStatement(Parser &parser, bustub_libpgquery::PGInsertStmt
   for (auto value_list = select->valuesLists->head; value_list != nullptr; value_list = value_list->next) {
     auto target = static_cast<bustub_libpgquery::PGList *>(value_list->data.ptr_value);
     vector<Value> curr_values;
-    TransformExpressionList(*target, curr_values);
+    parser.TransformExpressionList(*target, curr_values);
 
     if (!values_.empty() && values_[0].size() != curr_values.size()) {
       throw Exception("VALUES lists must all be the same length");

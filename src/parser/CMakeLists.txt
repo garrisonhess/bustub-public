@@ -9,6 +9,7 @@ add_library(
   OBJECT
   keyword_helper.cpp
   sql_statement.cpp
+  nodetype_to_string.cpp
   parser.cpp)
 set(ALL_OBJECT_FILES
     ${ALL_OBJECT_FILES} $<TARGET_OBJECTS:bustub_parser>
