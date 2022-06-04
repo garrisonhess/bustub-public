@@ -8,10 +8,12 @@
 #include "execution/execution_engine.h"
 #include "execution/expressions/constant_value_expression.h"
 #include "execution/physical_plan_generator.h"
+#include "execution/plans/insert_plan.h"
 #include "execution/plans/seq_scan_plan.h"
 #include "main/database.h"
 #include "main/query_result.h"
 #include "parser/parser.h"
+#include "parser/statement/create_statement.h"
 
 #include <mutex>
 #include <utility>
@@ -20,40 +22,30 @@ namespace bustub {
 
 ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) { db_ = std::move(database); }
 
-// static void ExecuteCreateTable(Catalog &catalog, CreateStatement &stmt) {
-//   Transaction txn = Transaction(123002);
-//   vector<Column> columns = {};
-//   for (auto &col : stmt.columns_) {
-//     auto column = Column(col.name_, col.type_.GetTypeId());
-//     columns.emplace_back(column);
-//   }
-//   auto schema = make_unique<Schema>(columns);
-//   catalog.CreateTable(&txn, stmt.table_, *schema);
-// }
-
 unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> statement) {
   try {
     LOG_INFO("statement type: %d", static_cast<int>(statement->type_));
     LOG_INFO("statement query_: %s", statement->query_.c_str());
-    // if (statement->type_ == StatementType::CREATE_STATEMENT) {
-    //   Catalog &catalog = db_->GetCatalog();
-    //   ExecuteCreateTable(catalog, dynamic_cast<CreateStatement &>(*statement));
-    //   unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(), "");
-    //   result->completed_ = true;
-    //   return result;
-    // }
-    // if (statement->type_ == StatementType::INSERT_STATEMENT) {
-    //   // Catalog &catalog = db_->GetCatalog();
-    //   // TableInfo *table = catalog.GetTable(statement.table_);
-    // }
+    if (statement->type_ == StatementType::CREATE_STATEMENT) {
+      Catalog &catalog = db_->GetCatalog();
+      CreateStatement &create = dynamic_cast<CreateStatement &>(*statement);
+      Transaction txn = Transaction(123002);
+      auto schema = make_unique<Schema>(create.columns_);
+      catalog.CreateTable(&txn, create.table_, *schema);
+      unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(), "");
+      result->completed_ = true;
+      return result;
+    }
 
     std::string unbound_query = statement->query_;
 
-    // Then just run the executor factory.
     unique_ptr<PreparedStatement> result = std::make_unique<PreparedStatement>(shared_from_this(), unbound_query);
     result->statement_type_ = statement->type_;
+
+    //  Create AbstractPlanNode
+    // result->plan_ = InsertPlanNode(statement->values_, 12345);
+
     return result;
-    // return result;
   } catch (Exception &ex) {
     LOG_DEBUG("PREPARE FAILED");
     return std::make_unique<PreparedStatement>(ex.what());

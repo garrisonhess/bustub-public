@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "catalog/column.h"
-#include "common/enums/expression_type.h"
 #include "common/enums/type_id.h"
 #include "nodes/parsenodes.hpp"
 #include "parser/simplified_token.h"

@@ -14,8 +14,6 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <vector>
 
 namespace bustub {
@@ -36,6 +34,7 @@ static constexpr int LOG_BUFFER_SIZE = ((BUFFER_POOL_SIZE + 1) * PAGE_SIZE);  //
 static constexpr int BUCKET_SIZE = 50;                                        // size of extendible hash bucket
 static constexpr uint64_t COLUMN_IDENTIFIER_ROW_ID = static_cast<uint64_t>(-1);
 
+// size of extendible hash bucket
 //! inline std directives that we use frequently
 using std::make_shared;
 using std::make_unique;
@@ -43,8 +42,6 @@ using std::move;
 using std::shared_ptr;
 using std::string;
 using std::unique_ptr;
-using std::unordered_map;
-using std::unordered_set;
 using std::vector;
 
 using frame_id_t = int32_t;    // frame id type

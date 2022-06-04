@@ -11,6 +11,7 @@
 #include <string>
 #include "common/constants.h"
 #include "common/enums/statement_type.h"
+#include "execution/plans/abstract_plan.h"
 #include "main/query_result.h"
 #include "parser/sql_statement.h"
 #include "type/type.h"
@@ -55,7 +56,7 @@ class PreparedStatement {
   StatementType statement_type_;
 
   //! The fully prepared physical plan of the prepared statement
-  AbstractExecutor *plan_;
+  AbstractPlanNode *plan_;
 
   // Output schema
   Schema *schema_;
