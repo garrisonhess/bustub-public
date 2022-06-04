@@ -136,7 +136,7 @@ unique_ptr<SQLStatement> Parser::TransformStatement(bustub_libpgquery::PGNode *s
     case bustub_libpgquery::T_PGInsertStmt:
       return make_unique<InsertStatement>(*this, reinterpret_cast<PGInsertStmt *>(stmt));
     case bustub_libpgquery::T_PGSelectStmt:
-      return std::make_unique<ASelectStatement>(*this, reinterpret_cast<PGSelectStmt *>(stmt));
+      return std::make_unique<SelectStatement>(*this, reinterpret_cast<PGSelectStmt *>(stmt));
     case bustub_libpgquery::T_PGDeleteStmt:
       return make_unique<DeleteStatement>(*this, reinterpret_cast<PGDeleteStmt *>(stmt));
     case bustub_libpgquery::T_PGIndexStmt:

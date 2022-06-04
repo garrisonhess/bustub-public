@@ -2,7 +2,7 @@
 
 namespace bustub {
 
-ASelectStatement::ASelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt *pg_stmt)
+SelectStatement::SelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt *pg_stmt)
     : SQLStatement(StatementType::CREATE_STATEMENT) {
   bool found = false;
 

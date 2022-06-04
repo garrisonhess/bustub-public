@@ -5,9 +5,9 @@
 
 namespace bustub {
 
-class ASelectStatement : public SQLStatement {
+class SelectStatement : public SQLStatement {
  public:
-  explicit ASelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt *pg_stmt);
+  explicit SelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt *pg_stmt);
 
   string table_;
   vector<Column> columns_;
