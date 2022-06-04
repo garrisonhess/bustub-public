@@ -1,9 +1,9 @@
-#include "parser/statement/select_statement.h"
+#include "parser/statement/acreate_statement.h"
 
 namespace bustub {
 
-SelectStatement::SelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt *pg_stmt)
-    : SQLStatement(StatementType::SELECT_STATEMENT) {
+ASelectStatement::ASelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt *pg_stmt)
+    : SQLStatement(StatementType::CREATE_STATEMENT) {
   bool found = false;
 
   // Extract the table name from the FROM clause.

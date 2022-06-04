@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include "execution/expressions/constant_value_expression.h"
 #include "parser/parser.h"
 
 namespace bustub {
@@ -12,7 +11,7 @@ class InsertStatement : public SQLStatement {
 
   string table_;
   vector<Column> columns_;
-  vector<vector<ConstantValueExpression>> values_;
+  vector<vector<Value>> values_;
 };
 
 }  // namespace bustub

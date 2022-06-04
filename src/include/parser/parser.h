@@ -73,10 +73,10 @@ class Parser {
   // Statement transformation
   //===--------------------------------------------------------------------===//
   //! Transform a Postgres bustub_libpgquery::T_PGSelectStmt node into a SelectStatement
-  unique_ptr<SelectStatement> TransformSelect(bustub_libpgquery::PGNode *node, bool is_select = true);
+  // unique_ptr<SelectStatement> TransformSelect(bustub_libpgquery::PGNode *node, bool is_select = true);
 
   //! Transform a Postgres bustub_libpgquery::T_PGCreateStmt node into a CreateStatement
-  unique_ptr<CreateStatement> TransformCreateTable(bustub_libpgquery::PGNode *node);
+  // unique_ptr<CreateStatement> TransformCreateTable(bustub_libpgquery::PGNode *node);
 
   // //! Transform a Postgres bustub_libpgquery::T_PGIndexStmt node into CreateStatement
   // unique_ptr<CreateStatement> TransformCreateIndex(bustub_libpgquery::PGNode *node);
@@ -93,7 +93,7 @@ class Parser {
   // Query Node Transform
   //===--------------------------------------------------------------------===//
   //! Transform a Postgres bustub_libpgquery::T_PGSelectStmt node into a QueryNode
-  unique_ptr<QueryNode> TransformSelectNode(bustub_libpgquery::PGSelectStmt *stmt);
+  // unique_ptr<QueryNode> TransformSelectNode(bustub_libpgquery::PGSelectStmt *stmt);
 
   //===--------------------------------------------------------------------===//
   // Expression Transform

@@ -7,9 +7,10 @@
 #include "common/logger.h"
 #include "common/string_util.h"
 #include "parser/sql_statement.h"
+#include "parser/statement/acreate_statement.h"
 #include "parser/statement/create_statement.h"
 #include "parser/statement/delete_statement.h"
-#include "parser/tokens.h"
+#include "parser/statement/insert_statement.h"
 #include "type/decimal_type.h"
 
 namespace bustub {
@@ -131,12 +132,12 @@ unique_ptr<SQLStatement> Parser::TransformStatement(bustub_libpgquery::PGNode *s
     }
     case bustub_libpgquery::T_PGCreateStmt:
       return make_unique<CreateStatement>(*this, reinterpret_cast<PGCreateStmt *>(stmt));
-    // case bustub_libpgquery::T_PGSelectStmt:
-    //   return make_unique<SelectStatement>(*this, reinterpret_cast<PGSelectStmt *>(stmt));
-    // case bustub_libpgquery::T_PGInsertStmt:
-    // return make_unique<InsertStatement>(*this, reinterpret_cast<PGInsertStmt *>(stmt));
-    // case bustub_libpgquery::T_PGDeleteStmt:
-    //   return make_unique<DeleteStatement>(*this, reinterpret_cast<bustub_libpgquery::PGDeleteStmt *>(stmt));
+    case bustub_libpgquery::T_PGInsertStmt:
+      return make_unique<InsertStatement>(*this, reinterpret_cast<PGInsertStmt *>(stmt));
+    case bustub_libpgquery::T_PGSelectStmt:
+      return std::make_unique<ASelectStatement>(*this, reinterpret_cast<PGSelectStmt *>(stmt));
+    case bustub_libpgquery::T_PGDeleteStmt:
+      return make_unique<DeleteStatement>(*this, reinterpret_cast<bustub_libpgquery::PGDeleteStmt *>(stmt));
     // case bustub_libpgquery::T_PGIndexStmt:
     // return make_unique<CreateStatement>(*this, reinterpret_cast<bustub_libpgquery::PGCreateStmt *>(stmt));
     // case bustub_libpgquery::T_PGUpdateStmt:
