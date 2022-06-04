@@ -3,7 +3,7 @@
 namespace bustub {
 
 SelectStatement::SelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt *pg_stmt)
-    : SQLStatement(StatementType::CREATE_STATEMENT) {
+    : SQLStatement(StatementType::SELECT_STATEMENT) {
   bool found = false;
 
   // Extract the table name from the FROM clause.
