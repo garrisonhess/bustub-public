@@ -16,7 +16,7 @@
 #include <vector>
 
 #include "common/hash_util.h"
-#include "execution/plans/abstract_plan.h"
+#include "planner/plans/abstract_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {

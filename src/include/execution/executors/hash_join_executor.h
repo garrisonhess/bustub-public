@@ -17,7 +17,7 @@
 
 #include "execution/execution_engine.h"
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/hash_join_plan.h"
+#include "planner/plans/hash_join_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {

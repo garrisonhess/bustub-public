@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "execution/expressions/abstract_expression.h"
+#include "planner/expressions/abstract_expression.h"
 
 namespace bustub {
 

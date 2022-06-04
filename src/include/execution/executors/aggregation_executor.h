@@ -20,9 +20,9 @@
 #include "common/hash_util.h"
 #include "container/hash/hash_function.h"
 #include "execution/executors/abstract_executor.h"
-#include "execution/expressions/abstract_expression.h"
-#include "execution/plans/aggregation_plan.h"
 #include "main/client_context.h"
+#include "planner/expressions/abstract_expression.h"
+#include "planner/plans/aggregation_plan.h"
 #include "storage/table/tuple.h"
 #include "type/value_factory.h"
 

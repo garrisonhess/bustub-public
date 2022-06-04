@@ -16,7 +16,7 @@
 
 #include "common/rid.h"
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/index_scan_plan.h"
+#include "planner/plans/index_scan_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {

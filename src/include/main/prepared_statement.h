@@ -11,9 +11,9 @@
 #include <string>
 #include "common/constants.h"
 #include "common/enums/statement_type.h"
-#include "execution/plans/abstract_plan.h"
 #include "main/query_result.h"
 #include "parser/sql_statement.h"
+#include "planner/plans/abstract_plan.h"
 #include "type/type.h"
 #include "type/value.h"
 

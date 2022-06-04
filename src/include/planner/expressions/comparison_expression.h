@@ -16,7 +16,7 @@
 #include <vector>
 
 #include "catalog/schema.h"
-#include "execution/expressions/abstract_expression.h"
+#include "planner/expressions/abstract_expression.h"
 #include "storage/table/tuple.h"
 #include "type/value_factory.h"
 

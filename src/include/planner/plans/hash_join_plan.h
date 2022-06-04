@@ -15,7 +15,7 @@
 #include <utility>
 #include <vector>
 
-#include "execution/plans/abstract_plan.h"
+#include "planner/plans/abstract_plan.h"
 
 namespace bustub {
 

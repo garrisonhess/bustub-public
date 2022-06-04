@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "catalog/catalog.h"
-#include "execution/plans/abstract_plan.h"
+#include "planner/plans/abstract_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {

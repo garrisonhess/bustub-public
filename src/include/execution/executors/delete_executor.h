@@ -17,8 +17,8 @@
 #include <vector>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/delete_plan.h"
 #include "main/client_context.h"
+#include "planner/plans/delete_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {

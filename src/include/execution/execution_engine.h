@@ -18,9 +18,9 @@
 #include "catalog/catalog.h"
 #include "concurrency/transaction_manager.h"
 #include "execution/executor_factory.h"
-#include "execution/plans/abstract_plan.h"
 #include "main/client_context.h"
 #include "main/database.h"
+#include "planner/plans/abstract_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {

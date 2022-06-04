@@ -6,9 +6,9 @@
 #include "common/enums/statement_type.h"
 #include "common/exception.h"
 #include "execution/execution_engine.h"
-#include "execution/expressions/constant_value_expression.h"
-#include "execution/plans/insert_plan.h"
-#include "execution/plans/seq_scan_plan.h"
+#include "planner/expressions/constant_value_expression.h"
+#include "planner/plans/insert_plan.h"
+#include "planner/plans/seq_scan_plan.h"
 #include "main/database.h"
 #include "main/query_result.h"
 #include "parser/parser.h"
@@ -43,6 +43,8 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
 
     //  Create AbstractPlanNode
     // result->plan_ = InsertPlanNode(statement->values_, 12345);
+    // SeqScanPlanNode(const Schema *output, const AbstractExpression *predicate, table_oid_t table_oid)
+    // DeletePlanNode(const AbstractPlanNode *child, table_oid_t table_oid)
 
     return result;
   } catch (Exception &ex) {

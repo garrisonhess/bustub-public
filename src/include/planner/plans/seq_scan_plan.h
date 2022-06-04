@@ -13,8 +13,8 @@
 #pragma once
 
 #include "catalog/catalog.h"
-#include "execution/expressions/abstract_expression.h"
-#include "execution/plans/abstract_plan.h"
+#include "planner/expressions/abstract_expression.h"
+#include "planner/plans/abstract_plan.h"
 
 namespace bustub {
 

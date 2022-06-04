@@ -16,7 +16,7 @@
 #include <utility>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/distinct_plan.h"
+#include "planner/plans/distinct_plan.h"
 
 namespace bustub {
 

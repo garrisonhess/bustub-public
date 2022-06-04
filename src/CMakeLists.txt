@@ -6,6 +6,7 @@ add_subdirectory(container)
 add_subdirectory(execution)
 add_subdirectory(main)
 add_subdirectory(parser)
+add_subdirectory(planner)
 add_subdirectory(recovery)
 add_subdirectory(storage)
 add_subdirectory(type)
@@ -20,6 +21,7 @@ set(BUSTUB_LIBS
     bustub_execution 
     bustub_main
     bustub_parser 
+    bustub_planner
     bustub_recovery 
     bustub_type
     bustub_container_hash

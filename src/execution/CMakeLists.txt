@@ -10,7 +10,6 @@ add_library(
   limit_executor.cpp
   nested_index_join_executor.cpp
   nested_loop_join_executor.cpp
-  physical_plan_generator.cpp
   seq_scan_executor.cpp
   update_executor.cpp
   execution_engine.cpp

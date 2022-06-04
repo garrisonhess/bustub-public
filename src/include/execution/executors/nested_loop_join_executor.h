@@ -16,7 +16,7 @@
 #include <utility>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/nested_loop_join_plan.h"
+#include "planner/plans/nested_loop_join_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {

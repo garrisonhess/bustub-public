@@ -16,8 +16,8 @@
 #include <utility>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/insert_plan.h"
 #include "main/client_context.h"
+#include "planner/plans/insert_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {

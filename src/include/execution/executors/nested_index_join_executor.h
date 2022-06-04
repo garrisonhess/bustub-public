@@ -19,8 +19,8 @@
 #include <vector>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/expressions/abstract_expression.h"
-#include "execution/plans/nested_index_join_plan.h"
+#include "planner/expressions/abstract_expression.h"
+#include "planner/plans/nested_index_join_plan.h"
 #include "storage/table/tmp_tuple.h"
 #include "storage/table/tuple.h"
 

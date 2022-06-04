@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/update_plan.h"
+#include "planner/plans/update_plan.h"
 #include "storage/table/tuple.h"
 #include "type/value_factory.h"
 

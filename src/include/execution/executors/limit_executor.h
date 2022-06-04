@@ -16,7 +16,7 @@
 #include <utility>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/limit_plan.h"
+#include "planner/plans/limit_plan.h"
 
 namespace bustub {
 
