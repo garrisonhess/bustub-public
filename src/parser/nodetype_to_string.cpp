@@ -2,7 +2,7 @@
 
 namespace bustub {
 
-std::string Parser::PGNodetypeToString(bustub_libpgquery::PGNodeTag type) {
+string Parser::NodetypeToString(bustub_libpgquery::PGNodeTag type) {
   switch (type) {
     case bustub_libpgquery::T_PGInvalid:
       return "T_Invalid";
