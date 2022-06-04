@@ -7,7 +7,6 @@
 #include "common/exception.h"
 #include "execution/execution_engine.h"
 #include "execution/expressions/constant_value_expression.h"
-#include "execution/physical_plan_generator.h"
 #include "execution/plans/insert_plan.h"
 #include "execution/plans/seq_scan_plan.h"
 #include "main/database.h"
