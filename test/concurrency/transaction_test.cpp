@@ -25,6 +25,8 @@
 #include "execution/execution_engine.h"
 // #include "execution/executor_context.h"
 #include "execution/executors/insert_executor.h"
+#include "gtest/gtest.h"
+#include "main/database.h"
 #include "planner/expressions/aggregate_value_expression.h"
 #include "planner/expressions/column_value_expression.h"
 #include "planner/expressions/comparison_expression.h"
@@ -32,8 +34,6 @@
 #include "planner/plans/limit_plan.h"
 #include "planner/plans/nested_index_join_plan.h"
 #include "planner/plans/seq_scan_plan.h"
-#include "gtest/gtest.h"
-#include "main/database.h"
 #include "test_util.h"  // NOLINT
 #include "type/value_factory.h"
 

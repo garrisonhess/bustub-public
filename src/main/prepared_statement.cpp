@@ -3,8 +3,8 @@
 #include "common/exception.h"
 #include "common/macros.h"
 #include "execution/execution_engine.h"
-#include "planner/plans/seq_scan_plan.h"
 #include "main/client_context.h"
+#include "planner/plans/seq_scan_plan.h"
 
 namespace bustub {
 

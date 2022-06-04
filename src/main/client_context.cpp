@@ -6,13 +6,13 @@
 #include "common/enums/statement_type.h"
 #include "common/exception.h"
 #include "execution/execution_engine.h"
-#include "planner/expressions/constant_value_expression.h"
-#include "planner/plans/insert_plan.h"
-#include "planner/plans/seq_scan_plan.h"
 #include "main/database.h"
 #include "main/query_result.h"
 #include "parser/parser.h"
 #include "parser/statement/create_statement.h"
+#include "planner/expressions/constant_value_expression.h"
+#include "planner/plans/insert_plan.h"
+#include "planner/plans/seq_scan_plan.h"
 
 #include <mutex>
 #include <utility>

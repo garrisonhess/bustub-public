@@ -23,6 +23,8 @@
 #include "execution/executors/aggregation_executor.h"
 #include "execution/executors/insert_executor.h"
 #include "execution/executors/nested_loop_join_executor.h"
+#include "executor_test_util.h"  // NOLINT
+#include "gtest/gtest.h"
 #include "planner/expressions/aggregate_value_expression.h"
 #include "planner/expressions/column_value_expression.h"
 #include "planner/expressions/comparison_expression.h"
@@ -33,8 +35,6 @@
 #include "planner/plans/limit_plan.h"
 #include "planner/plans/seq_scan_plan.h"
 #include "planner/plans/update_plan.h"
-#include "executor_test_util.h"  // NOLINT
-#include "gtest/gtest.h"
 #include "storage/table/tuple.h"
 #include "test_util.h"  // NOLINT
 #include "type/value_factory.h"
