@@ -115,7 +115,7 @@ void Parser::TransformExpressionList(bustub_libpgquery::PGList &list, vector<Val
 
     switch (target->type) {
       case bustub_libpgquery::T_PGAConst: {
-        auto val = TransformConstant(reinterpret_cast<bustub_libpgquery::PGAConst *>(node));
+        auto val = TransformConstant(reinterpret_cast<bustub_libpgquery::PGAConst *>(target));
         result.push_back(val);
         break;
       }

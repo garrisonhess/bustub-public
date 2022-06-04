@@ -111,5 +111,4 @@ std::vector<SimplifiedToken> Parser::Tokenize(const std::string &query) {
   return result;
 }
 
-
 }  // namespace bustub
