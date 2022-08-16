@@ -25,7 +25,7 @@ class AbstractExecutor {
  public:
   /**
    * Construct a new AbstractExecutor instance.
-   * @param exec_ctx the executor context that the executor runs with
+   * @param context the executor context that the executor runs with
    */
   explicit AbstractExecutor(ClientContext &context) : context_{context} {}
 

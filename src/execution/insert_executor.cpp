@@ -16,9 +16,9 @@
 
 namespace bustub {
 
-InsertExecutor::InsertExecutor(ClientContext &exec_ctx, const InsertPlanNode *plan,
+InsertExecutor::InsertExecutor(ClientContext &context, const InsertPlanNode *plan,
                                std::unique_ptr<AbstractExecutor> &&child_executor)
-    : AbstractExecutor(exec_ctx) {}
+    : AbstractExecutor(context) {}
 
 void InsertExecutor::Init() {}
 

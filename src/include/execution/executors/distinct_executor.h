@@ -27,7 +27,7 @@ class DistinctExecutor : public AbstractExecutor {
  public:
   /**
    * Construct a new DistinctExecutor instance.
-   * @param exec_ctx The executor context
+   * @param context The executor context
    * @param plan The limit plan to be executed
    * @param child_executor The child executor from which tuples are pulled
    */

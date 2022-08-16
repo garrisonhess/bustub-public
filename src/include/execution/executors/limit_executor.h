@@ -27,11 +27,11 @@ class LimitExecutor : public AbstractExecutor {
  public:
   /**
    * Construct a new LimitExecutor instance.
-   * @param exec_ctx The executor context
+   * @param context The executor context
    * @param plan The limit plan to be executed
    * @param child_executor The child executor from which limited tuples are pulled
    */
-  LimitExecutor(ClientContext &exec_ctx, const LimitPlanNode *plan, std::unique_ptr<AbstractExecutor> &&child_executor);
+  LimitExecutor(ClientContext &context, const LimitPlanNode *plan, std::unique_ptr<AbstractExecutor> &&child_executor);
 
   /** Initialize the limit */
   void Init() override;

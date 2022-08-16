@@ -12,8 +12,8 @@
 #include "execution/executors/index_scan_executor.h"
 
 namespace bustub {
-IndexScanExecutor::IndexScanExecutor(ClientContext &exec_ctx, const IndexScanPlanNode *plan)
-    : AbstractExecutor(exec_ctx) {}
+IndexScanExecutor::IndexScanExecutor(ClientContext &context, const IndexScanPlanNode *plan)
+    : AbstractExecutor(context) {}
 
 void IndexScanExecutor::Init() {}
 

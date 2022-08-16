@@ -29,7 +29,7 @@ class HashJoinExecutor : public AbstractExecutor {
  public:
   /**
    * Construct a new HashJoinExecutor instance.
-   * @param exec_ctx The executor context
+   * @param context The executor context
    * @param plan The HashJoin join plan to be executed
    * @param left_child The child executor that produces tuples for the left side of join
    * @param right_child The child executor that produces tuples for the right side of join

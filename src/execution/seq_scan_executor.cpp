@@ -14,7 +14,7 @@
 
 namespace bustub {
 
-SeqScanExecutor::SeqScanExecutor(ClientContext &exec_ctx, const SeqScanPlanNode *plan) : AbstractExecutor(exec_ctx) {}
+SeqScanExecutor::SeqScanExecutor(ClientContext &context, const SeqScanPlanNode *plan) : AbstractExecutor(context) {}
 
 void SeqScanExecutor::Init() {}
 

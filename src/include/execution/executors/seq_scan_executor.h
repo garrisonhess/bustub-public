@@ -27,7 +27,7 @@ class SeqScanExecutor : public AbstractExecutor {
  public:
   /**
    * Construct a new SeqScanExecutor instance.
-   * @param exec_ctx The executor context
+   * @param context The executor context
    * @param plan The sequential scan plan to be executed
    */
   SeqScanExecutor(ClientContext &context, const SeqScanPlanNode *plan);

@@ -14,10 +14,10 @@
 
 namespace bustub {
 
-NestedLoopJoinExecutor::NestedLoopJoinExecutor(ClientContext &exec_ctx, const NestedLoopJoinPlanNode *plan,
+NestedLoopJoinExecutor::NestedLoopJoinExecutor(ClientContext &context, const NestedLoopJoinPlanNode *plan,
                                                std::unique_ptr<AbstractExecutor> &&left_executor,
                                                std::unique_ptr<AbstractExecutor> &&right_executor)
-    : AbstractExecutor(exec_ctx) {}
+    : AbstractExecutor(context) {}
 
 void NestedLoopJoinExecutor::Init() {}
 

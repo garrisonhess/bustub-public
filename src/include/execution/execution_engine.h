@@ -46,7 +46,6 @@ class ExecutionEngine {
    * @param plan The query plan to execute
    * @param result_set The set of tuples produced by executing the plan
    * @param txn The transaction context in which the query executes
-   * @param exec_ctx The executor context in which the query executes
    * @return `true` if execution of the query plan succeeds, `false` otherwise
    */
   auto Execute(AbstractPlanNode *plan, std::vector<Tuple> *result_set, Transaction *txn) -> bool {

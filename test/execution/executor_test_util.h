@@ -55,11 +55,11 @@
 //     // txn_ = txn_mgr_->Begin();
 
 //     // // Create an executor context for our executors
-//     // exec_ctx_ =
+//     // context_ =
 //     //     std::make_unique<ExecutorContext>(txn_, catalog_.get(), bpm_.get(), txn_mgr_.get(), lock_manager_.get());
 
 //     // // Generate test tables
-//     // TableGenerator gen{exec_ctx_.get()};
+//     // TableGenerator gen{context_.get()};
 //     // gen.GenerateTestTables();
 
 //     // // Construct the executor engine for the test
@@ -79,7 +79,7 @@
 //   };
 
 //   // /** @return The executor context for our test instance. */
-//   // ExecutorContext *GetExecutorContext() { return exec_ctx_.get(); }
+//   // ExecutorContext *GetExecutorContext() { return context_.get(); }
 
 //   /** @return The execution engine for our test instance. */
 //   ExecutionEngine *GetExecutionEngine() { return execution_engine_.get(); }
@@ -249,7 +249,7 @@
 //   /** The catalog */
 //   std::unique_ptr<Catalog> catalog_;
 //   /** The executor context for the test */
-//   std::unique_ptr<ExecutorContext> exec_ctx_;
+//   std::unique_ptr<ExecutorContext> context_;
 //   /** The execution engine */
 //   std::unique_ptr<ExecutionEngine> execution_engine_;
 //   /** The collection of allocated expressions, owned by the fixture */

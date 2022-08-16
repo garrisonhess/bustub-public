@@ -64,10 +64,10 @@ class TransactionTest : public ::testing::Test {
     // catalog_ = std::make_unique<Catalog>(bpm_.get(), lock_manager_.get(), log_manager_.get());
     // // Begin a new transaction, along with its executor context.
     // txn_ = txn_mgr_->Begin();
-    // exec_ctx_ =
+    // context_ =
     //     std::make_unique<ExecutorContext>(txn_, catalog_.get(), bpm_.get(), txn_mgr_.get(), lock_manager_.get());
     // // Generate some test tables.
-    // TableGenerator gen{exec_ctx_.get()};
+    // TableGenerator gen{context_.get()};
     // gen.GenerateTestTables();
 
     // execution_engine_ = std::make_unique<ExecutionEngine>(bpm_.get(), txn_mgr_.get(), catalog_.get());
@@ -84,7 +84,7 @@ class TransactionTest : public ::testing::Test {
   };
 
   /** @return the executor context in our test class */
-  // auto GetExecutorContext() -> ExecutorContext * { return exec_ctx_.get(); }
+  // auto GetExecutorContext() -> ExecutorContext * { return context_.get(); }
   auto GetExecutionEngine() -> ExecutionEngine * { return execution_engine_.get(); }
   auto GetTxn() -> Transaction * { return txn_; }
   auto GetTxnManager() -> TransactionManager * { return txn_mgr_.get(); }
@@ -142,7 +142,7 @@ class TransactionTest : public ::testing::Test {
   std::unique_ptr<LockManager> lock_manager_;
   std::unique_ptr<BufferPoolManager> bpm_;
   std::unique_ptr<Catalog> catalog_;
-  // std::unique_ptr<ExecutorContext> exec_ctx_;
+  // std::unique_ptr<ExecutorContext> context_;
   std::unique_ptr<ExecutionEngine> execution_engine_;
   std::vector<std::unique_ptr<AbstractExpression>> allocated_exprs_;
   std::vector<std::unique_ptr<Schema>> allocated_output_schemas_;
@@ -169,7 +169,7 @@ TEST_F(TransactionTest, DISABLED_SimpleInsertRollbackTest) {
   // // txn1: abort
   // // txn2: SELECT * FROM empty_table2;
   // auto txn1 = GetTxnManager()->Begin();
-  // auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(),
+  // auto context1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(),
   // GetLockManager());
   // // Create Values to insert
   // std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
@@ -177,23 +177,23 @@ TEST_F(TransactionTest, DISABLED_SimpleInsertRollbackTest) {
   // std::vector<Value> val3{ValueFactory::GetIntegerValue(202), ValueFactory::GetIntegerValue(22)};
   // std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
   // // Create insert plan node
-  // auto table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
+  // auto table_info = context1->GetCatalog()->GetTable("empty_table2");
   // InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
 
-  // GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, exec_ctx1.get());
+  // GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, context1.get());
   // GetTxnManager()->Abort(txn1);
   // delete txn1;
 
   // // Iterate through table make sure that values were not inserted.
   // auto txn2 = GetTxnManager()->Begin();
-  // auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(),
+  // auto context2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(),
   // GetLockManager()); auto &schema = table_info->schema_; auto col_a = MakeColumnValueExpression(schema, 0, "colA");
   // auto col_b = MakeColumnValueExpression(schema, 0, "colB");
   // auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   // SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
 
   // std::vector<Tuple> result_set;
-  // GetExecutionEngine()->Execute(&scan_plan, &result_set, txn2, exec_ctx2.get());
+  // GetExecutionEngine()->Execute(&scan_plan, &result_set, txn2, context2.get());
 
   // // Size
   // ASSERT_EQ(result_set.size(), 0);
@@ -209,7 +209,7 @@ TEST_F(TransactionTest, DISABLED_DirtyReadsTest) {
   // // txn2: SELECT * FROM empty_table2;
   // // txn1: abort
   // auto txn1 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
-  // auto exec_ctx1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(),
+  // auto context1 = std::make_unique<ExecutorContext>(txn1, GetCatalog(), GetBPM(), GetTxnManager(),
   // GetLockManager());
   // // Create Values to insert
   // std::vector<Value> val1{ValueFactory::GetIntegerValue(200), ValueFactory::GetIntegerValue(20)};
@@ -217,21 +217,21 @@ TEST_F(TransactionTest, DISABLED_DirtyReadsTest) {
   // std::vector<Value> val3{ValueFactory::GetIntegerValue(202), ValueFactory::GetIntegerValue(22)};
   // std::vector<std::vector<Value>> raw_vals{val1, val2, val3};
   // // Create insert plan node
-  // auto table_info = exec_ctx1->GetCatalog()->GetTable("empty_table2");
+  // auto table_info = context1->GetCatalog()->GetTable("empty_table2");
   // InsertPlanNode insert_plan{std::move(raw_vals), table_info->oid_};
 
-  // GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, exec_ctx1.get());
+  // GetExecutionEngine()->Execute(&insert_plan, nullptr, txn1, context1.get());
 
   // // Iterate through table to read the tuples.
   // auto txn2 = GetTxnManager()->Begin(nullptr, IsolationLevel::READ_UNCOMMITTED);
-  // auto exec_ctx2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(),
+  // auto context2 = std::make_unique<ExecutorContext>(txn2, GetCatalog(), GetBPM(), GetTxnManager(),
   // GetLockManager()); auto &schema = table_info->schema_; auto col_a = MakeColumnValueExpression(schema, 0, "colA");
   // auto col_b = MakeColumnValueExpression(schema, 0, "colB");
   // auto out_schema = MakeOutputSchema({{"colA", col_a}, {"colB", col_b}});
   // SeqScanPlanNode scan_plan{out_schema, nullptr, table_info->oid_};
 
   // std::vector<Tuple> result_set;
-  // GetExecutionEngine()->Execute(&scan_plan, &result_set, txn2, exec_ctx2.get());
+  // GetExecutionEngine()->Execute(&scan_plan, &result_set, txn2, context2.get());
 
   // GetTxnManager()->Abort(txn1);
   // delete txn1;

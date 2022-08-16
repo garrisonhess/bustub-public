@@ -25,7 +25,7 @@ class ExecutorFactory {
  public:
   /**
    * Creates a new executor given the executor context and plan node.
-   * @param exec_ctx The executor context for the created executor
+   * @param context The executor context for the created executor
    * @param plan The plan node that needs to be executed
    * @return An executor for the given plan in the provided context
    */

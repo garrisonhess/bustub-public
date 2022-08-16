@@ -33,7 +33,7 @@ class UpdateExecutor : public AbstractExecutor {
  public:
   /**
    * Construct a new UpdateExecutor instance.
-   * @param exec_ctx The executor context
+   * @param context The executor context
    * @param plan The update plan to be executed
    * @param child_executor The child executor that feeds the update
    */

@@ -279,12 +279,12 @@ TEST(CatalogTest, DISABLED_CreateTable1) {
 
 //   Transaction txn{0};
 
-//   auto exec_ctx = std::make_unique<ExecutorContext>(&txn, catalog.get(), bpm.get(), nullptr, nullptr);
+//   auto context = std::make_unique<ExecutorContext>(&txn, catalog.get(), bpm.get(), nullptr, nullptr);
 
-//   TableGenerator gen{exec_ctx.get()};
+//   TableGenerator gen{context.get()};
 //   gen.GenerateTestTables();
 
-//   auto *table_info = exec_ctx->GetCatalog()->GetTable("test_1");
+//   auto *table_info = context->GetCatalog()->GetTable("test_1");
 //   EXPECT_NE(Catalog::NULL_TABLE_INFO, table_info);
 
 //   Schema &schema = table_info->schema_;

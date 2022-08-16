@@ -32,7 +32,7 @@ class DeleteExecutor : public AbstractExecutor {
  public:
   /**
    * Construct a new DeleteExecutor instance.
-   * @param exec_ctx The executor context
+   * @param context The executor context
    * @param plan The delete plan to be executed
    * @param child_executor The child executor that feeds the delete
    */
