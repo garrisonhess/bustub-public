@@ -30,8 +30,7 @@ static char *buffer_used;
  * Constructor: open/create a single database file & log file
  * @input db_file: database file name
  */
-DiskManager::DiskManager(const std::string &path)
-    : file_name_(path) {
+DiskManager::DiskManager(const std::string &path) : file_name_(path) {
   std::string::size_type n = file_name_.rfind('.');
   if (n == std::string::npos) {
     LOG_DEBUG("wrong file format");
