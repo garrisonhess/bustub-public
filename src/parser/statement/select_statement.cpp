@@ -14,7 +14,7 @@ SelectStatement::SelectStatement(Parser &parser, bustub_libpgquery::PGSelectStmt
         if (found) {
           throw Exception("shouldnt have multiple tables");
         }
-        bustub_libpgquery::PGRangeVar *table_ref = reinterpret_cast<bustub_libpgquery::PGRangeVar *>(node);
+        auto *table_ref = reinterpret_cast<bustub_libpgquery::PGRangeVar *>(node);
         table_ = table_ref->relname;
         found = true;
         break;

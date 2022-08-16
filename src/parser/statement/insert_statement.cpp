@@ -19,7 +19,7 @@ InsertStatement::InsertStatement(Parser &parser, bustub_libpgquery::PGInsertStmt
   // Now resolve the column types using the catalog.
 
   // resolve the insertion values
-  bustub_libpgquery::PGSelectStmt *select = reinterpret_cast<bustub_libpgquery::PGSelectStmt *>(pg_stmt->selectStmt);
+  auto *select = reinterpret_cast<bustub_libpgquery::PGSelectStmt *>(pg_stmt->selectStmt);
 
   for (auto value_list = select->valuesLists->head; value_list != nullptr; value_list = value_list->next) {
     auto target = static_cast<bustub_libpgquery::PGList *>(value_list->data.ptr_value);

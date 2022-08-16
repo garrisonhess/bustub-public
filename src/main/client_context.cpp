@@ -25,7 +25,7 @@ unique_ptr<PreparedStatement> ClientContext::Prepare(unique_ptr<SQLStatement> st
     LOG_INFO("statement query_: %s", statement->query_.c_str());
     if (statement->type_ == StatementType::CREATE_STATEMENT) {
       Catalog &catalog = db_->GetCatalog();
-      CreateStatement &create = dynamic_cast<CreateStatement &>(*statement);
+      auto &create = dynamic_cast<CreateStatement &>(*statement);
       Transaction txn = Transaction(123002);
       auto schema = make_unique<Schema>(create.columns_);
       catalog.CreateTable(&txn, create.table_, *schema);

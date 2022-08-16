@@ -90,7 +90,7 @@ Column Parser::TransformColumnDefinition(bustub_libpgquery::PGColumnDef *cdef) {
     colname = cdef->colname;
   }
   TypeId type_id = TransformTypeId(cdef->typeName);
-  return Column(colname, type_id);
+  return {colname, type_id};
 }
 
 Value Parser::TransformConstant(bustub_libpgquery::PGAConst *c) {
@@ -99,7 +99,7 @@ Value Parser::TransformConstant(bustub_libpgquery::PGAConst *c) {
   switch (pg_val.type) {
     case bustub_libpgquery::T_PGInteger:
       assert(pg_val.val.ival <= BUSTUB_INT32_MAX);
-      return Value(TypeId::INTEGER, static_cast<int32_t>(pg_val.val.ival));
+      return {TypeId::INTEGER, static_cast<int32_t>(pg_val.val.ival)};
     default:
       throw NotImplementedException(
           StringUtil::Format("Constant type %s is not implemented!", NodetypeToString(pg_val.type).c_str()));

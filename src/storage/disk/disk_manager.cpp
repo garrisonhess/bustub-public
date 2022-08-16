@@ -31,7 +31,7 @@ static char *buffer_used;
  * @input db_file: database file name
  */
 DiskManager::DiskManager(const std::string &path)
-    : file_name_(path), num_flushes_(0), num_writes_(0), flush_log_(false), flush_log_f_(nullptr) {
+    : file_name_(path) {
   std::string::size_type n = file_name_.rfind('.');
   if (n == std::string::npos) {
     LOG_DEBUG("wrong file format");

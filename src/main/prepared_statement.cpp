@@ -32,7 +32,7 @@ unique_ptr<QueryResult> PreparedStatement::Execute() {
 
   // EXECUTE
   LOG_INFO("PreparedStatement EXECUTE");
-  ExecutionEngine engine = ExecutionEngine(*context_);
+  auto engine = ExecutionEngine(*context_);
   engine.Execute(plan_.release(), &result->data_, txn);
 
   // COMMIT
