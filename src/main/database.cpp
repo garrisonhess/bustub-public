@@ -7,8 +7,6 @@
 #include "recovery/checkpoint_manager.h"
 #include "storage/disk/disk_manager.h"
 
-#include <memory>
-
 namespace bustub {
 using std::make_unique;
 class BufferPoolManagerInstance;

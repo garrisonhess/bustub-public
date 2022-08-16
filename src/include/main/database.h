@@ -12,6 +12,9 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "common/constants.h"
 #include "main/config.h"
 

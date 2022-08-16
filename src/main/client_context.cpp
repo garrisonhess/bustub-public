@@ -15,9 +15,6 @@
 #include "planner/plans/insert_plan.h"
 #include "planner/plans/seq_scan_plan.h"
 
-#include <mutex>
-#include <utility>
-
 namespace bustub {
 
 ClientContext::ClientContext(shared_ptr<DatabaseInstance> database) { db_ = std::move(database); }

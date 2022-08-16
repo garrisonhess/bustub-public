@@ -3,7 +3,7 @@
 namespace bustub {
 class DatabaseInstance;
 
-Catalog::Catalog(DatabaseInstance &db) : db_(db){};
+Catalog::Catalog(DatabaseInstance &db) : db_(db) {}
 
 /**
  * Create a new table and return its metadata.

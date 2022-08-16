@@ -17,9 +17,6 @@
 #include "type/type.h"
 #include "type/value.h"
 
-#include <unordered_map>
-#include <vector>
-
 namespace bustub {
 using std::vector;
 class ClientContext;
