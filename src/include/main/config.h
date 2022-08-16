@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <chrono>
+#include <chrono>  // NOLINT
 #include <cstdint>
 
 #include "common/constants.h"

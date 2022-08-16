@@ -8,7 +8,10 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
+#include <vector>
+
 #include "common/constants.h"
 #include "common/enums/statement_type.h"
 #include "main/query_result.h"

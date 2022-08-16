@@ -12,6 +12,9 @@
 #include "storage/table/tuple.h"
 #include "type/type.h"
 
+#include <string>
+#include <vector>
+
 namespace bustub {
 using std::vector;
 

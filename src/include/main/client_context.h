@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "common/enums/statement_type.h"
 #include "main/database.h"
 #include "main/prepared_statement.h"

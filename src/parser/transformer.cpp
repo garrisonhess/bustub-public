@@ -1,6 +1,5 @@
 #include "parser/parser.h"
 
-#include <unordered_set>
 #include "common/exception.h"
 #include "common/logger.h"
 #include "common/string_util.h"

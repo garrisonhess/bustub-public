@@ -3,6 +3,9 @@
 
 #include "parser/parser.h"
 
+#include <string>
+#include <vector>
+
 namespace bustub {
 
 class InsertStatement : public SQLStatement {
