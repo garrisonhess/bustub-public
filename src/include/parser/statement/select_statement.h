@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include "parser/parser.h"
-
 #include <string>
 #include <vector>
+
+#include "parser/parser.h"
 
 namespace bustub {
 

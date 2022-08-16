@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <string>
+
 #include "catalog/column.h"
 #include "common/enums/type_id.h"
 #include "nodes/parsenodes.hpp"
@@ -25,8 +27,6 @@ namespace bustub_libpgquery {
 struct PGNode;
 struct PGList;
 }  // namespace bustub_libpgquery
-
-#include <string>
 
 namespace bustub {
 using std::vector;

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "common/enums/statement_type.h"
 #include "common/exception.h"
 

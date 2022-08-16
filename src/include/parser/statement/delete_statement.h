@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "parser/parser.h"
 
 namespace bustub {

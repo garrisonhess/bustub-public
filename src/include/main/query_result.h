@@ -8,12 +8,12 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "common/enums/statement_type.h"
 #include "storage/table/tuple.h"
 #include "type/type.h"
-
-#include <string>
-#include <vector>
 
 namespace bustub {
 using std::vector;
