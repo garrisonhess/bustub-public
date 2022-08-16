@@ -15,7 +15,7 @@
 #include <cstdint>
 #include <string>
 
-#include "type/type_id.h"
+#include "common/enums/type_id.h"
 
 namespace bustub {
 
@@ -107,6 +107,8 @@ class Type {
 
   // Access the raw varlen data stored from the tuple storage
   virtual auto GetData(char *storage) -> char *;
+
+  virtual auto Hash() const -> uint32_t;
 
  protected:
   // The actual type ID

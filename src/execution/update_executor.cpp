@@ -15,7 +15,7 @@
 
 namespace bustub {
 
-UpdateExecutor::UpdateExecutor(ExecutorContext *exec_ctx, const UpdatePlanNode *plan,
+UpdateExecutor::UpdateExecutor(ClientContext &exec_ctx, const UpdatePlanNode *plan,
                                std::unique_ptr<AbstractExecutor> &&child_executor)
     : AbstractExecutor(exec_ctx) {}
 

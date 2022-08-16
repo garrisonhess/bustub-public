@@ -17,11 +17,14 @@
 #include "buffer/buffer_pool_manager.h"
 #include "catalog/catalog.h"
 #include "concurrency/transaction_manager.h"
-#include "execution/executor_context.h"
 #include "execution/executor_factory.h"
-#include "execution/plans/abstract_plan.h"
+#include "main/client_context.h"
+#include "main/database.h"
+#include "planner/plans/abstract_plan.h"
 #include "storage/table/tuple.h"
+
 namespace bustub {
+class ClientContext;
 
 /**
  * The ExecutionEngine class executes query plans.
@@ -34,8 +37,7 @@ class ExecutionEngine {
    * @param txn_mgr The transaction manager used by the execution engine
    * @param catalog The catalog used by the execution engine
    */
-  ExecutionEngine(BufferPoolManager *bpm, TransactionManager *txn_mgr, Catalog *catalog)
-      : bpm_{bpm}, txn_mgr_{txn_mgr}, catalog_{catalog} {}
+  explicit ExecutionEngine(ClientContext &context);
 
   DISALLOW_COPY_AND_MOVE(ExecutionEngine);
 
@@ -47,10 +49,10 @@ class ExecutionEngine {
    * @param exec_ctx The executor context in which the query executes
    * @return `true` if execution of the query plan succeeds, `false` otherwise
    */
-  auto Execute(const AbstractPlanNode *plan, std::vector<Tuple> *result_set, Transaction *txn,
-               ExecutorContext *exec_ctx) -> bool {
+  auto Execute(AbstractPlanNode *plan, std::vector<Tuple> *result_set, Transaction *txn) -> bool {
     // Construct and executor for the plan
-    auto executor = ExecutorFactory::CreateExecutor(exec_ctx, plan);
+    // Prepare the root executor
+    auto executor = ExecutorFactory::CreateExecutor(context_, plan);
 
     // Prepare the root executor
     executor->Init();
@@ -71,13 +73,10 @@ class ExecutionEngine {
     return true;
   }
 
+  ExecutionEngine &Get(DatabaseInstance &db);
+
  private:
-  /** The buffer pool manager used during query execution */
-  [[maybe_unused]] BufferPoolManager *bpm_;
-  /** The transaction manager used during query execution */
-  [[maybe_unused]] TransactionManager *txn_mgr_;
-  /** The catalog used during query execution */
-  [[maybe_unused]] Catalog *catalog_;
+  [[maybe_unused]] ClientContext &context_;
 };
 
 }  // namespace bustub

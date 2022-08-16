@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "buffer/replacer.h"
-#include "common/config.h"
+#include "main/config.h"
 
 namespace bustub {
 

@@ -15,7 +15,7 @@
 #include <memory>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/abstract_plan.h"
+#include "planner/plans/abstract_plan.h"
 
 namespace bustub {
 /**
@@ -29,7 +29,6 @@ class ExecutorFactory {
    * @param plan The plan node that needs to be executed
    * @return An executor for the given plan in the provided context
    */
-  static auto CreateExecutor(ExecutorContext *exec_ctx, const AbstractPlanNode *plan)
-      -> std::unique_ptr<AbstractExecutor>;
+  static std::unique_ptr<AbstractExecutor> CreateExecutor(ClientContext &context, const AbstractPlanNode *plan);
 };
 }  // namespace bustub

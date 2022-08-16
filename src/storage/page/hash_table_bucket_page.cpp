@@ -11,8 +11,8 @@
 //===----------------------------------------------------------------------===//
 
 #include "storage/page/hash_table_bucket_page.h"
+#include "common/hash_util.h"
 #include "common/logger.h"
-#include "common/util/hash_util.h"
 #include "storage/index/generic_key.h"
 #include "storage/index/hash_comparator.h"
 #include "storage/table/tmp_tuple.h"

@@ -12,6 +12,7 @@
 
 #include <string>
 #include "common/exception.h"
+#include "common/hash_util.h"
 #include "type/bigint_type.h"
 #include "type/boolean_type.h"
 #include "type/decimal_type.h"
@@ -289,5 +290,7 @@ auto Type::GetLength(const Value &val __attribute__((unused))) const -> uint32_t
 auto Type::GetData(char *storage __attribute__((unused))) -> char * {
   throw NotImplementedException("GetData not implemented");
 }
+
+uint32_t Type::Hash() const { return HashUtil::Hash<uint8_t>((const unsigned char *)type_id_); }
 
 }  // namespace bustub

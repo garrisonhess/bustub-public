@@ -141,7 +141,7 @@ auto TimestampType::DeserializeFrom(const char *storage) const -> Value {
 }
 
 // Create a copy of this value
-auto TimestampType::Copy(const Value &val) const -> Value { return {val}; }
+auto TimestampType::Copy(const Value &val) const -> Value { return Value(val); }
 
 auto TimestampType::CastAs(const Value &val, const TypeId type_id) const -> Value {
   switch (type_id) {

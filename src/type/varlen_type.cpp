@@ -175,7 +175,7 @@ auto VarlenType::DeserializeFrom(const char *storage) const -> Value {
   return {type_id_, storage + sizeof(uint32_t), len, true};
 }
 
-auto VarlenType::Copy(const Value &val) const -> Value { return {val}; }
+auto VarlenType::Copy(const Value &val) const -> Value { return Value(val); }
 
 auto VarlenType::CastAs(const Value &value, const TypeId type_id) const -> Value {
   std::string str;

@@ -16,7 +16,7 @@
 #include <utility>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/limit_plan.h"
+#include "planner/plans/limit_plan.h"
 
 namespace bustub {
 
@@ -31,8 +31,7 @@ class LimitExecutor : public AbstractExecutor {
    * @param plan The limit plan to be executed
    * @param child_executor The child executor from which limited tuples are pulled
    */
-  LimitExecutor(ExecutorContext *exec_ctx, const LimitPlanNode *plan,
-                std::unique_ptr<AbstractExecutor> &&child_executor);
+  LimitExecutor(ClientContext &exec_ctx, const LimitPlanNode *plan, std::unique_ptr<AbstractExecutor> &&child_executor);
 
   /** Initialize the limit */
   void Init() override;

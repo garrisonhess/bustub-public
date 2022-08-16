@@ -16,7 +16,7 @@
 #include <utility>
 
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/distinct_plan.h"
+#include "planner/plans/distinct_plan.h"
 
 namespace bustub {
 
@@ -31,7 +31,7 @@ class DistinctExecutor : public AbstractExecutor {
    * @param plan The limit plan to be executed
    * @param child_executor The child executor from which tuples are pulled
    */
-  DistinctExecutor(ExecutorContext *exec_ctx, const DistinctPlanNode *plan,
+  DistinctExecutor(ClientContext &context, const DistinctPlanNode *plan,
                    std::unique_ptr<AbstractExecutor> &&child_executor);
 
   /** Initialize the distinct */

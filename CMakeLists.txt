@@ -78,6 +78,10 @@ execute_process(COMMAND "${CMAKE_COMMAND}" --build .
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # don't override our compiler/linker options when building gtest
 add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googletest-build")
 
+function(disable_target_warnings NAME)
+        target_compile_options(${NAME} PRIVATE "-w")
+endfunction()
+
 ######################################################################################################################
 # COMPILER SETUP
 ######################################################################################################################
@@ -101,15 +105,20 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+
 # Includes.
 set(BUSTUB_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src/include)
 set(BUSTUB_TEST_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/test/include)
 set(BUSTUB_THIRD_PARTY_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/third_party)
 include_directories(${BUSTUB_SRC_INCLUDE_DIR} ${BUSTUB_TEST_INCLUDE_DIR} ${BUSTUB_THIRD_PARTY_INCLUDE_DIR})
 include_directories(BEFORE src) # This is needed for gtest.
+include_directories(third_party/utf8proc/include)
 
 add_subdirectory(src)
 add_subdirectory(test)
+add_subdirectory(third_party)
+add_subdirectory(tools)
+
 ######################################################################################################################
 # MAKE TARGETS
 ######################################################################################################################
@@ -173,4 +182,4 @@ add_custom_target(check-clang-tidy
         -clang-tidy-binary ${CLANG_TIDY_BIN}                              # using our clang-tidy binary
         -p ${CMAKE_BINARY_DIR}                                            # using cmake's generated compile commands
         )
-add_dependencies(check-clang-tidy gtest bustub_shared)                    # needs gtest headers, compile_commands.json
+add_dependencies(check-clang-tidy gtest bustub)                    # needs gtest headers, compile_commands.json

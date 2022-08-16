@@ -12,6 +12,7 @@
 
 #include <cassert>
 
+#include "buffer/buffer_pool_manager_instance.h"
 #include "storage/table/table_heap.h"
 
 namespace bustub {
@@ -34,8 +35,8 @@ auto TableIterator::operator->() -> Tuple * {
 }
 
 auto TableIterator::operator++() -> TableIterator & {
-  BufferPoolManager *buffer_pool_manager = table_heap_->buffer_pool_manager_;
-  auto cur_page = static_cast<TablePage *>(buffer_pool_manager->FetchPage(tuple_->rid_.GetPageId()));
+  BufferPoolManagerInstance &bpm = table_heap_->db_.GetBufferPoolManager();
+  auto cur_page = static_cast<TablePage *>(bpm.FetchPage(tuple_->rid_.GetPageId()));
   cur_page->RLatch();
   assert(cur_page != nullptr);  // all pages are pinned
 
@@ -43,9 +44,9 @@ auto TableIterator::operator++() -> TableIterator & {
   if (!cur_page->GetNextTupleRid(tuple_->rid_,
                                  &next_tuple_rid)) {  // end of this page
     while (cur_page->GetNextPageId() != INVALID_PAGE_ID) {
-      auto next_page = static_cast<TablePage *>(buffer_pool_manager->FetchPage(cur_page->GetNextPageId()));
+      auto next_page = static_cast<TablePage *>(bpm.FetchPage(cur_page->GetNextPageId()));
       cur_page->RUnlatch();
-      buffer_pool_manager->UnpinPage(cur_page->GetTablePageId(), false);
+      bpm.UnpinPage(cur_page->GetTablePageId(), false);
       cur_page = next_page;
       cur_page->RLatch();
       if (cur_page->GetFirstTupleRid(&next_tuple_rid)) {
@@ -60,7 +61,7 @@ auto TableIterator::operator++() -> TableIterator & {
   }
   // release until copy the tuple
   cur_page->RUnlatch();
-  buffer_pool_manager->UnpinPage(cur_page->GetTablePageId(), false);
+  bpm.UnpinPage(cur_page->GetTablePageId(), false);
   return *this;
 }
 

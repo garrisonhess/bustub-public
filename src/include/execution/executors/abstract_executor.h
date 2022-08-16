@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "execution/executor_context.h"
+#include "main/client_context.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {
@@ -27,7 +27,7 @@ class AbstractExecutor {
    * Construct a new AbstractExecutor instance.
    * @param exec_ctx the executor context that the executor runs with
    */
-  explicit AbstractExecutor(ExecutorContext *exec_ctx) : exec_ctx_{exec_ctx} {}
+  explicit AbstractExecutor(ClientContext &context) : context_{context} {}
 
   /** Virtual destructor. */
   virtual ~AbstractExecutor() = default;
@@ -50,10 +50,9 @@ class AbstractExecutor {
   virtual auto GetOutputSchema() -> const Schema * = 0;
 
   /** @return The executor context in which this executor runs */
-  auto GetExecutorContext() -> ExecutorContext * { return exec_ctx_; }
+  auto GetExecutorContext() -> ClientContext & { return context_; }
 
- protected:
   /** The executor context in which the executor runs */
-  ExecutorContext *exec_ctx_;
+  ClientContext &context_;
 };
 }  // namespace bustub

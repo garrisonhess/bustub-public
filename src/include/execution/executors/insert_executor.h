@@ -15,9 +15,9 @@
 #include <memory>
 #include <utility>
 
-#include "execution/executor_context.h"
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/insert_plan.h"
+#include "main/client_context.h"
+#include "planner/plans/insert_plan.h"
 #include "storage/table/tuple.h"
 
 namespace bustub {
@@ -36,7 +36,7 @@ class InsertExecutor : public AbstractExecutor {
    * @param plan The insert plan to be executed
    * @param child_executor The child executor from which inserted tuples are pulled (may be `nullptr`)
    */
-  InsertExecutor(ExecutorContext *exec_ctx, const InsertPlanNode *plan,
+  InsertExecutor(ClientContext &exec_ctx, const InsertPlanNode *plan,
                  std::unique_ptr<AbstractExecutor> &&child_executor);
 
   /** Initialize the insert */

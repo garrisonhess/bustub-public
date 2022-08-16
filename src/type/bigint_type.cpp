@@ -268,7 +268,7 @@ auto BigintType::DeserializeFrom(const char *storage) const -> Value {
   return {type_id_, val};
 }
 
-auto BigintType::Copy(const Value &val) const -> Value { return {TypeId::BIGINT, val.value_.bigint_}; }
+auto BigintType::Copy(const Value &val) const -> Value { return Value(TypeId::BIGINT, val.value_.bigint_); }
 
 auto BigintType::CastAs(const Value &val, const TypeId type_id) const -> Value {
   switch (type_id) {

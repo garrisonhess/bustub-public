@@ -16,18 +16,16 @@
 
 namespace bustub {
 
-BufferPoolManagerInstance::BufferPoolManagerInstance(size_t pool_size, DiskManager *disk_manager,
-                                                     LogManager *log_manager)
-    : BufferPoolManagerInstance(pool_size, 1, 0, disk_manager, log_manager) {}
+BufferPoolManagerInstance::BufferPoolManagerInstance(DatabaseInstance &db, size_t pool_size)
+    : BufferPoolManagerInstance(db, pool_size, 1, 0) {}
 
-BufferPoolManagerInstance::BufferPoolManagerInstance(size_t pool_size, uint32_t num_instances, uint32_t instance_index,
-                                                     DiskManager *disk_manager, LogManager *log_manager)
+BufferPoolManagerInstance::BufferPoolManagerInstance(DatabaseInstance &db, size_t pool_size, uint32_t num_instances,
+                                                     uint32_t instance_index)
     : pool_size_(pool_size),
       num_instances_(num_instances),
       instance_index_(instance_index),
       next_page_id_(instance_index),
-      disk_manager_(disk_manager),
-      log_manager_(log_manager) {
+      db_(db) {
   BUSTUB_ASSERT(num_instances > 0, "If BPI is not part of a pool, then the pool size should just be 1");
   BUSTUB_ASSERT(
       instance_index < num_instances,

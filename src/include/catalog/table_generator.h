@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "catalog/catalog.h"
-#include "execution/executor_context.h"
+#include "main/client_context.h"
 #include "storage/table/table_heap.h"
 
 namespace bustub {
@@ -20,11 +20,13 @@ static constexpr uint32_t TEST9_SIZE = 10;
 static constexpr uint32_t TEST_VARLEN_SIZE = 10;
 
 class TableGenerator {
+  class ClientContext;
+
  public:
   /**
    * Constructor
    */
-  explicit TableGenerator(ExecutorContext *exec_ctx) : exec_ctx_{exec_ctx} {}
+  explicit TableGenerator(ClientContext &context) : context_{context} {}
 
   /**
    * Generate test tables.
@@ -109,6 +111,6 @@ class TableGenerator {
   auto GenNumericValues(ColumnInsertMeta *col_meta, uint32_t count) -> std::vector<Value>;
 
  private:
-  ExecutorContext *exec_ctx_;
+  ClientContext &context_;
 };
 }  // namespace bustub

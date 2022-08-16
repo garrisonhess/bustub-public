@@ -95,7 +95,7 @@ auto BooleanType::DeserializeFrom(const char *storage) const -> Value {
   return {TypeId::BOOLEAN, val};
 }
 
-auto BooleanType::Copy(const Value &val) const -> Value { return {TypeId::BOOLEAN, val.value_.boolean_}; }
+Value BooleanType::Copy(const Value &val) const { return Value(TypeId::BOOLEAN, val.value_.boolean_); }
 
 auto BooleanType::CastAs(const Value &val, const TypeId type_id) const -> Value {
   switch (type_id) {

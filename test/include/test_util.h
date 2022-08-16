@@ -23,7 +23,7 @@
 #include "catalog/schema.h"
 #include "common/exception.h"
 #include "common/logger.h"
-#include "common/util/string_util.h"
+#include "common/string_util.h"
 #include "storage/page/header_page.h"
 
 namespace bustub {

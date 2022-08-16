@@ -190,7 +190,7 @@ auto DecimalType::Sqrt(const Value &val) const -> Value {
 
 auto DecimalType::OperateNull(const Value &left __attribute__((unused)),
                               const Value &right __attribute__((unused))) const -> Value {
-  return {TypeId::DECIMAL, BUSTUB_DECIMAL_NULL};
+  return Value(TypeId::DECIMAL, BUSTUB_DECIMAL_NULL);
 }
 
 auto DecimalType::CompareEquals(const Value &left, const Value &right) const -> CmpBool {
@@ -335,5 +335,5 @@ auto DecimalType::DeserializeFrom(const char *storage) const -> Value {
   return {type_id_, val};
 }
 
-auto DecimalType::Copy(const Value &val) const -> Value { return {TypeId::DECIMAL, val.value_.decimal_}; }
+auto DecimalType::Copy(const Value &val) const -> Value { return Value(TypeId::DECIMAL, val.value_.decimal_); }
 }  // namespace bustub

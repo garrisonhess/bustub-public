@@ -22,6 +22,7 @@
 #include "storage/page/page.h"
 
 namespace bustub {
+class DatabaseInstance;
 
 /**
  * BufferPoolManager reads disk pages to and from its internal buffer pool.

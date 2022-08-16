@@ -16,9 +16,8 @@
 #include <utility>
 #include <vector>
 
-#include "execution/executor_context.h"
 #include "execution/executors/abstract_executor.h"
-#include "execution/plans/update_plan.h"
+#include "planner/plans/update_plan.h"
 #include "storage/table/tuple.h"
 #include "type/value_factory.h"
 
@@ -38,7 +37,7 @@ class UpdateExecutor : public AbstractExecutor {
    * @param plan The update plan to be executed
    * @param child_executor The child executor that feeds the update
    */
-  UpdateExecutor(ExecutorContext *exec_ctx, const UpdatePlanNode *plan,
+  UpdateExecutor(ClientContext &context, const UpdatePlanNode *plan,
                  std::unique_ptr<AbstractExecutor> &&child_executor);
 
   /** Initialize the update */
