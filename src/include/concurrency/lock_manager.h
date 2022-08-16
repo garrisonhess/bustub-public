@@ -103,11 +103,8 @@ class LockManager {
    * @return true if the unlock is successful, false otherwise
    */
   auto Unlock(Transaction *txn, const RID &rid) -> bool;
-<<<<<<< HEAD
-=======
 
   static LockManager &Get(DatabaseInstance &db);
->>>>>>> gh/try-no-planner
 
  private:
   std::mutex latch_;

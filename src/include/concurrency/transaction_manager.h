@@ -62,18 +62,7 @@ class TransactionManager {
    * @param txn_id the id of the transaction to be found, it must exist!
    * @return the transaction with the given transaction id
    */
-<<<<<<< HEAD
-  static auto GetTransaction(txn_id_t txn_id) -> Transaction * {
-    TransactionManager::txn_map_mutex.lock_shared();
-    assert(TransactionManager::txn_map.find(txn_id) != TransactionManager::txn_map.end());
-    auto *res = TransactionManager::txn_map[txn_id];
-    assert(res != nullptr);
-    TransactionManager::txn_map_mutex.unlock_shared();
-    return res;
-  }
-=======
   static auto GetTransaction(txn_id_t txn_id) -> Transaction *;
->>>>>>> gh/try-no-planner
 
   /** Prevents all transactions from performing operations, used for checkpointing. */
   void BlockAllTransactions();
