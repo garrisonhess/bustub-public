@@ -50,7 +50,7 @@ void sqlite3_randomness(int N, void *pBuf) {
     srand(time(nullptr));
     init = true;
   }
-  unsigned char *z_buf = static_cast<unsigned char *>(pBuf);
+  auto *z_buf = static_cast<unsigned char *>(pBuf);
   while ((N--) != 0) {
     unsigned char next_byte = rand() % 255;
     z_buf[N] = next_byte;
@@ -871,7 +871,7 @@ static int UnixCurrentTimeInt64(sqlite3_vfs *NotUsed, sqlite3_int64 *piNow) {
 sqlite3_vfs *sqlite3_vfs_find(const char *zVfsName) {
   // return a dummy because the shell does not check the return code.
   // fprintf(stderr, "sqlite3_vfs_find: unsupported.\n");
-  sqlite3_vfs *res = static_cast<sqlite3_vfs *>(sqlite3_malloc(sizeof(sqlite3_vfs)));
+  auto *res = static_cast<sqlite3_vfs *>(sqlite3_malloc(sizeof(sqlite3_vfs)));
   res->xCurrentTimeInt64 = UnixCurrentTimeInt64;
   res->iVersion = 2;
   res->zName = "dummy";
